@@ -27,8 +27,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void signin() async {
-    print(reController.text);
-    print(passwordController.text);
+    //print(reController.text);
+    //print(passwordController.text);
 
     try {
       //Controller de autenticação
@@ -37,17 +37,17 @@ class _LoginViewState extends State<LoginView> {
       AuthenticateModel authenticate = await authenticateController.login(
           reController.text, passwordController.text);
 
-      TokenModel token = await authenticateController.createToken(
-          authenticate.getEmail(), passwordController.text);
+      // TokenModel token = await authenticateController.createToken(
+      //     authenticate.getEmail(), passwordController.text);
 
       //Armazena o token recebido
 
-      login(token.getAccessToken());
+      login(authenticate.getAccessToken());
 
-      print(token.getAccessToken());
-      print('teste');
+      //print(token.getAccessToken());
+      //print('teste');
 
-      print('local token');
+      //print('local token');
 
       print(getToken());
 
