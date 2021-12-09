@@ -38,6 +38,7 @@ dependencies:
   localstorage: ^4.0.0+1
   flutter_dotenv: ^5.0.2
   http: ^0.13.4
+  responsive_builder: ^0.4.1
 
 dev_dependencies:
   flutter_test:
