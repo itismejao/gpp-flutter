@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gpp/src/shared/controllers/authenticate_controller.dart';
+import 'package:gpp/src/shared/exceptions/user_exception.dart';
+import 'package:gpp/src/shared/models/authenticate_model.dart';
+import 'package:gpp/src/shared/models/token_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -10,6 +15,48 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final reController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool visiblePassword = true;
+
+  void setVisiblePassword() {
+    setState(() {
+      visiblePassword = !visiblePassword;
+    });
+  }
+
+  void signin() async {
+    print(reController.text);
+    print(passwordController.text);
+
+    try {
+      //Controller de autenticação
+      final authenticateController = AuthenticateController();
+
+      AuthenticateModel authenticate = await authenticateController.login(
+          reController.text, passwordController.text);
+
+      TokenModel token = await authenticateController.createToken(
+          authenticate.getEmail(), passwordController.text);
+
+      //Armazena o token recebido
+
+      login(token.getAccessToken());
+
+      print(token.getAccessToken());
+      print('teste');
+
+      print('local token');
+
+      print(getToken());
+
+      Navigator.pushNamed(context, '/home');
+    } on UserNotFoundException catch (userNotFoundException) {
+      print(userNotFoundException.getError());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -133,6 +180,7 @@ class _LoginViewState extends State<LoginView> {
                                           child: SizedBox(
                                             height: 40,
                                             child: TextField(
+                                              controller: reController,
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.all(
@@ -198,7 +246,8 @@ class _LoginViewState extends State<LoginView> {
                                           child: SizedBox(
                                             height: 40,
                                             child: TextField(
-                                              obscureText: true,
+                                              controller: passwordController,
+                                              obscureText: visiblePassword,
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.all(
@@ -215,17 +264,20 @@ class _LoginViewState extends State<LoginView> {
                                                         semanticsLabel:
                                                             'Gerenciamento de peças e pedidos'),
                                                   ),
-                                                  suffixIcon: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: SvgPicture.asset(
-                                                        '../../../lib/src/shared/assets/eye_password.svg',
-                                                        color: const Color
-                                                                .fromRGBO(
-                                                            191, 183, 183, 1),
-                                                        semanticsLabel:
-                                                            'Gerenciamento de peças e pedidos'),
+                                                  suffixIcon: GestureDetector(
+                                                    onTap: setVisiblePassword,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: SvgPicture.asset(
+                                                          '../../../lib/src/shared/assets/eye_password.svg',
+                                                          color: const Color
+                                                                  .fromRGBO(
+                                                              191, 183, 183, 1),
+                                                          semanticsLabel:
+                                                              'Gerenciamento de peças e pedidos'),
+                                                    ),
                                                   ),
                                                   hintText: 'Digite sua senha',
                                                   hintStyle: const TextStyle(
@@ -259,7 +311,7 @@ class _LoginViewState extends State<LoginView> {
                                       children: [
                                         Expanded(
                                           child: ElevatedButton(
-                                              onPressed: () => {},
+                                              onPressed: () => signin(),
                                               style: ElevatedButton.styleFrom(
                                                   primary: secundaryColor),
                                               child: Padding(
