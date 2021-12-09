@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/login/repositories/login_view.dart';
 
-void main() {
+import 'package:gpp/src/shared/exceptions/user_exception.dart';
+import 'package:gpp/src/shared/services/auth.dart';
+
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+
   runApp(const MyApp());
 }
 
@@ -26,6 +33,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: {
+        '/login': (context) => const LoginView(),
+        '/home': (context) =>
+            isAuthenticated() ? const HomeView() : const LoginView()
+      },
     );
   }
 }
