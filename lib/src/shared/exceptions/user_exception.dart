@@ -1,13 +1,15 @@
 class AuthenticationException implements Exception {
-  String? message;
+  String message;
 
   AuthenticationException(this.message);
 
-  String? getError() {
+  @override
+  String toString() {
+    // TODO: implement toString
     return message;
   }
 }
 
 class UserNotFoundException extends AuthenticationException {
-  UserNotFoundException() : super("message");
+  UserNotFoundException(String error) : super(error);
 }
