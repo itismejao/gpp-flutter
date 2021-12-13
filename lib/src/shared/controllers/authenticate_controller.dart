@@ -12,7 +12,9 @@ class AuthenticateController {
           await api.post('/user/login', {'uid': uid, 'password': password});
 
       if (response.statusCode == 500) {
-        throw UserNotFoundException();
+        var error = jsonDecode(response.body)['error'];
+
+        throw UserNotFoundException(error);
       }
 
       return AuthenticateModel.fromJson(jsonDecode(response.body));
