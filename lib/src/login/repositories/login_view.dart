@@ -6,7 +6,6 @@ import 'package:gpp/src/shared/exceptions/user_exception.dart';
 import 'package:gpp/src/shared/models/authenticate_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 enum AuthenticateStatus { waiting, notAuthenticate, authenticateError }
 
@@ -39,13 +38,14 @@ class _LoginViewState extends State<LoginView> {
       final authenticateController = AuthenticateController();
       AuthenticateModel authenticate = await authenticateController.login(
           reController.text, passwordController.text);
-      return authenticate;
 
       //seta token
       login(authenticate.accessToken);
+
+      return authenticate;
     } on UserNotFoundException catch (userNotFoundException) {
       final snackBar = SnackBar(
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
           backgroundColor: Colors.red,
           content: Text(userNotFoundException.toString()));
 
@@ -104,9 +104,11 @@ class _LoginViewState extends State<LoginView> {
                 }
                 break;
               case ConnectionState.none:
+                // ignore: todo
                 // TODO: Handle this case.
                 break;
               case ConnectionState.active:
+                // ignore: todo
                 // TODO: Handle this case.
                 break;
             }
@@ -549,7 +551,9 @@ class _LoginViewState extends State<LoginView> {
                                       return Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                        children: [CircularProgressIndicator()],
+                                        children: const [
+                                          CircularProgressIndicator()
+                                        ],
                                       );
 
                                     case AuthenticateStatus.authenticateError:
