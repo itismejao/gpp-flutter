@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/shared/components/components.dart';
 
 import 'package:gpp/src/shared/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/shared/models/funcionalitie_model.dart';
@@ -142,9 +143,13 @@ class _HomeViewState extends State<HomeView> {
                                                   title: Text(
                                                     funcionalities.name,
                                                     style: textStyle(
-                                                        fontSize: 12,
+                                                        color: const Color
+                                                                .fromRGBO(
+                                                            191, 183, 183, 1),
                                                         fontWeight:
-                                                            FontWeight.w700),
+                                                            FontWeight.w700,
+                                                        fontSize: 12,
+                                                        height: 1.8),
                                                   ),
                                                 );
                                               },
@@ -170,13 +175,17 @@ class _HomeViewState extends State<HomeView> {
                                                                 SvgPicture
                                                                     .asset(
                                                                   '../../../lib/src/shared/assets/user.svg',
-                                                                  color: Colors
-                                                                      .black,
+                                                                  color: const Color
+                                                                          .fromRGBO(
+                                                                      191,
+                                                                      183,
+                                                                      183,
+                                                                      1),
                                                                 ),
                                                               ],
                                                             ),
                                                             const SizedBox(
-                                                              width: 20,
+                                                              width: 12,
                                                             ),
                                                             Column(
                                                               children: [
@@ -184,11 +193,19 @@ class _HomeViewState extends State<HomeView> {
                                                                   subFuncionalities
                                                                       .name,
                                                                   style: textStyle(
-                                                                      fontSize:
-                                                                          12,
+                                                                      color: const Color
+                                                                              .fromRGBO(
+                                                                          191,
+                                                                          183,
+                                                                          183,
+                                                                          1),
                                                                       fontWeight:
                                                                           FontWeight
-                                                                              .w700),
+                                                                              .w700,
+                                                                      fontSize:
+                                                                          12,
+                                                                      height:
+                                                                          1.8),
                                                                 )
                                                               ],
                                                             )
@@ -212,18 +229,7 @@ class _HomeViewState extends State<HomeView> {
                       const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Versão 1.0.0',
-                              style: textStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ],
+                        children: [versionComponent()],
                       )
                     ],
                   ),
