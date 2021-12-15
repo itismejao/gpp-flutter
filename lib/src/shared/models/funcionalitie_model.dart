@@ -36,20 +36,28 @@ class FuncionalitieModel {
 }
 
 class SubFuncionalities {
+  String id;
   String name;
   String icon;
   String route;
 
   SubFuncionalities(
-      {required this.name, required this.icon, required this.route});
+      {required this.id,
+      required this.name,
+      required this.icon,
+      required this.route});
 
   factory SubFuncionalities.fromJson(Map<String, dynamic> json) {
     return SubFuncionalities(
-        name: json['name'], icon: json['icon'], route: json['route']);
+        id: json['id'],
+        name: json['name'],
+        icon: json['icon'],
+        route: json['route']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['name'] = name;
     data['icon'] = icon;
     data['route'] = route;
