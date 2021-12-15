@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/shared/controllers/authenticate_controller.dart';
-import 'package:gpp/src/shared/exceptions/user_exception.dart';
+import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
 import 'package:gpp/src/shared/models/authenticate_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
@@ -39,7 +39,11 @@ class _LoginViewState extends State<LoginView> {
       AuthenticateModel authenticate = await authenticateController.login(
           reController.text, passwordController.text);
 
+      // ignore: avoid_print
+      print(authenticate.email);
+
       //seta token
+
       login(authenticate.accessToken);
 
       return authenticate;
