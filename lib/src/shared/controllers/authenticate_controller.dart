@@ -11,7 +11,7 @@ class AuthenticateController {
       var response =
           await api.post('/user/login', {'uid': uid, 'password': password});
 
-      if (response.statusCode == 500) {
+      if (response.statusCode == 401) {
         var error = jsonDecode(response.body)['error'];
 
         throw UserNotFoundException(error);
