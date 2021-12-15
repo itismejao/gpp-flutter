@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:gpp/src/shared/exceptions/user_exception.dart';
+import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
 import 'package:gpp/src/shared/models/token_model.dart';
 import 'package:gpp/src/shared/models/authenticate_model.dart';
 import 'package:gpp/src/shared/services/api.dart';
