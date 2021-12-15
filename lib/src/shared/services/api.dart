@@ -26,10 +26,18 @@ class Api {
     var uri = Uri.parse(baseUrl! + endpoint);
     var response = await http.get(uri, headers: getHeader());
 
-    return response.body;
+    return response;
   }
 
   Future<dynamic> post(String endpoint, body) async {
+    var uri = Uri.parse(baseUrl! + endpoint);
+    var response =
+        await http.post(uri, headers: getHeader(), body: jsonEncode(body));
+
+    return response;
+  }
+
+  Future<dynamic> put(String endpoint, body) async {
     var uri = Uri.parse(baseUrl! + endpoint);
     var response =
         await http.post(uri, headers: getHeader(), body: jsonEncode(body));
