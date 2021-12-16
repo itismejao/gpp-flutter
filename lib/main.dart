@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/login/repositories/login_view.dart';
-
-import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/not_found/repositories/not_found.dart';
 
 main() async {
   await dotenv.load(fileName: ".env");
@@ -24,9 +23,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
+        '/home': (context) => const HomeView(),
         '/login': (context) => const LoginView(),
-        '/home': (context) =>
-            isAuthenticated() ? const HomeView() : const HomeView()
+        '/not_found': (context) => const NotFoundView(),
       },
     );
   }
