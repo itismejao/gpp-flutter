@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/shared/components/components.dart';
 import 'package:gpp/src/shared/controllers/authenticate_controller.dart';
 import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
 import 'package:gpp/src/shared/models/authenticate_model.dart';
+import 'package:gpp/src/shared/repositories/error.dart';
+import 'package:gpp/src/shared/repositories/global.dart';
+import 'package:gpp/src/shared/repositories/navigator_routes.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -41,24 +45,31 @@ class _LoginViewState extends State<LoginView> {
       AuthenticateModel authenticate = await authenticateController.login(
           reController.text, passwordController.text);
 
+      //Seta autenticação na varíavel global
+      authenticateUser = authenticate;
+
       // ignore: avoid_print
       print(authenticate.email);
 
       //seta token
 
       login(authenticate.accessToken);
-
+      NavigatorRoutes.pushNamed(context, '/home');
       return authenticate;
-    } on UserNotFoundException catch (userNotFoundException) {
-      final snackBar = SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-          content: Text(userNotFoundException.toString()));
-
-// Find the ScaffoldMessenger in the widget tree
-// and use it to show a SnackBar.
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } on AuthenticationException catch (authenticationException) {
+      cleanForm();
+      showError(context, authenticationException.message);
+    } on TimeoutException catch (timeOutException) {
+      showError(context, timeOutException.message);
     }
+  }
+
+  cleanForm() {
+    // formKeyAuthenticate.currentState!.reset();
+    setState(() {
+      reController.text = "";
+      passwordController.text = "";
+    });
   }
 
   void handleSignIn() {
@@ -94,39 +105,63 @@ class _LoginViewState extends State<LoginView> {
       return FutureBuilder(
           future: authenticate(),
           builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return loginWidget(
-                    authenticateStatus: AuthenticateStatus.waiting,
-                    mediaQuery: mediaQuery);
+            //   switch (snapshot.connectionState) {
+            //     case ConnectionState.waiting:
+            //       return loginWidget(
+            //           authenticateStatus: AuthenticateStatus.waiting,
+            //           mediaQuery: mediaQuery);
 
-              case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return loginWidget(
+            //     case ConnectionState.done:
+            //       if (snapshot.hasError) {
+            //         return loginWidget(
+            //             authenticateStatus: AuthenticateStatus.notAuthenticate,
+            //             mediaQuery: mediaQuery);
+            //       } else if (snapshot.hasData) {
+            //         return const HomeView();
+            //       }
+            //       break;
+            //     case ConnectionState.none:
+            //       // ignore: todo
+            // ignore: todo
+            //       // TODO: Handle this case.
+            //       break;
+            //     case ConnectionState.active:
+            //       // ignore: todo
+            // ignore: todo
+            //       // TODO: Handle this case.
+            //       break;
+            //   }
+
+            //   return loginWidget(
+            //       authenticateStatus: AuthenticateStatus.notAuthenticate,
+            //       mediaQuery: mediaQuery);
+
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Scaffold(
+                body: Material(
+                  child: loginWidget(
                       authenticateStatus: AuthenticateStatus.notAuthenticate,
-                      mediaQuery: mediaQuery);
-                } else if (snapshot.hasData) {
-                  return const HomeView();
-                }
-                break;
-              case ConnectionState.none:
-                // ignore: todo
-                // TODO: Handle this case.
-                break;
-              case ConnectionState.active:
-                // ignore: todo
-                // TODO: Handle this case.
-                break;
+                      mediaQuery: mediaQuery),
+                ),
+              );
             }
 
-            return loginWidget(
-                authenticateStatus: AuthenticateStatus.notAuthenticate,
-                mediaQuery: mediaQuery);
+            return Scaffold(
+              body: Material(
+                child: loginWidget(
+                    authenticateStatus: AuthenticateStatus.waiting,
+                    mediaQuery: mediaQuery),
+              ),
+            );
           });
     } else {
-      return loginWidget(
-          authenticateStatus: AuthenticateStatus.notAuthenticate,
-          mediaQuery: mediaQuery);
+      return Scaffold(
+        body: Material(
+          child: loginWidget(
+              authenticateStatus: AuthenticateStatus.notAuthenticate,
+              mediaQuery: mediaQuery),
+        ),
+      );
     }
   }
 
