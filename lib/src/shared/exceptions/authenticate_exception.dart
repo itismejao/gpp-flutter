@@ -10,7 +10,3 @@ class AuthenticationException implements Exception {
     return message;
   }
 }
-
-class UserNotFoundException extends AuthenticationException {
-  UserNotFoundException(String error) : super(error);
-}
