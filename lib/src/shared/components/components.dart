@@ -7,10 +7,10 @@ Padding versionComponent() {
     child: Text(
       'Versão 1.0.0',
       style: textStyle(
-          color: const Color.fromRGBO(191, 183, 183, 1),
-          fontWeight: FontWeight.w700,
-          fontSize: 12,
-          height: 1.8),
+        color: const Color.fromRGBO(191, 183, 183, 1),
+        fontWeight: FontWeight.w700,
+        fontSize: 12,
+      ),
     ),
   );
 }
