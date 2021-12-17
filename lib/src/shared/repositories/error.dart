@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 showError(context, message) {
   final snackBar = SnackBar(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 5),
       backgroundColor: Colors.red,
       content: Text(message));
 
