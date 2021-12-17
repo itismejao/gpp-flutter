@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/login/repositories/login_view.dart';
 import 'package:gpp/src/not_found/repositories/not_found.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 main() async {
   await dotenv.load(fileName: ".env");
@@ -12,6 +13,14 @@ main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  Widget checkAuthenticate(Widget page) {
+    if (isAuthenticated()) {
+      return page;
+    } else {
+      return const LoginView();
+    }
+  }
 
   // This widget is the root of your application.
   @override
@@ -23,9 +32,9 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: {
-        '/home': (context) => const HomeView(),
+        '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const LoginView(),
-        '/not_found': (context) => const NotFoundView(),
+        '/not_found': (context) => checkAuthenticate(const NotFoundView()),
       },
     );
   }
