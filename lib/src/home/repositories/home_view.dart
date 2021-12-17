@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/components.dart';
 
@@ -27,6 +28,7 @@ class _HomeViewState extends State<HomeView> {
   // ignore: prefer_final_fields
   List<bool> _isOpen = [];
   late Future<List<FuncionalitieModel>> funcionalities;
+  final ScrollController controller = ScrollController();
 
   expansionCallback(i, isOpen) {
     // ignore: avoid_print
@@ -189,72 +191,186 @@ class _HomeViewState extends State<HomeView> {
                     }
 
                     if (snapshot.hasData) {
-                      return ExpansionPanelList(
-                          expandedHeaderPadding: const EdgeInsets.all(0),
-                          elevation: 0,
-                          expansionCallback: (index, isOpen) =>
-                              expansionCallback(index, isOpen),
-                          children: snapshot.data!
-                              .mapIndexed((index, funcionalities) {
-                            return ExpansionPanel(
-                                canTapOnHeader: true,
-                                headerBuilder:
-                                    (BuildContext context, bool isExpanded) {
-                                  return ListTile(
-                                    title: Text(
-                                      funcionalities.name,
-                                      style: textStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                          height: 1.8),
-                                    ),
-                                  );
-                                },
-                                body: Container(
-                                  color: backgroundColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 16.0),
-                                    child: Column(
-                                      children: funcionalities.subFuncionalities
-                                          .map((subFuncionalities) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: GestureDetector(
-                                            onTap: () =>
-                                                NavigatorRoutes.pushNamed(
-                                                    context,
-                                                    subFuncionalities.route),
-                                            child: Row(
-                                              children: [
-                                                Column(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      '../../../lib/src/shared/assets/user.svg',
-                                                      color: Colors.black,
+                      return SizedBox(
+                        height: mediaQuery.size.height * 0.80,
+                        child: ScrollConfiguration(
+                          behavior: MyCustomScrollBehavior(),
+                          child: ListView.builder(
+                              controller: controller,
+                              itemCount: 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ExpansionPanelList(
+                                    expandedHeaderPadding:
+                                        const EdgeInsets.all(0),
+                                    elevation: 0,
+                                    expansionCallback: (index, isOpen) =>
+                                        expansionCallback(index, isOpen),
+                                    children: snapshot.data!
+                                        .mapIndexed((index, funcionalities) {
+                                      return ExpansionPanel(
+                                          canTapOnHeader: true,
+                                          headerBuilder: (BuildContext context,
+                                              bool isExpanded) {
+                                            return ListTile(
+                                              title: Text(
+                                                funcionalities.name,
+                                                style: textStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 12,
+                                                    height: 1.8),
+                                              ),
+                                            );
+                                          },
+                                          body: Container(
+                                            color: backgroundColor,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 16.0),
+                                              child: Column(
+                                                children: funcionalities
+                                                    .subFuncionalities
+                                                    .map((subFuncionalities) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: GestureDetector(
+                                                      onTap: () => NavigatorRoutes
+                                                          .pushNamed(
+                                                              context,
+                                                              subFuncionalities
+                                                                  .route),
+                                                      child: Row(
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              SvgPicture.asset(
+                                                                '../../../lib/src/shared/assets/user.svg',
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 12,
+                                                          ),
+                                                          Text(
+                                                            subFuncionalities
+                                                                .name,
+                                                            style: textStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                fontSize: 12,
+                                                                height: 1.8),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Text(
-                                                  subFuncionalities.name,
-                                                  style: textStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 12,
-                                                      height: 1.8),
-                                                )
-                                              ],
+                                                  );
+                                                }).toList(),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ),
-                                isExpanded: _isOpen[index]);
-                          }).toList());
+                                          isExpanded: _isOpen[index]);
+                                    }).toList());
+                              }),
+                        ),
+                      );
+
+                      // return SizedBox(
+                      //   height: 400,
+                      //   child: Column(
+                      //     children: [
+                      //       AppBar(),
+                      //       Expanded(
+                      //         child: ListView(
+                      //           children: [
+                      //             Container(
+                      //               height: 300,
+                      //               color: Colors.red,
+                      //             ),
+                      //             Container(
+                      //               height: 300,
+                      //               color: Colors.green,
+                      //             ),
+                      //             Container(
+                      //               height: 300,
+                      //               color: Colors.black,
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
+
+                      // return ExpansionPanelList(
+                      //     expandedHeaderPadding: const EdgeInsets.all(0),
+                      //     elevation: 0,
+                      //     expansionCallback: (index, isOpen) =>
+                      //         expansionCallback(index, isOpen),
+                      //     children: snapshot.data!
+                      //         .mapIndexed((index, funcionalities) {
+                      //       return ExpansionPanel(
+                      //           canTapOnHeader: true,
+                      //           headerBuilder:
+                      //               (BuildContext context, bool isExpanded) {
+                      //             return ListTile(
+                      //               title: Text(
+                      //                 funcionalities.name,
+                      //                 style: textStyle(
+                      //                     fontWeight: FontWeight.w700,
+                      //                     fontSize: 12,
+                      //                     height: 1.8),
+                      //               ),
+                      //             );
+                      //           },
+                      //           body: Container(
+                      //             color: backgroundColor,
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.only(right: 16.0),
+                      //               child: Column(
+                      //                 children: funcionalities.subFuncionalities
+                      //                     .map((subFuncionalities) {
+                      //                   return Padding(
+                      //                     padding: const EdgeInsets.all(8.0),
+                      //                     child: GestureDetector(
+                      //                       onTap: () =>
+                      //                           NavigatorRoutes.pushNamed(
+                      //                               context,
+                      //                               subFuncionalities.route),
+                      //                       child: Row(
+                      //                         children: [
+                      //                           Column(
+                      //                             children: [
+                      //                               SvgPicture.asset(
+                      //                                 '../../../lib/src/shared/assets/user.svg',
+                      //                                 color: Colors.black,
+                      //                               ),
+                      //                             ],
+                      //                           ),
+                      //                           const SizedBox(
+                      //                             width: 12,
+                      //                           ),
+                      //                           Text(
+                      //                             subFuncionalities.name,
+                      //                             style: textStyle(
+                      //                                 fontWeight:
+                      //                                     FontWeight.w700,
+                      //                                 fontSize: 12,
+                      //                                 height: 1.8),
+                      //                           )
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                   );
+                      //                 }).toList(),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           isExpanded: _isOpen[index]);
+                      //     }).toList());
                     }
 
                     return loadingListLayout(7);
@@ -264,9 +380,11 @@ class _HomeViewState extends State<HomeView> {
         ),
         const Spacer(),
         const Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [versionComponent()],
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [versionComponent()],
+          ),
         )
       ],
     );
@@ -289,4 +407,14 @@ class _HomeViewState extends State<HomeView> {
           )),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        // etc.
+      };
 }
