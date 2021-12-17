@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpp/src/shared/components/components.dart';
 import 'package:gpp/src/shared/controllers/authenticate_controller.dart';
+import 'package:gpp/src/shared/enumeration/authenticate_status_enum.dart';
 import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
 import 'package:gpp/src/shared/models/authenticate_model.dart';
 import 'package:gpp/src/shared/repositories/error.dart';
@@ -13,8 +14,6 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-enum AuthenticateStatus { waiting, notAuthenticate }
-
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -23,38 +22,37 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  // AuthenticateStatus authenticateStatus = AuthenticateStatus.notAuthenticate;
   TextEditingController reController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool isAuthenticated = false;
-
-  bool visiblePassword = true;
+  bool visiblePassword = false;
 
   final formKeyAuthenticate = GlobalKey<FormState>();
 
   void setVisiblePassword() {
     setState(() {
-      isAuthenticated = isAuthenticated;
       visiblePassword = !visiblePassword;
     });
   }
 
   Future authenticate() async {
     try {
+      String re = reController.text;
+      String password = passwordController.text;
+
       final authenticateController = AuthenticateController();
-      AuthenticateModel authenticate = await authenticateController.login(
-          reController.text, passwordController.text);
+      AuthenticateModel authenticate =
+          await authenticateController.login(re, password);
 
       //Seta autenticação na varíavel global
       authenticateUser = authenticate;
 
-      // ignore: avoid_print
-      print(authenticate.email);
-
-      //seta token
-
+      //Seta token de autenticação
       login(authenticate.accessToken);
+
+      //Direciona para rota principal
       NavigatorRoutes.pushNamed(context, '/home');
+
       return authenticate;
     } on AuthenticationException catch (authenticationException) {
       cleanForm();
@@ -78,7 +76,6 @@ class _LoginViewState extends State<LoginView> {
         reController = reController;
         passwordController = passwordController;
         isAuthenticated = true;
-        //authenticateStatus = AuthenticateStatus.waiting;
       });
     }
   }
@@ -101,68 +98,31 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
+    Widget loginPage;
+
     if (isAuthenticated) {
-      return FutureBuilder(
+      loginPage = FutureBuilder(
           future: authenticate(),
           builder: (context, snapshot) {
-            //   switch (snapshot.connectionState) {
-            //     case ConnectionState.waiting:
-            //       return loginWidget(
-            //           authenticateStatus: AuthenticateStatus.waiting,
-            //           mediaQuery: mediaQuery);
-
-            //     case ConnectionState.done:
-            //       if (snapshot.hasError) {
-            //         return loginWidget(
-            //             authenticateStatus: AuthenticateStatus.notAuthenticate,
-            //             mediaQuery: mediaQuery);
-            //       } else if (snapshot.hasData) {
-            //         return const HomeView();
-            //       }
-            //       break;
-            //     case ConnectionState.none:
-            //       // ignore: todo
-            // ignore: todo
-            //       // TODO: Handle this case.
-            //       break;
-            //     case ConnectionState.active:
-            //       // ignore: todo
-            // ignore: todo
-            //       // TODO: Handle this case.
-            //       break;
-            //   }
-
-            //   return loginWidget(
-            //       authenticateStatus: AuthenticateStatus.notAuthenticate,
-            //       mediaQuery: mediaQuery);
-
             if (snapshot.connectionState == ConnectionState.done) {
-              return Scaffold(
-                body: Material(
-                  child: loginWidget(
-                      authenticateStatus: AuthenticateStatus.notAuthenticate,
-                      mediaQuery: mediaQuery),
-                ),
-              );
+              return loginWidget(
+                  authenticateStatus: AuthenticateStatus.notAuthenticate,
+                  mediaQuery: mediaQuery);
             }
 
-            return Scaffold(
-              body: Material(
-                child: loginWidget(
-                    authenticateStatus: AuthenticateStatus.waiting,
-                    mediaQuery: mediaQuery),
-              ),
-            );
+            return loginWidget(
+                authenticateStatus: AuthenticateStatus.waiting,
+                mediaQuery: mediaQuery);
           });
     } else {
-      return Scaffold(
-        body: Material(
-          child: loginWidget(
-              authenticateStatus: AuthenticateStatus.notAuthenticate,
-              mediaQuery: mediaQuery),
-        ),
-      );
+      loginPage = loginWidget(
+          authenticateStatus: AuthenticateStatus.notAuthenticate,
+          mediaQuery: mediaQuery);
     }
+
+    return Scaffold(
+      body: loginPage,
+    );
   }
 
   Container loginWidget(
@@ -272,46 +232,7 @@ class _LoginViewState extends State<LoginView> {
                                 children: [
                                   Expanded(
                                     child: SizedBox(
-                                      child: TextFormField(
-                                        style: textStyle(
-                                            color: const Color.fromRGBO(
-                                                191, 183, 183, 1),
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12,
-                                            height: 1.8),
-                                        validator: (registerEmployee) =>
-                                            validateRegisterEmployee(
-                                                registerEmployee),
-                                        controller: reController,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.all(10.0),
-                                            prefixIcon: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: SvgPicture.asset(
-                                                  '../../../lib/src/shared/assets/user.svg',
-                                                  color: const Color.fromRGBO(
-                                                      191, 183, 183, 1),
-                                                  semanticsLabel:
-                                                      'Gerenciamento de peças e pedidos'),
-                                            ),
-                                            hintText: 'Digite seu RE',
-                                            hintStyle: textStyle(
-                                                color: const Color.fromRGBO(
-                                                    191, 183, 183, 1),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
-                                                height: 1.8),
-                                            filled: true,
-                                            fillColor: const Color.fromRGBO(
-                                                195, 184, 184, 0.26),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              borderSide: BorderSide.none,
-                                            )),
-                                      ),
+                                      child: inputUser(),
                                     ),
                                   )
                                 ],
@@ -336,58 +257,7 @@ class _LoginViewState extends State<LoginView> {
                                 children: [
                                   Expanded(
                                     child: SizedBox(
-                                      child: TextFormField(
-                                        style: const TextStyle(
-                                            color: Color.fromRGBO(
-                                                191, 183, 183, 1),
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.w700,
-                                            height: 1.8,
-                                            fontSize: 12.0),
-                                        validator: (password) =>
-                                            validatePassword(password),
-                                        controller: passwordController,
-                                        obscureText: visiblePassword,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.all(10.0),
-                                            prefixIcon: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: SvgPicture.asset(
-                                                '../../../lib/src/shared/assets/password.svg',
-                                                color: const Color.fromRGBO(
-                                                    191, 183, 183, 1),
-                                              ),
-                                            ),
-                                            suffixIcon: GestureDetector(
-                                              onTap: setVisiblePassword,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: SvgPicture.asset(
-                                                  '../../../lib/src/shared/assets/eye_password.svg',
-                                                  color: const Color.fromRGBO(
-                                                      191, 183, 183, 1),
-                                                ),
-                                              ),
-                                            ),
-                                            hintText: 'Digite sua senha',
-                                            hintStyle: textStyle(
-                                                color: const Color.fromRGBO(
-                                                    191, 183, 183, 1),
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 12,
-                                                height: 1.8),
-                                            filled: true,
-                                            fillColor: const Color.fromRGBO(
-                                                195, 184, 184, 0.26),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              borderSide: BorderSide.none,
-                                            )),
-                                      ),
+                                      child: inputPassword(),
                                     ),
                                   )
                                 ],
@@ -398,20 +268,7 @@ class _LoginViewState extends State<LoginView> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: ElevatedButton(
-                                        onPressed: () => handleSignIn(),
-                                        style: ElevatedButton.styleFrom(
-                                            primary: secundaryColor),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Text('Entrar',
-                                              style: textStyle(
-                                                  color: Colors.white,
-                                                  fontSize: mediaQuery
-                                                          .textScaleFactor *
-                                                      12,
-                                                  fontWeight: FontWeight.w700)),
-                                        )),
+                                    child: buttonSignIn(mediaQuery),
                                   ),
                                 ],
                               ),
@@ -460,6 +317,98 @@ class _LoginViewState extends State<LoginView> {
           ),
         ],
       ),
+    );
+  }
+
+  ElevatedButton buttonSignIn(mediaQuery) {
+    return ElevatedButton(
+        onPressed: () => handleSignIn(),
+        style: ElevatedButton.styleFrom(primary: secundaryColor),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text('Logar',
+              style: textStyle(
+                  color: Colors.white,
+                  fontSize: mediaQuery.textScaleFactor * 12,
+                  fontWeight: FontWeight.w700)),
+        ));
+  }
+
+  TextFormField inputPassword() {
+    return TextFormField(
+      style: const TextStyle(
+          color: Color.fromRGBO(191, 183, 183, 1),
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w700,
+          height: 1.8,
+          fontSize: 12.0),
+      validator: (password) => validatePassword(password),
+      controller: passwordController,
+      obscureText: !visiblePassword,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10.0),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SvgPicture.asset(
+              '../../../lib/src/shared/assets/password.svg',
+              color: const Color.fromRGBO(191, 183, 183, 1),
+            ),
+          ),
+          suffixIcon: GestureDetector(
+            onTap: setVisiblePassword,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SvgPicture.asset(
+                '../../../lib/src/shared/assets/eye_password.svg',
+                color: const Color.fromRGBO(191, 183, 183, 1),
+              ),
+            ),
+          ),
+          hintText: 'Digite sua senha',
+          hintStyle: textStyle(
+              color: const Color.fromRGBO(191, 183, 183, 1),
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+              height: 1.8),
+          filled: true,
+          fillColor: const Color.fromRGBO(195, 184, 184, 0.26),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          )),
+    );
+  }
+
+  TextFormField inputUser() {
+    return TextFormField(
+      style: textStyle(
+          color: const Color.fromRGBO(191, 183, 183, 1),
+          fontWeight: FontWeight.w700,
+          fontSize: 12,
+          height: 1.8),
+      validator: (registerEmployee) =>
+          validateRegisterEmployee(registerEmployee),
+      controller: reController,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10.0),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SvgPicture.asset('../../../lib/src/shared/assets/user.svg',
+                color: const Color.fromRGBO(191, 183, 183, 1),
+                semanticsLabel: 'Gerenciamento de peças e pedidos'),
+          ),
+          hintText: 'Digite seu RE',
+          hintStyle: textStyle(
+              color: const Color.fromRGBO(191, 183, 183, 1),
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+              height: 1.8),
+          filled: true,
+          fillColor: const Color.fromRGBO(195, 184, 184, 0.26),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          )),
     );
   }
 }
