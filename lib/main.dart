@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginView(),
         '/not_found': (context) => checkAuthenticate(const NotFoundView()),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
