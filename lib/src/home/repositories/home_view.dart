@@ -13,6 +13,7 @@ import 'package:gpp/src/shared/repositories/navigator_routes.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:collection/collection.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeView extends StatefulWidget {
@@ -79,197 +80,195 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return Scaffold(
-      body: Material(
-        child: Container(
-            color: backgroundColor,
-            child: Row(
-              children: [
-                Column(
+    Widget homePage;
+
+    homePage = ResponsiveBuilder(
+      builder: (context, sizingInformation) {
+        if (sizingInformation.deviceScreenType == DeviceScreenType.mobile) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('GPP'),
+              backgroundColor: primaryColor,
+            ),
+            drawer: Drawer(
+              child: Container(
+                  color: Colors.white,
+                  height: mediaQuery.size.height,
+                  child: menu(mediaQuery)),
+            ),
+            body: Material(
+                child: Container(
+                    color: backgroundColor,
+                    child: Center(child: const Text('Página principal')))),
+          );
+        }
+
+        return Scaffold(
+          body: Material(
+            child: Container(
+                color: backgroundColor,
+                child: Row(
                   children: [
-                    Container(
-                      height: mediaQuery.size.height,
-                      width: mediaQuery.size.width * 0.20,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  color: primaryColor,
-                                  height: 60,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 12,
-                                      right: 12,
+                    Column(
+                      children: [
+                        Container(
+                            height: mediaQuery.size.height,
+                            width: mediaQuery.size.width * 0.20,
+                            color: Colors.white,
+                            child: menu(mediaQuery)),
+                      ],
+                    ),
+                  ],
+                )),
+          ),
+        );
+      },
+    );
+
+    return homePage;
+  }
+
+  Column menu(MediaQueryData mediaQuery) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                color: primaryColor,
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    right: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        '../../../lib/src/shared/assets/logo.svg',
+                        color: Colors.white,
+                        width: 30,
+                        height: 30,
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Text('GPP',
+                          style: textStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700)),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () => handleLogout(),
+                        child: SvgPicture.asset(
+                          '../../../lib/src/shared/assets/logout.svg',
+                          color: Colors.white,
+                          width: 30,
+                          height: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                  future: funcionalities,
+                  builder: (context,
+                      AsyncSnapshot<List<FuncionalitieModel>> snapshot) {
+                    if (snapshot.hasError) {
+                      // ignore: avoid_print
+                      return Container();
+                    }
+
+                    if (snapshot.hasData) {
+                      return ExpansionPanelList(
+                          expandedHeaderPadding: const EdgeInsets.all(0),
+                          elevation: 0,
+                          expansionCallback: (index, isOpen) =>
+                              expansionCallback(index, isOpen),
+                          children: snapshot.data!
+                              .mapIndexed((index, funcionalities) {
+                            return ExpansionPanel(
+                                canTapOnHeader: true,
+                                headerBuilder:
+                                    (BuildContext context, bool isExpanded) {
+                                  return ListTile(
+                                    title: Text(
+                                      funcionalities.name,
+                                      style: textStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          height: 1.8),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                          '../../../lib/src/shared/assets/logo.svg',
-                                          color: Colors.white,
-                                          width: 30,
-                                          height: 30,
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Text('GPP',
-                                            style: textStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700)),
-                                        const Spacer(),
-                                        GestureDetector(
-                                          onTap: () => handleLogout(),
-                                          child: SvgPicture.asset(
-                                            '../../../lib/src/shared/assets/logout.svg',
-                                            color: Colors.white,
-                                            width: 30,
-                                            height: 30,
+                                  );
+                                },
+                                body: Container(
+                                  color: backgroundColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 16.0),
+                                    child: Column(
+                                      children: funcionalities.subFuncionalities
+                                          .map((subFuncionalities) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GestureDetector(
+                                            onTap: () =>
+                                                NavigatorRoutes.pushNamed(
+                                                    context,
+                                                    subFuncionalities.route),
+                                            child: Row(
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      '../../../lib/src/shared/assets/user.svg',
+                                                      color: Colors.black,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                                Text(
+                                                  subFuncionalities.name,
+                                                  style: textStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontSize: 12,
+                                                      height: 1.8),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        )
-                                      ],
+                                        );
+                                      }).toList(),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: FutureBuilder(
-                                    future: funcionalities,
-                                    builder: (context,
-                                        AsyncSnapshot<List<FuncionalitieModel>>
-                                            snapshot) {
-                                      if (snapshot.hasError) {
-                                        // ignore: avoid_print
-                                        return Container();
-                                      }
+                                isExpanded: _isOpen[index]);
+                          }).toList());
+                    }
 
-                                      if (snapshot.hasData) {
-                                        return ExpansionPanelList(
-                                            elevation: 0,
-                                            expansionCallback:
-                                                (index, isOpen) =>
-                                                    expansionCallback(
-                                                        index, isOpen),
-                                            children: snapshot.data!.mapIndexed(
-                                                (index, funcionalities) {
-                                              return ExpansionPanel(
-                                                  headerBuilder:
-                                                      (BuildContext context,
-                                                          bool isExpanded) {
-                                                    return ListTile(
-                                                      title: Text(
-                                                        funcionalities.name,
-                                                        style: textStyle(
-                                                            color: const Color
-                                                                    .fromRGBO(
-                                                                191,
-                                                                183,
-                                                                183,
-                                                                1),
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 12,
-                                                            height: 1.8),
-                                                      ),
-                                                    );
-                                                  },
-                                                  body: Container(
-                                                    color: backgroundColor,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 16.0),
-                                                      child: Column(
-                                                        children: funcionalities
-                                                            .subFuncionalities
-                                                            .map(
-                                                                (subFuncionalities) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child:
-                                                                GestureDetector(
-                                                              onTap: () => NavigatorRoutes
-                                                                  .pushNamed(
-                                                                      context,
-                                                                      subFuncionalities
-                                                                          .route),
-                                                              child: Row(
-                                                                children: [
-                                                                  Column(
-                                                                    children: [
-                                                                      SvgPicture
-                                                                          .asset(
-                                                                        '../../../lib/src/shared/assets/user.svg',
-                                                                        color: const Color.fromRGBO(
-                                                                            191,
-                                                                            183,
-                                                                            183,
-                                                                            1),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    width: 12,
-                                                                  ),
-                                                                  Text(
-                                                                    subFuncionalities
-                                                                        .name,
-                                                                    style: textStyle(
-                                                                        color: const Color.fromRGBO(
-                                                                            191,
-                                                                            183,
-                                                                            183,
-                                                                            1),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontSize:
-                                                                            12,
-                                                                        height:
-                                                                            1.8),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }).toList(),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  isExpanded: _isOpen[index]);
-                                            }).toList());
-                                      }
-
-                                      return loadingListLayout(7);
-                                    }),
-                              )
-                            ],
-                          ),
-                          const Spacer(),
-                          const Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [versionComponent()],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            )),
-      ),
+                    return loadingListLayout(7);
+                  }),
+            )
+          ],
+        ),
+        const Spacer(),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [versionComponent()],
+        )
+      ],
     );
   }
 
