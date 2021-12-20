@@ -2,7 +2,7 @@ import 'package:localstorage/localstorage.dart';
 
 final storage = LocalStorage('auth');
 
-void login(String token) {
+void setToken(String token) {
   storage.setItem('token', token);
 }
 
