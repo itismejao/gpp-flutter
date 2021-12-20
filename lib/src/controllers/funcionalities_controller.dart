@@ -6,14 +6,12 @@ import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/global.dart';
 
 class FuncionalitiesController {
-  final formKeySearch = GlobalKey<FormState>();
-
   late final FuncionalitiesRepository repository;
   //FuncionalitiesEnum status = FuncionalitiesEnum.loading;
   final state =
       ValueNotifier<FuncionalitiesEnum>(FuncionalitiesEnum.notFuncionalities);
   List<FuncionalitieModel> funcionalities = [];
-  List<FuncionalitieModel> funcionalitiesAux = [];
+  List<FuncionalitieModel> funcionalitiesSearch = [];
 
   FuncionalitiesController(this.repository);
 
@@ -21,23 +19,26 @@ class FuncionalitiesController {
 
   void search(String value) {
     state.value = FuncionalitiesEnum.loading;
-    funcionalities = funcionalitiesAux
-        .where((row) => (row.name.toLowerCase().contains(value.toLowerCase())))
-        .toList();
+    if (value.isNotEmpty) {
+      funcionalitiesSearch = funcionalities
+          .where(
+              (row) => (row.name.toLowerCase().contains(value.toLowerCase())))
+          .toList();
 
-    funcionalities.forEach((element) {
-      element.isExpanded = true;
-    });
+      // funcionalitiesSearch.forEach((element) {
+      //   element.isExpanded = true;
+      // });
+    } else {
+      funcionalitiesSearch = [];
+    }
     state.value = FuncionalitiesEnum.changeFuncionalities;
-
-    print(value);
   }
 
   Future changeFuncionalities() async {
     user.uid = authenticateUser!.id.toString();
     state.value = FuncionalitiesEnum.loading;
     funcionalities = await repository.fetchFuncionalities(user);
-    funcionalitiesAux = funcionalities;
+    //funcionalitiesAux = funcionalities;
     state.value = FuncionalitiesEnum.changeFuncionalities;
   }
 }
