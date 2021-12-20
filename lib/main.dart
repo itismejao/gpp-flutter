@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gpp/src/home/repositories/home_view.dart';
 import 'package:gpp/src/login/repositories/login_view.dart';
 import 'package:gpp/src/not_found/repositories/not_found.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/authenticate_view.dart';
+import 'package:gpp/src/views/home_view.dart';
 
 main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "env");
 
   runApp(const MyApp());
 }
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginView(),
+      // home: const AuthenticateView(),
+      home: const AuthenticateView(),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const LoginView(),
