@@ -298,7 +298,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
                                       fontSize: 14),
-                                )
+                                ),
                               ],
                             ),
                           ),
