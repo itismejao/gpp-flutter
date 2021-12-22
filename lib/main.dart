@@ -6,7 +6,6 @@ import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/authenticate_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home_view.dart';
-import 'package:gpp/src/views/user_view.dart';
 
 main() async {
   await dotenv.load(fileName: "env");
