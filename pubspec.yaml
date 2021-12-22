@@ -41,8 +41,9 @@ dependencies:
   responsive_builder: ^0.4.1
   collection: ^1.15.0
   shimmer: ^2.0.0
-  dartx: ^1.0.0
+  dartx: any
   crypto: ^3.0.1
+  basic_utils: ^3.9.4
 
 dev_dependencies:
   flutter_test:
