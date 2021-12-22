@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/models/user_models.dart';
+import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/authenticate_repository.dart';
 import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 
