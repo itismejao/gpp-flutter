@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
-import 'package:gpp/src/models/user_models.dart';
+import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/global.dart';
@@ -35,7 +35,7 @@ class FuncionalitiesController {
   }
 
   Future changeFuncionalities() async {
-    user.uid = authenticateUser!.id.toString();
+    user.uid = authenticateUser.id.toString();
     state.value = FuncionalitiesEnum.loading;
     funcionalities = await repository.fetchFuncionalities(user);
     //funcionalitiesAux = funcionalities;
