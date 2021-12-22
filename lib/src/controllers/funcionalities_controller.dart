@@ -35,7 +35,7 @@ class FuncionalitiesController {
   }
 
   Future changeFuncionalities() async {
-    user.uid = authenticateUser.id.toString();
+    user.uid = authenticateUser!.id.toString();
     state.value = FuncionalitiesEnum.loading;
     funcionalities = await repository.fetchFuncionalities(user);
     //funcionalitiesAux = funcionalities;
