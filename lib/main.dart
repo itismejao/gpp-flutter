@@ -29,9 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GPP - Gerenciamento de Peças e Pedidos',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Mada'),
       // home: const AuthenticateView(),
       home: const AuthenticateView(),
       routes: {
