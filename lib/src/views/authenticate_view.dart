@@ -147,6 +147,8 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                       Expanded(
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
                                 primary: secundaryColor),
                             onPressed: () async {
                               try {
@@ -288,12 +290,11 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                               spacing: 12,
                               runSpacing: 12,
                               children: [
-                                const Icon(
-                                  Icons.inventory_2_outlined,
-                                  color: Colors.white,
-                                ),
+                                Image(
+                                    image: AssetImage(
+                                        'lib/src/shared/assets/brand.png')),
                                 Text(
-                                  'Gerenciamento de Peças e Pedidos',
+                                  'GPP',
                                   style: textStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w700,
@@ -334,15 +335,20 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                                 spacing: 12,
                                 runSpacing: 12,
                                 children: [
-                                  const Icon(Icons.inventory_2_outlined,
-                                      size: 48, color: Colors.white),
                                   Text(
-                                    'Gerenciamento de Peças e Pedidos',
+                                    'GPP',
                                     style: textStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 14),
-                                  )
+                                        fontSize: 28),
+                                  ),
+                                  const SizedBox(
+                                    height: 40,
+                                    width: 120,
+                                    child: Image(
+                                        image: AssetImage(
+                                            'lib/src/shared/assets/brand.png')),
+                                  ),
                                 ],
                               ),
                             ),
