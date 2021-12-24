@@ -30,14 +30,14 @@ void main() {
   final api = MockApiService();
   final repository = UserRepository(api: api);
 
-  test('Usuários', () async {
+  test('Verifica a busca de usuários', () async {
     when(api.get(any))
         .thenAnswer((realInvocation) async => Response(jsonBodySucess, 200));
     final users = await repository.fetchUser();
     expect(users, isA<List<UserModel>>());
   });
 
-  test('Usuários não encontrado', () async {
+  test('Verifica erro ao realizar a busca de usuários', () async {
     when(api.get(any))
         .thenAnswer((realInvocation) async => Response(jsonBodyError, 404));
 
