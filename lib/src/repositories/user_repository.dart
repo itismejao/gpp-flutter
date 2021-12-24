@@ -17,23 +17,18 @@ class UserRepository {
   });
 
   Future<List<UserModel>> fetchUser() async {
-    try {
-      Response response = await api.get('/user');
+    Response response = await api.get('/user');
 
-      if (response.statusCode == StatusCode.NOT_FOUND) {
-        var error = jsonDecode(response.body)['error'];
-        throw UserException(error);
-      }
-
+    if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<UserModel> funcionalidades = data.first
+      List<UserModel> users = data.first
           .map<UserModel>((data) => UserModel.fromJson(data))
           .toList();
-
-      return funcionalidades;
-    } on UserException {
-      rethrow;
+      return users;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw UserException(error);
     }
   }
 }
