@@ -45,49 +45,35 @@ class _AuthenticateViewState extends State<AuthenticateView> {
       child: Expanded(
         flex: 4,
         child: Container(
-          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Text('Login',
+                        style: textStyle(
+                            fontSize: 32,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700)),
+                  ),
                   Text('RE',
                       style: textStyle(
                           color: Colors.black, fontWeight: FontWeight.w700)),
-                  const SizedBox(
-                    height: 12,
-                  ),
                   TextFormField(
+                    maxLength: 255,
                     onSaved: (uid) => authenticate.setUserUID(uid),
                     validator: (value) => validateInput(value),
                     keyboardType: TextInputType.number,
                     style: textStyle(
-                        color: const Color.fromRGBO(191, 183, 183, 1),
                         fontWeight: FontWeight.w700,
-                        fontSize: 12,
+                        color: Colors.black,
+                        fontSize: 14,
                         height: 1.8),
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(10.0),
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.account_box_outlined,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        hintText: 'Digite seu RE',
-                        hintStyle: textStyle(
-                            color: const Color.fromRGBO(191, 183, 183, 1),
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                            height: 1.8),
-                        filled: true,
-                        fillColor: const Color.fromRGBO(195, 184, 184, 0.26),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        )),
+                    decoration: inputDecoration(
+                        'Digite seu RE', Icon(Icons.account_box)),
                   ),
                   const SizedBox(
                     height: 12,
@@ -95,50 +81,28 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                   Text('Senha',
                       style: textStyle(
                           color: Colors.black, fontWeight: FontWeight.w700)),
-                  const SizedBox(
-                    height: 12,
-                  ),
                   TextFormField(
-                    style: const TextStyle(
-                        color: Color.fromRGBO(191, 183, 183, 1),
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w700,
-                        height: 1.8,
-                        fontSize: 12.0),
+                    maxLength: 50,
                     validator: (password) => validateInput(password),
                     onSaved: (password) =>
                         authenticate.setUserPassword(password),
                     obscureText: !_visiblePassword,
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(10.0),
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.lock_outlined,
-                            color: Colors.grey,
-                          ),
-                        ),
+                    style: textStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        fontSize: 14,
+                        height: 1.8),
+                    decoration: inputDecoration(
+                        'Digite sua senha', Icon(Icons.account_box),
                         suffixIcon: GestureDetector(
                           onTap: () => visiblePassword(),
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Icon(
-                              Icons.visibility_outlined,
+                              Icons.visibility,
                               color: Colors.grey,
                             ),
                           ),
-                        ),
-                        hintText: 'Digite sua senha',
-                        hintStyle: textStyle(
-                            color: const Color.fromRGBO(191, 183, 183, 1),
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12,
-                            height: 1.8),
-                        filled: true,
-                        fillColor: const Color.fromRGBO(195, 184, 184, 0.26),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
                         )),
                   ),
                   const SizedBox(height: 24),
@@ -149,7 +113,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                             style: ElevatedButton.styleFrom(
                                 shadowColor: Colors.transparent,
                                 elevation: 0,
-                                primary: secundaryColor),
+                                primary: primaryColor),
                             onPressed: () async {
                               try {
                                 setState(() {
@@ -179,7 +143,10 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                               } on TimeoutException catch (e) {
                                 WidgetsBinding.instance!
                                     .addPostFrameCallback((_) {
-                                  showError(context, e.toString());
+                                  showError(context, e.message);
+                                });
+                                setState(() {
+                                  authenticate.status = AuthenticateEnum.error;
                                 });
                               }
                             },
@@ -193,32 +160,35 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: RichText(
-                          text: const TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text:
-                                      'Em caso de dúvida, entre em contato com o suporte através do telefone ',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(195, 184, 184, 1),
-                                      fontWeight: FontWeight.w400)),
-                              TextSpan(
-                                  text: '9999-9999',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(0, 207, 128, 0.8),
-                                      fontWeight: FontWeight.w400)),
-                            ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Divider(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text:
+                                        'Em caso de dúvida, entre em contato com o suporte através do telefone ',
+                                    style: textStyle(
+                                        color: Colors.grey.shade400,
+                                        fontWeight: FontWeight.w700)),
+                                TextSpan(
+                                    text: '9999-9999',
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(0, 207, 128, 0.8),
+                                        fontWeight: FontWeight.w400)),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -229,20 +199,18 @@ class _AuthenticateViewState extends State<AuthenticateView> {
     );
   }
 
-  Expanded _loading() {
-    return Expanded(
-      flex: 4,
-      child: Row(
+  Container _loading() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [CircularProgressIndicator()],
-              ),
-            ),
-          ),
+          CircularProgressIndicator(
+            color: secundaryColor,
+          )
         ],
       ),
     );
@@ -275,95 +243,178 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         if (sizingInformation.deviceScreenType == DeviceScreenType.mobile) {
           return SafeArea(
             child: Scaffold(
-              body: Column(
-                children: [
-                  Container(
-                    color: primaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(48.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              alignment: WrapAlignment.center,
-                              spacing: 12,
-                              runSpacing: 12,
-                              children: [
-                                Image(
-                                    image: AssetImage(
-                                        'lib/src/shared/assets/brand.png')),
-                                Text(
-                                  'GPP',
-                                  style: textStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14),
-                                ),
-                              ],
-                            ),
+                resizeToAvoidBottomInset: false,
+                body: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: 440,
+                          color: Colors.white,
+                          child: stateManagement(context),
+                        ),
+                        Container(
+                          color: primaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                                width: 160,
+                                child: Image.asset(
+                                    'lib/src/shared/assets/brand.png'),
+                              )
+                            ],
                           ),
-                        ],
+                        )
+                      ],
+                    ),
+                    ClipPath(
+                      clipper: CustomClipPath(),
+                      child: Container(
+                        height: 120,
+                        color: secundaryColor,
                       ),
                     ),
-                  ),
-                  stateManagement(context),
-                ],
-              ),
-            ),
+                    ClipPath(
+                      clipper: CustomClipPath(),
+                      child: Expanded(
+                        child: Container(
+                          height: 115,
+                          width: double.infinity,
+                          color: primaryColor,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 24),
+                                child: Text('GPP',
+                                    style: textStyle(
+                                        fontSize: 32,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
           );
         }
 
-        return Scaffold(
-          body: Center(
-            child: SizedBox(
-              height: 500,
-              width: 360,
-              child: Column(
-                children: [
-                  Container(
-                    color: primaryColor,
-                    child: Padding(
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: primaryColor,
+            body: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 48),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Center(
-                              child: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                spacing: 12,
-                                runSpacing: 12,
+                          vertical: 20, horizontal: 140),
+                      child: SizedBox(
+                          width: 240,
+                          child:
+                              Image.asset('lib/src/shared/assets/brand.png')),
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 400,
+                              height: 460,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'GPP',
+                                    'Bem vindo ao',
                                     style: textStyle(
+                                        fontSize: 48,
                                         color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 28),
+                                        fontWeight: FontWeight.w700),
                                   ),
-                                  const SizedBox(
-                                    height: 40,
-                                    width: 120,
-                                    child: Image(
-                                        image: AssetImage(
-                                            'lib/src/shared/assets/brand.png')),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 24),
+                                    child: Text(
+                                      'Gerenciamento de Peças e Pedidos',
+                                      style: textStyle(
+                                          fontSize: 48,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700),
+                                    ),
                                   ),
+                                  Spacer(),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 400,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: stateManagement(context),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  stateManagement(context),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
       },
     );
   }
+}
+
+class CustomClipPath extends CustomClipper<Path> {
+  var radius = 10.0;
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0.0, size.height - 20);
+
+    var firstControlPoint = Offset(size.width / 4, size.height);
+    var firstEndPoint = Offset(size.width / 2.25, size.height - 30.0);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
+
+    var secondControlPoint =
+        Offset(size.width - (size.width / 3.25), size.height - 65);
+    var secondEndPoint = Offset(size.width, size.height - 40);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    path.lineTo(size.width, size.height - 40);
+    path.lineTo(size.width, 0.0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
