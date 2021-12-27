@@ -49,7 +49,7 @@ class UserRepository {
     }
   }
 
-  Future<List<SubFuncionalities>> updateUserSubFuncionalities(
+  Future<bool> updateUserSubFuncionalities(
       UserModel user, List<SubFuncionalities> subFuncionalities) async {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
@@ -57,16 +57,10 @@ class UserRepository {
 
     print(jsonEncode(dataSend));
     Response response = await api.put(
-        '/user/itensfuncionalidades/' + user.uid.toString(),
-        jsonEncode(dataSend));
+        '/user/itensfuncionalidades/' + user.uid.toString(), dataSend);
 
     if (response.statusCode == StatusCode.OK) {
-      var dataResponse = jsonDecode(response.body);
-
-      List<SubFuncionalities> subFuncionalities = dataResponse.first
-          .map<SubFuncionalities>((data) => SubFuncionalities.fromJson(data))
-          .toList();
-      return subFuncionalities;
+      return true;
     } else {
       var error = jsonDecode(response.body)['error'];
       throw UserException(error);
