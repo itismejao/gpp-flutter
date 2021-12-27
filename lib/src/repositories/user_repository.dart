@@ -31,4 +31,45 @@ class UserRepository {
       throw UserException(error);
     }
   }
+
+  Future<List<SubFuncionalities>> fetchSubFuncionalities(UserModel user) async {
+    Response response =
+        await api.get('/user/itensfuncionalidades/' + user.uid.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<SubFuncionalities> subFuncionalities = data.first
+          .map<SubFuncionalities>((data) => SubFuncionalities.fromJson(data))
+          .toList();
+      return subFuncionalities;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw UserException(error);
+    }
+  }
+
+  Future<List<SubFuncionalities>> updateUserSubFuncionalities(
+      UserModel user, List<SubFuncionalities> subFuncionalities) async {
+    List<Map<String, dynamic>> dataSend = subFuncionalities
+        .map((subFuncionalitie) => subFuncionalitie.toJson())
+        .toList();
+
+    print(jsonEncode(dataSend));
+    Response response = await api.put(
+        '/user/itensfuncionalidades/' + user.uid.toString(),
+        jsonEncode(dataSend));
+
+    if (response.statusCode == StatusCode.OK) {
+      var dataResponse = jsonDecode(response.body);
+
+      List<SubFuncionalities> subFuncionalities = dataResponse.first
+          .map<SubFuncionalities>((data) => SubFuncionalities.fromJson(data))
+          .toList();
+      return subFuncionalities;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw UserException(error);
+    }
+  }
 }
