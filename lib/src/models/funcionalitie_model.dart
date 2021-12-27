@@ -41,32 +41,33 @@ class FuncionalitieModel {
 class SubFuncionalities {
   String id;
   String name;
-  String icon;
-  String route;
+  String? icon;
+  String? route;
+  int? active;
+  String? idRegister;
   Color? colorButton;
   Border? border =
       Border(left: BorderSide(color: Colors.grey.shade200, width: 2));
 
-  SubFuncionalities(
-      {required this.id,
-      required this.name,
-      required this.icon,
-      required this.route});
+  SubFuncionalities(this.id, this.name,
+      {this.active, this.icon, this.route, this.idRegister});
 
   factory SubFuncionalities.fromJson(Map<String, dynamic> json) {
-    return SubFuncionalities(
-        id: json['id'],
-        name: json['name'],
+    return SubFuncionalities(json['id'], json['name'],
+        active: json['active'],
         icon: json['icon'],
-        route: json['route']);
+        route: json['route'],
+        idRegister: json['idregister']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['active'] = active;
     data['icon'] = icon;
     data['route'] = route;
+    data['idregister'] = idRegister;
     return data;
   }
 }
