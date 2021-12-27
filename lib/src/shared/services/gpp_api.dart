@@ -35,11 +35,11 @@ class ApiService {
       var uri = Uri.parse(baseUrl! + endpoint);
       Response response = await http
           .get(uri, headers: getHeader())
-          .timeout(const Duration(minutes: 1));
+          .timeout(const Duration(seconds: 10));
 
       return response;
     } on TimeoutException {
-      throw TimeoutException("Erro de conexão com a API");
+      throw TimeoutException("Tempo de conexeão excedido");
     }
   }
 
@@ -48,11 +48,11 @@ class ApiService {
       var uri = Uri.parse(baseUrl! + endpoint);
       var response = await http
           .post(uri, headers: getHeader(), body: jsonEncode(body))
-          .timeout(const Duration(minutes: 1));
+          .timeout(const Duration(seconds: 10));
 
       return response;
     } on TimeoutException {
-      throw TimeoutException("Erro de conexão com a API");
+      throw TimeoutException("Tempo de conexão excedido");
     }
   }
 
