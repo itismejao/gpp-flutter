@@ -388,7 +388,8 @@ class _UserDetailState extends State<UserDetail> {
                     value: subFuncionalities[index].active == 1 ? true : false,
                     onChanged: (bool? value) {
                       setState(() {
-                        subFuncionalities[index].active = 1;
+                        subFuncionalities[index].active =
+                            subFuncionalities[index].active! == 1 ? 0 : 1;
                       });
                     },
                   ),
@@ -497,10 +498,12 @@ class _UserDetailState extends State<UserDetail> {
                         elevation: 0,
                         primary: primaryColor),
                     onPressed: () async {
-                      setState(() {
-                        _controller.updateUserSubFuncionalities(
-                            _controller.subFuncionalities);
-                      });
+                      if (await _controller.updateUserSubFuncionalities(
+                          _controller.subFuncionalities)) {
+                        print('update');
+                      } else {
+                        print('not update');
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
