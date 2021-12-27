@@ -39,11 +39,12 @@ class UserController {
     }
   }
 
-  Future<void> updateUserSubFuncionalities(
+  Future<bool> updateUserSubFuncionalities(
       List<SubFuncionalities> subFuncionalities) async {
     UserModel user = UserModel();
     user.uid = "1";
-    subFuncionalities =
-        await repository.updateUserSubFuncionalities(user, subFuncionalities);
+
+    return await repository.updateUserSubFuncionalities(
+        user, subFuncionalities);
   }
 }
