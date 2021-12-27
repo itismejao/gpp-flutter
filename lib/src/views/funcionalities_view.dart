@@ -46,40 +46,6 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   funcionalities() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                child: Row(
-                  children: [
-                    Icon(Icons.inventory_2_outlined,
-                        size: 32, color: primaryColor),
-                    const SizedBox(width: 12),
-                    Text(
-                      'GPP',
-                      style: textStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.keyboard_arrow_left_outlined,
-                  color: primaryColor,
-                  size: 32.0,
-                ),
-              ),
-            ],
-          ),
-        ),
         Row(
           children: [
             Expanded(
@@ -87,40 +53,18 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   child: Form(
-                    child: TextFormField(
-                      onChanged: (value) {
-                        _controller.search(value);
-                      },
-                      style: const TextStyle(
-                          color: Color.fromRGBO(191, 183, 183, 1),
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w700,
-                          height: 1.8,
-                          fontSize: 12.0),
-                      decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10.0),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.grey.shade400,
-                              size: 24.0,
-                            ),
-                          ),
-                          hintText: 'Buscar',
-                          hintStyle: textStyle(
-                              color: const Color.fromRGBO(191, 183, 183, 1),
+                      child: TextFormField(
+                          onChanged: (value) {
+                            _controller.search(value);
+                          },
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                              height: 1.8),
-                          filled: true,
-                          fillColor: const Color.fromRGBO(195, 184, 184, 0.26),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          )),
-                    ),
-                  ),
+                              height: 1.8,
+                              fontSize: 14),
+                          decoration:
+                              inputDecoration('Buscar', Icon(Icons.search)))),
                 ),
               ),
             ),
@@ -172,7 +116,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                                               children: [
                                                 Icon(
                                                   Icons.account_box,
-                                                  color: primaryColor,
+                                                  color: Colors.grey.shade400,
                                                   size: 24.0,
                                                 ),
                                                 const SizedBox(
@@ -321,7 +265,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                                               children: [
                                                 Icon(
                                                   Icons.account_box,
-                                                  color: primaryColor,
+                                                  color: Colors.grey.shade400,
                                                   size: 24.0,
                                                 ),
                                                 const SizedBox(
@@ -455,67 +399,6 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Divider(),
-        ),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: primaryColor,
-                            size: 24.0,
-                            semanticLabel:
-                                'Text to announce in accessibility modes',
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Text('Configuração',
-                              style: textStyle(fontWeight: FontWeight.w700)),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.notifications,
-                            color: primaryColor,
-                            size: 24.0,
-                            semanticLabel:
-                                'Text to announce in accessibility modes',
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Text('Notificações',
-                              style: textStyle(fontWeight: FontWeight.w700)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [versionComponent()],
-        )
       ],
     );
   }
