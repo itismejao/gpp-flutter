@@ -9,7 +9,7 @@ class UserModel {
   String? createdAt;
   String? updatedAt;
   String? active;
-  Null iddepto;
+  String? iddepto;
   Null foto;
 
   UserModel(
