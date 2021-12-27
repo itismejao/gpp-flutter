@@ -11,6 +11,8 @@ import 'package:gpp/src/shared/repositories/global.dart';
 class UserController {
   UserRepository repository;
   List<UserModel> users = [];
+  List<UserModel> usersSearch = [];
+  List<SubFuncionalities> subFuncionalities = [];
   UserEnum state = UserEnum.notUser;
 
   UserController({
@@ -19,5 +21,29 @@ class UserController {
 
   Future<void> changeUser() async {
     users = await repository.fetchUser();
+  }
+
+  Future<void> changeUserFuncionalities() async {
+    UserModel user = UserModel();
+    user.uid = "1";
+    subFuncionalities = await repository.fetchSubFuncionalities(user);
+  }
+
+  void search(String value) {
+    if (value.isNotEmpty) {
+      usersSearch = users
+          .where((user) =>
+              (user.name!.toLowerCase().contains(value.toLowerCase()) ||
+                  user.uid!.toLowerCase().contains(value.toLowerCase())))
+          .toList();
+    }
+  }
+
+  Future<void> updateUserSubFuncionalities(
+      List<SubFuncionalities> subFuncionalities) async {
+    UserModel user = UserModel();
+    user.uid = "1";
+    subFuncionalities =
+        await repository.updateUserSubFuncionalities(user, subFuncionalities);
   }
 }
