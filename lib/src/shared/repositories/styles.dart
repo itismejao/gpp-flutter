@@ -15,7 +15,7 @@ InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
       contentPadding: const EdgeInsets.all(10.0),
       prefixIcon: prefixIcon,
       prefixIconColor: Colors.grey.shade400,
-      suffixIcon: suffixIcon != null ? suffixIcon : null,
+      suffixIcon: suffixIcon,
       hintText: hintText,
       hintStyle: textStyle(
           fontWeight: FontWeight.w700,
@@ -30,9 +30,12 @@ InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
           borderSide: BorderSide(width: 2, color: Colors.grey.shade300)),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.green,
           width: 1.0,
         ),
       ));
 }
+
+ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+    shadowColor: Colors.transparent, elevation: 0, primary: primaryColor);
