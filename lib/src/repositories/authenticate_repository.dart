@@ -14,8 +14,8 @@ class AuthenticateRepository {
       var response = await gppApi.post('/user/login', user.toJson());
 
       if (response.statusCode == StatusCode.UNAUTHORIZED) {
-        var error = jsonDecode(response.body)['error'];
-        throw AuthenticationException(error);
+        //var error = jsonDecode(response.body)['error'];
+        throw AuthenticationException('Usuário ou senha incorretos !');
       }
 
       if (response.statusCode == StatusCode.OK) {
