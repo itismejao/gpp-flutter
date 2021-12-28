@@ -3,11 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/models/user_model.dart';
 
 import 'package:gpp/src/not_found/repositories/not_found.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/views/app_bar.dart';
 import 'package:gpp/src/views/authenticate_view.dart';
-import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home_view.dart';
 import 'package:gpp/src/views/user_view.dart';
 
@@ -36,14 +33,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: 'Mada',
-          inputDecorationTheme: InputDecorationTheme(iconColor: Colors.grey)),
+          inputDecorationTheme:
+              const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: UserDetail(
-        user: UserModel(),
-      ),
+      home: const Material(child: UserView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
+        '/users': (context) => const UserView(),
+        '/user_detail': (context) => UserDetailView(
+              user: UserModel(),
+            ),
         '/not_found': (context) => checkAuthenticate(const NotFoundView()),
       },
       debugShowCheckedModeBanner: false,
