@@ -39,7 +39,7 @@ class ApiService {
 
       return response;
     } on TimeoutException {
-      throw TimeoutException("Tempo de conexeão excedido");
+      throw TimeoutException("Tempo de conexão excedido");
     }
   }
 
