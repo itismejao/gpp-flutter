@@ -3,14 +3,15 @@ class UserModel {
   String? uid;
   String? name;
   String? email;
-  Null emailVerifiedAt;
+  String? emailVerifiedAt;
   String? password;
-  Null rememberToken;
+  String? rememberToken;
   String? createdAt;
   String? updatedAt;
   String? active;
   String? iddepto;
-  Null foto;
+  String? departement;
+  String? foto;
 
   UserModel(
       {this.id,
@@ -24,6 +25,7 @@ class UserModel {
       this.updatedAt,
       this.active,
       this.iddepto,
+      this.departement,
       this.foto});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -39,11 +41,12 @@ class UserModel {
         updatedAt: json['updated_at'],
         active: json['active'],
         iddepto: json['iddepto'],
+        departement: json['depto'],
         foto: json['foto']);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['uid'] = uid;
     data['name'] = name;
@@ -55,7 +58,9 @@ class UserModel {
     data['updated_at'] = updatedAt;
     data['active'] = active;
     data['iddepto'] = iddepto;
+    data['depto'] = departement;
     data['foto'] = foto;
+
     return data;
   }
 }
