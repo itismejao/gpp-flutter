@@ -5,14 +5,11 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:gpp/main.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/exceptions/user_exception.dart';
