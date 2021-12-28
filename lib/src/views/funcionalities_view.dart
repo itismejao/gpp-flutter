@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/funcionalities_controller.dart';
+import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/repositories/funcionalities_repository.dart';
-import 'package:gpp/src/shared/components/components.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:collection/collection.dart';
@@ -43,7 +43,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     );
   }
 
-  funcionalities() {
+  funcionalities(MediaQueryData mediaQuery) {
     return Column(
       children: [
         Row(
@@ -63,8 +63,8 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                               fontWeight: FontWeight.w700,
                               height: 1.8,
                               fontSize: 14),
-                          decoration:
-                              inputDecoration('Buscar', Icon(Icons.search)))),
+                          decoration: inputDecoration(
+                              'Buscar', const Icon(Icons.search)))),
                 ),
               ),
             ),
@@ -90,305 +90,11 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                         child: SingleChildScrollView(
                           child: Column(children: [
                             _controller.funcionalitiesSearch.isNotEmpty
-                                ? ExpansionPanelList(
-                                    elevation: 0,
-                                    dividerColor: Colors.white,
-                                    expansionCallback:
-                                        (int index, bool isExpanded) {
-                                      setState(() {
-                                        _controller.funcionalitiesSearch[index]
-                                                .isExpanded =
-                                            !_controller
-                                                .funcionalitiesSearch[index]
-                                                .isExpanded;
-                                      });
-                                    },
-                                    children: _controller.funcionalitiesSearch
-                                        .mapIndexed<ExpansionPanel>(
-                                            (index1, funcionalities) {
-                                      return ExpansionPanel(
-                                        backgroundColor: Colors.white,
-                                        canTapOnHeader: true,
-                                        headerBuilder: (BuildContext context,
-                                            bool isExpanded) {
-                                          return ListTile(
-                                            title: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.account_box,
-                                                  color: Colors.grey.shade400,
-                                                  size: 24.0,
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Text(funcionalities.name,
-                                                    style: textStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        body: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: funcionalities
-                                              .subFuncionalities
-                                              .mapIndexed(
-                                                  (index2, subFuncionalities) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 24),
-                                              child: MouseRegion(
-                                                onHover: (event) {
-                                                  setState(() {
-                                                    //set hover
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .colorButton =
-                                                        Colors.grey.shade50;
-
-                                                    // set border
-
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .border =
-                                                        Border(
-                                                            left: BorderSide(
-                                                                color:
-                                                                    primaryColor,
-                                                                width: 4));
-                                                  });
-                                                },
-                                                onExit: (event) {
-                                                  setState(() {
-                                                    //set hover
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .colorButton =
-                                                        Colors.white;
-
-                                                    //set border
-
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .border =
-                                                        Border(
-                                                            left: BorderSide(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade200,
-                                                                width: 2));
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                subFuncionalities
-                                                                    .colorButton,
-                                                            border:
-                                                                subFuncionalities
-                                                                    .border),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.favorite,
-                                                                color:
-                                                                    secundaryColor,
-                                                                size: 24.0,
-                                                                semanticLabel:
-                                                                    'Text to announce in accessibility modes',
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 12,
-                                                              ),
-                                                              Text(
-                                                                  subFuncionalities
-                                                                      .name,
-                                                                  style: textStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                        isExpanded: _controller
-                                            .funcionalities[index1].isExpanded,
-                                      );
-                                    }).toList())
-                                : ExpansionPanelList(
-                                    elevation: 0,
-                                    dividerColor: Colors.white,
-                                    expansionCallback:
-                                        (int index, bool isExpanded) {
-                                      setState(() {
-                                        _controller.funcionalities[index]
-                                                .isExpanded =
-                                            !_controller.funcionalities[index]
-                                                .isExpanded;
-                                      });
-                                    },
-                                    children: _controller.funcionalities
-                                        .mapIndexed<ExpansionPanel>(
-                                            (index1, funcionalities) {
-                                      return ExpansionPanel(
-                                        backgroundColor: Colors.white,
-                                        canTapOnHeader: true,
-                                        headerBuilder: (BuildContext context,
-                                            bool isExpanded) {
-                                          return ListTile(
-                                            title: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.account_box,
-                                                  color: Colors.grey.shade400,
-                                                  size: 24.0,
-                                                ),
-                                                const SizedBox(
-                                                  width: 12,
-                                                ),
-                                                Text(funcionalities.name,
-                                                    style: textStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700)),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        body: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: funcionalities
-                                              .subFuncionalities
-                                              .mapIndexed(
-                                                  (index2, subFuncionalities) {
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 24),
-                                              child: MouseRegion(
-                                                onHover: (event) {
-                                                  setState(() {
-                                                    //set hover
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .colorButton =
-                                                        Colors.grey.shade50;
-
-                                                    // set border
-
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .border =
-                                                        Border(
-                                                            left: BorderSide(
-                                                                color:
-                                                                    primaryColor,
-                                                                width: 4));
-                                                  });
-                                                },
-                                                onExit: (event) {
-                                                  setState(() {
-                                                    //set hover
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .colorButton =
-                                                        Colors.white;
-
-                                                    //set border
-
-                                                    _controller
-                                                            .funcionalities[index1]
-                                                            .subFuncionalities[
-                                                                index2]
-                                                            .border =
-                                                        Border(
-                                                            left: BorderSide(
-                                                                color: Colors
-                                                                    .grey
-                                                                    .shade200,
-                                                                width: 2));
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                subFuncionalities
-                                                                    .colorButton,
-                                                            border:
-                                                                subFuncionalities
-                                                                    .border),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.favorite,
-                                                                color:
-                                                                    secundaryColor,
-                                                                size: 24.0,
-                                                                semanticLabel:
-                                                                    'Text to announce in accessibility modes',
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 12,
-                                                              ),
-                                                              Text(
-                                                                  subFuncionalities
-                                                                      .name,
-                                                                  style: textStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700)),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                        isExpanded: _controller
-                                            .funcionalities[index1].isExpanded,
-                                      );
-                                    }).toList())
+                                ? _buildListFuncionalities(
+                                    _controller.funcionalitiesSearch,
+                                    mediaQuery)
+                                : _buildListFuncionalities(
+                                    _controller.funcionalities, mediaQuery)
                           ]),
                         ),
                       ),
@@ -403,13 +109,130 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     );
   }
 
-  stateManagement(value) {
+  ExpansionPanelList _buildListFuncionalities(
+      List<FuncionalitieModel> funcionalities, MediaQueryData mediaQuery) {
+    return ExpansionPanelList(
+        elevation: 0,
+        dividerColor: Colors.white,
+        expansionCallback: (int index, bool isExpanded) {
+          setState(() {
+            funcionalities[index].isExpanded =
+                !funcionalities[index].isExpanded;
+          });
+        },
+        children:
+            funcionalities.mapIndexed<ExpansionPanel>((index1, funcionalities) {
+          return ExpansionPanel(
+            backgroundColor: Colors.white,
+            canTapOnHeader: true,
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Row(
+                  children: [
+                    Icon(
+                      Icons.account_box,
+                      color: Colors.grey.shade400,
+                      size: 16,
+                    ),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Text(funcionalities.name,
+                        textScaleFactor: mediaQuery.textScaleFactor,
+                        style: textStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700)),
+                  ],
+                ),
+              );
+            },
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: funcionalities.subFuncionalities
+                  .mapIndexed((index2, subFuncionalities) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 24),
+                  child: MouseRegion(
+                    onHover: (event) {
+                      setState(() {
+                        //set hover
+                        _controller
+                            .funcionalities[index1]
+                            .subFuncionalities[index2]
+                            .colorButton = Colors.grey.shade50;
+
+                        // set border
+
+                        _controller.funcionalities[index1]
+                                .subFuncionalities[index2].border =
+                            Border(
+                                left:
+                                    BorderSide(color: primaryColor, width: 4));
+                      });
+                    },
+                    onExit: (event) {
+                      setState(() {
+                        //set hover
+                        _controller
+                            .funcionalities[index1]
+                            .subFuncionalities[index2]
+                            .colorButton = Colors.white;
+
+                        //set border
+
+                        _controller.funcionalities[index1]
+                                .subFuncionalities[index2].border =
+                            Border(
+                                left: BorderSide(
+                                    color: Colors.grey.shade200, width: 2));
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: subFuncionalities.colorButton,
+                                border: subFuncionalities.border),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: secundaryColor,
+                                    size: 24.0,
+                                    semanticLabel:
+                                        'Text to announce in accessibility modes',
+                                  ),
+                                  const SizedBox(
+                                    width: 12,
+                                  ),
+                                  Text(subFuncionalities.name,
+                                      style: textStyle(
+                                          fontWeight: FontWeight.w700)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            isExpanded: _controller.funcionalities[index1].isExpanded,
+          );
+        }).toList());
+  }
+
+  stateManagement(value, MediaQueryData mediaQuery) {
     switch (value) {
       case FuncionalitiesEnum.loading:
         return const ShimmerWidget();
 
       case FuncionalitiesEnum.changeFuncionalities:
-        return funcionalities();
+        return funcionalities(mediaQuery);
       default:
     }
   }
@@ -425,14 +248,13 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: AnimatedBuilder(
-            animation: _controller.state,
-            builder: (context, child) {
-              return stateManagement(_controller.state.value);
-            }));
+    final mediaQuery = MediaQuery.of(context);
+
+    return AnimatedBuilder(
+        animation: _controller.state,
+        builder: (context, child) {
+          return stateManagement(_controller.state.value, mediaQuery);
+        });
   }
 }
 
