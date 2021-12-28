@@ -7,7 +7,7 @@ class AuthenticateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final scaffoldkey = GlobalKey<ScaffoldState>();
   late final AuthenticateRepository repository;
-  AuthenticateEnum status = AuthenticateEnum.notLogged;
+  AuthenticateEnum state = AuthenticateEnum.notLogged;
 
   AuthenticateController(this.repository);
 
