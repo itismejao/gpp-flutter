@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
-
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
-import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
-import 'package:gpp/src/shared/repositories/global.dart';
 
 class UserController {
   UserRepository repository;
@@ -30,13 +25,11 @@ class UserController {
   }
 
   void search(String value) {
-    if (value.isNotEmpty) {
-      usersSearch = users
-          .where((user) =>
-              (user.name!.toLowerCase().contains(value.toLowerCase()) ||
-                  user.uid!.toLowerCase().contains(value.toLowerCase())))
-          .toList();
-    }
+    usersSearch = users
+        .where((user) =>
+            (user.name!.toLowerCase().contains(value.toLowerCase()) ||
+                user.uid!.toLowerCase().contains(value.toLowerCase())))
+        .toList();
   }
 
   Future<bool> updateUserSubFuncionalities(
