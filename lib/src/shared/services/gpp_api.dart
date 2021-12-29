@@ -35,7 +35,7 @@ class ApiService {
       var uri = Uri.parse(baseUrl! + endpoint);
       Response response = await http
           .get(uri, headers: getHeader())
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 30));
 
       return response;
     } on TimeoutException {
