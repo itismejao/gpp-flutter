@@ -207,7 +207,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  Text(subFuncionalities.name,
+                                  Text(subFuncionalities.name!,
                                       style: textStyle(
                                           fontWeight: FontWeight.w700)),
                                 ],
