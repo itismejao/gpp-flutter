@@ -469,7 +469,7 @@ class _UserDetailViewState extends State<UserDetailView> {
       if (value!) {
         _controller.subFuncionalities[index].active = 1;
       } else {
-        _controller.subFuncionalities[index].active = 2;
+        _controller.subFuncionalities[index].active = 0;
       }
     });
   }
@@ -511,7 +511,7 @@ class _UserDetailViewState extends State<UserDetailView> {
               children: [
                 Expanded(
                     child: Text(
-                  subFuncionalities[index].name,
+                  subFuncionalities[index].name!,
                   style: textStyle(
                       color: Colors.black, fontWeight: FontWeight.w700),
                 )),
