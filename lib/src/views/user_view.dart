@@ -149,17 +149,35 @@ class _UserListViewState extends State<UserListView> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                      flex: 2,
-                      child: Text('Nome',
+                      child: Text('Foto',
                           style: textStyle(
                               color: Colors.grey.shade400,
                               fontWeight: FontWeight.w700))),
                   Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Nome',
+                            style: textStyle(
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                  Expanded(
                       child: Text('RE',
+                          style: textStyle(
+                              color: Colors.grey.shade400,
+                              fontWeight: FontWeight.w700))),
+                  Expanded(
+                      flex: 2,
+                      child: Text('E-mail',
                           style: textStyle(
                               color: Colors.grey.shade400,
                               fontWeight: FontWeight.w700))),
@@ -198,7 +216,7 @@ class _UserListViewState extends State<UserListView> {
       },
     );
 
-    return widget;
+    return Container(color: Colors.white, child: widget);
   }
 
   Widget _buildListItem(
@@ -229,7 +247,7 @@ class _UserListViewState extends State<UserListView> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.network(
-                                  'https://picsum.photos/250?image=9'),
+                                  'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
                             )),
                         const SizedBox(
                           width: 12,
@@ -267,19 +285,26 @@ class _UserListViewState extends State<UserListView> {
                     ),
                     Row(
                       children: [
-                        ElevatedButton(
-                            style: buttonStyle,
-                            onPressed: () => {
-                                  Navigator.pushNamed(context, '/user_detail',
-                                      arguments: users[index])
-                                },
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text('Editar',
-                                  style: textStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700)),
-                            )),
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () => {
+                            Navigator.pushNamed(context, '/user_detail',
+                                arguments: users[index])
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () => {
+                            // Navigator.pushNamed(context, '/user_detail',
+                            //     arguments: users[index])
+                          },
+                        ),
                       ],
                     ),
                   ],
@@ -290,38 +315,46 @@ class _UserListViewState extends State<UserListView> {
         }
 
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                  flex: 2,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                                'https://picsum.photos/250?image=9'),
-                          )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        users[index].name!,
-                        style: textStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                              'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
+                        )),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  users[index].name!,
+                  style: textStyle(
+                      color: Colors.black, fontWeight: FontWeight.w700),
+                ),
+              ),
               Expanded(
                   child: Text(
                 users[index].uid!,
                 style:
                     textStyle(color: Colors.black, fontWeight: FontWeight.w700),
               )),
+              Expanded(
+                  flex: 2,
+                  child: Text(
+                    users[index].email!,
+                    style: textStyle(
+                        color: Colors.black, fontWeight: FontWeight.w700),
+                  )),
               Expanded(
                   child: users[index].departement != null
                       ? Text(
@@ -344,20 +377,32 @@ class _UserListViewState extends State<UserListView> {
                     shape: BoxShape.circle),
               )),
               Expanded(
-                child: ElevatedButton(
-                    style: buttonStyle,
-                    onPressed: () => {
-                          Navigator.pushNamed(context, '/user_detail',
-                              arguments: users[index])
-                        },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text('Editar',
-                          style: textStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700)),
-                    )),
-              )
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.grey.shade400,
+                      ),
+                      onPressed: () => {
+                        Navigator.pushNamed(context, '/user_detail',
+                            arguments: users[index])
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.grey.shade400,
+                      ),
+                      onPressed: () => {
+                        // Navigator.pushNamed(context, '/user_detail',
+                        //     arguments: users[index])
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -378,13 +423,13 @@ class _UserListViewState extends State<UserListView> {
                 Expanded(
                     child: Text('Usuários',
                         style: textStyle(
-                            fontSize: 18,
+                            fontSize: 24,
                             color: Colors.black,
                             fontWeight: FontWeight.w700))),
               ],
             ),
           ),
-          _buildFilterUsers(),
+          //  _buildFilterUsers(),
           Expanded(
             child: stateManager(),
           )
@@ -469,7 +514,7 @@ class _UserDetailViewState extends State<UserDetailView> {
       if (value!) {
         _controller.subFuncionalities[index].active = 1;
       } else {
-        _controller.subFuncionalities[index].active = 0;
+        _controller.subFuncionalities[index].active = 1;
       }
     });
   }
@@ -555,7 +600,8 @@ class _UserDetailViewState extends State<UserDetailView> {
                 width: 120,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: Image.network('https://picsum.photos/250?image=9'),
+                  child: Image.network(
+                      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
                 ),
               ),
               const SizedBox(
@@ -590,10 +636,16 @@ class _UserDetailViewState extends State<UserDetailView> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                  child: Text('Nome',
-                      style: textStyle(
-                          color: Colors.grey.shade400,
-                          fontWeight: FontWeight.w700))),
+                  flex: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('Nome',
+                          style: textStyle(
+                              color: Colors.grey.shade400,
+                              fontWeight: FontWeight.w700)),
+                    ],
+                  )),
               Expanded(
                   child: Center(
                 child: Text('Status',
