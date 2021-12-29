@@ -6,6 +6,7 @@ import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:collection/collection.dart';
+import 'package:gpp/src/views/home_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FuncionalitiesView extends StatefulWidget {
@@ -43,7 +44,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     );
   }
 
-  funcionalities(MediaQueryData mediaQuery) {
+  funcionalities(MediaQueryData mediaQuery, context) {
     return Column(
       children: [
         Row(
@@ -92,9 +93,12 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                             _controller.funcionalitiesSearch.isNotEmpty
                                 ? _buildListFuncionalities(
                                     _controller.funcionalitiesSearch,
-                                    mediaQuery)
+                                    mediaQuery,
+                                    context)
                                 : _buildListFuncionalities(
-                                    _controller.funcionalities, mediaQuery)
+                                    _controller.funcionalities,
+                                    mediaQuery,
+                                    context)
                           ]),
                         ),
                       ),
@@ -110,7 +114,9 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   ExpansionPanelList _buildListFuncionalities(
-      List<FuncionalitieModel> funcionalities, MediaQueryData mediaQuery) {
+      List<FuncionalitieModel> funcionalities,
+      MediaQueryData mediaQuery,
+      context) {
     return ExpansionPanelList(
         elevation: 0,
         dividerColor: Colors.white,
@@ -149,73 +155,80 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: funcionalities.subFuncionalities
                   .mapIndexed((index2, subFuncionalities) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 24),
-                  child: MouseRegion(
-                    onHover: (event) {
-                      setState(() {
-                        //set hover
-                        _controller
-                            .funcionalities[index1]
-                            .subFuncionalities[index2]
-                            .colorButton = Colors.grey.shade50;
+                return GestureDetector(
+                  onTap: () {
+                    navigatorKey.currentState!.pushNamed(_controller
+                        .funcionalities[index1].subFuncionalities[index2].route
+                        .toString());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: MouseRegion(
+                      onHover: (event) {
+                        setState(() {
+                          //set hover
+                          _controller
+                              .funcionalities[index1]
+                              .subFuncionalities[index2]
+                              .colorButton = Colors.grey.shade50;
 
-                        // set border
+                          // set border
 
-                        _controller.funcionalities[index1]
-                                .subFuncionalities[index2].border =
-                            Border(
-                                left:
-                                    BorderSide(color: primaryColor, width: 4));
-                      });
-                    },
-                    onExit: (event) {
-                      setState(() {
-                        //set hover
-                        _controller
-                            .funcionalities[index1]
-                            .subFuncionalities[index2]
-                            .colorButton = Colors.white;
+                          _controller.funcionalities[index1]
+                                  .subFuncionalities[index2].border =
+                              Border(
+                                  left: BorderSide(
+                                      color: primaryColor, width: 4));
+                        });
+                      },
+                      onExit: (event) {
+                        setState(() {
+                          //set hover
+                          _controller
+                              .funcionalities[index1]
+                              .subFuncionalities[index2]
+                              .colorButton = Colors.white;
 
-                        //set border
+                          //set border
 
-                        _controller.funcionalities[index1]
-                                .subFuncionalities[index2].border =
-                            Border(
-                                left: BorderSide(
-                                    color: Colors.grey.shade200, width: 2));
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: subFuncionalities.colorButton,
-                                border: subFuncionalities.border),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.favorite,
-                                    color: secundaryColor,
-                                    size: 24.0,
-                                    semanticLabel:
-                                        'Text to announce in accessibility modes',
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Text(subFuncionalities.name!,
-                                      style: textStyle(
-                                          fontWeight: FontWeight.w700)),
-                                ],
+                          _controller.funcionalities[index1]
+                                  .subFuncionalities[index2].border =
+                              Border(
+                                  left: BorderSide(
+                                      color: Colors.grey.shade200, width: 2));
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: subFuncionalities.colorButton,
+                                  border: subFuncionalities.border),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.favorite,
+                                      color: secundaryColor,
+                                      size: 24.0,
+                                      semanticLabel:
+                                          'Text to announce in accessibility modes',
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Text(subFuncionalities.name!,
+                                        style: textStyle(
+                                            fontWeight: FontWeight.w700)),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -226,13 +239,13 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
         }).toList());
   }
 
-  stateManagement(value, MediaQueryData mediaQuery) {
+  stateManagement(value, MediaQueryData mediaQuery, context) {
     switch (value) {
       case FuncionalitiesEnum.loading:
         return const ShimmerWidget();
 
       case FuncionalitiesEnum.changeFuncionalities:
-        return funcionalities(mediaQuery);
+        return funcionalities(mediaQuery, context);
       default:
     }
   }
@@ -253,7 +266,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     return AnimatedBuilder(
         animation: _controller.state,
         builder: (context, child) {
-          return stateManagement(_controller.state.value, mediaQuery);
+          return stateManagement(_controller.state.value, mediaQuery, context);
         });
   }
 }
