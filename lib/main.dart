@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: const Material(child: DepartamentView()),
+      home: const Material(child: UserView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
