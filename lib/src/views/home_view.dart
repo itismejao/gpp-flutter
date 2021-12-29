@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/views/appbar_view.dart';
+import 'package:gpp/src/views/departament_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/user_view.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -95,12 +98,16 @@ class _HomeViewState extends State<HomeView> {
                       color: Colors.white,
                       height: 1000,
                       child: Navigator(
+                        key: navigatorKey,
                         onGenerateRoute: (settings) {
                           var route = settings.name;
                           Widget page;
                           switch (route) {
                             case '/users':
                               page = const UserView();
+                              break;
+                            case '/departaments':
+                              page = const DepartamentView();
                               break;
                             case '/user_detail':
                               final user = settings.arguments as UserModel;
