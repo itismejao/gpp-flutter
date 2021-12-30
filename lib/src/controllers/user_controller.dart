@@ -2,6 +2,7 @@ import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
+import 'package:gpp/src/shared/repositories/global.dart';
 
 class UserController {
   UserRepository repository;
@@ -9,6 +10,8 @@ class UserController {
   List<UserModel> usersSearch = [];
   List<SubFuncionalities> subFuncionalities = [];
   UserEnum state = UserEnum.notUser;
+  List<FuncionalitieModel> funcionalities = [];
+  List<FuncionalitieModel> funcionalitiesSearch = [];
 
   UserController({
     required this.repository,
@@ -39,5 +42,23 @@ class UserController {
 
     return await repository.updateUserSubFuncionalities(
         user, subFuncionalities);
+  }
+
+  Future<void> changeFuncionalities() async {
+    UserModel user = UserModel();
+    user.uid = authenticateUser!.id.toString();
+
+    funcionalities = await repository.fetchFuncionalities(user);
+  }
+
+  void searchFuncionalities(String value) {
+    funcionalitiesSearch = [];
+
+    for (var funcionalitie in funcionalities) {
+      if (funcionalitie.name.toLowerCase().contains(value.toLowerCase())) {
+        funcionalitie.isExpanded = true;
+        funcionalitiesSearch.add(funcionalitie);
+      }
+    }
   }
 }
