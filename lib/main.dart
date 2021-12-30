@@ -6,6 +6,7 @@ import 'package:gpp/src/not_found/repositories/not_found.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/authenticate_view.dart';
 import 'package:gpp/src/views/departament_view.dart';
+import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home_view.dart';
 import 'package:gpp/src/views/user_view.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: const Material(child: UserView()),
+      home: const Material(child: FuncionalitiesView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
