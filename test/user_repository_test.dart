@@ -9,6 +9,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gpp/src/models/funcionalitie_model.dart';
 
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
@@ -18,7 +19,7 @@ import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'user_repository_test.mocks.dart';
+import 'api_service_test.mocks.dart';
 
 @GenerateMocks([ApiService])
 void main() {
@@ -27,26 +28,8 @@ void main() {
   final api = MockApiService();
   final repository = UserRepository(api: api);
 
-  test('Verifica a busca de usuários', () async {
-    when(api.get(any))
-        .thenAnswer((realInvocation) async => Response(jsonBodySucess, 200));
-    final users = await repository.fetchUser();
-    expect(users, isA<List<UserModel>>());
-  });
-
-  test('Verifica erro ao realizar a busca de usuários', () async {
-    when(api.get(any))
-        .thenAnswer((realInvocation) async => Response(jsonBodyError, 404));
-
-    expect(repository.fetchUser(), throwsA(isA<UserException>()));
-  });
-}
-
-String jsonBodyError = '''{
-    "error": "Funcionalidade não cadastrada no GPP."
-}''';
-
-String jsonBodySucess = ''' [
+  group('Usuários: ', () {
+    String dataReceived = ''' [
     [
         {
             "id": "1",
@@ -92,3 +75,164 @@ String jsonBodySucess = ''' [
         }
     ]
 ]''';
+
+    test('Valida a busca de usuários', () async {
+      when(api.get(any))
+          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      final users = await repository.fetchUser();
+      expect(users, isA<List<UserModel>>());
+    });
+
+    test('Valida se os usuáriso não foram encontrados', () async {
+      when(api.get(any))
+          .thenAnswer((realInvocation) async => Response('', 404));
+
+      expect(() async => await repository.fetchUser(),
+          throwsA(isA<UserException>()));
+    });
+  });
+
+  group("Usuário e funcionalidades:", () {});
+
+  group("Usuário e itens de funcionalidades: ", () {
+    String dataReceived = ''' [
+    [
+        {
+            "id": "5",
+            "name": "Funcionalidades",
+            "active": 1,
+            "idregister": "55"
+        },
+        {
+            "id": "8",
+            "name": "Peças",
+            "active": 1,
+            "idregister": "27"
+        },
+        {
+            "id": "8",
+            "name": "Peças",
+            "active": 1,
+            "idregister": "49"
+        },
+        {
+            "id": "9",
+            "name": "Endereços",
+            "active": 1,
+            "idregister": "48"
+        },
+        {
+            "id": "10",
+            "name": "Movimentos",
+            "active": 1,
+            "idregister": "44"
+        },
+        {
+            "id": "11",
+            "name": "Manutenção",
+            "active": 1,
+            "idregister": "47"
+        },
+        {
+            "id": "11",
+            "name": "Manutenção",
+            "active": 1,
+            "idregister": "50"
+        },
+        {
+            "id": "12",
+            "name": "Solicitados",
+            "active": 1,
+            "idregister": "42"
+        },
+        {
+            "id": "12",
+            "name": "Solicitados",
+            "active": 1,
+            "idregister": "56"
+        },
+        {
+            "id": "12",
+            "name": "Solicitados",
+            "active": 1,
+            "idregister": "51"
+        },
+        {
+            "id": "13",
+            "name": "Cancelados",
+            "active": 1,
+            "idregister": "52"
+        },
+        {
+            "id": "13",
+            "name": "Cancelados",
+            "active": 1,
+            "idregister": "45"
+        },
+        {
+            "id": "14",
+            "name": "Departamentos",
+            "active": 1,
+            "idregister": "43"
+        },
+        {
+            "id": "15",
+            "name": "Menus",
+            "active": 1,
+            "idregister": "31"
+        },
+        {
+            "id": "15",
+            "name": "Menus",
+            "active": 1,
+            "idregister": "53"
+        },
+        {
+            "id": "16",
+            "name": "Itens do menu",
+            "active": 1,
+            "idregister": "54"
+        },
+        {
+            "id": "16",
+            "name": "Itens do menu",
+            "active": 1,
+            "idregister": "41"
+        },
+        {
+            "id": "21",
+            "name": "Usuários",
+            "active": 1,
+            "idregister": "57"
+        },
+        {
+            "id": "22",
+            "name": "Departamento",
+            "active": 1,
+            "idregister": "58"
+        }
+    ]
+]''';
+
+    test('Valida busca de itens de funcionalidades relacionadas ao usuário',
+        () async {
+      when(api.get(any))
+          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      final response =
+          await repository.fetchSubFuncionalities(UserModel(uid: "1"));
+      expect(response, isA<List<SubFuncionalities>>());
+    });
+
+    test(
+        'Valida se não foi encontrado itens de funcionalidades relacionadas ao usuário',
+        () async {
+      when(api.get(any))
+          .thenAnswer((realInvocation) async => Response('', 404));
+
+      expect(
+          () async =>
+              await repository.fetchSubFuncionalities(UserModel(uid: "1")),
+          throwsA(isA<UserException>()));
+    });
+  });
+}
