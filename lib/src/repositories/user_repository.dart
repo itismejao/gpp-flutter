@@ -26,8 +26,7 @@ class UserRepository {
           .toList();
       return users;
     } else {
-      var error = jsonDecode(response.body)['error'];
-      throw UserException(error);
+      throw UserException('Usuários não encontrados !');
     }
   }
 
@@ -43,8 +42,8 @@ class UserRepository {
           .toList();
       return subFuncionalities;
     } else {
-      var error = jsonDecode(response.body)['error'];
-      throw UserException(error);
+      throw UserException(
+          "Não foi encontrado itens de funcionalidades relacionado ao usuário !");
     }
   }
 
@@ -62,6 +61,22 @@ class UserRepository {
     } else {
       var error = jsonDecode(response.body)['error'];
       throw UserException(error);
+    }
+  }
+
+  Future<List<FuncionalitieModel>> fetchFuncionalities(UserModel user) async {
+    Response response = await api.get('/user/funcionalidades/' + user.uid!);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<FuncionalitieModel> funcionalidades = data.first
+          .map<FuncionalitieModel>((data) => FuncionalitieModel.fromJson(data))
+          .toList();
+
+      return funcionalidades;
+    } else {
+      throw UserException("Funcionalidades não encontradas !");
     }
   }
 }
