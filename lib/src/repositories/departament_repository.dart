@@ -27,8 +27,7 @@ class DepartamentRepository {
           .toList();
       return departament;
     } else {
-      var error = jsonDecode(response.body)['error'];
-      throw DepartamentException(error);
+      throw DepartamentException("Não foi possível encontrar departamentos !");
     }
   }
 
@@ -45,8 +44,8 @@ class DepartamentRepository {
           .toList();
       return subFuncionalities;
     } else {
-      var error = jsonDecode(response.body)['error'];
-      throw FuncionalitiesException(error);
+      throw FuncionalitiesException(
+          "Não foi possivel encontrar itens de funcionalidades relacionadas ao departamentos !");
     }
   }
 
@@ -56,17 +55,14 @@ class DepartamentRepository {
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
 
-    // ignore: avoid_print
-    print(jsonEncode(dataSend));
-
     Response response = await api.put(
         '/departamentos/itensfuncionalidades/' + departament.id, dataSend);
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      var error = jsonDecode(response.body)['error'];
-      throw DepartamentException(error);
+      return throw DepartamentException(
+          "Funcionalidades do departamento foram atualizadas !");
     }
   }
 }
