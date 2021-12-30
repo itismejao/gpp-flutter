@@ -1,11 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/funcionalities_controller.dart';
+import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/repositories/funcionalities_repository.dart';
+import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
+import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:collection/collection.dart';
+import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/home_view.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -17,10 +21,41 @@ class FuncionalitiesView extends StatefulWidget {
 }
 
 class _FuncionalitiesViewState extends State<FuncionalitiesView> {
-  late final FuncionalitiesController _controller =
-      FuncionalitiesController(FuncionalitiesRepository());
+  late final UserController _controller =
+      UserController(repository: UserRepository(api: gppApi));
 
   final ScrollController controller = ScrollController();
+
+  handleSearchFuncionalities(value) {
+    setState(() {
+      _controller.state = UserEnum.loading;
+    });
+
+    _controller.searchFuncionalities(value);
+
+    setState(() {
+      _controller.state = UserEnum.changeUser;
+    });
+  }
+
+  changeUserFuncionalities() async {
+    setState(() {
+      _controller.state = UserEnum.loading;
+    });
+    await _controller.changeFuncionalities();
+    setState(() {
+      _controller.state = UserEnum.changeUser;
+    });
+  }
+
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
+
+    changeUserFuncionalities();
+  }
 
   SizedBox loadingLayout(count) {
     return SizedBox(
@@ -55,9 +90,8 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                 child: SizedBox(
                   child: Form(
                       child: TextFormField(
-                          onChanged: (value) {
-                            _controller.search(value);
-                          },
+                          onChanged: (value) =>
+                              handleSearchFuncionalities(value),
                           style: const TextStyle(
                               color: Colors.black,
                               fontStyle: FontStyle.normal,
@@ -239,35 +273,22 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
         }).toList());
   }
 
-  stateManagement(value, MediaQueryData mediaQuery, context) {
-    switch (value) {
-      case FuncionalitiesEnum.loading:
+  stateManagement(MediaQueryData mediaQuery, context) {
+    switch (_controller.state) {
+      case UserEnum.loading:
         return const ShimmerWidget();
 
-      case FuncionalitiesEnum.changeFuncionalities:
+      case UserEnum.changeUser:
         return funcionalities(mediaQuery, context);
       default:
     }
   }
 
   @override
-  void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-
-    _controller.changeFuncionalities();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return AnimatedBuilder(
-        animation: _controller.state,
-        builder: (context, child) {
-          return stateManagement(_controller.state.value, mediaQuery, context);
-        });
+    return stateManagement(mediaQuery, context);
   }
 }
 
