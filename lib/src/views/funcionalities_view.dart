@@ -1,14 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
-import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
-import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:collection/collection.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/home_view.dart';
 import 'package:shimmer/shimmer.dart';
@@ -39,13 +35,17 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   changeUserFuncionalities() async {
-    setState(() {
-      _controller.state = UserEnum.loading;
-    });
+    if (mounted) {
+      setState(() {
+        _controller.state = UserEnum.loading;
+      });
+    }
     await _controller.changeFuncionalities();
-    setState(() {
-      _controller.state = UserEnum.changeUser;
-    });
+    if (mounted) {
+      setState(() {
+        _controller.state = UserEnum.changeUser;
+      });
+    }
   }
 
   @override
@@ -113,165 +113,275 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
           height: 12,
         ),
         Expanded(
-          flex: 5,
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: SingleChildScrollView(
-                          child: Column(children: [
-                            _controller.funcionalitiesSearch.isNotEmpty
-                                ? _buildListFuncionalities(
-                                    _controller.funcionalitiesSearch,
-                                    mediaQuery,
-                                    context)
-                                : _buildListFuncionalities(
-                                    _controller.funcionalities,
-                                    mediaQuery,
-                                    context)
-                          ]),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+          child: _controller.state == UserEnum.changeUser
+              ? _controller.funcionalitiesSearch.isEmpty
+                  ? _buildListFuncionalities(
+                      _controller.funcionalities, mediaQuery, context)
+                  : _buildListFuncionalities(
+                      _controller.funcionalitiesSearch, mediaQuery, context)
+              : const ShimmerWidget(),
         ),
       ],
     );
   }
 
-  ExpansionPanelList _buildListFuncionalities(
-      List<FuncionalitieModel> funcionalities,
-      MediaQueryData mediaQuery,
-      context) {
-    return ExpansionPanelList(
-        elevation: 0,
-        dividerColor: Colors.white,
-        expansionCallback: (int index, bool isExpanded) {
-          setState(() {
-            funcionalities[index].isExpanded =
-                !funcionalities[index].isExpanded;
-          });
-        },
-        children:
-            funcionalities.mapIndexed<ExpansionPanel>((index1, funcionalities) {
-          return ExpansionPanel(
-            backgroundColor: Colors.white,
-            canTapOnHeader: true,
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                title: Row(
-                  children: [
-                    Icon(
-                      Icons.account_box,
-                      color: Colors.grey.shade400,
-                      size: 16,
-                    ),
-                    const SizedBox(
-                      width: 6,
-                    ),
-                    Text(funcionalities.name,
-                        textScaleFactor: mediaQuery.textScaleFactor,
-                        style: textStyle(
-                            fontSize: 12, fontWeight: FontWeight.w700)),
-                  ],
-                ),
-              );
-            },
-            body: Column(
+  _buildListFuncionalities(List<FuncionalitieModel> funcionalities,
+      MediaQueryData mediaQuery, context) {
+    return ListView.builder(
+      itemCount: funcionalities.length,
+      itemBuilder: (context, index1) {
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            setState(() {
+              funcionalities[index1].isExpanded =
+                  !funcionalities[index1].isExpanded;
+            });
+          },
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: funcionalities.subFuncionalities
-                  .mapIndexed((index2, subFuncionalities) {
-                return GestureDetector(
-                  onTap: () {
-                    navigatorKey.currentState!.pushNamed(_controller
-                        .funcionalities[index1].subFuncionalities[index2].route
-                        .toString());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 24),
-                    child: MouseRegion(
-                      onHover: (event) {
-                        setState(() {
-                          //set hover
-                          _controller
-                              .funcionalities[index1]
-                              .subFuncionalities[index2]
-                              .colorButton = Colors.grey.shade50;
-
-                          // set border
-
-                          _controller.funcionalities[index1]
-                                  .subFuncionalities[index2].border =
-                              Border(
-                                  left: BorderSide(
-                                      color: primaryColor, width: 4));
-                        });
-                      },
-                      onExit: (event) {
-                        setState(() {
-                          //set hover
-                          _controller
-                              .funcionalities[index1]
-                              .subFuncionalities[index2]
-                              .colorButton = Colors.white;
-
-                          //set border
-
-                          _controller.funcionalities[index1]
-                                  .subFuncionalities[index2].border =
-                              Border(
-                                  left: BorderSide(
-                                      color: Colors.grey.shade200, width: 2));
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: subFuncionalities.colorButton,
-                                  border: subFuncionalities.border),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      color: secundaryColor,
-                                      size: 24.0,
-                                      semanticLabel:
-                                          'Text to announce in accessibility modes',
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    Text(subFuncionalities.name!,
-                                        style: textStyle(
-                                            fontWeight: FontWeight.w700)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        funcionalities[index1].name!,
+                        style: textStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
+                      funcionalities[index1].isExpanded
+                          ? const Icon(Icons.expand_more)
+                          : const Icon(Icons.expand_less)
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AnimatedSize(
+                        curve: Curves.fastOutSlowIn,
+                        duration: const Duration(milliseconds: 500),
+                        child: SizedBox(
+                            height:
+                                !funcionalities[index1].isExpanded ? 0 : null,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: funcionalities[index1]
+                                    .subFuncionalities!
+                                    .map((subFuncionalities) {
+                                  return _buildListSubFuncionalities(
+                                      subFuncionalities, mediaQuery);
+                                }).toList())),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            isExpanded: _controller.funcionalities[index1].isExpanded,
-          );
-        }).toList());
+                  ],
+                ),
+              ]),
+        );
+
+        // return ExpansionTile(
+        //     textColor: Colors.black,
+        //     iconColor: Colors.black,
+        //     title: Text(
+        //       funcionalities[index1].name,
+        //       style: textStyle(fontSize: 12, fontWeight: FontWeight.w700),
+        //     ),
+        //     children: funcionalities[index1]
+        //         .subFuncionalities
+        //         .map((subFuncionalities) {
+        //       return _buildListSubFuncionalities(subFuncionalities);
+        //     }).toList());
+      },
+    );
   }
+
+  Widget _buildListSubFuncionalities(
+      SubFuncionalities subFuncionalities, MediaQueryData mediaQuery) {
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () {
+                navigatorKey.currentState!
+                    .pushReplacementNamed(subFuncionalities.route.toString());
+                //Fecha Drawer
+              },
+              child: MouseRegion(
+                onHover: (event) {
+                  setState(() {
+                    subFuncionalities.boxDecoration = BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey.shade200);
+                  });
+                },
+                onExit: (event) {
+                  setState(() {
+                    subFuncionalities.boxDecoration = null;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: subFuncionalities.boxDecoration,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.account_box),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Text(
+                                  subFuncionalities.name.toString(),
+                                  style: textStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ),
+      ],
+    );
+  }
+
+  // ExpansionPanelList _buildListFuncionalities(
+  //     List<FuncionalitieModel> funcionalities,
+  //     MediaQueryData mediaQuery,
+  //     context) {
+  //   return ExpansionPanelList(
+  //       elevation: 0,
+  //       dividerColor: Colors.white,
+  //       expansionCallback: (int index, bool isExpanded) {
+  //         setState(() {
+  //           funcionalities[index].isExpanded =
+  //               !funcionalities[index].isExpanded;
+  //         });
+  //       },
+  //       children:
+  //           funcionalities.mapIndexed<ExpansionPanel>((index1, funcionalities) {
+  //         return ExpansionPanel(
+  //           backgroundColor: Colors.white,
+  //           canTapOnHeader: true,
+  //           headerBuilder: (BuildContext context, bool isExpanded) {
+  //             return ListTile(
+  //               title: Row(
+  //                 children: [
+  //                   Icon(
+  //                     Icons.account_box,
+  //                     color: Colors.grey.shade400,
+  //                     size: 16,
+  //                   ),
+  //                   const SizedBox(
+  //                     width: 6,
+  //                   ),
+  //                   Text(funcionalities.name,
+  //                       textScaleFactor: mediaQuery.textScaleFactor,
+  //                       style: textStyle(
+  //                           fontSize: 12, fontWeight: FontWeight.w700)),
+  //                 ],
+  //               ),
+  //             );
+  //           },
+  //           body: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: funcionalities.subFuncionalities
+  //                 .mapIndexed((index2, subFuncionalities) {
+  //               return GestureDetector(
+  //                 onTap: () {
+  //                   navigatorKey.currentState!.pushNamed(_controller
+  //                       .funcionalities[index1].subFuncionalities[index2].route
+  //                       .toString());
+  //                 },
+  //                 child: Padding(
+  //                   padding: const EdgeInsets.only(left: 24),
+  //                   child: MouseRegion(
+  //                     onHover: (event) {
+  //                       setState(() {
+  //                         //set hover
+  //                         _controller
+  //                             .funcionalities[index1]
+  //                             .subFuncionalities[index2]
+  //                             .colorButton = Colors.grey.shade50;
+
+  //                         // set border
+
+  //                         _controller.funcionalities[index1]
+  //                                 .subFuncionalities[index2].border =
+  //                             Border(
+  //                                 left: BorderSide(
+  //                                     color: primaryColor, width: 4));
+  //                       });
+  //                     },
+  //                     onExit: (event) {
+  //                       setState(() {
+  //                         //set hover
+  //                         _controller
+  //                             .funcionalities[index1]
+  //                             .subFuncionalities[index2]
+  //                             .colorButton = Colors.white;
+
+  //                         //set border
+
+  //                         _controller.funcionalities[index1]
+  //                                 .subFuncionalities[index2].border =
+  //                             Border(
+  //                                 left: BorderSide(
+  //                                     color: Colors.grey.shade200, width: 2));
+  //                       });
+  //                     },
+  //                     child: Row(
+  //                       children: [
+  //                         Expanded(
+  //                           child: Container(
+  //                             decoration: BoxDecoration(
+  //                                 color: subFuncionalities.colorButton,
+  //                                 border: subFuncionalities.border),
+  //                             child: Padding(
+  //                               padding: const EdgeInsets.all(8.0),
+  //                               child: Row(
+  //                                 children: [
+  //                                   Icon(
+  //                                     Icons.favorite,
+  //                                     color: secundaryColor,
+  //                                     size: 24.0,
+  //                                     semanticLabel:
+  //                                         'Text to announce in accessibility modes',
+  //                                   ),
+  //                                   const SizedBox(
+  //                                     width: 12,
+  //                                   ),
+  //                                   Text(subFuncionalities.name!,
+  //                                       style: textStyle(
+  //                                           fontWeight: FontWeight.w700)),
+  //                                 ],
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               );
+  //             }).toList(),
+  //           ),
+  //           isExpanded: _controller.funcionalities[index1].isExpanded,
+  //         );
+  //       }).toList());
+  // }
 
   stateManagement(MediaQueryData mediaQuery, context) {
     switch (_controller.state) {
