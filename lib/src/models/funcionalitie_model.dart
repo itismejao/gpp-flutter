@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 
 class FuncionalitieModel {
-  String id;
-  String name;
-  String icon;
-  List<SubFuncionalities> subFuncionalities;
-  bool isExpanded = false;
+  int? id;
+  String? name;
+  String? icon;
+  bool? active;
 
-  FuncionalitieModel(
-      {required this.id,
-      required this.name,
-      required this.icon,
-      required this.subFuncionalities});
+  List<SubFuncionalities>? subFuncionalities;
+  bool isExpanded = false;
+  FuncionalitieModel({
+    this.id,
+    this.name,
+    this.icon,
+    this.active,
+    this.subFuncionalities,
+  });
 
   factory FuncionalitieModel.fromJson(Map<String, dynamic> json) {
-    var id = json['id'];
+    var id = json['id'] != null ? int.parse(json['id']) : null;
     var name = json['name'];
     var icon = json['icon'];
+    bool? active;
+    if (json['active'] != null) {
+      active = int.parse(json['active']) == 1 ? true : false;
+    }
     List<SubFuncionalities> subFuncionalities = [];
     if (json['subFuncionalities'] != null) {
       json['subFuncionalities'].forEach((data) {
@@ -24,7 +31,11 @@ class FuncionalitieModel {
       });
     }
     return FuncionalitieModel(
-        id: id, name: name, icon: icon, subFuncionalities: subFuncionalities);
+        id: id,
+        name: name,
+        icon: icon,
+        active: active,
+        subFuncionalities: subFuncionalities);
   }
 
   Map<String, dynamic> toJson() {
@@ -32,8 +43,11 @@ class FuncionalitieModel {
     data['id'] = id;
     data['name'] = name;
     data['icon'] = icon;
-    data['subFuncionalities'] =
-        subFuncionalities.map((v) => v.toJson()).toList();
+    data['active'] = active! ? 1 : 0;
+    data['subFuncionalities'] != null
+        ? subFuncionalities!.map((v) => v.toJson()).toList()
+        : null;
+
     return data;
   }
 }
@@ -46,8 +60,9 @@ class SubFuncionalities {
   int? active;
   String? idRegister;
   Color? colorButton;
-  Border? border =
-      Border(left: BorderSide(color: Colors.grey.shade200, width: 2));
+  BoxDecoration? boxDecoration;
+  // Border? border =
+  //     Border(left: BorderSide(color: Colors.grey.shade200, width: 2));
 
   SubFuncionalities(this.id,
       {this.name, this.active, this.icon, this.route, this.idRegister});
