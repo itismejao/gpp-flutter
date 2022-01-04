@@ -59,7 +59,14 @@ class ApiService {
   Future<dynamic> put(String endpoint, body) async {
     var uri = Uri.parse(baseUrl! + endpoint);
     var response =
-        await http.put(uri, headers: getHeader(), body: jsonEncode(body));
+        await http.put(uri, headers: getHeader(), body: json.encode(body));
+
+    return response;
+  }
+
+  Future<dynamic> delete(String endpoint) async {
+    var uri = Uri.parse(baseUrl! + endpoint);
+    var response = await http.delete(uri, headers: getHeader());
 
     return response;
   }
