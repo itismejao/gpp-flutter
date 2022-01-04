@@ -97,7 +97,7 @@ class AppBarView extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Image.network(
-                                'https://picsum.photos/250?image=9'),
+                                'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
                           )),
                       const SizedBox(
                         width: 12,
