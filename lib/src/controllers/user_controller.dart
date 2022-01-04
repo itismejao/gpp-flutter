@@ -23,7 +23,7 @@ class UserController {
 
   Future<void> changeUserFuncionalities() async {
     UserModel user = UserModel();
-    user.uid = "1";
+    user.uid = authenticateUser!.id.toString();
     subFuncionalities = await repository.fetchSubFuncionalities(user);
   }
 
@@ -38,7 +38,7 @@ class UserController {
   Future<bool> updateUserSubFuncionalities(
       List<SubFuncionalities> subFuncionalities) async {
     UserModel user = UserModel();
-    user.uid = "1";
+    user.uid = authenticateUser!.id.toString();
 
     return await repository.updateUserSubFuncionalities(
         user, subFuncionalities);
@@ -54,10 +54,18 @@ class UserController {
   void searchFuncionalities(String value) {
     funcionalitiesSearch = [];
 
-    for (var funcionalitie in funcionalities) {
-      if (funcionalitie.name.toLowerCase().contains(value.toLowerCase())) {
-        funcionalitie.isExpanded = true;
-        funcionalitiesSearch.add(funcionalitie);
+    if (value != "") {
+      for (var funcionalitie in funcionalities) {
+        for (var subFuncionalitie in funcionalitie.subFuncionalities!) {
+          if (funcionalitie.name!.toLowerCase().contains(value.toLowerCase()) ||
+              subFuncionalitie.name!
+                  .toLowerCase()
+                  .contains(value.toLowerCase())) {
+            funcionalitie.isExpanded = true;
+            funcionalitiesSearch.add(funcionalitie);
+            break;
+          }
+        }
       }
     }
   }
