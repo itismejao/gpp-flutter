@@ -437,52 +437,6 @@ class _UserListViewState extends State<UserListView> {
       ),
     );
   }
-
-  LayoutBuilder _buildFilterUsers() {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth < 600) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: inputSearch(),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: dropDownButton(),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: dropDownButton(),
-              )
-            ],
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: inputSearch(),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: dropDownButton(),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-              ],
-            ),
-          );
-        }
-      },
-    );
-  }
 }
 
 // ignore: must_be_immutable
@@ -522,16 +476,12 @@ class _UserDetailViewState extends State<UserDetailView> {
   void handleSalved(
     context,
   ) async {
+    NotifyController nofity = NotifyController(context: context);
     if (await _controller
         .updateUserSubFuncionalities(_controller.subFuncionalities)) {
-      NotifyController nofity =
-          NotifyController(context: context, message: 'Usuário atualizado !');
-
-      nofity.sucess();
+      nofity.sucess("Usuário atualizado !");
     } else {
-      NotifyController nofity = NotifyController(
-          context: context, message: 'Usuário não atualizado !');
-      nofity.error();
+      nofity.error("Usuário não atualizado !");
     }
   }
 
