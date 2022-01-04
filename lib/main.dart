@@ -6,6 +6,8 @@ import 'package:gpp/src/not_found/repositories/not_found.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/authenticate_view.dart';
 import 'package:gpp/src/views/departament_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home_view.dart';
 import 'package:gpp/src/views/user_view.dart';
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: const Material(child: FuncionalitiesView()),
+      home: HomeView(),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
@@ -46,7 +48,6 @@ class MyApp extends StatelessWidget {
         '/user_detail': (context) => UserDetailView(
               user: UserModel(),
             ),
-        '/departament_detail': (context) => const DepartamentDetailView(),
         '/not_found': (context) => checkAuthenticate(const NotFoundView()),
       },
       debugShowCheckedModeBanner: false,
