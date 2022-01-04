@@ -5,7 +5,7 @@ import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 
 class AuthenticateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final scaffoldkey = GlobalKey<ScaffoldState>();
+
   late final AuthenticateRepository repository;
   AuthenticateEnum state = AuthenticateEnum.notLogged;
 
