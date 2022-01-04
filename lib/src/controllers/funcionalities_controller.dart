@@ -1,44 +1,60 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:gpp/src/models/funcionalitie_model.dart';
-// import 'package:gpp/src/models/user_model.dart';
-// import 'package:gpp/src/repositories/funcionalities_repository.dart';
-// import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
-// import 'package:gpp/src/shared/repositories/global.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/user_model.dart';
+import 'package:gpp/src/repositories/funcionalities_repository.dart';
+import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
+import 'package:gpp/src/shared/repositories/global.dart';
 
-// class FuncionalitiesController {
-//   late final FuncionalitiesRepository repository;
-//   //FuncionalitiesEnum status = FuncionalitiesEnum.loading;
-//   final state =
-//       ValueNotifier<FuncionalitiesEnum>(FuncionalitiesEnum.notFuncionalities);
-//   List<FuncionalitieModel> funcionalities = [];
-//   List<FuncionalitieModel> funcionalitiesSearch = [];
+class FuncionalitiesController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-//   FuncionalitiesController(this.repository);
+  late final FuncionalitiesRepository repository;
+  List<FuncionalitieModel> funcionalities = [];
+  FuncionalitieModel funcionalitie = FuncionalitieModel();
+  FuncionalitiesEnum state = FuncionalitiesEnum.notChange;
+  bool groupValue = false;
 
-//   UserModel user = UserModel();
+  FuncionalitiesController(this.repository);
 
-//   void search(String value) {
-//     state.value = FuncionalitiesEnum.loading;
-//     if (value.isNotEmpty) {
-//       funcionalitiesSearch = funcionalities
-//           .where(
-//               (row) => (row.name.toLowerCase().contains(value.toLowerCase())))
-//           .toList();
+  Future<void> fetch() async {
+    funcionalities = await repository.fetch();
+  }
 
-//       // funcionalitiesSearch.forEach((element) {
-//       //   element.isExpanded = true;
-//       // });
-//     } else {
-//       funcionalitiesSearch = [];
-//     }
-//     state.value = FuncionalitiesEnum.changeFuncionalities;
-//   }
+  void setFuncionalitieName(value) {
+    funcionalitie.name = value;
+  }
 
-//   Future<void> changeFuncionalities() async {
-//     user.uid = authenticateUser!.id.toString();
-//     state.value = FuncionalitiesEnum.loading;
-//     funcionalities = await repository.fetchFuncionalities(user);
-//     //funcionalitiesAux = funcionalities;
-//     state.value = FuncionalitiesEnum.changeFuncionalities;
-//   }
-// }
+  void setFuncionalitieIcon(value) {
+    funcionalitie.icon = value;
+  }
+
+  void setFuncionalitieActive(value) {
+    funcionalitie.active = value;
+  }
+
+  //Validação
+  validateInput(value) {
+    if (value.isEmpty) {
+      return 'Campo obrigatório';
+    }
+    return null;
+  }
+
+  Future<bool> create() async {
+    if (!formKey.currentState!.validate()) {
+      return false;
+    }
+
+    formKey.currentState!.save();
+
+    return await repository.create(funcionalitie);
+  }
+
+  Future<bool> update(FuncionalitieModel funcionalitie) async {
+    return await repository.update(funcionalitie);
+  }
+
+  Future<bool> delete(FuncionalitieModel funcionalitie) async {
+    return await repository.delete(funcionalitie);
+  }
+}
