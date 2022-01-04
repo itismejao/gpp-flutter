@@ -92,7 +92,127 @@ void main() {
     });
   });
 
-  group("Usuário e funcionalidades:", () {});
+  group("Usuário e funcionalidades:", () {
+    String dataReceived = '''[
+    [
+        {
+            "id": "2",
+            "name": "CADASTROSXXXXX",
+            "icon": "account_balance_XXXXXX",
+            "subFuncionalities": [
+                {
+                    "id": "9",
+                    "name": "Endereços",
+                    "icon": "add_business",
+                    "route": "/enderecos"
+                },
+                {
+                    "id": "5",
+                    "name": "Funcionalidades",
+                    "icon": "add_a_photo",
+                    "route": "/funcionalidades"
+                },
+                {
+                    "id": "8",
+                    "name": "Peças",
+                    "icon": "add_alarm_rounded",
+                    "route": "/pecas"
+                },
+                {
+                    "id": "14",
+                    "name": "Departamentos",
+                    "icon": "add_link_sharp",
+                    "route": "/departamentos"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "name": "ASTECAS",
+            "icon": "account_box",
+            "subFuncionalities": [
+                {
+                    "id": "11",
+                    "name": "Manutenção",
+                    "icon": "add_circle_outline_outlined",
+                    "route": "/manutencao"
+                },
+                {
+                    "id": "10",
+                    "name": "Movimentos",
+                    "icon": "add_call",
+                    "route": "/movimentos"
+                }
+            ]
+        },
+        {
+            "id": "4",
+            "name": "PEDIDOS",
+            "icon": "account_tree",
+            "subFuncionalities": [
+                {
+                    "id": "12",
+                    "name": "Solicitados",
+                    "icon": "add_location",
+                    "route": "/solicitados"
+                },
+                {
+                    "id": "13",
+                    "name": "Cancelados",
+                    "icon": "add_link_sharp",
+                    "route": "/cancelados"
+                }
+            ]
+        },
+        {
+            "id": "5",
+            "name": "FUNCIONALIDADES",
+            "icon": "account_tree",
+            "subFuncionalities": [
+                {
+                    "id": "15",
+                    "name": "Menus",
+                    "icon": "add_link_sharp",
+                    "route": "/menus"
+                },
+                {
+                    "id": "16",
+                    "name": "Itens do menu",
+                    "icon": "add_link_sharp",
+                    "route": "/itensmenu"
+                }
+            ]
+        },
+        {
+            "id": "21",
+            "name": "ADMINISTRAÇÃO",
+            "icon": "settings",
+            "subFuncionalities": [
+                {
+                    "id": "22",
+                    "name": "Departamento",
+                    "icon": "home_work",
+                    "route": "/departaments"
+                },
+                {
+                    "id": "21",
+                    "name": "Usuários",
+                    "icon": "person",
+                    "route": "/users"
+                }
+            ]
+        }
+    ]
+]''';
+
+    test('Valida busca funcionalidades relacionadas ao usuário', () async {
+      when(api.get(any))
+          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      final response =
+          await repository.fetchFuncionalities(UserModel(uid: "1"));
+      expect(response, isA<List<FuncionalitieModel>>());
+    });
+  });
 
   group("Usuário e itens de funcionalidades: ", () {
     String dataReceived = ''' [
