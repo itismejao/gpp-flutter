@@ -1,1 +1,1 @@
-enum FuncionalitiesEnum { notFuncionalities, loading, changeFuncionalities }
+enum FuncionalitiesEnum { notChange, loading, change }
