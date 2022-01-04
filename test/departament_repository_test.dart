@@ -89,7 +89,7 @@ void main() {
           .thenAnswer((realInvocation) async => Response(dataReceived, 404));
 
       expect(() async => await repository.fetchDepartament(),
-          throwsA(isA<List<DepartamentModel>>()));
+          throwsA(isA<DepartamentException>()));
     });
   });
 
