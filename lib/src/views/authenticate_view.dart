@@ -32,6 +32,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
   }
 
   handleAutheticated(context) async {
+    NotifyController nofity = NotifyController(context: context);
     try {
       setState(() {
         _authenticate.state = AuthenticateEnum.loading;
@@ -48,9 +49,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         });
       }
     } catch (e) {
-      NotifyController nofity =
-          NotifyController(context: context, message: e.toString());
-      nofity.error();
+      nofity.error(e.toString());
       setState(() {
         _authenticate.state = AuthenticateEnum.error;
       });
@@ -66,121 +65,117 @@ class _AuthenticateViewState extends State<AuthenticateView> {
   Form _buildFormAuthenticated(MediaQueryData mediaQuery) {
     return Form(
       key: _authenticate.formKey,
-      child: Expanded(
-        flex: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Text('Login',
-                      textScaleFactor: mediaQuery.textScaleFactor,
-                      style: textStyle(
-                          fontSize: 24,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700)),
-                ),
-                Text('RE',
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text('Login',
+                    textScaleFactor: mediaQuery.textScaleFactor,
                     style: textStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700)),
-                TextFormField(
-                  maxLength: 255,
-                  onSaved: (uid) => _authenticate.setUserUID(uid),
-                  validator: (value) => validateInput(value),
-                  keyboardType: TextInputType.number,
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700)),
+              ),
+              Text('RE',
                   style: textStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      fontSize: 14,
-                      height: 1.8),
-                  decoration: inputDecoration(
-                      'Digite seu RE', const Icon(Icons.account_box)),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Text('Senha',
-                    style: textStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700)),
-                TextFormField(
-                  maxLength: 50,
-                  validator: (password) => validateInput(password),
-                  onSaved: (password) =>
-                      _authenticate.setUserPassword(password),
-                  obscureText: !_visiblePassword,
+                      color: Colors.black, fontWeight: FontWeight.w700)),
+              TextFormField(
+                maxLength: 255,
+                onSaved: (uid) => _authenticate.setUserUID(uid),
+                validator: (value) => validateInput(value),
+                keyboardType: TextInputType.number,
+                style: textStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    fontSize: 14,
+                    height: 1.8),
+                decoration: inputDecoration(
+                    'Digite seu RE', const Icon(Icons.account_box)),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text('Senha',
                   style: textStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                      fontSize: 14,
-                      height: 1.8),
-                  decoration: inputDecoration(
-                      'Digite sua senha', const Icon(Icons.lock),
-                      suffixIcon: GestureDetector(
-                        onTap: () => visiblePassword(),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Icon(
-                            Icons.visibility,
-                            color: Colors.grey,
+                      color: Colors.black, fontWeight: FontWeight.w700)),
+              TextFormField(
+                maxLength: 50,
+                validator: (password) => validateInput(password),
+                onSaved: (password) => _authenticate.setUserPassword(password),
+                obscureText: !_visiblePassword,
+                style: textStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    fontSize: 14,
+                    height: 1.8),
+                decoration:
+                    inputDecoration('Digite sua senha', const Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () => visiblePassword(),
+                          child: const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Icon(
+                              Icons.visibility,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      )),
-                ),
-                const SizedBox(height: 24),
-                Row(
+                        )),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.transparent,
+                            elevation: 0,
+                            primary: primaryColor),
+                        onPressed: () => handleAutheticated(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text('Logar',
+                              style: textStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700)),
+                        )),
+                  ),
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Divider(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
                   children: [
                     Expanded(
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shadowColor: Colors.transparent,
-                              elevation: 0,
-                              primary: primaryColor),
-                          onPressed: () => handleAutheticated(context),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text('Logar',
+                      child: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text:
+                                    'Em caso de dúvida, entre em contato com o suporte através do telefone ',
                                 style: textStyle(
-                                    color: Colors.white,
+                                    color: Colors.grey.shade400,
                                     fontWeight: FontWeight.w700)),
-                          )),
+                            const TextSpan(
+                                text: '9999-9999',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(0, 207, 128, 0.8),
+                                    fontWeight: FontWeight.w400)),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text:
-                                      'Em caso de dúvida, entre em contato com o suporte através do telefone ',
-                                  style: textStyle(
-                                      color: Colors.grey.shade400,
-                                      fontWeight: FontWeight.w700)),
-                              const TextSpan(
-                                  text: '9999-9999',
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(0, 207, 128, 0.8),
-                                      fontWeight: FontWeight.w400)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -430,29 +425,32 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 80),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [_buildMessageWelcome()],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: 460,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 140),
+              child: SizedBox(
+                height: mediaQuery.size.height * 0.90,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [_buildMessageWelcome()],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 400,
+                          height: 460,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: _buildAuthenticated(context, mediaQuery),
                         ),
-                        child: _buildAuthenticated(context, mediaQuery),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -477,7 +475,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         builder: (BuildContext context, BoxConstraints constraints) {
       if (_responsive.isMobile(constraints.maxWidth)) {
         return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -491,7 +489,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
             ));
       } else {
         return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 80),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 140),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
