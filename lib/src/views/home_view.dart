@@ -5,13 +5,15 @@ import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/not_found/repositories/not_found.dart';
 import 'package:gpp/src/views/appbar_view.dart';
-import 'package:gpp/src/views/departament_view.dart';
+import 'package:gpp/src/views/departaments/departament_detail_view.dart';
+import 'package:gpp/src/views/departaments/departament_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_update_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_home_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
-import 'package:gpp/src/views/user_view.dart';
+import 'package:gpp/src/views/users/user_detail.view.dart';
+import 'package:gpp/src/views/users/user_view.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -111,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
             case '/departaments':
               page = const DepartamentView();
               break;
-            case '/departament_detail':
+            case '/departaments_detail':
               final departament = settings.arguments as DepartamentModel;
 
               page = DepartamentDetailView(

@@ -5,12 +5,14 @@ import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/not_found/repositories/not_found.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/authenticate_view.dart';
-import 'package:gpp/src/views/departament_view.dart';
+import 'package:gpp/src/views/departaments/departament_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_home_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home_view.dart';
-import 'package:gpp/src/views/user_view.dart';
+import 'package:gpp/src/views/users/user_detail.view.dart';
+import 'package:gpp/src/views/users/user_view.dart';
 
 main() async {
   await dotenv.load(fileName: "env");
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: HomeView(),
+      home: Scaffold(body: FuncionalitiesHomeView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
