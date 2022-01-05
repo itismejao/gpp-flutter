@@ -1,4 +1,5 @@
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
@@ -8,7 +9,7 @@ class UserController {
   UserRepository repository;
   List<UserModel> users = [];
   List<UserModel> usersSearch = [];
-  List<SubFuncionalities> subFuncionalities = [];
+  List<SubFuncionalitiesModel> subFuncionalities = [];
   UserEnum state = UserEnum.notUser;
   List<FuncionalitieModel> funcionalities = [];
   List<FuncionalitieModel> funcionalitiesSearch = [];
@@ -36,7 +37,7 @@ class UserController {
   }
 
   Future<bool> updateUserSubFuncionalities(
-      List<SubFuncionalities> subFuncionalities) async {
+      List<SubFuncionalitiesModel> subFuncionalities) async {
     UserModel user = UserModel();
     user.uid = authenticateUser!.id.toString();
 
