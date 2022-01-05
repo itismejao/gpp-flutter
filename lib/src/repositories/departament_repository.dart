@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/departament_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/shared/exceptions/departament_exception.dart';
 import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 import 'package:http/http.dart';
@@ -31,7 +32,7 @@ class DepartamentRepository {
     }
   }
 
-  Future<List<SubFuncionalities>> fetchSubFuncionalities(
+  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
       DepartamentModel departament) async {
     Response response =
         await api.get('/departamentos/itensfuncionalidades/' + departament.id);
@@ -39,8 +40,9 @@ class DepartamentRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<SubFuncionalities> subFuncionalities = data.first
-          .map<SubFuncionalities>((data) => SubFuncionalities.fromJson(data))
+      List<SubFuncionalitiesModel> subFuncionalities = data.first
+          .map<SubFuncionalitiesModel>(
+              (data) => SubFuncionalitiesModel.fromJson(data))
           .toList();
       return subFuncionalities;
     } else {
@@ -50,7 +52,7 @@ class DepartamentRepository {
   }
 
   Future<bool> updateDepartmentSubFuncionalities(DepartamentModel departament,
-      List<SubFuncionalities> subFuncionalities) async {
+      List<SubFuncionalitiesModel> subFuncionalities) async {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
