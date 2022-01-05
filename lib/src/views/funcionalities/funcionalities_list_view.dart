@@ -265,7 +265,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                         color: Colors.grey.shade400,
                       ),
                       onPressed: () => {
-                        Navigator.pushNamed(context, '/funcionalitie_update',
+                        Navigator.pushNamed(context, '/funcionalities_update',
                             arguments: funcionalities[index])
                       },
                     ),
@@ -309,36 +309,42 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Funcionalidades',
-              style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Funcionalidades',
+                  style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        elevation: 0,
+                        primary: primaryColor),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/funcionalities_create');
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text('Cadastrar',
+                          style: textStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700)),
+                    ))
+              ],
             ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shadowColor: Colors.transparent,
-                    elevation: 0,
-                    primary: primaryColor),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/funcionalities_create');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text('Cadastrar',
-                      style: textStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700)),
-                ))
-          ],
-        ),
-        Expanded(
-          child: _buildState(),
-        )
-      ],
-    ));
+          ),
+          Expanded(
+            child: _buildState(),
+          )
+        ],
+      ),
+    );
   }
 }

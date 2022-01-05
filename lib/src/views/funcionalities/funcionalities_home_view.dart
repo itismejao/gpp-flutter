@@ -3,6 +3,7 @@ import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_form_update_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 
 class FuncionalitiesHomeView extends StatefulWidget {
@@ -20,6 +21,12 @@ class _FuncionalitiesHomeViewState extends State<FuncionalitiesHomeView> {
         var route = settings.name;
         Widget page;
         switch (route) {
+          case '/funcionalities_update':
+            final funcionalitie = settings.arguments as FuncionalitieModel;
+            page = FuncionalitieFormUpdateView(
+              funcionalitie: funcionalitie,
+            );
+            break;
           case '/funcionalities_create':
             page = FuncionalitieFormCreateView();
             break;
