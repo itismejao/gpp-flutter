@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:http/http.dart';
 
 import 'package:gpp/src/models/funcionalitie_model.dart';
@@ -30,15 +31,17 @@ class UserRepository {
     }
   }
 
-  Future<List<SubFuncionalities>> fetchSubFuncionalities(UserModel user) async {
+  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
+      UserModel user) async {
     Response response =
         await api.get('/user/itensfuncionalidades/' + user.uid.toString());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<SubFuncionalities> subFuncionalities = data.first
-          .map<SubFuncionalities>((data) => SubFuncionalities.fromJson(data))
+      List<SubFuncionalitiesModel> subFuncionalities = data.first
+          .map<SubFuncionalitiesModel>(
+              (data) => SubFuncionalitiesModel.fromJson(data))
           .toList();
       return subFuncionalities;
     } else {
@@ -48,7 +51,7 @@ class UserRepository {
   }
 
   Future<bool> updateUserSubFuncionalities(
-      UserModel user, List<SubFuncionalities> subFuncionalities) async {
+      UserModel user, List<SubFuncionalitiesModel> subFuncionalities) async {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
