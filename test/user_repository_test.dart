@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
@@ -340,7 +341,7 @@ void main() {
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final response =
           await repository.fetchSubFuncionalities(UserModel(uid: "1"));
-      expect(response, isA<List<SubFuncionalities>>());
+      expect(response, isA<List<SubFuncionalitiesModel>>());
     });
 
     test(

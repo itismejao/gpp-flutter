@@ -11,6 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/shared/exceptions/departament_exception.dart';
@@ -177,7 +178,7 @@ void main() {
     ]
 ]''';
 
-    test('Verifica busca de funcionalidades relacionadas ao departamento',
+    test('Valida busca de funcionalidades relacionadas ao departamento',
         () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
@@ -193,7 +194,7 @@ void main() {
       final subFucionalities =
           await repository.fetchSubFuncionalities(departament);
 
-      expect(subFucionalities, isA<List<SubFuncionalities>>());
+      expect(subFucionalities, isA<List<SubFuncionalitiesModel>>());
     });
 
     test(
@@ -230,9 +231,9 @@ void main() {
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
-      List<SubFuncionalities> subFuncionalities = [
-        SubFuncionalities("5",
-            name: "Funcionalidades", active: 1, idRegister: "33")
+      List<SubFuncionalitiesModel> subFuncionalities = [
+        SubFuncionalitiesModel(
+            id: 5, name: "Funcionalidades", active: true, idRegister: "33")
       ];
 
       final response = await repository.updateDepartmentSubFuncionalities(
@@ -255,9 +256,9 @@ void main() {
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
-      List<SubFuncionalities> subFuncionalities = [
-        SubFuncionalities("",
-            name: "Funcionalidades", active: 1, idRegister: "33")
+      List<SubFuncionalitiesModel> subFuncionalities = [
+        SubFuncionalitiesModel(
+            name: "Funcionalidades", active: true, idRegister: "33")
       ];
 
       expect(
