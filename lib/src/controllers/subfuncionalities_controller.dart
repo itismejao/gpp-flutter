@@ -59,9 +59,9 @@ class SubFuncionalitiesController {
     return await repository.create(funcionalitie, subFuncionalitie);
   }
 
-  // Future<bool> update(FuncionalitieModel funcionalitie) async {
-  //   return await repository.update(funcionalitie);
-  // }
+  Future<bool> update(SubFuncionalitiesModel subFuncionalitie) async {
+    return await repository.update(subFuncionalitie);
+  }
 
   Future<bool> delete(SubFuncionalitiesModel subFuncionalitie) async {
     return await repository.delete(subFuncionalitie);

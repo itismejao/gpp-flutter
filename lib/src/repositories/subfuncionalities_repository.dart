@@ -48,10 +48,10 @@ class SubFuncionalitiesRepository {
     }
   }
 
-  Future<bool> update(SubFuncionalitiesModel funcionalitie) async {
+  Future<bool> update(SubFuncionalitiesModel subFuncionalitie) async {
     Response response = await api.put(
-        '/funcionalidades/' + funcionalitie.id.toString(),
-        funcionalitie.toJson());
+        '/itensfuncionalidades/' + subFuncionalitie.id.toString(),
+        subFuncionalitie.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

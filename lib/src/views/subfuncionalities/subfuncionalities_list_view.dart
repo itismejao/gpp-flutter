@@ -271,8 +271,9 @@ class _SubFuncionalitiesListViewState extends State<SubFuncionalitiesListView> {
                         color: Colors.grey.shade400,
                       ),
                       onPressed: () => {
-                        // Navigator.pushNamed(context, '/funcionalitie_update',
-                        //     arguments: subFuncionalities[index])
+                        Navigator.pushNamed(
+                            context, '/subfuncionalities_update',
+                            arguments: subFuncionalities[index])
                       },
                     ),
                     IconButton(
@@ -316,32 +317,37 @@ class _SubFuncionalitiesListViewState extends State<SubFuncionalitiesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Subfuncionalidades',
-                style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shadowColor: Colors.transparent,
-                      elevation: 0,
-                      primary: primaryColor),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/subfuncionalities_create',
-                        arguments: widget.funcionalitie);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text('Cadastrar',
-                        style: textStyle(
-                            color: Colors.white, fontWeight: FontWeight.w700)),
-                  ))
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Subfuncionalidades',
+                  style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        elevation: 0,
+                        primary: primaryColor),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/subfuncionalities_create',
+                          arguments: widget.funcionalitie);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text('Cadastrar',
+                          style: textStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700)),
+                    ))
+              ],
+            ),
           ),
           Expanded(child: _buildState())
         ],

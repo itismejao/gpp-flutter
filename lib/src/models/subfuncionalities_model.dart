@@ -48,7 +48,7 @@ class SubFuncionalitiesModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['active'] = active;
+    data['active'] = active! ? 1 : 0;
     data['icon'] = icon;
     data['route'] = route;
     data['idregister'] = idRegister;

@@ -44,7 +44,7 @@ void main() {
             "routes": "/funcionalidades",
             "active": "1",
             "icon": "add_a_photo",
-            "iduserresp": "1"
+
         }
     ]
     ]''';
