@@ -56,12 +56,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
     NotifyController nofity = NotifyController(context: context);
     if (await _controller.updateUserSubFuncionalities(
         DepartamentModel(
-            id: "1",
-            description: "",
-            active: "",
-            iduserresp: "",
-            createdAt: "",
-            updatedAt: ""),
+            id: "1", description: "", active: "", createdAt: "", updatedAt: ""),
         _controller.subFuncionalities)) {
       nofity.sucess("Departamento atualizado !");
     } else {

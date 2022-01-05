@@ -38,7 +38,7 @@ void main() {
             "id": "1",
             "description": "Tecnologia",
             "active": "1",
-            "iduserresp": "1",
+     
             "created_at": "2021-12-24 17:05:12",
             "updated_at": "2021-12-24 17:07:05"
         },
@@ -46,7 +46,7 @@ void main() {
             "id": "2",
             "description": "Gerência",
             "active": "0",
-            "iduserresp": "2",
+   
             "created_at": "2021-12-24 17:05:36",
             "updated_at": "2021-12-24 17:05:36"
         },
@@ -54,7 +54,7 @@ void main() {
             "id": "4",
             "description": "Asteca",
             "active": "0",
-            "iduserresp": "1",
+   
             "created_at": "2021-12-24 17:05:51",
             "updated_at": "2021-12-24 17:05:51"
         },
@@ -62,7 +62,7 @@ void main() {
             "id": "5",
             "description": "Estoque",
             "active": "0",
-            "iduserresp": "1",
+           
             "created_at": "2021-12-24 17:05:57",
             "updated_at": "2021-12-24 17:05:57"
         },
@@ -70,7 +70,7 @@ void main() {
             "id": "6",
             "description": "Expedição",
             "active": "0",
-            "iduserresp": "1",
+        
             "created_at": "2021-12-24 17:06:08",
             "updated_at": "2021-12-24 17:06:08"
         }
@@ -187,7 +187,6 @@ void main() {
           id: "1",
           description: "Tecnologia",
           active: "1",
-          iduserresp: "1",
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -207,7 +206,6 @@ void main() {
           id: "1",
           description: "Tecnologia",
           active: "1",
-          iduserresp: "1",
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -227,7 +225,6 @@ void main() {
           id: "1",
           description: "Tecnologia",
           active: "1",
-          iduserresp: "1",
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -252,7 +249,6 @@ void main() {
           id: "1",
           description: "Tecnologia",
           active: "1",
-          iduserresp: "1",
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
