@@ -1,12 +1,13 @@
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 
 class DepartamentController {
   DepartamentRepository repository;
   List<DepartamentModel> departaments = [];
-  List<SubFuncionalities> subFuncionalities = [];
+  List<SubFuncionalitiesModel> subFuncionalities = [];
   DepartamentEnum state = DepartamentEnum.notDepartament;
 
   DepartamentController({
@@ -18,7 +19,7 @@ class DepartamentController {
   }
 
   Future<bool> updateUserSubFuncionalities(DepartamentModel departament,
-      List<SubFuncionalities> subFuncionalities) async {
+      List<SubFuncionalitiesModel> subFuncionalities) async {
     return await repository.updateDepartmentSubFuncionalities(
         departament, subFuncionalities);
   }
