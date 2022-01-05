@@ -276,6 +276,15 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                         ),
                         onPressed: () =>
                             handleDelete(context, funcionalities[index])),
+                    IconButton(
+                        icon: Icon(
+                          Icons.list,
+                          color: Colors.grey.shade400,
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/funcionalities_detail',
+                              arguments: funcionalities[index]);
+                        }),
                   ],
                 ),
               ),
@@ -300,6 +309,36 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: _buildState());
+    return Container(
+        child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Funcionalidades',
+              style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shadowColor: Colors.transparent,
+                    elevation: 0,
+                    primary: primaryColor),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/funcionalities_create');
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text('Cadastrar',
+                      style: textStyle(
+                          color: Colors.white, fontWeight: FontWeight.w700)),
+                ))
+          ],
+        ),
+        Expanded(
+          child: _buildState(),
+        )
+      ],
+    ));
   }
 }
