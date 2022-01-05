@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
@@ -199,7 +200,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   Widget _buildListSubFuncionalities(
-      SubFuncionalities subFuncionalities, MediaQueryData mediaQuery) {
+      SubFuncionalitiesModel subFuncionalities, MediaQueryData mediaQuery) {
     return Row(
       children: [
         Expanded(
