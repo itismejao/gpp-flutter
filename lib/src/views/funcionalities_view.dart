@@ -41,7 +41,13 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
         _controller.state = UserEnum.loading;
       });
     }
-    await _controller.changeFuncionalities();
+    try {
+      await _controller.changeFuncionalities();
+    } catch (e) {
+      setState(() {
+        _controller.state = UserEnum.error;
+      });
+    }
     if (mounted) {
       setState(() {
         _controller.state = UserEnum.changeUser;
@@ -386,6 +392,10 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
 
   stateManagement(MediaQueryData mediaQuery, context) {
     switch (_controller.state) {
+      case UserEnum.error:
+        return Container(
+          child: Text("Não foi encontrado funcionalidades"),
+        );
       case UserEnum.loading:
         return const ShimmerWidget();
 
