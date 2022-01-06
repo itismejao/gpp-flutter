@@ -31,7 +31,7 @@ class AppBarView extends StatelessWidget {
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
                     Text(
-                      'GPP',
+                      'gpp',
                       style: textStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -63,10 +63,10 @@ class AppBarView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'GPP',
+                'gpp',
                 style: textStyle(
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 32,
                   fontWeight: FontWeight.w700,
                 ),
               ),
