@@ -4,6 +4,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/shared/components/button_primary_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -55,10 +56,8 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   ) async {
     NotifyController nofity = NotifyController(context: context);
     if (await _controller.updateUserSubFuncionalities(
-        DepartamentModel(
-            id: "1", description: "", active: "", createdAt: "", updatedAt: ""),
-        _controller.subFuncionalities)) {
-      nofity.sucess("Departamento atualizado !");
+        widget.departament, _controller.subFuncionalities)) {
+      nofity.sucess("Funcionalidade cadastrada!");
     } else {
       nofity.error("Departamento não atualizado !");
     }
@@ -91,7 +90,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                 Expanded(
                   child: Checkbox(
                     checkColor: Colors.white,
-                    value: subFuncionalities[index].active == 1 ? true : false,
+                    value: subFuncionalities[index].active,
                     onChanged: (bool? value) => handleCheckBox(value, index),
                   ),
                 )
@@ -184,16 +183,8 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                     : Container()),
             Row(
               children: [
-                ElevatedButton(
-                    style: buttonStyle,
-                    onPressed: () => handleSalved(context),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text('Salvar',
-                          style: textStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700)),
-                    )),
+                ButtonPrimaryComponent(
+                    onPressed: () => handleSalved(context), text: "Salvar")
               ],
             )
           ],
