@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: Scaffold(body: HomeView()),
+      home: Scaffold(body: AuthenticateView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),
