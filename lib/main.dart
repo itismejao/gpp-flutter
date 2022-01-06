@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/models/user_model.dart';
 
-import 'package:gpp/src/not_found/repositories/not_found.dart';
+import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/views/authenticate_view.dart';
+import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 import 'package:gpp/src/views/departaments/departament_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_home_view.dart';
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       // home: const AuthenticateView(),
-      home: Scaffold(body: AuthenticateView()),
+      home: Scaffold(body: HomeView()),
       routes: {
         '/home': (context) => checkAuthenticate(const HomeView()),
         '/login': (context) => const AuthenticateView(),

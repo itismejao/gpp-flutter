@@ -3,7 +3,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/not_found/repositories/not_found.dart';
+import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/appbar_view.dart';
 import 'package:gpp/src/views/departaments/departament_detail_view.dart';
 import 'package:gpp/src/views/departaments/departament_view.dart';
@@ -26,13 +26,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final ResponsiveController _responsive = ResponsiveController();
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
     Widget page = LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      if (_responsive.isMobile(constraints.maxWidth)) {
+      if (_responsive.isMobile(constraints.maxWidth) ||
+          _responsive.isTable(constraints.maxWidth)) {
         return Scaffold(
           backgroundColor: Colors.grey.shade200,
           appBar: PreferredSize(
