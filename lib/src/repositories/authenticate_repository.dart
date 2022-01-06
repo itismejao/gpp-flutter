@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/authenticate_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
 
