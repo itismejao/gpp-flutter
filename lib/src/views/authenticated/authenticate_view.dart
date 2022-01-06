@@ -3,8 +3,8 @@ import 'package:gpp/src/controllers/authenticate_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/repositories/authenticate_repository.dart';
-import 'package:gpp/src/shared/components/ButtonPrimary.dart';
-import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/button_primary_component.dart';
+import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/loading_view.dart';
@@ -104,7 +104,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               Row(
                 children: [
                   Expanded(
-                    child: ButtonPrimary(
+                    child: ButtonPrimaryComponent(
                         onPressed: () => handleAutheticated(context),
                         text: "Logar"),
                   ),
