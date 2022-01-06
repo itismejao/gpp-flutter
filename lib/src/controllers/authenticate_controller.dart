@@ -6,6 +6,8 @@ import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 class AuthenticateController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  bool visiblePassword = false;
+
   late final AuthenticateRepository repository;
   AuthenticateEnum state = AuthenticateEnum.notLogged;
 
@@ -16,6 +18,13 @@ class AuthenticateController {
   setUserUID(String? uid) => user.uid = uid;
 
   setUserPassword(String? password) => user.password = password;
+
+  validateInput(value) {
+    if (value.isEmpty) {
+      return 'Campo obrigatório';
+    }
+    return null;
+  }
 
   Future<bool> login() async {
     if (!formKey.currentState!.validate()) {

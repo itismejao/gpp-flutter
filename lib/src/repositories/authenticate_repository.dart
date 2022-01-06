@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
+
 import 'package:gpp/src/shared/models/authenticate_model.dart';
 import 'package:gpp/src/shared/repositories/global.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
