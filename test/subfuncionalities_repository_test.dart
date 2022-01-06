@@ -63,7 +63,7 @@ void main() {
   group('Funcionalidades - Criação: ', () {
     FuncionalitieModel funcionalitie = FuncionalitieModel(id: 5);
     SubFuncionalitiesModel subFuncionalitie = SubFuncionalitiesModel(
-        name: "Teste", route: "/teste", icon: "home_work");
+        name: "Teste", route: "/teste", icon: "home_work", active: false);
 
     test('Valida a criação de subfuncionalidade relacionada a funcionalidade',
         () async {
