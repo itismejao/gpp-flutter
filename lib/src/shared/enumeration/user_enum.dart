@@ -1,1 +1,1 @@
-enum UserEnum { notUser, loading, changeUser }
+enum UserEnum { notUser, loading, changeUser, error }
