@@ -249,7 +249,7 @@ class BookRouterDelegate extends RouterDelegate<GppRoutePath>
     var stack;
 
     // ignore: unnecessary_null_comparison
-    if (authenticated) {
+    if (!authenticated) {
       stack = MaterialPage(
           child: AuthenticateView(
         login: () => handleLogin(),
