@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
@@ -5,6 +6,7 @@ import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 
 class DepartamentController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DepartamentRepository repository;
   List<DepartamentModel> departaments = [];
   List<SubFuncionalitiesModel> subFuncionalities = [];
@@ -29,6 +31,27 @@ class DepartamentController {
     subFuncionalities = await repository.fetchSubFuncionalities(departament);
   }
 
+  Future<bool> create(DepartamentModel departament) async {
+    if (!formKey.currentState!.validate()) {
+      return false;
+    }
+
+    // formKey.currentState!.save();
+
+    return await repository.create(departament);
+  }
+
+  Future<bool> delete(DepartamentModel departament) async {
+    return await repository.delete(departament);
+  }
+
+  //Validação
+  validateInput(value) {
+    if (value.isEmpty) {
+      return 'Campo obrigatório';
+    }
+    return null;
+  }
   // List<UserModel> usersSearch = [];
 
   // UserEnum state = UserEnum.notUser;

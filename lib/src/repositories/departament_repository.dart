@@ -34,8 +34,8 @@ class DepartamentRepository {
 
   Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
       DepartamentModel departament) async {
-    Response response =
-        await api.get('/departamentos/itensfuncionalidades/' + departament.id);
+    Response response = await api.get(
+        '/departamentos/itensfuncionalidades/' + departament.id.toString());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -58,13 +58,36 @@ class DepartamentRepository {
         .toList();
 
     Response response = await api.put(
-        '/departamentos/itensfuncionalidades/' + departament.id, dataSend);
+        '/departamentos/itensfuncionalidades/' + departament.id.toString(),
+        dataSend);
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
       return throw DepartamentException(
           "Funcionalidades do departamento foram atualizadas !");
+    }
+  }
+
+  Future<bool> create(DepartamentModel departament) async {
+    Response response = await api.post('/departamentos', departament.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw DepartamentException("Departamento não foi cadastrada !");
+    }
+  }
+
+  Future<bool> delete(DepartamentModel departament) async {
+    Response response = await api.delete(
+      '/departamentos/' + departament.id.toString(),
+    );
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw DepartamentException("Departamento não foi deletado !");
     }
   }
 }

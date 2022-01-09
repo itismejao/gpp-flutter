@@ -138,7 +138,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.departament.description.toString()),
+                    Text(widget.departament.name!),
                     // const SizedBox(
                     //   height: 12,
                     // ),

@@ -1,23 +1,27 @@
 class DepartamentModel {
-  String id;
-  String description;
-  String active;
+  int? id;
+  String? name;
+  bool? active;
 
-  String createdAt;
-  String updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
   DepartamentModel(
-      {required this.id,
-      required this.description,
-      required this.active,
-      required this.createdAt,
-      required this.updatedAt});
+      {this.id, this.name, this.active, this.createdAt, this.updatedAt});
 
   factory DepartamentModel.fromJson(Map<String, dynamic> json) {
+    bool? active;
+
+    if (json['active'] == "1") {
+      active = true;
+    } else {
+      active = false;
+    }
+
     return DepartamentModel(
-        id: json['id'],
-        description: json['description'],
-        active: json['active'],
+        id: int.parse(json['id']),
+        name: json['description'],
+        active: active,
         createdAt: json['created_at'],
         updatedAt: json['updated_at']);
   }
@@ -25,7 +29,7 @@ class DepartamentModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['description'] = description;
+    data['name'] = name;
     data['active'] = active;
 
     data['created_at'] = createdAt;

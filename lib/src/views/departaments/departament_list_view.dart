@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/departament_controller.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
@@ -32,6 +33,20 @@ class _DepartamentListViewState extends State<DepartamentListView> {
       setState(() {
         _controller.state = DepartamentEnum.changeDepartament;
       });
+    }
+  }
+
+  handleDelete(context, DepartamentModel departament) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify.alert("você deseja excluir essa funcionalidade?")) {
+        if (await _controller.delete(departament)) {
+          notify.sucess("Funcionalidade excluída!");
+          changeDepartaments();
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
     }
   }
 
@@ -118,11 +133,6 @@ class _DepartamentListViewState extends State<DepartamentListView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                      child: Text('Foto',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
                   Expanded(
                       child: Text('Departamento',
                           style: textStyle(
@@ -308,6 +318,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   //     },
   //   );
   // }
+
   Widget _buildListItem(
       List<DepartamentModel> departament, int index, BuildContext context) {
     return LayoutBuilder(
@@ -346,7 +357,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              departament[index].description,
+                              departament[index].name!,
                               style: textStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700),
@@ -378,10 +389,8 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                             Icons.delete,
                             color: Colors.grey.shade400,
                           ),
-                          onPressed: () => {
-                            // Navigator.pushNamed(context, '/user_detail',
-                            //     arguments: departament[index])
-                          },
+                          onPressed: () =>
+                              handleDelete(context, departament[index]),
                         ),
                       ],
                     ),
@@ -392,75 +401,99 @@ class _DepartamentListViewState extends State<DepartamentListView> {
           );
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                        )),
-                  ],
+        return Container(
+          color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    departament[index].name!,
+                    style: textStyle(
+                        color: Colors.black, fontWeight: FontWeight.w700),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  departament[index].description,
-                  style: textStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Expanded(
-                  child: Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                    color: departament[index].active == "1"
-                        ? secundaryColor
-                        : Colors.grey.shade400,
-                    shape: BoxShape.circle),
-              )),
-              Expanded(
-                child: Row(
+                Expanded(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        Navigator.pushNamed(context, '/departaments_detail',
-                            arguments: departament[index])
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        // Navigator.pushNamed(context, '/user_detail',
-                        //     arguments: departament[index])
-                      },
-                    ),
+                    _buildStatus(departament[index].active!),
                   ],
+                )),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.grey.shade400,
+                        ),
+                        onPressed: () => {
+                          Navigator.pushNamed(context, '/departaments_detail',
+                              arguments: departament[index])
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.grey.shade400,
+                        ),
+                        onPressed: () =>
+                            handleDelete(context, departament[index]),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  Container _buildStatus(bool status) {
+    print(status);
+    if (status) {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: secundaryColor,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Ativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Inativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildDepartaments() {
@@ -480,19 +513,6 @@ class _DepartamentListViewState extends State<DepartamentListView> {
       padding: const EdgeInsets.all(24.0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Text('Departamentos',
-                        style: textStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700))),
-              ],
-            ),
-          ),
           Expanded(child: _buildDepartaments())
 
           // _buildFilterUsers(),

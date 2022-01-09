@@ -184,9 +184,9 @@ void main() {
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
 
       DepartamentModel departament = DepartamentModel(
-          id: "1",
-          description: "Tecnologia",
-          active: "1",
+          id: 1,
+          name: "Tecnologia",
+          active: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -203,9 +203,9 @@ void main() {
           .thenAnswer((realInvocation) async => Response('', 404));
 
       DepartamentModel departament = DepartamentModel(
-          id: "1",
-          description: "Tecnologia",
-          active: "1",
+          id: 1,
+          name: "Tecnologia",
+          active: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -222,9 +222,9 @@ void main() {
           .thenAnswer((realInvocation) async => Response('', 200));
 
       DepartamentModel departament = DepartamentModel(
-          id: "1",
-          description: "Tecnologia",
-          active: "1",
+          id: 1,
+          name: "Tecnologia",
+          active: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -246,9 +246,9 @@ void main() {
           .thenAnswer((realInvocation) async => Response('', 404));
 
       DepartamentModel departament = DepartamentModel(
-          id: "1",
-          description: "Tecnologia",
-          active: "1",
+          id: 1,
+          name: "Tecnologia",
+          active: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
