@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
@@ -8,10 +10,14 @@ import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/home_view.dart';
-import 'package:shimmer/shimmer.dart';
 
 class FuncionalitiesView extends StatefulWidget {
-  const FuncionalitiesView({Key? key}) : super(key: key);
+  Function handleCurrentPage;
+
+  FuncionalitiesView({
+    Key? key,
+    required this.handleCurrentPage,
+  }) : super(key: key);
 
   @override
   _FuncionalitiesViewState createState() => _FuncionalitiesViewState();
@@ -154,10 +160,19 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        funcionalities[index1].name!,
-                        style: textStyle(
-                            fontSize: 12, fontWeight: FontWeight.w700),
+                      Row(
+                        children: [
+                          Icon(IconData(int.parse(funcionalities[index1].icon!),
+                              fontFamily: 'MaterialIcons')),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            funcionalities[index1].name!,
+                            style: textStyle(
+                                fontSize: 12, fontWeight: FontWeight.w700),
+                          ),
+                        ],
                       ),
                       funcionalities[index1].isExpanded
                           ? const Icon(Icons.expand_more)
@@ -180,7 +195,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                                     .subFuncionalities!
                                     .map((subFuncionalities) {
                                   return _buildListSubFuncionalities(
-                                      subFuncionalities, mediaQuery);
+                                      subFuncionalities, mediaQuery, context);
                                 }).toList())),
                       ),
                     ),
@@ -205,15 +220,17 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     );
   }
 
-  Widget _buildListSubFuncionalities(
-      SubFuncionalitiesModel subFuncionalities, MediaQueryData mediaQuery) {
+  Widget _buildListSubFuncionalities(SubFuncionalitiesModel subFuncionalities,
+      MediaQueryData mediaQuery, context) {
     return Row(
       children: [
         Expanded(
           child: GestureDetector(
               onTap: () {
-                navigatorKey.currentState!
-                    .pushReplacementNamed(subFuncionalities.route.toString());
+                widget.handleCurrentPage(subFuncionalities.route.toString());
+
+                // navigatorKey.currentState!
+                //     .pushNamed(subFuncionalities.route.toString());
                 //Fecha Drawer
               },
               child: MouseRegion(
@@ -221,7 +238,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                   setState(() {
                     subFuncionalities.boxDecoration = BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey.shade200);
+                        color: Colors.grey.shade50);
                   });
                 },
                 onExit: (event) {
@@ -237,20 +254,12 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                         child: Container(
                           decoration: subFuncionalities.boxDecoration,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.account_box),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Text(
-                                  subFuncionalities.name.toString(),
-                                  style: textStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 28),
+                            child: Text(
+                              subFuncionalities.name.toString(),
+                              style: textStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
