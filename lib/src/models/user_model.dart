@@ -8,7 +8,7 @@ class UserModel {
   String? rememberToken;
   String? createdAt;
   String? updatedAt;
-  String? active;
+  bool? active;
   String? iddepto;
   String? departement;
   String? foto;
@@ -29,6 +29,14 @@ class UserModel {
       this.foto});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    bool? active;
+
+    if (json['active'] == "1") {
+      active = true;
+    } else if (json['active'] == "0") {
+      active = false;
+    }
+
     return UserModel(
         id: json['id'],
         uid: json['uid'],
@@ -39,7 +47,7 @@ class UserModel {
         rememberToken: json['remember_token'],
         createdAt: json['created_at'],
         updatedAt: json['updated_at'],
-        active: json['active'],
+        active: active,
         iddepto: json['iddepto'],
         departement: json['depto'],
         foto: json['foto']);

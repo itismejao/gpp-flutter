@@ -3,6 +3,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
+import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -26,6 +27,20 @@ class _UserListViewState extends State<UserListView> {
       });
     }
     await _controller.changeUser();
+    if (mounted) {
+      setState(() {
+        _controller.state = UserEnum.changeUser;
+      });
+    }
+  }
+
+  void handleSearch(value) {
+    if (mounted) {
+      setState(() {
+        _controller.state = UserEnum.loading;
+      });
+    }
+    _controller.search(value);
     if (mounted) {
       setState(() {
         _controller.state = UserEnum.changeUser;
@@ -138,12 +153,11 @@ class _UserListViewState extends State<UserListView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                      child: Text('Foto',
+                      child: Text('RE',
                           style: textStyle(
                               color: Colors.grey.shade400,
                               fontWeight: FontWeight.w700))),
                   Expanded(
-                    flex: 2,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -155,18 +169,41 @@ class _UserListViewState extends State<UserListView> {
                     ),
                   ),
                   Expanded(
-                      child: Text('RE',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Departamento',
+                            style: textStyle(
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
                   Expanded(
-                      flex: 2,
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Cargo',
+                            style: textStyle(
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Telefone',
+                            style: textStyle(
+                                color: Colors.grey.shade400,
+                                fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                  Expanded(
                       child: Text('E-mail',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
-                  Expanded(
-                      child: Text('Departamento',
                           style: textStyle(
                               color: Colors.grey.shade400,
                               fontWeight: FontWeight.w700))),
@@ -298,100 +335,146 @@ class _UserListViewState extends State<UserListView> {
           );
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                        )),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  users[index].name!,
+        return Container(
+          color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: Text(
+                  users[index].uid!,
                   style: textStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Expanded(
+                      fontSize: 12,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700),
+                )),
+                Expanded(
                   child: Text(
-                users[index].uid!,
-                style:
-                    textStyle(color: Colors.black, fontWeight: FontWeight.w700),
-              )),
-              Expanded(
+                    users[index].name!,
+                    style: textStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    users[index].departement ?? '',
+                    style: textStyle(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Expanded(
                   flex: 2,
                   child: Text(
-                    users[index].email!,
+                    "Auxiliar Administrativo",
                     style: textStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700),
-                  )),
-              Expanded(
-                  child: users[index].departement != null
-                      ? Text(
-                          users[index].departement!,
-                          style: textStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        )
-                      : Text('',
-                          style: textStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700))),
-              Expanded(
-                  child: Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                    color: users[index].active == "1"
-                        ? secundaryColor
-                        : Colors.grey.shade400,
-                    shape: BoxShape.circle),
-              )),
-              Expanded(
-                child: Row(
+                        fontSize: 12,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Expanded(
+                    child: Text(
+                  "(62) 9999-9999",
+                  style: textStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700),
+                )),
+                Expanded(
+                    child: Text(
+                  users[index].email!,
+                  style: textStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700),
+                )),
+                Expanded(
+                    child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        Navigator.pushNamed(context, '/user_detail',
-                            arguments: users[index])
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        // Navigator.pushNamed(context, '/user_detail',
-                        //     arguments: users[index])
-                      },
-                    ),
+                    _buildStatus(users[index].active!),
                   ],
+                )),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.grey.shade400,
+                        ),
+                        onPressed: () => {
+                          Navigator.pushNamed(context, '/user_detail',
+                              arguments: users[index])
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.grey.shade400,
+                        ),
+                        onPressed: () => {
+                          // Navigator.pushNamed(context, '/user_detail',
+                          //     arguments: users[index])
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  Container _buildStatus(bool status) {
+    print(status);
+    if (status) {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: secundaryColor,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Ativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Inativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -403,13 +486,15 @@ class _UserListViewState extends State<UserListView> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                    child: Text('Usuários',
-                        style: textStyle(
-                            fontSize: 24,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700))),
+                SizedBox(
+                  width: 280,
+                  child: InputComponent(
+                      onChanged: (value) => handleSearch(value),
+                      hintText: 'Buscar',
+                      prefixIcon: Icon(Icons.search)),
+                ),
               ],
             ),
           ),

@@ -29,6 +29,7 @@ class UserController {
   }
 
   void search(String value) {
+    print(value);
     usersSearch = users
         .where((user) =>
             (user.name!.toLowerCase().contains(value.toLowerCase()) ||
