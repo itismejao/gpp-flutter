@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/shared/repositories/global.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 // ignore: must_be_immutable
 class AppBarView extends StatelessWidget {
+  Function handleLogout;
   final ResponsiveController _responsive = ResponsiveController();
-  AppBarView({Key? key}) : super(key: key);
+  AppBarView({
+    Key? key,
+    required this.handleLogout,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,8 @@ class AppBarView extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    handleLogout();
+                    // Navigator.pushReplacementNamed(context, '/login');
                   },
                   child: const Icon(
                     Icons.logout,
@@ -117,7 +123,9 @@ class AppBarView extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      handleLogout();
+                      print('TE');
+                      // Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: const Icon(
                       Icons.logout,
