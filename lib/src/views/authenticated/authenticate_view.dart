@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:gpp/src/controllers/authenticate_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
@@ -10,7 +11,12 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
 class AuthenticateView extends StatefulWidget {
-  const AuthenticateView({Key? key}) : super(key: key);
+  final VoidCallback login;
+
+  const AuthenticateView({
+    Key? key,
+    required this.login,
+  }) : super(key: key);
 
   @override
   _AuthenticateViewState createState() => _AuthenticateViewState();
@@ -38,7 +44,10 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         setState(() {
           _controller.state = AuthenticateEnum.logged;
         });
-        Navigator.pushReplacementNamed(context, '/home');
+
+        widget.login();
+        // Navigator.pushReplacementNamed(context, '/home');
+        widget.login();
       } else {
         setState(() {
           _controller.state = AuthenticateEnum.notLogged;
