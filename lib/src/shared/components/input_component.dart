@@ -3,22 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 class InputComponent extends StatelessWidget {
-  final String label;
+  final String? label;
   final int? maxLength;
-  final Function onSaved;
-  final Function validator;
+  final Function? onSaved;
+  final Function? validator;
+  final Function? onChanged;
   final String hintText;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final dynamic? suffixIcon;
   final bool? obscureText;
   const InputComponent({
     Key? key,
-    required this.label,
+    this.label,
     this.maxLength,
-    required this.onSaved,
-    required this.validator,
+    this.onSaved,
+    this.validator,
+    this.onChanged,
     required this.hintText,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.suffixIcon,
     this.obscureText,
   }) : super(key: key);
@@ -29,19 +31,32 @@ class InputComponent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: textStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+        label != null
+            ? Text(label!,
+                style:
+                    textStyle(color: Colors.black, fontWeight: FontWeight.w700))
+            : Text(''),
+        SizedBox(
+          height: 6,
+        ),
         TextFormField(
           obscureText: obscureText ?? false,
           maxLength: maxLength,
-          onSaved: (value) => onSaved(value),
-          validator: (value) => validator(value),
+          onChanged: (value) => {
+            if (onChanged != null) {onChanged!(value)}
+          },
+          onSaved: (value) => {
+            if (onSaved != null) {onSaved!(value)}
+          },
+          validator: (value) {
+            if (validator != null) {
+              validator!(value);
+            } else {
+              return null;
+            }
+          },
           keyboardType: TextInputType.number,
-          style: textStyle(
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-              fontSize: 14,
-              height: 1.8),
+          style: textStyle(color: Colors.black, fontSize: 12, height: 1.8),
           decoration:
               inputDecoration(hintText, prefixIcon, suffixIcon: suffixIcon),
         )
