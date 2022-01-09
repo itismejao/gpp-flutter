@@ -12,16 +12,17 @@ TextStyle textStyle(
 
 InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
   return InputDecoration(
-      contentPadding: const EdgeInsets.all(10.0),
+      contentPadding: EdgeInsets.all(8),
+      isDense: true,
       prefixIcon: prefixIcon,
       prefixIconColor: Colors.grey.shade400,
       suffixIcon: suffixIcon,
       hintText: hintText,
       hintStyle: textStyle(
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
-          fontSize: 14,
-          height: 1.8),
+        color: Colors.black,
+        height: 1.8,
+        fontSize: 12,
+      ),
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(width: 2, color: Colors.grey.shade300)),
