@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
 class UserListView extends StatefulWidget {
-  const UserListView({Key? key}) : super(key: key);
+  final Function handleSelectUser;
+  const UserListView({
+    Key? key,
+    required this.handleSelectUser,
+  }) : super(key: key);
 
   @override
   _UserListViewState createState() => _UserListViewState();
@@ -125,16 +129,20 @@ class _UserListViewState extends State<UserListView> {
 
       case UserEnum.changeUser:
         return _controller.usersSearch.isEmpty
-            ? _buildUserList(_controller.users)
-            : _buildUserList(_controller.usersSearch);
+            ? _buildList(_controller.users)
+            : _buildList(_controller.usersSearch);
       case UserEnum.notUser:
+        // ignore: todo
+        // TODO: Handle this case.
+        break;
+      case UserEnum.error:
         // ignore: todo
         // TODO: Handle this case.
         break;
     }
   }
 
-  Widget _buildUserList(List<UserModel> users) {
+  Widget _buildList(List<UserModel> users) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -246,85 +254,58 @@ class _UserListViewState extends State<UserListView> {
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                  border: Border(
-                      left: BorderSide(
-                          color: users[index].active == "1"
-                              ? secundaryColor
-                              : Colors.grey.shade400,
-                          width: 4))),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                  'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                            )),
-                        const SizedBox(
-                          width: 12,
+                        Text(
+                          users[index].name ?? '',
+                          style: textStyle(fontWeight: FontWeight.bold),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              users[index].name!,
-                              style: textStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            users[index].departement != null
-                                ? Text(
-                                    users[index].departement!,
-                                    style: textStyle(
-                                        color: Colors.grey.shade400,
-                                        fontWeight: FontWeight.w700),
-                                  )
-                                : Text('',
-                                    style: textStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700))
-                          ],
-                        )
                       ],
-                    ),
-                    const SizedBox(
-                      height: 12,
                     ),
                     Row(
                       children: [
+                        Text(
+                          users[index].departament!.name ?? '',
+                          style: textStyle(color: Colors.grey.shade400),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildStatus(users[index].active!),
                         IconButton(
                           icon: Icon(
                             Icons.edit,
                             color: Colors.grey.shade400,
                           ),
-                          onPressed: () => {
-                            Navigator.pushNamed(context, '/user_detail',
-                                arguments: users[index])
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.grey.shade400,
-                          ),
-                          onPressed: () => {
-                            // Navigator.pushNamed(context, '/user_detail',
-                            //     arguments: users[index])
-                          },
+                          onPressed: () =>
+                              {widget.handleSelectUser(users[index])},
                         ),
                       ],
                     ),
@@ -344,7 +325,7 @@ class _UserListViewState extends State<UserListView> {
               children: [
                 Expanded(
                     child: Text(
-                  users[index].uid!,
+                  users[index].uid.toString(),
                   style: textStyle(
                       fontSize: 12,
                       color: Colors.black,
@@ -361,7 +342,7 @@ class _UserListViewState extends State<UserListView> {
                 ),
                 Expanded(
                   child: Text(
-                    users[index].departement ?? '',
+                    users[index].departament!.name ?? '',
                     style: textStyle(
                         fontSize: 12,
                         color: Colors.black,
@@ -410,20 +391,8 @@ class _UserListViewState extends State<UserListView> {
                           Icons.edit,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () => {
-                          Navigator.pushNamed(context, '/user_detail',
-                              arguments: users[index])
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.grey.shade400,
-                        ),
-                        onPressed: () => {
-                          // Navigator.pushNamed(context, '/user_detail',
-                          //     arguments: users[index])
-                        },
+                        onPressed: () =>
+                            {widget.handleSelectUser(users[index])},
                       ),
                     ],
                   ),
@@ -479,30 +448,95 @@ class _UserListViewState extends State<UserListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 280,
-                  child: InputComponent(
-                      onChanged: (value) => handleSearch(value),
-                      hintText: 'Buscar',
-                      prefixIcon: Icon(Icons.search)),
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
                 ),
-              ],
-            ),
-          ),
-          //  _buildFilterUsers(),
-          Expanded(
-            child: stateManager(),
-          )
-        ],
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text('Usuários',
+                          style: textStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700)),
+                    ])),
+            LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              if (_responsive.isMobile(constraints.maxWidth)) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: TextFormField(
+                          onChanged: (value) => handleSearch(value),
+                          // validator: (value) => validate(value),
+                          // onChanged: (value) {
+                          //   widget.user!.uid = value;
+                          // },
+                          decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, left: 20, bottom: 10, right: 20),
+                              border: InputBorder.none,
+                              hintText: 'Buscar',
+                              prefixIcon: Icon(Icons.search)),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: TextFormField(
+                        onChanged: (value) => handleSearch(value),
+                        // validator: (value) => validate(value),
+                        // onChanged: (value) {
+                        //   widget.user!.uid = value;
+                        // },
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(
+                                top: 15, left: 20, bottom: 10, right: 20),
+                            border: InputBorder.none,
+                            hintText: 'Buscar',
+                            prefixIcon: Icon(Icons.search)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+            //  _buildFilterUsers(),
+            Expanded(
+              child: stateManager(),
+            )
+          ],
+        ),
       ),
     );
   }

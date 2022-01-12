@@ -6,7 +6,6 @@ import 'package:gpp/src/shared/exceptions/departament_exception.dart';
 import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 import 'package:http/http.dart';
 
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
@@ -17,7 +16,7 @@ class DepartamentRepository {
     required this.api,
   });
 
-  Future<List<DepartamentModel>> fetchDepartament() async {
+  Future<List<DepartamentModel>> fetchAll() async {
     Response response = await api.get('/departamentos');
 
     if (response.statusCode == StatusCode.OK) {
@@ -71,11 +70,12 @@ class DepartamentRepository {
 
   Future<bool> create(DepartamentModel departament) async {
     Response response = await api.post('/departamentos', departament.toJson());
-
+    print(departament.toJson());
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw DepartamentException("Departamento não foi cadastrada !");
+      var error = json.decode(response.body)['error'];
+      throw DepartamentException(error);
     }
   }
 
@@ -87,7 +87,20 @@ class DepartamentRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw DepartamentException("Departamento não foi deletado !");
+      var error = json.decode(response.body)['error'];
+      throw DepartamentException(error);
+    }
+  }
+
+  Future<bool> update(DepartamentModel departament) async {
+    Response response = await api.put(
+        '/departamentos/' + departament.id.toString(), departament.toJson());
+
+    print(departament.toJson());
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw DepartamentException("Departamento não foi atualizado!");
     }
   }
 }

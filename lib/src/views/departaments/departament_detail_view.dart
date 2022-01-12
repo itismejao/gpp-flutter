@@ -9,6 +9,7 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
+// ignore: must_be_immutable
 class DepartamentDetailView extends StatefulWidget {
   DepartamentModel departament;
 
@@ -23,7 +24,7 @@ class DepartamentDetailView extends StatefulWidget {
 
 class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   late final DepartamentController _controller =
-      DepartamentController(repository: DepartamentRepository(api: gppApi));
+      DepartamentController(DepartamentRepository(api: gppApi));
 
   changeDepartamentFuncionalities() async {
     if (mounted) {

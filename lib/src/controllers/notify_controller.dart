@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/shared/repositories/styles.dart';
 
 class NotifyController {
   BuildContext context;
@@ -24,30 +25,59 @@ class NotifyController {
   }
 
   Future<bool> alert(String message) async {
-    return await showDialog(
+    bool? result = await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Confirmação'),
           content: Text(message),
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pop(false); // dismisses only the dialog and returns false
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).pop(false);
               },
-              child: Text('Não'),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 25, bottom: 15, right: 25),
+                  child: Text(
+                    "Não",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true)
-                    .pop(true); // dismisses only the dialog and returns true
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context, rootNavigator: true).pop(true);
               },
-              child: Text('Sim'),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: secundaryColor,
+                    borderRadius: BorderRadius.circular(5)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 25, bottom: 15, right: 25),
+                  child: Text(
+                    "Sim",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ),
           ],
         );
       },
     );
+
+    if (result == null) {
+      return false;
+    } else {
+      return result;
+    }
   }
 }

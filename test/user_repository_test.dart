@@ -209,8 +209,7 @@ void main() {
     test('Valida busca funcionalidades relacionadas ao usuário', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final response =
-          await repository.fetchFuncionalities(UserModel(uid: "1"));
+      final response = await repository.fetchFuncionalities(UserModel(uid: 1));
       expect(response, isA<List<FuncionalitieModel>>());
     });
   });
@@ -340,7 +339,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final response =
-          await repository.fetchSubFuncionalities(UserModel(uid: "1"));
+          await repository.fetchSubFuncionalities(UserModel(uid: 1));
       expect(response, isA<List<SubFuncionalitiesModel>>());
     });
 
@@ -352,7 +351,7 @@ void main() {
 
       expect(
           () async =>
-              await repository.fetchSubFuncionalities(UserModel(uid: "1")),
+              await repository.fetchSubFuncionalities(UserModel(uid: 1)),
           throwsA(isA<UserException>()));
     });
   });

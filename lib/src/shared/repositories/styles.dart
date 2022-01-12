@@ -12,7 +12,7 @@ TextStyle textStyle(
 
 InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
   return InputDecoration(
-      contentPadding: EdgeInsets.all(8),
+      contentPadding: EdgeInsets.all(12),
       isDense: true,
       prefixIcon: prefixIcon,
       prefixIconColor: Colors.grey.shade400,
@@ -20,6 +20,7 @@ InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
       hintText: hintText,
       hintStyle: textStyle(
         color: Colors.black,
+        fontWeight: FontWeight.bold,
         height: 1.8,
         fontSize: 12,
       ),
@@ -27,6 +28,9 @@ InputDecoration inputDecoration(hintText, prefixIcon, {suffixIcon}) {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(width: 2, color: Colors.grey.shade300)),
       enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(width: 2, color: Colors.grey.shade300)),
+      disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(width: 2, color: Colors.grey.shade300)),
       border: OutlineInputBorder(

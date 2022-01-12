@@ -7,6 +7,7 @@ import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
+import 'package:gpp/src/views/departaments/departament_form_view.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
 class DepartamentListView extends StatefulWidget {
@@ -20,7 +21,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   final ResponsiveController _responsive = ResponsiveController();
 
   late final DepartamentController _controller =
-      DepartamentController(repository: DepartamentRepository(api: gppApi));
+      DepartamentController(DepartamentRepository(api: gppApi));
 
   changeDepartaments() async {
     if (mounted) {
@@ -28,11 +29,39 @@ class _DepartamentListViewState extends State<DepartamentListView> {
         _controller.state = DepartamentEnum.loading;
       });
     }
-    await _controller.changeDepartament();
+    await _controller.fetchAll();
     if (mounted) {
       setState(() {
         _controller.state = DepartamentEnum.changeDepartament;
       });
+    }
+  }
+
+  handleCreate(context) async {
+    bool? isCreate = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[DepartamentFormView()]);
+        });
+
+    if (isCreate != null && isCreate) {
+      changeDepartaments();
+    }
+  }
+
+  handleEdit(context, DepartamentModel departament) async {
+    bool? isEdit = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            DepartamentFormView(
+              departament: departament,
+            )
+          ]);
+        });
+
+    if (isEdit != null && isEdit) {
+      changeDepartaments();
     }
   }
 
@@ -59,62 +88,6 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     changeDepartaments();
   }
 
-  // Widget _buildDepartamentList(List<DepartamentModel> departaments) {
-  //   Widget widget = LayoutBuilder(
-  //     builder: (context, constraints) {
-  //       if (_responsive.isMobile(constraints.maxWidth)) {
-  //         return ListView.builder(
-  //             itemCount: 10,
-  //             itemBuilder: (context, index) {
-  //               return const Text('test');
-  //               //return _buildListItem(departament, index, context);
-  //             });
-  //       }
-
-  //       return Column(
-  //         children: [
-  //           Padding(
-  //             padding: const EdgeInsets.symmetric(vertical: 16.0),
-  //             child: Row(
-  //               children: [
-  //                 Expanded(
-  //                     child: Text('Nome',
-  //                         style: textStyle(
-  //                             color: Colors.grey.shade400,
-  //                             fontWeight: FontWeight.w700))),
-  //                 Expanded(
-  //                   child: Center(
-  //                       child: Text('Status',
-  //                           style: textStyle(
-  //                               color: Colors.grey.shade400,
-  //                               fontWeight: FontWeight.w700))),
-  //                 ),
-  //                 Expanded(
-  //                   child: Center(
-  //                       child: Text('Ação',
-  //                           style: textStyle(
-  //                               color: Colors.grey.shade400,
-  //                               fontWeight: FontWeight.w700))),
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //           const Divider(),
-  //           Expanded(
-  //             child: ListView.builder(
-  //                 itemCount: departaments.length,
-  //                 itemBuilder: (context, index) {
-  //                   return _buildListItem(departaments, index, context);
-  //                 }),
-  //           )
-  //         ],
-  //       );
-  //     },
-  //   );
-
-  //   return widget;
-  // }
-
   Widget _buildList(List<DepartamentModel> departaments) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
@@ -126,44 +99,46 @@ class _DepartamentListViewState extends State<DepartamentListView> {
               });
         }
 
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                      child: Text('Departamento',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
-                  Expanded(
-                    child: Center(
-                        child: Text('Status',
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Text('Departamento',
                             style: textStyle(
                                 color: Colors.grey.shade400,
                                 fontWeight: FontWeight.w700))),
-                  ),
-                  Expanded(
-                    child: Center(
-                        child: Text('Ação',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700))),
-                  )
-                ],
+                    Expanded(
+                      child: Center(
+                          child: Text('Status',
+                              style: textStyle(
+                                  color: Colors.grey.shade400,
+                                  fontWeight: FontWeight.w700))),
+                    ),
+                    Expanded(
+                      child: Center(
+                          child: Text('Ação',
+                              style: textStyle(
+                                  color: Colors.grey.shade400,
+                                  fontWeight: FontWeight.w700))),
+                    )
+                  ],
+                ),
               ),
-            ),
-            const Divider(),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: departaments.length,
-                  itemBuilder: (context, index) {
-                    return _buildListItem(departaments, index, context);
-                  }),
-            )
-          ],
+              Expanded(
+                child: ListView.builder(
+                    itemCount: departaments.length,
+                    itemBuilder: (context, index) {
+                      return _buildListItem(departaments, index, context);
+                    }),
+              )
+            ],
+          ),
         );
       },
     );
@@ -171,235 +146,138 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  // Widget _buildListItem(
-  //     List<DepartamentModel> departaments, int index, BuildContext context) {
-  //   return LayoutBuilder(
-  //     builder: (context, constraints) {
-  //       if (_responsive.isMobile(constraints.maxWidth)) {
-  //         return Padding(
-  //           padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //           child: Container(
-  //             decoration: BoxDecoration(
-  //                 border: Border(
-  //                     left: BorderSide(
-  //                         color: departaments[index].active == "1"
-  //                             ? secundaryColor
-  //                             : Colors.grey.shade400,
-  //                         width: 4))),
-  //             child: Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  //               child: Column(
-  //                 children: [
-  //                   Row(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       SizedBox(
-  //                           height: 50,
-  //                           width: 50,
-  //                           child: ClipRRect(
-  //                             borderRadius: BorderRadius.circular(10),
-  //                             child: Image.network(
-  //                                 'https://picsum.photos/250?image=9'),
-  //                           )),
-  //                       const SizedBox(
-  //                         width: 12,
-  //                       ),
-  //                       // Column(
-  //                       //   mainAxisAlignment: MainAxisAlignment.start,
-  //                       //   crossAxisAlignment: CrossAxisAlignment.start,
-  //                       //   children: [
-  //                       //     Text(
-  //                       //       departaments[index].description!,
-  //                       //       style: textStyle(
-  //                       //           color: Colors.black,
-  //                       //           fontWeight: FontWeight.w700),
-  //                       //     ),
-  //                       //     const SizedBox(
-  //                       //       height: 6,
-  //                       //     ),
-  //                       //     departaments[index].departement != null
-  //                       //         ? Text(
-  //                       //             departaments[index].departement!,
-  //                       //             style: textStyle(
-  //                       //                 color: Colors.grey.shade400,
-  //                       //                 fontWeight: FontWeight.w700),
-  //                       //           )
-  //                       //         : Text('',
-  //                       //             style: textStyle(
-  //                       //                 color: Colors.black,
-  //                       //                 fontWeight: FontWeight.w700))
-  //                       //   ],
-  //                       // )
-  //                     ],
-  //                   ),
-  //                   const SizedBox(
-  //                     height: 12,
-  //                   ),
-  //                   Row(
-  //                     children: [
-  //                       ElevatedButton(
-  //                           style: buttonStyle,
-  //                           onPressed: () => {
-  //                                 Navigator.pushNamed(
-  //                                     context, '/departament_detail',
-  //                                     arguments: departaments[index])
-  //                               },
-  //                           child: Padding(
-  //                             padding: const EdgeInsets.all(12.0),
-  //                             child: Text('Editar',
-  //                                 style: textStyle(
-  //                                     color: Colors.white,
-  //                                     fontWeight: FontWeight.w700)),
-  //                           )),
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       }
-
-  //       return Padding(
-  //         padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Expanded(
-  //                 flex: 2,
-  //                 child: Row(
-  //                   children: [
-  //                     SizedBox(
-  //                         height: 50,
-  //                         width: 50,
-  //                         child: ClipRRect(
-  //                           borderRadius: BorderRadius.circular(10),
-  //                           child: Image.network(
-  //                               'https://picsum.photos/250?image=9'),
-  //                         )),
-  //                     const SizedBox(
-  //                       width: 10,
-  //                     ),
-  //                     Text(
-  //                       departaments[index].description,
-  //                       style: textStyle(
-  //                           color: Colors.black, fontWeight: FontWeight.w700),
-  //                     ),
-  //                   ],
-  //                 )),
-  //             Expanded(
-  //                 child: Container(
-  //               height: 10,
-  //               width: 10,
-  //               decoration: BoxDecoration(
-  //                   color: departaments[index].active == "1"
-  //                       ? secundaryColor
-  //                       : Colors.grey.shade400,
-  //                   shape: BoxShape.circle),
-  //             )),
-  //             Expanded(
-  //               child: ElevatedButton(
-  //                   style: buttonStyle,
-  //                   onPressed: () => {
-  //                         Navigator.pushNamed(context, '/departament_detail',
-  //                             arguments: departaments[index])
-  //                       },
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.all(12.0),
-  //                     child: Text('Editar',
-  //                         style: textStyle(
-  //                             color: Colors.white,
-  //                             fontWeight: FontWeight.w700)),
-  //                   )),
-  //             )
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _buildListItem(
       List<DepartamentModel> departament, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Container(
-              decoration: BoxDecoration(
-                  border: Border(
-                      left: BorderSide(
-                          color: departament[index].active == "1"
-                              ? secundaryColor
-                              : Colors.grey.shade400,
-                          width: 4))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                  'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                            )),
-                        const SizedBox(
-                          width: 12,
+                        Text(
+                          departament[index].name ?? '',
+                          style: textStyle(fontWeight: FontWeight.bold),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              departament[index].name!,
-                              style: textStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                          ],
-                        )
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 12,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.blue,
-                          ),
-                          onPressed: () => {
-                            // Navigator.pushNamed(context, '/departaments_detail',
-                            //     arguments: departament[index])
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.grey.shade400,
-                          ),
-                          onPressed: () =>
-                              handleDelete(context, departament[index]),
+                        _buildStatus(departament[index].active!),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.grey.shade400,
+                              ),
+                              onPressed: () => {
+                                handleEdit(context, departament[index]),
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.grey.shade400,
+                              ),
+                              onPressed: () =>
+                                  handleDelete(context, departament[index]),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                    Divider()
                   ],
                 ),
               ),
             ),
           );
         }
+        // if (_responsive.isMobile(constraints.maxWidth)) {
+        //   return Padding(
+        //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //           border: Border(
+        //               left: BorderSide(
+        //                   color: departament[index].active == "1"
+        //                       ? secundaryColor
+        //                       : Colors.grey.shade400,
+        //                   width: 4))),
+        //       child: Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        //         child: Column(
+        //           children: [
+        //             Row(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: [
+        //                 SizedBox(
+        //                     height: 50,
+        //                     width: 50,
+        //                     child: ClipRRect(
+        //                       borderRadius: BorderRadius.circular(10),
+        //                       child: Image.network(
+        //                           'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
+        //                     )),
+        //                 const SizedBox(
+        //                   width: 12,
+        //                 ),
+        //                 Column(
+        //                   mainAxisAlignment: MainAxisAlignment.start,
+        //                   crossAxisAlignment: CrossAxisAlignment.start,
+        //                   children: [
+        //                     Text(
+        //                       departament[index].name!,
+        //                       style: textStyle(
+        //                           color: Colors.black,
+        //                           fontWeight: FontWeight.w700),
+        //                     ),
+        //                     const SizedBox(
+        //                       height: 6,
+        //                     ),
+        //                   ],
+        //                 )
+        //               ],
+        //             ),
+        //             const SizedBox(
+        //               height: 12,
+        //             ),
+        //             Row(
+        //               children: [
+        //                 IconButton(
+        //                   icon: Icon(
+        //                     Icons.edit,
+        //                     color: Colors.blue,
+        //                   ),
+        //                   onPressed: () =>
+        //                       handleEdit(context, departament[index]),
+        //                 ),
+        //                 IconButton(
+        //                   icon: Icon(
+        //                     Icons.delete,
+        //                     color: Colors.grey.shade400,
+        //                   ),
+        //                   onPressed: () =>
+        //                       handleDelete(context, departament[index]),
+        //                 ),
+        //               ],
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //   );
+        // }
 
         return Container(
           color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
@@ -431,10 +309,8 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                           Icons.edit,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () => {
-                          Navigator.pushNamed(context, '/departaments_detail',
-                              arguments: departament[index])
-                        },
+                        onPressed: () =>
+                            handleEdit(context, departament[index]),
                       ),
                       IconButton(
                         icon: Icon(
@@ -510,9 +386,42 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Departamentos',
+                    style: textStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700)),
+                // GestureDetector(
+                //   onTap: () => handleCreate(context),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //         color: secundaryColor,
+                //         borderRadius: BorderRadius.circular(5)),
+                //     child: Padding(
+                //       padding: const EdgeInsets.only(
+                //           top: 15, left: 25, bottom: 15, right: 25),
+                //       child: Text(
+                //         "Cadastrar",
+                //         style: TextStyle(
+                //             color: Colors.white, fontWeight: FontWeight.bold),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+                // ButtonPrimaryComponent(
+                //     onPressed: () => handleCreate(context), text: "Cadastrar")
+              ],
+            ),
+          ),
           Expanded(child: _buildDepartaments())
 
           // _buildFilterUsers(),

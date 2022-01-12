@@ -1,6 +1,8 @@
+import 'package:gpp/src/models/departament_model.dart';
+
 class UserModel {
-  String? id;
-  String? uid;
+  int? id;
+  int? uid;
   String? name;
   String? email;
   String? emailVerifiedAt;
@@ -10,8 +12,9 @@ class UserModel {
   String? updatedAt;
   bool? active;
   String? iddepto;
-  String? departement;
+
   String? foto;
+  DepartamentModel? departament;
 
   UserModel(
       {this.id,
@@ -25,18 +28,10 @@ class UserModel {
       this.updatedAt,
       this.active,
       this.iddepto,
-      this.departement,
+      this.departament,
       this.foto});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    bool? active;
-
-    if (json['active'] == "1") {
-      active = true;
-    } else if (json['active'] == "0") {
-      active = false;
-    }
-
     return UserModel(
         id: json['id'],
         uid: json['uid'],
@@ -47,9 +42,12 @@ class UserModel {
         rememberToken: json['remember_token'],
         createdAt: json['created_at'],
         updatedAt: json['updated_at'],
-        active: active,
+        active: json['active'],
         iddepto: json['iddepto'],
-        departement: json['depto'],
+        departament: DepartamentModel(
+            id: json['departament_id'],
+            name: json['departament_name'],
+            active: json['departament_active']),
         foto: json['foto']);
   }
 
@@ -66,7 +64,7 @@ class UserModel {
     data['updated_at'] = updatedAt;
     data['active'] = active;
     data['iddepto'] = iddepto;
-    data['depto'] = departement;
+    data['departament'] = departament != null ? departament!.toJson() : null;
     data['foto'] = foto;
 
     return data;

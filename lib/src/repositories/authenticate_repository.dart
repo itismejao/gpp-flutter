@@ -11,28 +11,20 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class AuthenticateRepository {
   Future<bool> doLogin(UserModel user) async {
-    try {
-      var response = await gppApi.post('/user/login', user.toJson());
+    var response = await gppApi.post('/user/login', user.toJson());
 
-      if (response.statusCode == StatusCode.UNAUTHORIZED) {
-        //var error = jsonDecode(response.body)['error'];
-        throw AuthenticationException('Usuário ou senha incorretos !');
-      }
+    if (response.statusCode == StatusCode.OK) {
+      AuthenticateModel authenticate =
+          AuthenticateModel.fromJson(jsonDecode(response.body));
 
-      if (response.statusCode == StatusCode.OK) {
-        AuthenticateModel authenticate =
-            AuthenticateModel.fromJson(jsonDecode(response.body));
+      //Seta token
+      setToken(authenticate.accessToken);
 
-        //Seta token
-        setToken(authenticate.accessToken);
-
-        authenticateUser = authenticate;
-        return true;
-      }
-
-      return false;
-    } on AuthenticationException {
-      rethrow;
+      authenticateUser = authenticate;
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw AuthenticationException(error);
     }
   }
 }

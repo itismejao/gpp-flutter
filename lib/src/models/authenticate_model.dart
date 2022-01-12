@@ -1,7 +1,7 @@
 class AuthenticateModel {
   String name;
   String email;
-  String uid;
+  int uid;
   int id;
   String accessToken;
   String tokenType;

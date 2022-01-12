@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 class FuncionalitieModel {
@@ -21,10 +20,8 @@ class FuncionalitieModel {
     var id = json['id'] != null ? int.parse(json['id']) : null;
     var name = json['name'];
     var icon = json['icon'];
-    bool? active;
-    if (json['active'] != null) {
-      active = int.parse(json['active']) == 1 ? true : false;
-    }
+    bool? active = json['active'];
+
     List<SubFuncionalitiesModel> subFuncionalities = [];
     if (json['subFuncionalities'] != null) {
       json['subFuncionalities'].forEach((data) {

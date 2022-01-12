@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';

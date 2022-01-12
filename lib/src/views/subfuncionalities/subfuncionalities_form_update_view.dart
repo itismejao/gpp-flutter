@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/subfuncionalities_controller.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
+// ignore: must_be_immutable
 class SubFuncionalitiesFormUpdateView extends StatefulWidget {
   SubFuncionalitiesModel subFuncionalitie;
 
@@ -28,7 +25,6 @@ class _SubFuncionalitiesFormUpdateViewState
     extends State<SubFuncionalitiesFormUpdateView> {
   SubFuncionalitiesController _controlller = SubFuncionalitiesController(
       repository: SubFuncionalitiesRepository(api: gppApi));
-  final ResponsiveController _responsive = ResponsiveController();
 
   handleUpdate(context, SubFuncionalitiesModel subFuncionalitie) async {
     NotifyController notify = NotifyController(context: context);

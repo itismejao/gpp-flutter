@@ -49,6 +49,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     fetchFuncionalities();

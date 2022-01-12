@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_update_view.dart';

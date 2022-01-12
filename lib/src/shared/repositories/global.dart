@@ -3,7 +3,7 @@ import 'package:gpp/src/models/authenticate_model.dart';
 AuthenticateModel? authenticateUser = AuthenticateModel(
     name: 'name',
     email: 'email',
-    uid: 'uid',
-    id: 1,
+    uid: 123,
+    id: 3,
     accessToken: 'as',
     tokenType: 'a');

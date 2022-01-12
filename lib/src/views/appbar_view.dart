@@ -72,7 +72,7 @@ class AppBarView extends StatelessWidget {
                 'gpp',
                 style: textStyle(
                   color: Colors.white,
-                  fontSize: 32,
+                  fontSize: 24,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -97,17 +97,6 @@ class AppBarView extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                          height: 40,
-                          width: 40,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                                'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                          )),
-                      const SizedBox(
-                        width: 12,
-                      ),
                       Text(
                         'Olá, ' + authenticateUser!.name.toString(),
                         style: textStyle(

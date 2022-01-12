@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_home_view.dart';
-import 'package:gpp/src/views/subfuncionalities/subfuncionalities_list_view.dart';
 
+// ignore: must_be_immutable
 class FuncionalitiesDetailView extends StatefulWidget {
   FuncionalitieModel funcionalitie;
   FuncionalitiesDetailView({Key? key, required this.funcionalitie})

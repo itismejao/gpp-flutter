@@ -34,7 +34,7 @@ class UserRepository {
   Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
       UserModel user) async {
     Response response =
-        await api.get('/user/itensfuncionalidades/' + user.uid.toString());
+        await api.get('/user/itensfuncionalidades/' + user.id.toString());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -57,7 +57,7 @@ class UserRepository {
         .toList();
 
     Response response = await api.put(
-        '/user/itensfuncionalidades/' + user.uid.toString(), dataSend);
+        '/user/itensfuncionalidades/' + user.id.toString(), dataSend);
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -68,7 +68,8 @@ class UserRepository {
   }
 
   Future<List<FuncionalitieModel>> fetchFuncionalities(UserModel user) async {
-    Response response = await api.get('/user/funcionalidades/' + user.uid!);
+    Response response =
+        await api.get('/user/funcionalidades/' + user.id.toString());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -80,6 +81,19 @@ class UserRepository {
       return funcionalidades;
     } else {
       throw UserException("Funcionalidades não encontradas !");
+    }
+  }
+
+  Future<bool> update(UserModel user) async {
+    print(jsonEncode(user.toJson()));
+    Response response =
+        await api.put('/user/' + user.id.toString(), user.toJson());
+    print(response);
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw UserException(error);
     }
   }
 }

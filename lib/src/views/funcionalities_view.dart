@@ -1,5 +1,7 @@
+import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:gpp/src/controllers/user_controller.dart';
@@ -9,8 +11,10 @@ import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
+// ignore: unused_import
 import 'package:gpp/src/views/home_view.dart';
 
+// ignore: must_be_immutable
 class FuncionalitiesView extends StatefulWidget {
   Function handleCurrentPage;
 
@@ -42,6 +46,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   changeUserFuncionalities() async {
+    NotifyController nofity = NotifyController(context: context);
     if (mounted) {
       setState(() {
         _controller.state = UserEnum.loading;
@@ -50,6 +55,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     try {
       await _controller.changeFuncionalities();
     } catch (e) {
+      nofity.error(e.toString());
       setState(() {
         _controller.state = UserEnum.error;
       });
@@ -95,33 +101,33 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   funcionalities(MediaQueryData mediaQuery, context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  child: Form(
-                      child: TextFormField(
-                          onChanged: (value) =>
-                              handleSearchFuncionalities(value),
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w700,
-                              height: 1.8,
-                              fontSize: 14),
-                          decoration: inputDecoration(
-                              'Buscar', const Icon(Icons.search)))),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Divider(),
-        ),
+        // Row(
+        //   children: [
+        //     // Expanded(
+        //     //   child: Padding(
+        //     //     padding: const EdgeInsets.all(8.0),
+        //     //     child: SizedBox(
+        //     //       child: Form(
+        //     //           child: TextFormField(
+        //     //               onChanged: (value) =>
+        //     //                   handleSearchFuncionalities(value),
+        //     //               style: const TextStyle(
+        //     //                   color: Colors.black,
+        //     //                   fontStyle: FontStyle.normal,
+        //     //                   fontWeight: FontWeight.w700,
+        //     //                   height: 1.8,
+        //     //                   fontSize: 14),
+        //     //               decoration: inputDecoration(
+        //     //                   'Buscar', const Icon(Icons.search)))),
+        //     //     ),
+        //     //   ),
+        //     // ),
+        //   ],
+        // ),
+        // const Padding(
+        //   padding: EdgeInsets.all(8.0),
+        //   child: Divider(),
+        // ),
         const SizedBox(
           height: 12,
         ),
@@ -168,7 +174,8 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                             width: 6,
                           ),
                           Text(
-                            funcionalities[index1].name!,
+                            StringUtils.capitalize(
+                                funcionalities[index1].name!),
                             style: textStyle(
                                 fontSize: 12, fontWeight: FontWeight.w700),
                           ),
@@ -222,55 +229,59 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
 
   Widget _buildListSubFuncionalities(SubFuncionalitiesModel subFuncionalities,
       MediaQueryData mediaQuery, context) {
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-              onTap: () {
-                widget.handleCurrentPage(subFuncionalities.route.toString());
+    return subFuncionalities.active!
+        ? Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                    onTap: () {
+                      widget.handleCurrentPage(
+                          subFuncionalities.route.toString());
 
-                // navigatorKey.currentState!
-                //     .pushNamed(subFuncionalities.route.toString());
-                //Fecha Drawer
-              },
-              child: MouseRegion(
-                onHover: (event) {
-                  setState(() {
-                    subFuncionalities.boxDecoration = BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.grey.shade50);
-                  });
-                },
-                onExit: (event) {
-                  setState(() {
-                    subFuncionalities.boxDecoration = null;
-                  });
-                },
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: subFuncionalities.boxDecoration,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 28),
-                            child: Text(
-                              subFuncionalities.name.toString(),
-                              style: textStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w700),
+                      // navigatorKey.currentState!
+                      //     .pushNamed(subFuncionalities.route.toString());
+                      //Fecha Drawer
+                    },
+                    child: MouseRegion(
+                      onHover: (event) {
+                        setState(() {
+                          subFuncionalities.boxDecoration = BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.grey.shade50);
+                        });
+                      },
+                      onExit: (event) {
+                        setState(() {
+                          subFuncionalities.boxDecoration = null;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: subFuncionalities.boxDecoration,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 28),
+                                  child: Text(
+                                    subFuncionalities.name.toString(),
+                                    style: textStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              )),
-        ),
-      ],
-    );
+                    )),
+              ),
+            ],
+          )
+        : Container();
   }
 
   // ExpansionPanelList _buildListFuncionalities(
@@ -418,7 +429,10 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
-    return stateManagement(mediaQuery, context);
+    return Container(
+      color: Colors.white,
+      child: stateManagement(mediaQuery, context),
+    );
   }
 }
 

@@ -10,6 +10,7 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
+// ignore: must_be_immutable
 class SubFuncionalitiesListView extends StatefulWidget {
   FuncionalitieModel funcionalitie;
 
@@ -55,6 +56,7 @@ class _SubFuncionalitiesListViewState extends State<SubFuncionalitiesListView> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     fetchSubFuncionalities();

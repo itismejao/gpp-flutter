@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_update_view.dart';
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_list_view.dart';
 import 'package:gpp/src/views/subfuncionalities/subfuncionatilies_form_create_view.dart';
 
+// ignore: must_be_immutable
 class SubFuncionalitiesHomeView extends StatefulWidget {
   FuncionalitieModel funcionalitie;
   SubFuncionalitiesHomeView({Key? key, required this.funcionalitie})

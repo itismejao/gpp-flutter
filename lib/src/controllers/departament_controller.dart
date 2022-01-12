@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/departament_model.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
@@ -12,12 +11,12 @@ class DepartamentController {
   List<SubFuncionalitiesModel> subFuncionalities = [];
   DepartamentEnum state = DepartamentEnum.notDepartament;
 
-  DepartamentController({
-    required this.repository,
-  });
+  DepartamentController(
+    this.repository,
+  );
 
-  Future<void> changeDepartament() async {
-    departaments = await repository.fetchDepartament();
+  Future<void> fetchAll() async {
+    departaments = await repository.fetchAll();
   }
 
   Future<bool> updateUserSubFuncionalities(DepartamentModel departament,
@@ -31,27 +30,30 @@ class DepartamentController {
     subFuncionalities = await repository.fetchSubFuncionalities(departament);
   }
 
+  Future<bool> insertOrUpdate(DepartamentModel departament) async {
+    if (departament.id == null) {
+      return create(departament);
+    } else {
+      return update(departament);
+    }
+  }
+
   Future<bool> create(DepartamentModel departament) async {
-    if (!formKey.currentState!.validate()) {
-      return false;
+    if (formKey.currentState!.validate()) {
+      return await repository.create(departament);
     }
 
-    // formKey.currentState!.save();
+    return false;
+  }
 
-    return await repository.create(departament);
+  Future<bool> update(DepartamentModel departament) async {
+    return await repository.update(departament);
   }
 
   Future<bool> delete(DepartamentModel departament) async {
     return await repository.delete(departament);
   }
 
-  //Validação
-  validateInput(value) {
-    if (value.isEmpty) {
-      return 'Campo obrigatório';
-    }
-    return null;
-  }
   // List<UserModel> usersSearch = [];
 
   // UserEnum state = UserEnum.notUser;

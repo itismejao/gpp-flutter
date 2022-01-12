@@ -15,7 +15,7 @@ class AuthenticateController {
 
   UserModel user = UserModel();
 
-  setUserUID(String? uid) => user.uid = uid;
+  setUserUID(int? uid) => user.uid = uid;
 
   setUserPassword(String? password) => user.password = password;
 

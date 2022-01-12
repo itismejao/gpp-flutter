@@ -82,7 +82,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "RE",
                 maxLength: 255,
-                onSaved: _controller.setUserUID,
+                onSaved: (value) {
+                  _controller.setUserUID(int.parse(value));
+                },
                 validator: _controller.validateInput,
                 hintText: "Digite seu RE",
                 prefixIcon: Icon(Icons.account_box),
@@ -176,6 +178,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              _buildAppBar(mediaQuery),
               Container(
                 height: mediaQuery.size.height,
                 color: Colors.white,
@@ -188,6 +191,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         if (_responsive.isTable(constraints.maxWidth)) {
           return Column(
             children: [
+              _buildAppBar(mediaQuery),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -215,6 +219,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
 
         return Column(
           children: [
+            _buildAppBar(mediaQuery),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 140),
               child: SizedBox(
@@ -250,52 +255,47 @@ class _AuthenticateViewState extends State<AuthenticateView> {
     );
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(mediaQuery.size.height * 0.20),
-        child: _buildAppBar(mediaQuery),
-      ),
-      backgroundColor: primaryColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: page,
-        ),
-      ),
-    );
+        backgroundColor: primaryColor,
+        body: SingleChildScrollView(child: page));
   }
 
-  LayoutBuilder _buildAppBar(MediaQueryData mediaQuery) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      if (_responsive.isMobile(constraints.maxWidth)) {
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildBrand(mediaQuery),
-                SizedBox(
-                  width: 160,
-                  child: Image.asset('lib/src/shared/assets/brand.png'),
-                )
-              ],
-            ));
-      } else {
-        return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 140),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildBrand(mediaQuery),
-                SizedBox(
-                  height: 40,
-                  width: 160,
-                  child: Image.asset('lib/src/shared/assets/brand.png'),
-                )
-              ],
-            ));
-      }
-    });
+  Container _buildAppBar(MediaQueryData mediaQuery) {
+    return Container(
+      color: primaryColor,
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        if (_responsive.isMobile(constraints.maxWidth)) {
+          return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildBrand(mediaQuery),
+                  SizedBox(
+                    width: 160,
+                    child: Image.asset('lib/src/shared/assets/brand.png'),
+                  )
+                ],
+              ));
+        } else {
+          return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20, horizontal: 140),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildBrand(mediaQuery),
+                  SizedBox(
+                    height: 40,
+                    width: 160,
+                    child: Image.asset('lib/src/shared/assets/brand.png'),
+                  )
+                ],
+              ));
+        }
+      }),
+    );
   }
 
   Text _buildBrand(MediaQueryData mediaQuery) {

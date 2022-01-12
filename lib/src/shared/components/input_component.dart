@@ -4,25 +4,29 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 
 class InputComponent extends StatelessWidget {
   final String? label;
+  final String? initialValue;
   final int? maxLength;
   final Function? onSaved;
   final Function? validator;
   final Function? onChanged;
-  final String hintText;
+  final String? hintText;
   final Icon? prefixIcon;
-  final dynamic? suffixIcon;
+  final dynamic suffixIcon;
   final bool? obscureText;
+  final bool? enable;
   const InputComponent({
     Key? key,
     this.label,
+    this.initialValue,
     this.maxLength,
     this.onSaved,
     this.validator,
     this.onChanged,
-    required this.hintText,
+    this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText,
+    this.enable,
   }) : super(key: key);
 
   @override
@@ -34,12 +38,14 @@ class InputComponent extends StatelessWidget {
         label != null
             ? Text(label!,
                 style:
-                    textStyle(color: Colors.black, fontWeight: FontWeight.w700))
+                    textStyle(color: Colors.black, fontWeight: FontWeight.bold))
             : Text(''),
         SizedBox(
           height: 6,
         ),
         TextFormField(
+          initialValue: initialValue,
+          enabled: enable,
           obscureText: obscureText ?? false,
           maxLength: maxLength,
           onChanged: (value) => {
@@ -56,7 +62,11 @@ class InputComponent extends StatelessWidget {
             }
           },
           keyboardType: TextInputType.number,
-          style: textStyle(color: Colors.black, fontSize: 12, height: 1.8),
+          style: textStyle(
+              color: Colors.black,
+              fontSize: 12,
+              height: 1.8,
+              fontWeight: FontWeight.bold),
           decoration:
               inputDecoration(hintText, prefixIcon, suffixIcon: suffixIcon),
         )

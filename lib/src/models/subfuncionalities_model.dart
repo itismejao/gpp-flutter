@@ -22,18 +22,9 @@ class SubFuncionalitiesModel {
       this.idRegister});
 
   factory SubFuncionalitiesModel.fromJson(Map<String, dynamic> json) {
-    int? id;
+    int? id = json['id'];
 
-    if (json['id'] != null) {
-      id = int.parse(json['id']);
-    }
-
-    bool? active;
-    if (json['active'] != null && json['active'] is String) {
-      active = int.parse(json['active']) == 1 ? true : false;
-    } else {
-      active = json['active'] == 1 ? true : false;
-    }
+    bool? active = json['active'];
 
     return SubFuncionalitiesModel(
         id: id,

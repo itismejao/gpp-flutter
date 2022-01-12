@@ -30,6 +30,7 @@ class DepartamentModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+
     data['active'] = active;
 
     data['created_at'] = createdAt;

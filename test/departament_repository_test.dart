@@ -10,7 +10,6 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/departament_model.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/repositories/departament_repository.dart';
@@ -80,7 +79,7 @@ void main() {
     test('Verifica a busca de usuários', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final departament = await repository.fetchDepartament();
+      final departament = await repository.fetchAll();
       expect(departament, isA<List<DepartamentModel>>());
     });
 
@@ -89,7 +88,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 404));
 
-      expect(() async => await repository.fetchDepartament(),
+      expect(() async => await repository.fetchAll(),
           throwsA(isA<DepartamentException>()));
     });
   });
