@@ -10,10 +10,8 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
 class UserListView extends StatefulWidget {
-  final Function handleSelectUser;
   const UserListView({
     Key? key,
-    required this.handleSelectUser,
   }) : super(key: key);
 
   @override
@@ -304,8 +302,10 @@ class _UserListViewState extends State<UserListView> {
                             Icons.edit,
                             color: Colors.grey.shade400,
                           ),
-                          onPressed: () =>
-                              {widget.handleSelectUser(users[index])},
+                          onPressed: () => {
+                            Navigator.pushNamed(
+                                context, '/users/' + users[index].id.toString())
+                          },
                         ),
                       ],
                     ),
@@ -391,8 +391,10 @@ class _UserListViewState extends State<UserListView> {
                           Icons.edit,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () =>
-                            {widget.handleSelectUser(users[index])},
+                        onPressed: () => {
+                          Navigator.pushNamed(
+                              context, '/users/' + users[index].id.toString())
+                        },
                       ),
                     ],
                   ),

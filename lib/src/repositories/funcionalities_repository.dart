@@ -13,7 +13,19 @@ class FuncionalitiesRepository {
     required this.api,
   });
 
-  Future<List<FuncionalitieModel>> fetch() async {
+  Future<FuncionalitieModel> fetch(String id) async {
+    Response response = await api.get('/funcionalidades/' + id);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return FuncionalitieModel.fromJson(data.first.first);
+    } else {
+      throw FuncionalitiesException("Funcionalidades não encontrada !");
+    }
+  }
+
+  Future<List<FuncionalitieModel>> fetchAll() async {
     Response response = await api.get('/funcionalidades');
 
     if (response.statusCode == StatusCode.OK) {
@@ -30,6 +42,7 @@ class FuncionalitiesRepository {
   }
 
   Future<bool> create(FuncionalitieModel funcionalitie) async {
+    print(jsonEncode(funcionalitie.toJson()));
     Response response =
         await api.post('/funcionalidades', funcionalitie.toJson());
 

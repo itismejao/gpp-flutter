@@ -2,20 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/repositories/funcionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
+import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class FuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final FuncionalitiesRepository repository;
+  late final FuncionalitiesRepository repository =
+      FuncionalitiesRepository(api: gppApi);
   List<FuncionalitieModel> funcionalities = [];
   FuncionalitieModel funcionalitie = FuncionalitieModel();
   FuncionalitiesEnum state = FuncionalitiesEnum.notChange;
   bool groupValue = false;
 
-  FuncionalitiesController(this.repository);
+  FuncionalitiesController();
 
-  Future<void> fetch() async {
-    funcionalities = await repository.fetch();
+  Future<void> fetch(String id) async {
+    funcionalitie = await repository.fetch(id);
+  }
+
+  Future<void> fetchAll() async {
+    funcionalities = await repository.fetchAll();
   }
 
   void setFuncionalitieName(value) {
@@ -31,7 +37,7 @@ class FuncionalitiesController {
   }
 
   //Validação
-  validateInput(value) {
+  validate(value) {
     if (value.isEmpty) {
       return 'Campo obrigatório';
     }
@@ -43,12 +49,10 @@ class FuncionalitiesController {
       return false;
     }
 
-    formKey.currentState!.save();
-
     return await repository.create(funcionalitie);
   }
 
-  Future<bool> update(FuncionalitieModel funcionalitie) async {
+  Future<bool> update() async {
     return await repository.update(funcionalitie);
   }
 

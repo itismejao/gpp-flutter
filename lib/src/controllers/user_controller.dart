@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/repositories/global.dart';
 
 class UserController {
   UserRepository repository;
+  UserModel user = UserModel();
   List<UserModel> users = [];
   List<UserModel> usersSearch = [];
   List<SubFuncionalitiesModel> subFuncionalities = [];
@@ -18,12 +19,16 @@ class UserController {
     required this.repository,
   });
 
-  Future<void> changeUser() async {
-    users = await repository.fetchUser();
+  Future<void> fetchUser(String id) async {
+    user = await repository.fetchUser(id);
   }
 
-  Future<void> changeUserFuncionalities(UserModel user) async {
-    subFuncionalities = await repository.fetchSubFuncionalities(user);
+  Future<void> changeUser() async {
+    users = await repository.fetchAll();
+  }
+
+  Future<void> changeUserFuncionalities(String id) async {
+    subFuncionalities = await repository.fetchSubFuncionalities(id);
   }
 
   void search(String value) {

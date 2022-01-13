@@ -60,6 +60,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/routes/gpp_route_delegate.dart';
 import 'package:gpp/src/routes/gpp_route_information_parser.dart';
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+import 'package:gpp/src/views/departaments/departament_detail_view.dart';
+import 'package:gpp/src/views/departaments/departament_form_view.dart';
+import 'package:gpp/src/views/departaments/departament_list_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
+import 'package:gpp/src/views/funcionalities_view.dart';
+import 'package:gpp/src/views/home/home_view.dart';
+import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
+import 'package:gpp/src/views/subfuncionalities/subfuncionalities_list_view.dart';
+import 'package:gpp/src/views/users/user_detail.view.dart';
+import 'package:gpp/src/views/users/user_list_view.dart';
 
 void main() async {
   await dotenv.load(fileName: "env");
@@ -75,13 +90,9 @@ class GppApp extends StatefulWidget {
 }
 
 class _GppAppState extends State<GppApp> {
-  GppRouterDelegate _routerDelegate = GppRouterDelegate();
-  GppRouteInformationParser _routeInformationParser =
-      GppRouteInformationParser();
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GPP - Gerenciamento de Peças e Pedidos',
       theme: ThemeData(
@@ -89,8 +100,128 @@ class _GppAppState extends State<GppApp> {
           fontFamily: 'Mada',
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
+      onGenerateRoute: (settings) {
+        // Handle '/'
+        if (isAuthenticated()) {
+          if (settings.name == '/') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                    ));
+          }
+
+          if (settings.name == '/logout') {
+            return MaterialPageRoute(builder: (context) => AuthenticateView());
+          }
+
+          //Handle '/users
+          if (settings.name == '/users') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: UserListView(),
+                    ));
+          }
+
+          //Handle '/departaments
+          if (settings.name == '/departaments') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentListView(),
+                    ));
+          }
+
+          if (settings.name == '/funcionalities') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesListView(),
+                    ));
+          }
+
+          // if (settings.name == '/subfuncionalities') {
+          //   return MaterialPageRoute(
+          //       builder: (context) => HomeView(
+          //             funcionalities: FuncionalitiesView(),
+          //             page: SubFuncionalitiesListView(),
+          //           ));
+          // }
+
+          if (settings.name == '/funcionalities/register') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesFormView(),
+                    ));
+          }
+
+          if (settings.name == '/departamento/register') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentFormView(),
+                    ));
+          }
+
+          // Handle '/departaments/:id'
+
+          var uri = Uri.parse(settings.name!);
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'departaments') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'funcionalities') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'subfuncionalities') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: SubFuncionalitiesFormView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          // Handle '/users/:id'
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'users') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: UserDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+        } else {
+          return MaterialPageRoute(builder: (context) => AuthenticateView());
+        }
+
+        return MaterialPageRoute(builder: (context) => NotFoundView());
+      },
     );
   }
 }

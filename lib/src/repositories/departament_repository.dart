@@ -16,6 +16,18 @@ class DepartamentRepository {
     required this.api,
   });
 
+  Future<DepartamentModel> fetch(String id) async {
+    Response response = await api.get('/departamentos/' + id);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return DepartamentModel.fromJson(data.first.first);
+    } else {
+      throw DepartamentException("Não foi possível encontrar departamentos !");
+    }
+  }
+
   Future<List<DepartamentModel>> fetchAll() async {
     Response response = await api.get('/departamentos');
 

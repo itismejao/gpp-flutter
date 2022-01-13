@@ -80,7 +80,7 @@ void main() {
     test('Valida a busca de usuários', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final users = await repository.fetchUser();
+      final users = await repository.fetchUser('1');
       expect(users, isA<List<UserModel>>());
     });
 
@@ -88,7 +88,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.fetchUser(),
+      expect(() async => await repository.fetchAll(),
           throwsA(isA<UserException>()));
     });
   });
@@ -338,8 +338,7 @@ void main() {
         () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final response =
-          await repository.fetchSubFuncionalities(UserModel(uid: 1));
+      final response = await repository.fetchSubFuncionalities('1');
       expect(response, isA<List<SubFuncionalitiesModel>>());
     });
 
@@ -349,9 +348,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(
-          () async =>
-              await repository.fetchSubFuncionalities(UserModel(uid: 1)),
+      expect(() async => await repository.fetchSubFuncionalities('1'),
           throwsA(isA<UserException>()));
     });
   });

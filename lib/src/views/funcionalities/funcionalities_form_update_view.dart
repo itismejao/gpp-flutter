@@ -23,13 +23,12 @@ class FuncionalitieFormUpdateView extends StatefulWidget {
 
 class _FuncionalitieFormUpdateViewState
     extends State<FuncionalitieFormUpdateView> {
-  FuncionalitiesController _controlller =
-      FuncionalitiesController(FuncionalitiesRepository(api: gppApi));
+  FuncionalitiesController _controlller = FuncionalitiesController();
 
   handleUpdate(context, FuncionalitieModel funcionalitie) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _controlller.update(funcionalitie)) {
+      if (await _controlller.update()) {
         notify.sucess("Funcionalidade atualizada!");
         Navigator.pushReplacementNamed(context, 'funcionalitie_lists');
       }
@@ -54,7 +53,7 @@ class _FuncionalitieFormUpdateViewState
                     widget.funcionalitie.name = value;
                   });
                 },
-                validator: (value) => _controlller.validateInput(value),
+                validator: (value) => _controlller.validate(value),
                 keyboardType: TextInputType.number,
                 style: textStyle(
                     fontWeight: FontWeight.w700,
@@ -72,7 +71,7 @@ class _FuncionalitieFormUpdateViewState
                     widget.funcionalitie.icon = value;
                   });
                 },
-                validator: (value) => _controlller.validateInput(value),
+                validator: (value) => _controlller.validate(value),
                 keyboardType: TextInputType.number,
                 style: textStyle(
                     fontWeight: FontWeight.w700,

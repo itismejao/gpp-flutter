@@ -16,11 +16,8 @@ import 'package:gpp/src/views/home_view.dart';
 
 // ignore: must_be_immutable
 class FuncionalitiesView extends StatefulWidget {
-  Function handleCurrentPage;
-
   FuncionalitiesView({
     Key? key,
-    required this.handleCurrentPage,
   }) : super(key: key);
 
   @override
@@ -229,59 +226,53 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
 
   Widget _buildListSubFuncionalities(SubFuncionalitiesModel subFuncionalities,
       MediaQueryData mediaQuery, context) {
-    return subFuncionalities.active!
-        ? Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      widget.handleCurrentPage(
-                          subFuncionalities.route.toString());
-
-                      // navigatorKey.currentState!
-                      //     .pushNamed(subFuncionalities.route.toString());
-                      //Fecha Drawer
-                    },
-                    child: MouseRegion(
-                      onHover: (event) {
-                        setState(() {
-                          subFuncionalities.boxDecoration = BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey.shade50);
-                        });
-                      },
-                      onExit: (event) {
-                        setState(() {
-                          subFuncionalities.boxDecoration = null;
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: subFuncionalities.boxDecoration,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 28),
-                                  child: Text(
-                                    subFuncionalities.name.toString(),
-                                    style: textStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ),
-                              ),
+    return Row(
+      children: [
+        Expanded(
+          child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, subFuncionalities.route!);
+                //Fecha Drawer
+              },
+              child: MouseRegion(
+                onHover: (event) {
+                  setState(() {
+                    subFuncionalities.boxDecoration = BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey.shade50);
+                  });
+                },
+                onExit: (event) {
+                  setState(() {
+                    subFuncionalities.boxDecoration = null;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: subFuncionalities.boxDecoration,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 28),
+                            child: Text(
+                              subFuncionalities.name.toString(),
+                              style: textStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w700),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    )),
-              ),
-            ],
-          )
-        : Container();
+                    ),
+                  ],
+                ),
+              )),
+        ),
+      ],
+    );
   }
 
   // ExpansionPanelList _buildListFuncionalities(

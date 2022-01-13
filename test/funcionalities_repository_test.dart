@@ -79,7 +79,7 @@ void main() {
     test('Valida a busca de funcionalidades', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final funcionalities = await repository.fetch();
+      final funcionalities = await repository.fetchAll();
       expect(funcionalities, isA<List<FuncionalitieModel>>());
     });
 
@@ -87,7 +87,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.fetch(),
+      expect(() async => await repository.fetchAll(),
           throwsA(isA<FuncionalitiesException>()));
     });
   });

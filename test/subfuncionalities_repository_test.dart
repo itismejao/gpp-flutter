@@ -47,7 +47,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
 
-      final subfuncionalities = await repository.fetch(funcionalitie);
+      final subfuncionalities = await repository.fetch('1');
       expect(subfuncionalities, isA<List<SubFuncionalitiesModel>>());
     });
 
@@ -55,7 +55,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.fetch(funcionalitie),
+      expect(() async => await repository.fetch('1'),
           throwsA(isA<SubFuncionalitiesException>()));
     });
   });
@@ -70,7 +70,7 @@ void main() {
       when(api.post(any, any))
           .thenAnswer((realInvocation) async => Response('', 200));
 
-      expect(await repository.create(funcionalitie, subFuncionalitie), true);
+      expect(await repository.create('1', subFuncionalitie), true);
     });
 
     test(
@@ -79,8 +79,7 @@ void main() {
       when(api.post(any, any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(
-          () async => await repository.create(funcionalitie, subFuncionalitie),
+      expect(() async => await repository.create('1', subFuncionalitie),
           throwsA(isA<SubFuncionalitiesException>()));
     });
   });

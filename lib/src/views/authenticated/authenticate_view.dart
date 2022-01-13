@@ -11,11 +11,8 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
 class AuthenticateView extends StatefulWidget {
-  final VoidCallback login;
-
   const AuthenticateView({
     Key? key,
-    required this.login,
   }) : super(key: key);
 
   @override
@@ -45,9 +42,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
           _controller.state = AuthenticateEnum.logged;
         });
 
-        widget.login();
-        // Navigator.pushReplacementNamed(context, '/home');
-        widget.login();
+        Navigator.pushReplacementNamed(context, '/');
       } else {
         setState(() {
           _controller.state = AuthenticateEnum.notLogged;

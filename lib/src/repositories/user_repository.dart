@@ -16,7 +16,19 @@ class UserRepository {
     required this.api,
   });
 
-  Future<List<UserModel>> fetchUser() async {
+  Future<UserModel> fetchUser(String id) async {
+    Response response = await api.get('/user/' + id);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return UserModel.fromJson(data.first);
+    } else {
+      throw UserException('Usuário não encontrado !');
+    }
+  }
+
+  Future<List<UserModel>> fetchAll() async {
     Response response = await api.get('/user');
 
     if (response.statusCode == StatusCode.OK) {
@@ -31,10 +43,8 @@ class UserRepository {
     }
   }
 
-  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
-      UserModel user) async {
-    Response response =
-        await api.get('/user/itensfuncionalidades/' + user.id.toString());
+  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(String id) async {
+    Response response = await api.get('/user/itensfuncionalidades/' + id);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -55,6 +65,8 @@ class UserRepository {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
+
+    print(jsonEncode(dataSend));
 
     Response response = await api.put(
         '/user/itensfuncionalidades/' + user.id.toString(), dataSend);

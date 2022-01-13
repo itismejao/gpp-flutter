@@ -50,19 +50,19 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   }
 
   handleEdit(context, DepartamentModel departament) async {
-    bool? isEdit = await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(actions: <Widget>[
-            DepartamentFormView(
-              departament: departament,
-            )
-          ]);
-        });
+    // bool? isEdit = await showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return AlertDialog(actions: <Widget>[
+    //         DepartamentFormView(
+    //           departament: departament,
+    //         )
+    //       ]);
+    //     });
 
-    if (isEdit != null && isEdit) {
-      changeDepartaments();
-    }
+    // if (isEdit != null && isEdit) {
+    //   changeDepartaments();
+    // }
   }
 
   handleDelete(context, DepartamentModel departament) async {
@@ -154,6 +154,22 @@ class _DepartamentListViewState extends State<DepartamentListView> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
@@ -181,7 +197,12 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                                 color: Colors.grey.shade400,
                               ),
                               onPressed: () => {
-                                handleEdit(context, departament[index]),
+                                Navigator.pushNamed(
+                                    context,
+                                    '/departaments/' +
+                                        departament[index].id.toString())
+
+                                //  handleEdit(context, departament[index]),
                               },
                             ),
                             IconButton(
@@ -305,13 +326,18 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey.shade400,
-                        ),
-                        onPressed: () =>
-                            handleEdit(context, departament[index]),
-                      ),
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context,
+                                '/departaments/' +
+                                    departament[index].id.toString());
+                          }
+                          //handleEdit(context, departament[index]),
+                          ),
                       IconButton(
                         icon: Icon(
                           Icons.delete,
@@ -399,23 +425,25 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                         fontSize: 18,
                         color: Colors.black,
                         fontWeight: FontWeight.w700)),
-                // GestureDetector(
-                //   onTap: () => handleCreate(context),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //         color: secundaryColor,
-                //         borderRadius: BorderRadius.circular(5)),
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(
-                //           top: 15, left: 25, bottom: 15, right: 25),
-                //       child: Text(
-                //         "Cadastrar",
-                //         style: TextStyle(
-                //             color: Colors.white, fontWeight: FontWeight.bold),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/departamento/register');
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: secundaryColor,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 25, bottom: 15, right: 25),
+                      child: Text(
+                        "Cadastrar",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
 
                 // ButtonPrimaryComponent(
                 //     onPressed: () => handleCreate(context), text: "Cadastrar")

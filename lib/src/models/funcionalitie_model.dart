@@ -17,7 +17,7 @@ class FuncionalitieModel {
   });
 
   factory FuncionalitieModel.fromJson(Map<String, dynamic> json) {
-    var id = json['id'] != null ? int.parse(json['id']) : null;
+    var id = json['id'];
     var name = json['name'];
     var icon = json['icon'];
     bool? active = json['active'];

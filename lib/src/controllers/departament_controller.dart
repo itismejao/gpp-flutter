@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 class DepartamentController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DepartamentRepository repository;
+  DepartamentModel departament = DepartamentModel();
   List<DepartamentModel> departaments = [];
   List<SubFuncionalitiesModel> subFuncionalities = [];
   DepartamentEnum state = DepartamentEnum.notDepartament;
@@ -15,12 +16,15 @@ class DepartamentController {
     this.repository,
   );
 
+  Future<void> fetch(String id) async {
+    departament = await repository.fetch(id);
+  }
+
   Future<void> fetchAll() async {
     departaments = await repository.fetchAll();
   }
 
-  Future<bool> updateUserSubFuncionalities(DepartamentModel departament,
-      List<SubFuncionalitiesModel> subFuncionalities) async {
+  Future<bool> updateDepartamentSubFuncionalities() async {
     return await repository.updateDepartmentSubFuncionalities(
         departament, subFuncionalities);
   }
@@ -30,15 +34,15 @@ class DepartamentController {
     subFuncionalities = await repository.fetchSubFuncionalities(departament);
   }
 
-  Future<bool> insertOrUpdate(DepartamentModel departament) async {
-    if (departament.id == null) {
-      return create(departament);
-    } else {
-      return update(departament);
-    }
-  }
+  // Future<bool> insertOrUpdate(DepartamentModel departament) async {
+  //   if (departament.id == null) {
+  //     return create(departament);
+  //   } else {
+  //     return update(departament);
+  //   }
+  // }
 
-  Future<bool> create(DepartamentModel departament) async {
+  Future<bool> create() async {
     if (formKey.currentState!.validate()) {
       return await repository.create(departament);
     }
@@ -46,7 +50,7 @@ class DepartamentController {
     return false;
   }
 
-  Future<bool> update(DepartamentModel departament) async {
+  Future<bool> update() async {
     return await repository.update(departament);
   }
 
@@ -69,5 +73,10 @@ class DepartamentController {
   //               user.uid!.toLowerCase().contains(value.toLowerCase())))
   //       .toList();
   // }
-
+  validate(value) {
+    if (value.isEmpty) {
+      return 'Campo obrigatório';
+    }
+    return null;
+  }
 }

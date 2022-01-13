@@ -17,8 +17,7 @@ class FuncionalitiesListView extends StatefulWidget {
 }
 
 class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
-  FuncionalitiesController _controlller =
-      FuncionalitiesController(FuncionalitiesRepository(api: gppApi));
+  FuncionalitiesController _controlller = FuncionalitiesController();
   final ResponsiveController _responsive = ResponsiveController();
 
   fetchFuncionalities() async {
@@ -26,7 +25,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
       _controlller.state = FuncionalitiesEnum.loading;
     });
 
-    await _controlller.fetch();
+    await _controlller.fetchAll();
 
     setState(() {
       _controlller.state = FuncionalitiesEnum.change;
@@ -73,11 +72,6 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                      child: Text('Foto',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -127,117 +121,74 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
       BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        // if (_responsive.isMobile(constraints.maxWidth)) {
-        //   return Padding(
-        //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //           border: Border(
-        //               left: BorderSide(
-        //                   color: users[index].active == "1"
-        //                       ? secundaryColor
-        //                       : Colors.grey.shade400,
-        //                   width: 4))),
-        //       child: Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        //         child: Column(
-        //           children: [
-        //             Row(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               children: [
-        //                 SizedBox(
-        //                     height: 50,
-        //                     width: 50,
-        //                     child: ClipRRect(
-        //                       borderRadius: BorderRadius.circular(10),
-        //                       child: Image.network(
-        //                           'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-        //                     )),
-        //                 const SizedBox(
-        //                   width: 12,
-        //                 ),
-        //                 Column(
-        //                   mainAxisAlignment: MainAxisAlignment.start,
-        //                   crossAxisAlignment: CrossAxisAlignment.start,
-        //                   children: [
-        //                     Text(
-        //                       users[index].name!,
-        //                       style: textStyle(
-        //                           color: Colors.black,
-        //                           fontWeight: FontWeight.w700),
-        //                     ),
-        //                     const SizedBox(
-        //                       height: 6,
-        //                     ),
-        //                     users[index].departement != null
-        //                         ? Text(
-        //                             users[index].departement!,
-        //                             style: textStyle(
-        //                                 color: Colors.grey.shade400,
-        //                                 fontWeight: FontWeight.w700),
-        //                           )
-        //                         : Text('',
-        //                             style: textStyle(
-        //                                 color: Colors.black,
-        //                                 fontWeight: FontWeight.w700))
-        //                   ],
-        //                 )
-        //               ],
-        //             ),
-        //             const SizedBox(
-        //               height: 12,
-        //             ),
-        //             Row(
-        //               children: [
-        //                 IconButton(
-        //                   icon: Icon(
-        //                     Icons.edit,
-        //                     color: Colors.grey.shade400,
-        //                   ),
-        //                   onPressed: () => {
-        //                     Navigator.pushNamed(context, '/user_detail',
-        //                         arguments: users[index])
-        //                   },
-        //                 ),
-        //                 IconButton(
-        //                   icon: Icon(
-        //                     Icons.delete,
-        //                     color: Colors.grey.shade400,
-        //                   ),
-        //                   onPressed: () => {
-        //                     // Navigator.pushNamed(context, '/user_detail',
-        //                     //     arguments: users[index])
-        //                   },
-        //                 ),
-        //               ],
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //   );
-        // }
+        if (_responsive.isMobile(constraints.maxWidth)) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          funcionalities[index].name ?? '',
+                          style: textStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          funcionalities[index].name ?? '',
+                          style: textStyle(color: Colors.grey.shade400),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildStatus(funcionalities[index].active!),
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () => {print("teste")},
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/68.png'),
-                        )),
-                  ],
-                ),
-              ),
               Expanded(
                 flex: 2,
                 child: Text(
@@ -247,14 +198,14 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                 ),
               ),
               Expanded(
-                  child: Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                    color: funcionalities[index].active!
-                        ? secundaryColor
-                        : Colors.grey.shade400,
-                    shape: BoxShape.circle),
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 60,
+                    child: _buildStatus(funcionalities[index].active!),
+                  ),
+                ],
               )),
               Expanded(
                 child: Row(
@@ -262,12 +213,26 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                   children: [
                     IconButton(
                       icon: Icon(
+                        Icons.add,
+                        color: Colors.grey.shade400,
+                      ),
+                      onPressed: () => {
+                        Navigator.pushReplacementNamed(
+                            context,
+                            '/subfuncionalities/' +
+                                funcionalities[index].id.toString())
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
                         Icons.edit,
                         color: Colors.grey.shade400,
                       ),
                       onPressed: () => {
-                        Navigator.pushNamed(context, '/funcionalities_update',
-                            arguments: funcionalities[index])
+                        Navigator.pushReplacementNamed(
+                            context,
+                            '/funcionalities/' +
+                                funcionalities[index].id.toString())
                       },
                     ),
                     IconButton(
@@ -283,8 +248,10 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                           color: Colors.grey.shade400,
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/funcionalities_detail',
-                              arguments: funcionalities[index]);
+                          Navigator.pushReplacementNamed(
+                              context,
+                              '/funcionalities/' +
+                                  funcionalities[index].id.toString());
                         }),
                   ],
                 ),
@@ -308,6 +275,47 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     }
   }
 
+  Container _buildStatus(bool status) {
+    print(status);
+    if (status) {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: secundaryColor,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Ativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        height: 20,
+        width: 60,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(
+              Radius.circular(10.0) //                 <--- border radius here
+              ),
+        ),
+        child: Center(
+          child: Text(
+            "Inativo",
+            style: textStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -327,9 +335,9 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                     style: ElevatedButton.styleFrom(
                         shadowColor: Colors.transparent,
                         elevation: 0,
-                        primary: primaryColor),
+                        primary: secundaryColor),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/funcionalities_create');
+                      Navigator.pushNamed(context, '/funcionalities/register');
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),

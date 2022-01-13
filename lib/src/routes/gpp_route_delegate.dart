@@ -119,24 +119,22 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
 
     // ignore: unnecessary_null_comparison
     if (!authenticated) {
-      stack = AuthenticateView(
-        login: () => handleLogin(),
-      );
+      stack = AuthenticateView();
     } else {
       var subStack;
 
       if (currentPage == "/home") {
-        subStack = HomeView();
+        // subStack = HomeView();
       } else if (currentPage == "/departaments") {
         subStack = DepartamentView();
       } else if (currentPage == "/users" && _user == null) {
-        subStack = UserListView(
-          handleSelectUser: (value) => handleSelectUser(value),
-        );
+        // subStack = UserListView(
+        //   //handleSelectUser: (value) => handleSelectUser(value),
+        // );
       } else if (currentPage == "/users" && _user != null) {
-        subStack = UserDetailView(
-          user: _user!,
-        );
+        // subStack = UserDetailView(
+        //   user: _user!,
+        // );
       }
 
       stack = LayoutBuilder(
@@ -147,15 +145,15 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(mediaQuery.size.height * 0.10),
               child: AppBarView(
-                handleLogout: handleLogout,
-              ),
+                  //   handleLogout: handleLogout,
+                  ),
             ),
             drawer: Container(
                 color: Colors.white,
                 width: mediaQuery.size.width * 0.70,
                 child: FuncionalitiesView(
-                  handleCurrentPage: (value) => handleCurrentPage(value),
-                )),
+                    // handleCurrentPage: (value) => handleCurrentPage(value),
+                    )),
             body: Row(
               children: [
                 Expanded(
@@ -175,15 +173,15 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(mediaQuery.size.height * 0.10),
             child: AppBarView(
-              handleLogout: handleLogout,
-            ),
+                //  handleLogout: handleLogout,
+                ),
           ),
           body: Row(
             children: [
               Expanded(
                 child: FuncionalitiesView(
-                  handleCurrentPage: (value) => handleCurrentPage(value),
-                ),
+                    //handleCurrentPage: (value) => handleCurrentPage(value),
+                    ),
               ),
               Expanded(
                   flex: 4,

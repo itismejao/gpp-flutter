@@ -3,11 +3,13 @@ import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
+import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class SubFuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final SubFuncionalitiesRepository repository;
+  late final SubFuncionalitiesRepository repository =
+      SubFuncionalitiesRepository(api: gppApi);
 
   List<SubFuncionalitiesModel> subFuncionalities = [];
 
@@ -15,10 +17,10 @@ class SubFuncionalitiesController {
   SubFuncionalitiesEnum state = SubFuncionalitiesEnum.notChange;
   // bool groupValue = false;
 
-  SubFuncionalitiesController({required this.repository});
+  SubFuncionalitiesController();
 
-  Future<void> fetch(FuncionalitieModel funcionalitie) async {
-    subFuncionalities = await repository.fetch(funcionalitie);
+  Future<void> fetch(String id) async {
+    subFuncionalities = await repository.fetch(id);
   }
 
   void setSubFuncionalitieName(value) {
@@ -38,21 +40,21 @@ class SubFuncionalitiesController {
   }
 
   // //Validação
-  validateInput(value) {
+  validate(value) {
     if (value.isEmpty) {
       return 'Campo obrigatório';
     }
     return null;
   }
 
-  Future<bool> create(FuncionalitieModel funcionalitie) async {
+  Future<bool> create(String id) async {
     if (!formKey.currentState!.validate()) {
       return false;
     }
 
     formKey.currentState!.save();
 
-    return await repository.create(funcionalitie, subFuncionalitie);
+    return await repository.create(id, subFuncionalitie);
   }
 
   Future<bool> update(SubFuncionalitiesModel subFuncionalitie) async {

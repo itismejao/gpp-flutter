@@ -15,10 +15,8 @@ class SubFuncionalitiesRepository {
     required this.api,
   });
 
-  Future<List<SubFuncionalitiesModel>> fetch(
-      FuncionalitieModel funcionalitie) async {
-    Response response =
-        await api.get('/itensfuncionalidades/' + funcionalitie.id.toString());
+  Future<List<SubFuncionalitiesModel>> fetch(String id) async {
+    Response response = await api.get('/itensfuncionalidades/' + id);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -34,11 +32,10 @@ class SubFuncionalitiesRepository {
     }
   }
 
-  Future<bool> create(FuncionalitieModel funcionalitie,
-      SubFuncionalitiesModel subFuncionalitie) async {
+  Future<bool> create(
+      String id, SubFuncionalitiesModel subFuncionalitie) async {
     Response response = await api.post(
-        '/itensfuncionalidades/' + funcionalitie.id.toString(),
-        subFuncionalitie.toJson());
+        '/itensfuncionalidades/' + id, subFuncionalitie.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
