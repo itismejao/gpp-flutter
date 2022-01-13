@@ -145,7 +145,7 @@ class HomeView extends StatelessWidget {
         );
       });
     }
-    return Scaffold(body: home);
+    return Scaffold(body: SafeArea(child: home));
 
     //Página inicial
     // return Scaffold(
