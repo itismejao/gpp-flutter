@@ -65,9 +65,9 @@ import 'package:gpp/src/views/departaments/departament_form_view.dart';
 import 'package:gpp/src/views/departaments/departament_list_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
-
 import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
+
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
