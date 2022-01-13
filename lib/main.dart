@@ -99,7 +99,7 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         // Handle '/'
-        if (!isAuthenticated()) {
+        if (isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 
+// ignore: must_be_immutable
 class InputComponent extends StatelessWidget {
   final String? label;
   final String? initialValue;
