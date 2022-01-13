@@ -4,6 +4,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
+import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -480,23 +481,10 @@ class _UserListViewState extends State<UserListView> {
                       SizedBox(
                         height: 6,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: TextFormField(
-                          onChanged: (value) => handleSearch(value),
-                          // validator: (value) => validate(value),
-                          // onChanged: (value) {
-                          //   widget.user!.uid = value;
-                          // },
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  top: 15, left: 20, bottom: 10, right: 20),
-                              border: InputBorder.none,
-                              hintText: 'Buscar',
-                              prefixIcon: Icon(Icons.search)),
-                        ),
+                      InputComponent(
+                        prefixIcon: Icon(Icons.search),
+                        hintText: 'Buscar',
+                        onChanged: (value) => handleSearch(value),
                       ),
                     ],
                   ),
@@ -511,23 +499,10 @@ class _UserListViewState extends State<UserListView> {
                     SizedBox(
                       height: 6,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: TextFormField(
-                        onChanged: (value) => handleSearch(value),
-                        // validator: (value) => validate(value),
-                        // onChanged: (value) {
-                        //   widget.user!.uid = value;
-                        // },
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                                top: 15, left: 20, bottom: 10, right: 20),
-                            border: InputBorder.none,
-                            hintText: 'Buscar',
-                            prefixIcon: Icon(Icons.search)),
-                      ),
+                    InputComponent(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: 'Buscar',
+                      onChanged: (value) => handleSearch(value),
                     ),
                   ],
                 ),

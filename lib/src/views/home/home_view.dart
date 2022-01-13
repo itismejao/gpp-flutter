@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/appbar_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 
+// ignore: must_be_immutable
 class HomeView extends StatelessWidget {
   Widget funcionalities;
   Widget? page;

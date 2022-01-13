@@ -35,7 +35,8 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 24, horizontal: 40),
                 child: Text("Cadastrar funcionalidade",
                     style:
                         TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),

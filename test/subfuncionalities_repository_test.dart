@@ -9,7 +9,6 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
@@ -42,7 +41,6 @@ void main() {
         }
     ]
     ]''';
-    FuncionalitieModel funcionalitie = FuncionalitieModel(id: 5);
     test('Valida a busca de subfuncionalidades', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
@@ -61,7 +59,6 @@ void main() {
   });
 
   group('Funcionalidades - Criação: ', () {
-    FuncionalitieModel funcionalitie = FuncionalitieModel(id: 5);
     SubFuncionalitiesModel subFuncionalitie = SubFuncionalitiesModel(
         name: "Teste", route: "/teste", icon: "home_work", active: false);
 

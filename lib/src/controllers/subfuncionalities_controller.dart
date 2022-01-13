@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';

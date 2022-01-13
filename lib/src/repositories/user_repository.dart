@@ -92,7 +92,8 @@ class UserRepository {
 
       return funcionalidades;
     } else {
-      throw UserException("Funcionalidades não encontradas !");
+      var error = json.decode(response.body)['error'];
+      throw UserException(error);
     }
   }
 

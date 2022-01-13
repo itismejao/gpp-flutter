@@ -6,10 +6,7 @@ import 'package:gpp/src/views/appbar_view.dart';
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 import 'package:gpp/src/views/departaments/departament_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
-import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/users/user_detail.view.dart';
-import 'package:gpp/src/views/users/user_list_view.dart';
 
 class GppRouterDelegate extends RouterDelegate<GppRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<GppRoutePath> {

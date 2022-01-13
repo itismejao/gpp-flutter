@@ -130,6 +130,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                   ],
                 ),
               ),
+              Divider(),
               Expanded(
                 child: ListView.builder(
                     itemCount: departaments.length,

@@ -11,6 +11,7 @@ import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
+// ignore: must_be_immutable
 class FuncionalitiesDetailView extends StatefulWidget {
   String id;
   FuncionalitiesDetailView({
@@ -71,6 +72,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
 
@@ -84,119 +86,126 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
   Widget build(BuildContext context) {
     if (_controller.state == SubFuncionalitiesEnum.change &&
         _controllerFuncionalities.state == FuncionalitiesEnum.change) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
-              child: Text('SubFuncionalidades',
-                  style: textStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700)),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20.0,
             ),
-            Container(
-              child: Form(
-                  key: _controller.formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InputComponent(
-                        initialValue:
-                            _controllerFuncionalities.funcionalitie.name,
-                        label: "Nome",
-                        maxLength: 50,
-                        onChanged: (value) {
-                          _controllerFuncionalities.funcionalitie.name = value;
-                        },
-                        validator: (value) {
-                          _controller.validate(value);
-                        },
-                        hintText: "Digite o nome da funcionalidade",
-                        prefixIcon: Icon(Icons.lock),
+            child: Text('Funcionalidade',
+                style: textStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700)),
+          ),
+          Container(
+            child: Form(
+                key: _controller.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InputComponent(
+                      initialValue:
+                          _controllerFuncionalities.funcionalitie.name,
+                      label: "Nome",
+                      maxLength: 50,
+                      onChanged: (value) {
+                        _controllerFuncionalities.funcionalitie.name = value;
+                      },
+                      validator: (value) {
+                        _controller.validate(value);
+                      },
+                      hintText: "Digite o nome da funcionalidade",
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    InputComponent(
+                      initialValue:
+                          _controllerFuncionalities.funcionalitie.icon,
+                      label: "Icon",
+                      maxLength: 50,
+                      onChanged: (value) {
+                        _controllerFuncionalities.funcionalitie.icon = value;
+                      },
+                      validator: (value) {
+                        _controllerFuncionalities.validate(value);
+                      },
+                      hintText: "Digite o código do icon",
+                      prefixIcon: Icon(Icons.lock),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      child: Row(
+                        children: [
+                          Radio(
+                              activeColor: secundaryColor,
+                              value: true,
+                              groupValue: _controllerFuncionalities
+                                  .funcionalitie.active,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _controllerFuncionalities
+                                      .funcionalitie.active = value;
+                                });
+                              }),
+                          Text("Habilitado"),
+                          Radio(
+                              activeColor: secundaryColor,
+                              value: false,
+                              groupValue: _controllerFuncionalities
+                                  .funcionalitie.active,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _controllerFuncionalities
+                                      .funcionalitie.active = value;
+                                });
+                              }),
+                          Text("Desabilitado"),
+                        ],
                       ),
-                      InputComponent(
-                        initialValue:
-                            _controllerFuncionalities.funcionalitie.icon,
-                        label: "Icon",
-                        maxLength: 50,
-                        onChanged: (value) {
-                          _controllerFuncionalities.funcionalitie.icon = value;
-                        },
-                        validator: (value) {
-                          _controllerFuncionalities.validate(value);
-                        },
-                        hintText: "Digite o código do icon",
-                        prefixIcon: Icon(Icons.lock),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: Row(
-                          children: [
-                            Radio(
-                                activeColor: secundaryColor,
-                                value: true,
-                                groupValue: _controllerFuncionalities
-                                    .funcionalitie.active,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _controllerFuncionalities
-                                        .funcionalitie.active = value;
-                                  });
-                                }),
-                            Text("Habilitado"),
-                            Radio(
-                                activeColor: secundaryColor,
-                                value: false,
-                                groupValue: _controllerFuncionalities
-                                    .funcionalitie.active,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _controllerFuncionalities
-                                        .funcionalitie.active = value;
-                                  });
-                                }),
-                            Text("Desabilitado"),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24.0),
-                        child: Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                handleUpdate(context);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: secundaryColor,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 15, left: 25, bottom: 15, right: 25),
-                                  child: Text(
-                                    "Editar",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              handleUpdate(context);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: secundaryColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 15, left: 25, bottom: 15, right: 25),
+                                child: Text(
+                                  "Editar",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  )),
-            ),
-            Expanded(child: _buildList(_controller.subFuncionalities)),
-          ],
-        ),
+                    ),
+                  ],
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Text('Subfuncionalidades',
+                style: textStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700)),
+          ),
+          Divider(),
+          Expanded(child: _buildList(_controller.subFuncionalities)),
+        ],
       );
     } else {
       return LoadingView();

@@ -67,6 +67,7 @@
 //   @override
 //   initState() {
 //     // ignore: todo
+// ignore: todo
 //     // TODO: implement initState
 //     super.initState();
 
@@ -204,9 +205,9 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/loading_view.dart';
 
+// ignore: must_be_immutable
 class DepartamentDetailView extends StatefulWidget {
   String id;
   DepartamentDetailView({
@@ -285,6 +286,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   // }
 
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     _controller = DepartamentController(DepartamentRepository(api: gppApi));
