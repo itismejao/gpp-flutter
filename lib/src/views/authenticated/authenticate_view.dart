@@ -77,6 +77,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "RE",
                 maxLength: 255,
+                keyboardType: TextInputType.number,
                 onSaved: (value) {
                   _controller.setUserUID(int.parse(value));
                 },

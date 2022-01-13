@@ -14,7 +14,8 @@ class InputComponent extends StatelessWidget {
   final dynamic suffixIcon;
   final bool? obscureText;
   final bool? enable;
-  const InputComponent({
+  TextInputType? keyboardType;
+  InputComponent({
     Key? key,
     this.label,
     this.initialValue,
@@ -27,6 +28,7 @@ class InputComponent extends StatelessWidget {
     this.suffixIcon,
     this.obscureText,
     this.enable,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -61,7 +63,7 @@ class InputComponent extends StatelessWidget {
               return null;
             }
           },
-          keyboardType: TextInputType.number,
+          keyboardType: keyboardType,
           style: textStyle(
               color: Colors.black,
               fontSize: 12,

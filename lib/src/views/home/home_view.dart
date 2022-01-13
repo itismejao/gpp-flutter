@@ -73,8 +73,7 @@ class HomeView extends StatelessWidget {
             backgroundColor: Colors.white,
             body: Container(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 40.0, horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
                     Expanded(child: funcionalities),
@@ -82,15 +81,19 @@ class HomeView extends StatelessWidget {
                         flex: 4,
                         child: Column(
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Gerenciamento de peças e Pedidos",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20.0, horizontal: 20),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Gerenciamento de peças e Pedidos",
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
                             ),
                             Divider(),
                             Image.network(

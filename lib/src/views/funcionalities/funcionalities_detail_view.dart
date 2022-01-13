@@ -135,7 +135,8 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
+                        vertical: 10,
+                      ),
                       child: Row(
                         children: [
                           Radio(

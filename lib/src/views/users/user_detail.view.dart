@@ -190,7 +190,7 @@ class _UserDetailViewState extends State<UserDetailView> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Row(
                   children: [
                     Radio(
@@ -348,7 +348,7 @@ class _UserDetailViewState extends State<UserDetailView> {
                       onTap: () => handleUpdate(_controller.user),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: primaryColor,
+                            color: secundaryColor,
                             borderRadius: BorderRadius.circular(5)),
                         child: Padding(
                           padding: const EdgeInsets.only(

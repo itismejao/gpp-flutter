@@ -261,7 +261,8 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   handleUpdate(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _controller.updateDepartamentSubFuncionalities()) {
+      if (await _controller.update() &&
+          await _controller.updateDepartamentSubFuncionalities()) {
         notify.sucess("Departamento atualizado!");
         Navigator.pushReplacementNamed(context, '/departaments');
       }
@@ -330,8 +331,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                   prefixIcon: Icon(Icons.lock),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(
                     children: [
                       Radio(
