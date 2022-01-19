@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/components/button_primary_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 class AuthenticateView extends StatefulWidget {
   const AuthenticateView({
@@ -157,7 +157,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
   _buildState(context, MediaQueryData mediaQuery) {
     switch (_controller.state) {
       case AuthenticateEnum.loading:
-        return LoadingView();
+        return LoadingComponent();
 
       default:
         return _buildFormAuthenticated(mediaQuery);

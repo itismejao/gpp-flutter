@@ -11,8 +11,6 @@ import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-// ignore: unused_import
-import 'package:gpp/src/views/home_view.dart';
 
 // ignore: must_be_immutable
 class FuncionalitiesView extends StatefulWidget {

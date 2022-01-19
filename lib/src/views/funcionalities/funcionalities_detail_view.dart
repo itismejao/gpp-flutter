@@ -9,7 +9,7 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 // ignore: must_be_immutable
 class FuncionalitiesDetailView extends StatefulWidget {
@@ -209,7 +209,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
         ],
       );
     } else {
-      return LoadingView();
+      return LoadingComponent();
     }
   }
 

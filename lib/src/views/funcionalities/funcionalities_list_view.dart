@@ -5,7 +5,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 class FuncionalitiesListView extends StatefulWidget {
   const FuncionalitiesListView({Key? key}) : super(key: key);
@@ -264,7 +264,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
   _buildState() {
     switch (_controlller.state) {
       case FuncionalitiesEnum.loading:
-        return const LoadingView();
+        return const LoadingComponent();
 
       case FuncionalitiesEnum.change:
         return _buildList(_controlller.funcionalities);

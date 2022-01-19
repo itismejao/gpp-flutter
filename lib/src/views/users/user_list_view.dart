@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 class UserListView extends StatefulWidget {
   const UserListView({
@@ -124,7 +124,7 @@ class _UserListViewState extends State<UserListView> {
   stateManager() {
     switch (_controller.state) {
       case UserEnum.loading:
-        return const LoadingView();
+        return const LoadingComponent();
 
       case UserEnum.changeUser:
         return _controller.usersSearch.isEmpty

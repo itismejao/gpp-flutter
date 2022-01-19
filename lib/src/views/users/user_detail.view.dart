@@ -12,7 +12,7 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 // ignore: must_be_immutable
 class UserDetailView extends StatefulWidget {
@@ -149,7 +149,7 @@ class _UserDetailViewState extends State<UserDetailView> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LoadingView(),
+          LoadingComponent(),
         ],
       );
     }

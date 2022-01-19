@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/departaments/departament_form_view.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 class DepartamentListView extends StatefulWidget {
   const DepartamentListView({Key? key}) : super(key: key);
@@ -402,7 +402,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   Widget _buildDepartaments() {
     switch (_controller.state) {
       case DepartamentEnum.loading:
-        return const LoadingView();
+        return const LoadingComponent();
       case DepartamentEnum.notDepartament:
         return Container();
       case DepartamentEnum.changeDepartament:
