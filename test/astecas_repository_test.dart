@@ -10,13 +10,8 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/asteca_model.dart';
-import 'package:gpp/src/models/departament_model.dart';
-import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/repositories/astecas_repository.dart';
-import 'package:gpp/src/shared/exceptions/asteca_exception.dart';
 
-import 'package:gpp/src/shared/exceptions/departament_exception.dart';
-import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
+import 'package:gpp/src/repositories/astecas_repository.dart';
 
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
@@ -36,232 +31,93 @@ void main() {
     String dataReceived = ''' [
     [
         {
-            "id": "1",
-            "description": "Tecnologia",
-            "active": "1",
-     
-            "created_at": "2021-12-24 17:05:12",
-            "updated_at": "2021-12-24 17:07:05"
+            "id": "288799876",
+            "name": "Marcos Resende Coimbra",
+            "filialvenda": "500",
+            "notafiscal": "1238998878",
+            "serie": "A001",
+            "dataabertura": "18/10/2021",
+            "defeito": "Porta Lateral esta com marcas de batida",
+            "obs": "Deverá ser trocada todas as portas por conta do padrão de cores"
         },
         {
-            "id": "2",
-            "description": "Gerência",
-            "active": "0",
-   
-            "created_at": "2021-12-24 17:05:36",
-            "updated_at": "2021-12-24 17:05:36"
+            "id": "2887232876",
+            "name": "Maria Terezaa",
+            "filialvenda": "501",
+            "notafiscal": "1238932878",
+            "serie": "223201",
+            "dataabertura": "11/11/2021",
+            "defeito": "Falta dos puxadores",
+            "obs": "Enviar 12 puxadores do armário"
         },
         {
-            "id": "4",
-            "description": "Asteca",
-            "active": "0",
-   
-            "created_at": "2021-12-24 17:05:51",
-            "updated_at": "2021-12-24 17:05:51"
+            "id": "1287799876",
+            "name": "Luis Gonzaga",
+            "filialvenda": "499",
+            "notafiscal": "98758998878",
+            "serie": "12221",
+            "dataabertura": "12/12/2021",
+            "defeito": "Espelho da porta central quebrado",
+            "obs": "O espelho da porta esta quebrado"
         },
         {
-            "id": "5",
-            "description": "Estoque",
-            "active": "0",
-           
-            "created_at": "2021-12-24 17:05:57",
-            "updated_at": "2021-12-24 17:05:57"
+            "id": "354799876",
+            "name": "Ronaldo Nazario",
+            "filialvenda": "500",
+            "notafiscal": "787998878",
+            "serie": "4589",
+            "dataabertura": "01/01/2022",
+            "defeito": "Tampo da gaveteiro esta quebrado",
+            "obs": "Deverá ser trocada toda a gaveta do paneleiro"
         },
         {
-            "id": "6",
-            "description": "Expedição",
-            "active": "0",
-        
-            "created_at": "2021-12-24 17:06:08",
-            "updated_at": "2021-12-24 17:06:08"
+            "id": "245699876",
+            "name": "Frank aguiar",
+            "filialvenda": "500",
+            "notafiscal": "2658998878",
+            "serie": "1201",
+            "dataabertura": "04/01/2022",
+            "defeito": "Fundo do armario esta menor do que o tamanho do armario",
+            "obs": "Deverá ser trocada o fundo integral"
+        },
+        {
+            "id": "988377676",
+            "name": "Luiz figo",
+            "filialvenda": "501",
+            "notafiscal": "9775565878",
+            "serie": "9676",
+            "dataabertura": "09/01/2022",
+            "defeito": "O estrado da Cama esta com farpas ponte agudas que furam o colchão",
+            "obs": "Estrado deverá ser trocado"
+        },
+        {
+            "id": "546659876",
+            "name": "Arthur Antunes Coimbra",
+            "filialvenda": "499",
+            "notafiscal": "655665678",
+            "serie": "A003",
+            "dataabertura": "12/01/2022",
+            "defeito": "Porta Esquerda Empenada",
+            "obs": "Deverá ser trocada "
+        },
+        {
+           "id": "268759876",
+            "name": "Amarildo Luiz",
+            "filialvenda": "500",
+            "notafiscal": "900912878",
+            "serie": "2201",
+            "dataabertura": "18/01/2022",
+            "defeito": "Porta Lateral esta empenada",
+            "obs": "Deverá ser trocada todas as portas por conta do encaixe do movel"
         }
     ]
 ]''';
 
-    test('Verifica a busca de usuários', () async {
+    test('Verifica a busca de Astecas', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final asteca = await repository.fetchAll();
       expect(asteca, isA<List<AstecaModel>>());
-    });
-
-    test('Valida se não foi possível realizar a busca de departamentos',
-        () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 404));
-
-      expect(() async => await repository.fetchAll(),
-          throwsA(isA<AstecaException>()));
-    });
-  });
-
-  group('Departamentos e Funcionalidades: ', () {
-    String dataReceived = '''[
-    [
-        {
-            "id": "5",
-            "name": "Funcionalidades",
-            "active": 1,
-            "idregister": "33"
-        },
-        {
-            "id": "8",
-            "name": "Peças",
-            "active": 1,
-            "idregister": "37"
-        },
-        {
-            "id": "9",
-            "name": "Endereços",
-            "active": 0,
-            "idregister": null
-        },
-        {
-            "id": "10",
-            "name": "Movimentos",
-            "active": 0,
-            "idregister": null
-        },
-        {
-            "id": "11",
-            "name": "Manutenção",
-            "active": 1,
-            "idregister": "25"
-        },
-        {
-            "id": "12",
-            "name": "Solicitados",
-            "active": 1,
-            "idregister": "6"
-        },
-        {
-            "id": "12",
-            "name": "Solicitados",
-            "active": 1,
-            "idregister": "26"
-        },
-        {
-            "id": "13",
-            "name": "Cancelados",
-            "active": 1,
-            "idregister": "27"
-        },
-        {
-            "id": "14",
-            "name": "Departamentos",
-            "active": 0,
-            "idregister": null
-        },
-        {
-            "id": "15",
-            "name": "Menus",
-            "active": 1,
-            "idregister": "28"
-        },
-        {
-            "id": "16",
-            "name": "Itens do menu",
-            "active": 1,
-            "idregister": "29"
-        },
-        {
-            "id": "21",
-            "name": "Usuários",
-            "active": 0,
-            "idregister": null
-        },
-        {
-            "id": "22",
-            "name": "Departamento",
-            "active": 0,
-            "idregister": null
-        }
-    ]
-]''';
-
-    test('Valida busca de funcionalidades relacionadas ao departamento',
-        () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-
-      AstecaModel asteca = AstecaModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
-          createdAt: "2021-12-24 17:05:12",
-          updatedAt: "2021-12-24 17:05:12");
-
-      final subFucionalities =
-          await repository.fetchSubFuncionalities(asteca);
-
-      expect(subFucionalities, isA<List<SubFuncionalitiesModel>>());
-    });
-
-    test(
-        'Verifica se não foi realizada a busca de funcionalidades relacionadas ao departamento',
-        () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response('', 404));
-
-      AstecaModel asteca = AstecaModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
-          createdAt: "2021-12-24 17:05:12",
-          updatedAt: "2021-12-24 17:05:12");
-
-      expect(() async => await repository.fetchSubFuncionalities(asteca),
-          throwsA(isA<FuncionalitiesException>()));
-    });
-  });
-
-  group('Departamento atualização: ', () {
-    test(
-        'Valida se a lista de funcionalidades relacionadas ao departamento foi atualizada',
-        () async {
-      when(api.put(any, any))
-          .thenAnswer((realInvocation) async => Response('', 200));
-
-      AstecaModel asteca = AstecaModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
-          createdAt: "2021-12-24 17:05:12",
-          updatedAt: "2021-12-24 17:05:12");
-
-      List<SubFuncionalitiesModel> subFuncionalities = [
-        SubFuncionalitiesModel(
-            id: 5, name: "Funcionalidades", active: true, idRegister: "33")
-      ];
-
-      final response = await repository.updateDepartmentSubFuncionalities(
-          asteca, subFuncionalities);
-
-      expect(response, true);
-    });
-
-    test(
-        'Valida se a lista de funcionalidades relacionadas ao departamento não foi atualizada',
-        () async {
-      when(api.put(any, any))
-          .thenAnswer((realInvocation) async => Response('', 404));
-
-      AstecaModel asteca = AstecaModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
-          createdAt: "2021-12-24 17:05:12",
-          updatedAt: "2021-12-24 17:05:12");
-
-      List<SubFuncionalitiesModel> subFuncionalities = [
-        SubFuncionalitiesModel(
-            name: "Funcionalidades", active: true, idRegister: "33")
-      ];
-
-      expect(
-          () async => await repository.updateDepartmentSubFuncionalities(
-              asteca, subFuncionalities),
-          throwsA(isA<AstecaException>()));
     });
   });
 }
