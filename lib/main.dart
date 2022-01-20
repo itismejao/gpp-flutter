@@ -1,115 +1,227 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:gpp/src/models/user_model.dart';
 
-void main() {
-  runApp(const MyApp());
+// import 'package:gpp/src/views/not_found_view.dart';
+// import 'package:gpp/src/shared/services/auth.dart';
+// import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+// import 'package:gpp/src/views/departaments/departament_view.dart';
+// import 'package:gpp/src/views/funcionalities/funcionalities_form_create_view.dart';
+// import 'package:gpp/src/views/funcionalities/funcionalities_home_view.dart';
+// import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
+// import 'package:gpp/src/views/funcionalities_view.dart';
+// import 'package:gpp/src/views/home_view.dart';
+// import 'package:gpp/src/views/users/user_detail.view.dart';
+// import 'package:gpp/src/views/users/user_view.dart';
+
+// main() async {
+//   await dotenv.load(fileName: "env");
+
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   Widget checkAuthenticate(Widget page) {
+//     if (isAuthenticated()) {
+//       return page;
+//     } else {
+//       return const AuthenticateView();
+//     }
+//   }
+
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'GPP - Gerenciamento de Peças e Pedidos',
+//       theme: ThemeData(
+//           primarySwatch: Colors.blue,
+//           fontFamily: 'Mada',
+//           inputDecorationTheme:
+//               const InputDecorationTheme(iconColor: Colors.grey)),
+//       // home: const AuthenticateView(),
+//       home: Scaffold(body: HomeView()),
+//       routes: {
+//         '/home': (context) => checkAuthenticate(const HomeView()),
+//         '/login': (context) => const AuthenticateView(),
+//         '/users': (context) => const UserView(),
+//         '/user_detail': (context) => UserDetailView(
+//               user: UserModel(),
+//             ),
+//         '/not_found': (context) => checkAuthenticate(const NotFoundView()),
+//       },
+//       debugShowCheckedModeBanner: false,
+//     );
+//   }
+// }
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+import 'package:gpp/src/views/departaments/departament_detail_view.dart';
+import 'package:gpp/src/views/departaments/departament_form_view.dart';
+import 'package:gpp/src/views/departaments/departament_list_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
+import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
+import 'package:gpp/src/views/funcionalities_view.dart';
+
+import 'package:gpp/src/views/home/home_view.dart';
+import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
+import 'package:gpp/src/views/users/user_detail.view.dart';
+import 'package:gpp/src/views/users/user_list_view.dart';
+
+import 'src/views/funcionalities/funcionalities_form_view.dart';
+
+void main() async {
+  await dotenv.load(fileName: "env");
+  runApp(GppApp());
+  // runApp(MaterialApp(
+  //   home: Scaffold(body: DepartamentListView()),
+  // ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class GppApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _GppAppState();
+}
 
-  // This widget is the root of your application.
+class _GppAppState extends State<GppApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'GPP - Gerenciamento de Peças e Pedidos',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+          primarySwatch: Colors.blue,
+          fontFamily: 'Mada',
+          inputDecorationTheme:
+              const InputDecorationTheme(iconColor: Colors.grey)),
+      onGenerateRoute: (settings) {
+        // Handle '/'
+        if (isAuthenticated()) {
+          if (settings.name == '/') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                    ));
+          }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+          if (settings.name == '/logout') {
+            return MaterialPageRoute(builder: (context) => AuthenticateView());
+          }
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+          //Handle '/users
+          if (settings.name == '/users') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: UserListView(),
+                    ));
+          }
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+          //Handle '/departaments
+          if (settings.name == '/departaments') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentListView(),
+                    ));
+          }
 
-  final String title;
+          if (settings.name == '/funcionalities') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesListView(),
+                    ));
+          }
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+          // if (settings.name == '/subfuncionalities') {
+          //   return MaterialPageRoute(
+          //       builder: (context) => HomeView(
+          //             funcionalities: FuncionalitiesView(),
+          //             page: SubFuncionalitiesListView(),
+          //           ));
+          // }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+          if (settings.name == '/funcionalities/register') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesFormView(),
+                    ));
+          }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+          if (settings.name == '/departamento/register') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentFormView(),
+                    ));
+          }
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+          // Handle '/departaments/:id'
+
+          var uri = Uri.parse(settings.name!);
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'departaments') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: DepartamentDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'funcionalities') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: FuncionalitiesDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'subfuncionalities') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: SubFuncionalitiesFormView(
+                        id: id,
+                      ),
+                    ));
+          }
+
+          // Handle '/users/:id'
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'users') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: UserDetailView(
+                        id: id,
+                      ),
+                    ));
+          }
+        } else {
+          return MaterialPageRoute(builder: (context) => AuthenticateView());
+        }
+
+        return MaterialPageRoute(builder: (context) => NotFoundView());
+      },
     );
   }
 }

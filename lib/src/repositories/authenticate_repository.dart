@@ -1,0 +1,30 @@
+import 'dart:convert';
+
+import 'package:gpp/src/models/authenticate_model.dart';
+import 'package:gpp/src/models/user_model.dart';
+import 'package:gpp/src/shared/exceptions/authenticate_exception.dart';
+
+import 'package:gpp/src/shared/repositories/global.dart';
+import 'package:gpp/src/shared/repositories/status_code.dart';
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/shared/services/gpp_api.dart';
+
+class AuthenticateRepository {
+  Future<bool> doLogin(UserModel user) async {
+    var response = await gppApi.post('/user/login', user.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      AuthenticateModel authenticate =
+          AuthenticateModel.fromJson(jsonDecode(response.body));
+
+      //Seta token
+      setToken(authenticate.accessToken);
+
+      authenticateUser = authenticate;
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw AuthenticationException(error);
+    }
+  }
+}
