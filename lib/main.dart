@@ -103,6 +103,7 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         // Handle '/'
+        //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
         if (isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
