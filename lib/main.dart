@@ -70,11 +70,14 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
+
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
 import 'package:gpp/src/views/users/user_detail.view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
 import 'src/views/funcionalities/funcionalities_form_view.dart';
+
 
 void main() async {
   await dotenv.load(fileName: "env");
@@ -101,6 +104,12 @@ class _GppAppState extends State<GppApp> {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
+//Teste
+        return MaterialPageRoute(builder: (context) => Scaffold(body: RearsonPartsFormView() ));
+        
+      
+
+
         // Handle '/'
         if (isAuthenticated()) {
           if (settings.name == '/') {
