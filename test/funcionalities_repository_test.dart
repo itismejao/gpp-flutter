@@ -134,9 +134,9 @@ void main() {
 
   group('Funcionalidade - Exclusão: ', () {
     String dataSend = '''{
-    "id": "1",
+    "id": 1,
     "name": "TESTE a",
-    "active": "1",
+    "active": false,
     "icon": "settings",
     "iduserresp": 1
 } ''';
