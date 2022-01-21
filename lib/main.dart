@@ -59,6 +59,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 import 'package:gpp/src/views/departaments/departament_detail_view.dart';
 import 'package:gpp/src/views/departaments/departament_form_view.dart';
@@ -101,6 +102,13 @@ class _GppAppState extends State<GppApp> {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
+        //Teste
+        return MaterialPageRoute(
+            builder: (context) => HomeView(
+                  funcionalities: FuncionalitiesView(),
+                  page: AstecaDetailView(),
+                ));
+
         // Handle '/'
         if (isAuthenticated()) {
           if (settings.name == '/') {
