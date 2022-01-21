@@ -39,39 +39,54 @@ class InputComponent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label != null
-            ? Text(label!,
-                style:
-                    textStyle(color: Colors.black, fontWeight: FontWeight.bold))
+            ? Text(
+                label!,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    letterSpacing: 0.15,
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.bold),
+              )
             : Text(''),
         SizedBox(
           height: 6,
         ),
-        TextFormField(
-          initialValue: initialValue,
-          enabled: enable,
-          obscureText: obscureText ?? false,
-          maxLength: maxLength,
-          onChanged: (value) => {
-            if (onChanged != null) {onChanged!(value)}
-          },
-          onSaved: (value) => {
-            if (onSaved != null) {onSaved!(value)}
-          },
-          validator: (value) {
-            if (validator != null) {
-              validator!(value);
-            } else {
-              return null;
-            }
-          },
-          keyboardType: keyboardType,
-          style: textStyle(
-              color: Colors.black,
-              fontSize: 12,
-              height: 1.8,
-              fontWeight: FontWeight.bold),
-          decoration:
-              inputDecoration(hintText, prefixIcon, suffixIcon: suffixIcon),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(5)),
+          child: TextFormField(
+              initialValue: initialValue,
+              enabled: enable,
+              obscureText: obscureText ?? false,
+              maxLength: maxLength,
+              onChanged: (value) => {
+                    if (onChanged != null) {onChanged!(value)}
+                  },
+              onSaved: (value) => {
+                    if (onSaved != null) {onSaved!(value)}
+                  },
+              validator: (value) {
+                if (validator != null) {
+                  validator!(value);
+                } else {
+                  return null;
+                }
+              },
+              keyboardType: keyboardType,
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 14,
+                letterSpacing: 0.15,
+                height: 1.8,
+              ),
+              decoration: InputDecoration(
+                  prefixIcon: prefixIcon,
+                  hintText: hintText,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  border: InputBorder.none)),
         )
       ],
     );
