@@ -79,7 +79,9 @@ void main() {
     test('Verifica a busca de usuários', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+
       final departament = await repository.fetchAll();
+
       expect(departament, isA<List<DepartamentModel>>());
     });
 
