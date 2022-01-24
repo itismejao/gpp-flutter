@@ -133,7 +133,7 @@ class HomeView extends StatelessWidget {
             preferredSize: Size.fromHeight(mediaQuery.size.height * 0.10),
             child: AppBarView(),
           ),
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.grey.shade100,
           body: Container(
             child: Row(
               children: [
@@ -143,7 +143,7 @@ class HomeView extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                          height: mediaQuery.size.height * 0.9,
+                          height: mediaQuery.size.height * 0.95,
                           color: Colors.white,
                           child: SingleChildScrollView(
                             child: Container(
