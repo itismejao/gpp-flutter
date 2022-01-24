@@ -140,10 +140,11 @@ class HomeView extends StatelessWidget {
                 Expanded(child: funcionalities),
                 Expanded(
                     flex: 4,
-                    child: Container(
-                        color: Colors.grey.shade100,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          height: mediaQuery.size.height * 0.9,
+                          color: Colors.white,
                           child: SingleChildScrollView(
                             child: Container(
                               color: Colors.white,
@@ -151,8 +152,8 @@ class HomeView extends StatelessWidget {
                                 children: [page!],
                               ),
                             ),
-                          ),
-                        )))
+                          )),
+                    ))
               ],
             ),
           ),
