@@ -11,7 +11,7 @@ class CheckboxComponent extends StatelessWidget {
     return Checkbox(
         activeColor: primaryColor,
         checkColor: Colors.white,
-        value: true,
+        value: false,
         onChanged: (bool? value) {
           //   handleSelectedAll(value),
         });
