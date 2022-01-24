@@ -60,6 +60,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
+import 'package:gpp/src/views/astecas/asteca_list_view.dart';
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 import 'package:gpp/src/views/departaments/departament_detail_view.dart';
 import 'package:gpp/src/views/departaments/departament_form_view.dart';
@@ -110,6 +111,7 @@ class _GppAppState extends State<GppApp> {
                 ));
 
         // Handle '/'
+        //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
         if (isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
@@ -226,6 +228,14 @@ class _GppAppState extends State<GppApp> {
           }
         } else {
           return MaterialPageRoute(builder: (context) => AuthenticateView());
+        }
+
+        if (settings.name == '/astecas') {
+          return MaterialPageRoute(
+              builder: (context) => HomeView(
+                    funcionalities: FuncionalitiesView(),
+                    page: AstecaListView(),
+                  ));
         }
 
         return MaterialPageRoute(builder: (context) => NotFoundView());
