@@ -21,21 +21,27 @@ class ButtonPrimaryComponent extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPressed(),
       child: Container(
-        height: 40,
-        width: 80,
         decoration:
             BoxDecoration(color: color, borderRadius: BorderRadius.circular(5)),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(text,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    letterSpacing: 0.15)),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? Container(),
+              SizedBox(
+                width: 8,
+              ),
+              Text(text,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      letterSpacing: 0.15,
+                      height: 2)),
+            ],
+          ),
         ),
       ),
     );
