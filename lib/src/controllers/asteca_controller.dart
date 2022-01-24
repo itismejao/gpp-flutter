@@ -4,19 +4,19 @@ import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/astecas_repository.dart';
 
 import 'package:gpp/src/shared/enumeration/asteca_enum.dart';
+import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class AstecaController {
-  int step = 1;
+  int step = 4;
+  bool isOpenFilter = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  AstecaRepository repository;
+  AstecaRepository repository = AstecaRepository(api: gppApi);
   AstecaModel asteca = AstecaModel();
   List<AstecaModel> astecas = [];
   List<SubFuncionalitiesModel> subFuncionalities = [];
   AstecaEnum state = AstecaEnum.notAsteca;
 
-  AstecaController(
-    this.repository,
-  );
+  AstecaController();
 
   Future<void> fetch(String id) async {
     asteca = await repository.fetch(id);
