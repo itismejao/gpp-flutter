@@ -4,6 +4,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/shared/components/SubTitle1Component.dart';
 import 'package:gpp/src/shared/components/button_primary_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
+import 'package:gpp/src/shared/components/drop_down_component.dart';
 import 'package:gpp/src/shared/components/h6Component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
@@ -176,7 +177,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Asteca',
+                        'Informações',
                         style: TextStyle(
                             color: _controller.step == 1
                                 ? Colors.black
@@ -302,16 +303,30 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   });
                 },
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: _controller.step == 1
+                          ? Colors.grey.shade50
+                          : Colors.transparent,
+                      border: Border(
+                        left: BorderSide(
+                          color: _controller.step == 1
+                              ? secundaryColor
+                              : Colors.transparent,
+                          width: 7.0,
+                        ),
+                      )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 12),
+                            vertical: 12.0, horizontal: 12),
                         child: Text(
-                          'Asteca',
+                          'Informações',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 0.20),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.20),
                         ),
                       )
                     ],
@@ -331,16 +346,30 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   });
                 },
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: _controller.step == 2
+                          ? Colors.grey.shade50
+                          : Colors.transparent,
+                      border: Border(
+                        left: BorderSide(
+                          color: _controller.step == 2
+                              ? secundaryColor
+                              : Colors.transparent,
+                          width: 7.0,
+                        ),
+                      )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 12),
+                            vertical: 12.0, horizontal: 12),
                         child: Text(
                           'Endereço',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 0.20),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.20),
                         ),
                       )
                     ],
@@ -360,16 +389,30 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   });
                 },
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: _controller.step == 3
+                          ? Colors.grey.shade50
+                          : Colors.transparent,
+                      border: Border(
+                        left: BorderSide(
+                          color: _controller.step == 3
+                              ? secundaryColor
+                              : Colors.transparent,
+                          width: 7.0,
+                        ),
+                      )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 12),
+                            vertical: 12.0, horizontal: 12),
                         child: Text(
                           'Produto',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 0.20),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.20),
                         ),
                       )
                     ],
@@ -389,16 +432,30 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   });
                 },
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: _controller.step == 4
+                          ? Colors.grey.shade50
+                          : Colors.transparent,
+                      border: Border(
+                        left: BorderSide(
+                          color: _controller.step == 4
+                              ? secundaryColor
+                              : Colors.transparent,
+                          width: 7.0,
+                        ),
+                      )),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 16.0, horizontal: 12),
+                            vertical: 12.0, horizontal: 12),
                         child: Text(
                           'Peças',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 0.20),
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.20),
                         ),
                       )
                     ],
@@ -410,6 +467,357 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         ),
       ],
     );
+  }
+
+  _buildDialogParts(context) {
+    Size media = MediaQuery.of(context).size;
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    size: 32,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    'Peças',
+                    style: TextStyle(
+                        letterSpacing: 0.15,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              content: Container(
+                width: media.width * 0.80,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Selecione uma ou mais peças para realizar a manutenção',
+                              style: TextStyle(
+                                letterSpacing: 0.15,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InputComponent(
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                ),
+                                hintText:
+                                    'Digite o número de identificação da peça ou o nome',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 180,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Ordem crescente',
+                                  'Ordem decrescente'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Nome',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              width: 180,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Ordem crescente',
+                                  'Ordem decrescente'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Estoque disponível',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              width: 180,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Último dia',
+                                  'Último 15 dias',
+                                  'Último 30 dias',
+                                  'Último semestre',
+                                  'Último ano'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Período',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            ButtonPrimaryComponent(
+                                icon: Icon(Icons.add, color: Colors.white),
+                                color: secundaryColor,
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.isOpenFilter =
+                                        !(_controller.isOpenFilter);
+                                  });
+                                },
+                                text: 'Adicionar filtro')
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: _controller.isOpenFilter ? null : 0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InputComponent(
+                                  label: 'Data de criação:',
+                                  hintText: 'Digite a data de criação da peça',
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: InputComponent(
+                                  label: 'Data de criação:',
+                                  hintText: 'Digite a data de criação da peça',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Divider(),
+                      Row(
+                        children: [
+                          CheckboxComponent(),
+                          Expanded(
+                            child: Text(
+                              'ID',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Nome',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Endereço do estoque',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Estoque disponivel',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Data de criação',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Data de alteração',
+                              style: TextStyle(
+                                  letterSpacing: 0.15,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Divider(),
+                      ),
+                      Container(
+                        height: media.height * 0.4,
+                        child: ListView.builder(
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                color: (index % 2) == 0
+                                    ? Colors.white
+                                    : Colors.grey.shade50,
+                                child: Row(
+                                  children: [
+                                    CheckboxComponent(),
+                                    Expanded(
+                                      child: Text(
+                                        '0001',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Porta Esq.',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'A-1-2-3',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '10',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '01/01/2022',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        '01/01/2022',
+                                        style: TextStyle(
+                                          letterSpacing: 0.15,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 16.0, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Total: 7 peças selecionadas',
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 24.0, horizontal: 24.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ButtonPrimaryComponent(
+                                color: Colors.red,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                text: 'Cancelar'),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            ButtonPrimaryComponent(
+                                color: secundaryColor,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                text: 'Adicionar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+        });
   }
 
   _buildAstecaInformation(Size media) {
@@ -431,7 +839,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     width: 12,
                   ),
                   Text(
-                    'Asteca',
+                    'Informações',
                     style: TextStyle(
                         letterSpacing: 0.15,
                         fontSize: 24,
@@ -626,7 +1034,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   width: 12,
                 ),
                 Text(
-                  'Asteca',
+                  'Informações',
                   style: TextStyle(
                       letterSpacing: 0.15,
                       fontSize: 24,
@@ -952,7 +1360,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                       width: 12,
                     ),
                     Text(
-                      'Contato',
+                      'Telefone para contato',
                       style: TextStyle(
                           letterSpacing: 0.15,
                           fontSize: 24,
@@ -1090,7 +1498,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     width: 12,
                   ),
                   Text(
-                    'Contato',
+                    'Telefone para contato',
                     style: TextStyle(
                         letterSpacing: 0.15,
                         fontSize: 24,
@@ -1304,12 +1712,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                   SizedBox(
                     width: 12,
                   ),
-                  Expanded(
-                    child: InputComponent(
-                      label: 'LD',
-                      initialValue: '02',
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -1343,21 +1745,32 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           Container(
             margin: EdgeInsets.only(bottom: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.settings,
-                  size: 32,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.settings,
+                      size: 32,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      'Peças',
+                      style: TextStyle(
+                          letterSpacing: 0.15,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 12,
-                ),
-                Text(
-                  'Peças',
-                  style: TextStyle(
-                      letterSpacing: 0.15,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
+                ButtonPrimaryComponent(
+                    color: secundaryColor,
+                    onPressed: () {
+                      _buildDialogParts(context);
+                    },
+                    text: 'Adicionar')
               ],
             ),
           ),
@@ -1376,6 +1789,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           SizedBox(
             height: 12,
           ),
+          Divider(),
           Row(
             children: [
               Expanded(
@@ -1388,6 +1802,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 ),
               ),
               Expanded(
+                flex: 3,
                 child: Text(
                   'Nome',
                   style: TextStyle(
@@ -1397,16 +1812,33 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Text(
-                  'Estoque disponível',
+                  'Motivo',
                   style: TextStyle(
                       letterSpacing: 0.15,
                       fontSize: 14,
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Expanded(child: CheckboxComponent())
+              Expanded(
+                child: Text(
+                  'Quantidade',
+                  style: TextStyle(
+                      letterSpacing: 0.15,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'Ações',
+                  style: TextStyle(
+                      letterSpacing: 0.15,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           ),
           Padding(
@@ -1416,8 +1848,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           Container(
             height: media.height * 0.60,
             child: ListView.builder(
-                controller: ScrollController(),
-                itemCount: 40,
+                itemCount: 7,
                 itemBuilder: (context, index) {
                   return Container(
                     color:
@@ -1434,6 +1865,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                           ),
                         ),
                         Expanded(
+                          flex: 3,
                           child: Text(
                             'Porta Esq.',
                             style: TextStyle(
@@ -1443,7 +1875,28 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: DropDownComponent(
+                                  items: <String>[
+                                    'Peça com defeito',
+                                    'Cor errada',
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hintText: 'Selecione o motivo',
+                                ),
+                              ),
+                            )),
+                        Expanded(
                           child: Text(
                             '47',
                             style: TextStyle(
@@ -1452,11 +1905,39 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                             ),
                           ),
                         ),
-                        Expanded(child: CheckboxComponent())
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  onPressed: () {
+                                    // handleDelete(context, departament[index])
+                                  }),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   );
                 }),
+          ),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Total: 7 peças selecionadas',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
           )
         ],
       ),
