@@ -43,7 +43,7 @@ class InputComponent extends StatelessWidget {
                 label!,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 0.15,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.bold),
@@ -79,13 +79,16 @@ class InputComponent extends StatelessWidget {
                 color: Colors.grey.shade600,
                 fontSize: 14,
                 letterSpacing: 0.15,
-                height: 1.8,
+                height: 2,
               ),
               decoration: InputDecoration(
-                  prefixIcon: prefixIcon,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: prefixIcon,
+                  ),
                   hintText: hintText,
                   contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
                   border: InputBorder.none)),
         )
       ],
