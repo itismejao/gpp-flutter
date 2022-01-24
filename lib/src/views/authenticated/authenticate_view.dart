@@ -76,7 +76,6 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               ),
               InputComponent(
                 label: "RE",
-                maxLength: 255,
                 keyboardType: TextInputType.number,
                 onSaved: (value) {
                   _controller.setUserUID(int.parse(value));
@@ -91,7 +90,6 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "Senha",
                 obscureText: !_controller.visiblePassword,
-                maxLength: 50,
                 onSaved: _controller.setUserPassword,
                 validator: _controller.validateInput,
                 hintText: "Digite sua senha",
@@ -112,8 +110,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                 children: [
                   Expanded(
                     child: ButtonPrimaryComponent(
+                        color: secundaryColor,
                         onPressed: () => handleAutheticated(context),
-                        text: "Logar"),
+                        text: "Entrar"),
                   ),
                 ],
               ),
