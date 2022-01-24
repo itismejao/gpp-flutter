@@ -1416,6 +1416,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           Container(
             height: media.height * 0.60,
             child: ListView.builder(
+                controller: ScrollController(),
                 itemCount: 40,
                 itemBuilder: (context, index) {
                   return Container(
