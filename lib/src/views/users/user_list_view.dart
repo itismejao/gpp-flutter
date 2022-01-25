@@ -5,6 +5,9 @@ import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/status_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -154,85 +157,26 @@ class _UserListViewState extends State<UserListView> {
 
         return Column(
           children: [
+            Divider(),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                      child: Text('RE',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Nome',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Departamento',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Cargo',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Telefone',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                      child: Text('E-mail',
-                          style: textStyle(
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w700))),
-                  Expanded(
-                    child: Center(
-                        child: Text('Status',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700))),
-                  ),
-                  Expanded(
-                    child: Center(
-                        child: Text('Ação',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700))),
-                  )
+                  Expanded(child: TextComponent('RE')),
+                  Expanded(child: TextComponent('Nome')),
+                  Expanded(child: TextComponent('Departamento')),
+                  Expanded(child: TextComponent('Cargo')),
+                  Expanded(child: TextComponent('Telefone')),
+                  Expanded(child: TextComponent('E-mail')),
+                  Expanded(child: TextComponent('Status')),
+                  Expanded(child: TextComponent('Opções')),
                 ],
               ),
             ),
             const Divider(),
-            Expanded(
+            Container(
+              height: 500,
               child: ListView.builder(
                   itemCount: users.length,
                   itemBuilder: (context, index) {
@@ -295,9 +239,8 @@ class _UserListViewState extends State<UserListView> {
                       height: 12,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildStatus(users[index].active!),
+                        StatusComponent(status: users[index].active!),
                         IconButton(
                           icon: Icon(
                             Icons.edit,
@@ -325,67 +268,41 @@ class _UserListViewState extends State<UserListView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                    child: Text(
+                    child: TextComponent(
                   users[index].uid.toString(),
-                  style: textStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
                 )),
                 Expanded(
-                  child: Text(
-                    users[index].name!,
-                    style: textStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+                    child: TextComponent(
+                  users[index].name!,
+                )),
                 Expanded(
-                  child: Text(
-                    users[index].departament!.name ?? '',
-                    style: textStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+                    child: TextComponent(
+                  users[index].departament!.name ?? '',
+                )),
                 Expanded(
-                  flex: 2,
-                  child: Text(
-                    "Auxiliar Administrativo",
-                    style: textStyle(
-                        fontSize: 12,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700),
-                  ),
-                ),
+                    child: TextComponent(
+                  "Auxiliar Administrativo",
+                )),
                 Expanded(
-                    child: Text(
+                    child: TextComponent(
                   "(62) 9999-9999",
-                  style: textStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
                 )),
                 Expanded(
-                    child: Text(
+                    child: TextComponent(
                   users[index].email!,
-                  style: textStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
                 )),
                 Expanded(
                     child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _buildStatus(users[index].active!),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: StatusComponent(status: users[index].active!),
+                    )
                   ],
                 )),
                 Expanded(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
                         icon: Icon(
@@ -408,53 +325,12 @@ class _UserListViewState extends State<UserListView> {
     );
   }
 
-  Container _buildStatus(bool status) {
-    print(status);
-    if (status) {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: secundaryColor,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Ativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Inativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
             Padding(
@@ -464,11 +340,7 @@ class _UserListViewState extends State<UserListView> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('Usuários',
-                          style: textStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700)),
+                      TitleComponent('Usuários'),
                     ])),
             LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
@@ -501,7 +373,7 @@ class _UserListViewState extends State<UserListView> {
                     ),
                     InputComponent(
                       prefixIcon: Icon(Icons.search),
-                      hintText: 'Buscar',
+                      hintText: 'Digite o nome ou RE do usuário',
                       onChanged: (value) => handleSearch(value),
                     ),
                   ],
@@ -509,9 +381,7 @@ class _UserListViewState extends State<UserListView> {
               );
             }),
             //  _buildFilterUsers(),
-            Expanded(
-              child: stateManager(),
-            )
+            stateManager()
           ],
         ),
       ),
