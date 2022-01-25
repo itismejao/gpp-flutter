@@ -43,7 +43,6 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
               ),
               InputComponent(
                 label: "Nome",
-                maxLength: 50,
                 onChanged: (value) {
                   _controller.funcionalitie.name = value;
                 },
@@ -51,11 +50,9 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
                   _controller.validate(value);
                 },
                 hintText: "Digite o nome da funcionalidade",
-                prefixIcon: Icon(Icons.lock),
               ),
               InputComponent(
                 label: "Icon",
-                maxLength: 50,
                 onChanged: (value) {
                   _controller.funcionalitie.icon = value;
                 },
