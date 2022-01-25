@@ -4,8 +4,10 @@ import 'package:gpp/src/controllers/authenticate_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/repositories/authenticate_repository.dart';
-import 'package:gpp/src/shared/components/button_primary_component.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
@@ -66,14 +68,8 @@ class _AuthenticateViewState extends State<AuthenticateView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text('Login',
-                    textScaleFactor: mediaQuery.textScaleFactor,
-                    style: textStyle(
-                        fontSize: 24,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700)),
-              ),
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: TitleComponent('Login')),
               InputComponent(
                 label: "RE",
                 keyboardType: TextInputType.number,
@@ -89,6 +85,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               ),
               InputComponent(
                 label: "Senha",
+                maxLines: 1,
                 obscureText: !_controller.visiblePassword,
                 onSaved: _controller.setUserPassword,
                 validator: _controller.validateInput,
@@ -109,42 +106,12 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               Row(
                 children: [
                   Expanded(
-                    child: ButtonPrimaryComponent(
+                    child: ButtonComponent(
                         color: secundaryColor,
                         onPressed: () => handleAutheticated(context),
                         text: "Entrar"),
                   ),
                 ],
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Divider(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                                text:
-                                    'Em caso de dúvida, entre em contato com o suporte através do telefone ',
-                                style: textStyle(
-                                    color: Colors.grey.shade400,
-                                    fontWeight: FontWeight.w700)),
-                            const TextSpan(
-                                text: '9999-9999',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(0, 207, 128, 0.8),
-                                    fontWeight: FontWeight.w400)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
@@ -266,7 +233,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildBrand(mediaQuery),
+                  TitleComponent('gpp'),
                   SizedBox(
                     width: 160,
                     child: Image.asset('lib/src/shared/assets/brand.png'),
@@ -280,7 +247,10 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBrand(mediaQuery),
+                  TitleComponent(
+                    'gpp',
+                    color: Colors.white,
+                  ),
                   SizedBox(
                     height: 40,
                     width: 160,
@@ -293,37 +263,25 @@ class _AuthenticateViewState extends State<AuthenticateView> {
     );
   }
 
-  Text _buildBrand(MediaQueryData mediaQuery) {
-    return Text(
-      'gpp',
-      textScaleFactor: mediaQuery.textScaleFactor,
-      style: textStyle(
-        color: Colors.white,
-        fontSize: 32,
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-
   SizedBox _buildMessageWelcome() {
     return SizedBox(
       width: 400,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          TextComponent(
             'Bem vindo ao',
-            style: textStyle(
-                fontSize: 42, color: Colors.white, fontWeight: FontWeight.w700),
+            color: Colors.white,
+            fontSize: 42,
+            fontWeight: FontWeight.bold,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Text(
+            child: TextComponent(
               'Gerenciamento de Peças e Pedidos',
-              style: textStyle(
-                  fontSize: 42,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700),
+              color: Colors.white,
+              fontSize: 42,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
