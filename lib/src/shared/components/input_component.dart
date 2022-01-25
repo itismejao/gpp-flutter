@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
 
-// ignore: must_be_immutable
 class InputComponent extends StatelessWidget {
   final String? label;
   final String? initialValue;
@@ -15,7 +14,8 @@ class InputComponent extends StatelessWidget {
   final dynamic suffixIcon;
   final bool? obscureText;
   final bool? enable;
-  TextInputType? keyboardType;
+  final TextInputType? keyboardType;
+  final int? maxLines;
   InputComponent({
     Key? key,
     this.label,
@@ -30,25 +30,17 @@ class InputComponent extends StatelessWidget {
     this.obscureText,
     this.enable,
     this.keyboardType,
+    this.maxLines,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label != null
-            ? Text(
-                label!,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    letterSpacing: 0.15,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold),
-              )
-            : Text(''),
+        label != null ? TextComponent(label!) : Text(''),
         SizedBox(
           height: 6,
         ),
@@ -57,6 +49,7 @@ class InputComponent extends StatelessWidget {
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(5)),
           child: TextFormField(
+              maxLines: maxLines,
               initialValue: initialValue,
               enabled: enable,
               obscureText: obscureText ?? false,
@@ -76,19 +69,16 @@ class InputComponent extends StatelessWidget {
               },
               keyboardType: keyboardType,
               style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 14,
-                letterSpacing: 0.15,
-                height: 2,
-              ),
+                  color: Colors.black,
+                  fontSize: 16 * media.textScaleFactor,
+                  letterSpacing: 0.15,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w500),
               decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: prefixIcon,
-                  ),
+                  prefixIcon: prefixIcon,
                   hintText: hintText,
                   contentPadding:
-                      EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+                      EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   border: InputBorder.none)),
         )
       ],
