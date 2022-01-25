@@ -4,13 +4,17 @@ import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/asteca_model.dart';
-import 'package:gpp/src/repositories/astecas_repository.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/drop_down_component.dart';
+import 'package:gpp/src/shared/components/input_component.dart';
+
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 
 import 'package:gpp/src/shared/enumeration/asteca_enum.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 import 'asteca_form_view.dart';
 
@@ -86,20 +90,11 @@ class _AstecaListViewState extends State<AstecaListView> {
               });
         }
 
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: astecas.length,
-                  itemBuilder: (context, index) {
-                    return _buildListItem(astecas, index, context);
-                  }),
-            )
-          ],
-        );
+        return ListView.builder(
+            itemCount: astecas.length,
+            itemBuilder: (context, index) {
+              return _buildListItem(astecas, index, context);
+            });
       },
     );
 
@@ -116,16 +111,100 @@ class _AstecaListViewState extends State<AstecaListView> {
               Navigator.pushNamed(
                   context, '/asteca/' + asteca[index].id.toString());
             },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          asteca[index].name!,
+                          style: textStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18.0),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'ID: ' + asteca[index].id.toString(),
+                          style: textStyle(
+                              color: Colors.black, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextComponent(
+                            'Nota Fiscal: ' + asteca[index].invoice.toString()),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextComponent(
+                          'Serie: ' + asteca[index].series.toString(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextComponent(
+                          'Filial de Venda: ' +
+                              asteca[index].salebranch.toString(),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextComponent(
+                          'Data de Abertura: ' +
+                              asteca[index].opendate.toString(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(padding: const EdgeInsets.all(8.0)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: TextComponent(
+                          'Defeito: ' + asteca[index].defect.toString(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(padding: const EdgeInsets.all(4.0)),
+                ],
+              ),
+            ),
+          );
+        }
+
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(
+                context, '/asteca/' + asteca[index].id.toString());
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    spreadRadius: 0,
+                    blurRadius: 9,
+                    offset: Offset(0, 5), // changes position of shadow
                   ),
                 ],
                 border: Border(
@@ -147,21 +226,26 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
-                            asteca[index].name!,
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 18.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.description),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              TextComponent(
+                                asteca[index].name!,
+                                fontWeight: FontWeight.bold,
+                              )
+                            ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'ID: ' + asteca[index].id.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
+                        Spacer(flex: 1),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextComponent(
+                              'ID: ' + asteca[index].id.toString(),
+                            ),
                           ),
                         ),
                       ],
@@ -171,20 +255,17 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
+                          child: TextComponent(
                             'Nota Fiscal: ' + asteca[index].invoice.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Serie: ' + asteca[index].series.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
+                        Spacer(flex: 1),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextComponent(
+                              'Serie: ' + asteca[index].series.toString(),
+                            ),
                           ),
                         ),
                       ],
@@ -193,22 +274,19 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
+                          child: TextComponent(
                             'Filial de Venda: ' +
                                 asteca[index].salebranch.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Data de Abertura: ' +
-                                asteca[index].opendate.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
+                        Spacer(flex: 1),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextComponent(
+                              'Data de Abertura: ' +
+                                  asteca[index].opendate.toString(),
+                            ),
                           ),
                         ),
                       ],
@@ -218,173 +296,15 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
+                          child: TextComponent(
                             'Defeito: ' + asteca[index].defect.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(padding: const EdgeInsets.all(4.0)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Observação: ' + asteca[index].note.toString(),
-                            style: textStyle(
-                                color: Colors.blueGrey,
-                                fontWeight: FontWeight.w700),
+                            color: Colors.grey.shade700,
                           ),
                         ),
                       ],
                     ),
                   ],
                 ),
-              ),
-            ),
-          );
-        }
-
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-                context, '/asteca/' + asteca[index].id.toString());
-          },
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 0,
-                  blurRadius: 9,
-                  offset: Offset(0, 5), // changes position of shadow
-                ),
-              ],
-              border: Border(
-                left: BorderSide(
-                  color: asteca[index].signal == "red"
-                      ? Colors.red
-                      : asteca[index].signal == "yellow"
-                          ? Colors.yellow
-                          : Colors.green,
-                  width: 7.0,
-                ),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          asteca[index].name!,
-                          style: textStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18.0),
-                        ),
-                      ),
-                      Spacer(flex: 1),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'ID: ' + asteca[index].id.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Nota Fiscal: ' + asteca[index].invoice.toString(),
-                          style: textStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Spacer(flex: 1),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Serie: ' + asteca[index].series.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Filial de Venda: ' +
-                              asteca[index].salebranch.toString(),
-                          style: textStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      Spacer(flex: 1),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Data de Abertura: ' +
-                                asteca[index].opendate.toString(),
-                            style: textStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(padding: const EdgeInsets.all(8.0)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Defeito: ' + asteca[index].defect.toString(),
-                          style: textStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(padding: const EdgeInsets.all(4.0)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Observação: ' + asteca[index].note.toString(),
-                          style: textStyle(
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
           ),
@@ -407,27 +327,174 @@ class _AstecaListViewState extends State<AstecaListView> {
   @override
   Widget build(BuildContext context) {
     Size media = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Row(
-            children: [
-              Text(
-                'Asteca',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.15),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              children: [
+                TitleComponent('Astecas'),
+              ],
+            ),
           ),
-        ),
-        Container(
-          height: media.height * 0.8,
-          child: _buildAstecas(),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: InputComponent(
+                    prefixIcon: Icon(
+                      Icons.search,
+                    ),
+                    hintText:
+                        'Digite o número de identificação da peça ou o nome',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 220,
+                  child: DropDownComponent(
+                    icon: Icon(
+                      Icons.swap_vert,
+                    ),
+                    items: <String>['Ordem crescente', 'Ordem decrescente']
+                        .map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hintText: 'Nome',
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Container(
+                  width: 220,
+                  child: DropDownComponent(
+                    icon: Icon(
+                      Icons.swap_vert,
+                    ),
+                    items: <String>[
+                      'Último dia',
+                      'Último 15 dias',
+                      'Último 30 dias',
+                      'Último semestre',
+                      'Último ano'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hintText: 'Período',
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Container(
+                  width: 220,
+                  child: DropDownComponent(
+                    icon: Icon(
+                      Icons.swap_vert,
+                    ),
+                    items: <String>[
+                      'Em aberto',
+                      'Parado',
+                      'Em andamento',
+                      'Concluído'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    hintText: 'Situação',
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(Icons.add, color: Colors.white),
+                    color: secundaryColor,
+                    onPressed: () {
+                      setState(() {
+                        _controller.isOpenFilter = !(_controller.isOpenFilter);
+                      });
+                    },
+                    text: 'Adicionar filtro')
+              ],
+            ),
+          ),
+          Container(
+            color: Colors.grey.shade50,
+            height: _controller.isOpenFilter ? null : 0,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Container(
+                      width: 260,
+                      child: DropDownComponent(
+                        label: 'Filial de venda',
+                        items: <String>['Filial 500', 'Filial 700']
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        hintText: 'Selecione a filial de venda',
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                          label: 'Data de criação:',
+                          hintText: 'Digite a data de criação da peça',
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: InputComponent(
+                          label: 'Data de criação:',
+                          hintText: 'Digite a data de criação da peça',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(),
+          Container(
+            height: media.height * 0.8,
+            child: _buildAstecas(),
+          )
+        ],
+      ),
     );
 
     // // return Column(
