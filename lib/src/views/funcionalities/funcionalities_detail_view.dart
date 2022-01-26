@@ -5,7 +5,11 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/subfuncionalities_controller.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/status_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
@@ -86,127 +90,107 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
   Widget build(BuildContext context) {
     if (_controller.state == SubFuncionalitiesEnum.change &&
         _controllerFuncionalities.state == FuncionalitiesEnum.change) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20.0,
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 20.0,
+              ),
+              child: TitleComponent('Funcionalidades'),
             ),
-            child: Text('Funcionalidade',
-                style: textStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700)),
-          ),
-          Container(
-            child: Form(
-                key: _controller.formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InputComponent(
-                      initialValue:
-                          _controllerFuncionalities.funcionalitie.name,
-                      label: "Nome",
-                      maxLength: 50,
-                      onChanged: (value) {
-                        _controllerFuncionalities.funcionalitie.name = value;
-                      },
-                      validator: (value) {
-                        _controller.validate(value);
-                      },
-                      hintText: "Digite o nome da funcionalidade",
-                      prefixIcon: Icon(Icons.lock),
-                    ),
-                    InputComponent(
-                      initialValue:
-                          _controllerFuncionalities.funcionalitie.icon,
-                      label: "Icon",
-                      maxLength: 50,
-                      onChanged: (value) {
-                        _controllerFuncionalities.funcionalitie.icon = value;
-                      },
-                      validator: (value) {
-                        _controllerFuncionalities.validate(value);
-                      },
-                      hintText: "Digite o código do icon",
-                      prefixIcon: Icon(Icons.lock),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 10,
+            Container(
+              child: Form(
+                  key: _controller.formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InputComponent(
+                        initialValue:
+                            _controllerFuncionalities.funcionalitie.name,
+                        label: "Nome",
+                        onChanged: (value) {
+                          _controllerFuncionalities.funcionalitie.name = value;
+                        },
+                        validator: (value) {
+                          _controller.validate(value);
+                        },
+                        hintText: "Digite o nome da funcionalidade",
+                        prefixIcon: Icon(Icons.lock),
                       ),
-                      child: Row(
-                        children: [
-                          Radio(
-                              activeColor: secundaryColor,
-                              value: true,
-                              groupValue: _controllerFuncionalities
-                                  .funcionalitie.active,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _controllerFuncionalities
-                                      .funcionalitie.active = value;
-                                });
-                              }),
-                          Text("Habilitado"),
-                          Radio(
-                              activeColor: secundaryColor,
-                              value: false,
-                              groupValue: _controllerFuncionalities
-                                  .funcionalitie.active,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _controllerFuncionalities
-                                      .funcionalitie.active = value;
-                                });
-                              }),
-                          Text("Desabilitado"),
-                        ],
+                      SizedBox(
+                        height: 8,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24.0),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              handleUpdate(context);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: secundaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 15, left: 25, bottom: 15, right: 25),
-                                child: Text(
-                                  "Editar",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                      InputComponent(
+                        initialValue:
+                            _controllerFuncionalities.funcionalitie.icon,
+                        label: "Icon",
+                        onChanged: (value) {
+                          _controllerFuncionalities.funcionalitie.icon = value;
+                        },
+                        validator: (value) {
+                          _controllerFuncionalities.validate(value);
+                        },
+                        hintText: "Digite o código do icon",
+                        prefixIcon: Icon(Icons.lock),
                       ),
-                    ),
-                  ],
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Text('Subfuncionalidades',
-                style: textStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700)),
-          ),
-          Divider(),
-          Expanded(child: _buildList(_controller.subFuncionalities)),
-        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          children: [
+                            Radio(
+                                activeColor: secundaryColor,
+                                value: true,
+                                groupValue: _controllerFuncionalities
+                                    .funcionalitie.active,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _controllerFuncionalities
+                                        .funcionalitie.active = value;
+                                  });
+                                }),
+                            Text("Habilitado"),
+                            Radio(
+                                activeColor: secundaryColor,
+                                value: false,
+                                groupValue: _controllerFuncionalities
+                                    .funcionalitie.active,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _controllerFuncionalities
+                                        .funcionalitie.active = value;
+                                  });
+                                }),
+                            Text("Desabilitado"),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            ButtonComponent(
+                                onPressed: () {
+                                  handleUpdate(context);
+                                },
+                                text: 'Salvar')
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: TitleComponent('Subfuncionalidades'),
+            ),
+            _buildList(_controller.subFuncionalities),
+          ],
+        ),
       );
     } else {
       return LoadingComponent();
@@ -226,32 +210,26 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
 
         return Column(
           children: [
+            Divider(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 6),
               child: Row(
                 children: [
                   Expanded(
-                    child: Text('Nome',
-                        style: textStyle(
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w700)),
+                    child: TextComponent('Nome'),
                   ),
                   Expanded(
-                    child: Text('Status',
-                        style: textStyle(
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w700)),
+                    child: TextComponent('Status'),
                   ),
                   Expanded(
-                    child: Text('Ação',
-                        style: textStyle(
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w700)),
-                  )
+                    child: TextComponent('Opções'),
+                  ),
                 ],
               ),
             ),
-            Expanded(
+            Divider(),
+            Container(
+              height: 500,
               child: ListView.builder(
                   itemCount: subFuncionalities.length,
                   itemBuilder: (context, index) {
@@ -281,16 +259,13 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          subFuncionalities[index].name ?? '',
-                          style: textStyle(fontWeight: FontWeight.bold),
-                        ),
+                        TextComponent(subFuncionalities[index].name ?? ''),
                       ],
                     ),
                     SizedBox(
                       height: 12,
                     ),
-                    _buildStatus(subFuncionalities[index].active!),
+                    StatusComponent(status: subFuncionalities[index].active!),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -300,8 +275,6 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                             color: Colors.grey.shade400,
                           ),
                           onPressed: () => {
-                            print('tsss')
-
                             //  handleEdit(context, subFuncionalities[index]),
                           },
                         ),
@@ -339,11 +312,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
           child: Row(
             children: [
               Expanded(
-                child: Text(
-                  subFuncionalities[index].name!,
-                  style: textStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
+                child: TextComponent(subFuncionalities[index].name!),
               ),
               Expanded(
                   child: Row(
@@ -351,7 +320,8 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                 children: [
                   SizedBox(
                     width: 60,
-                    child: _buildStatus(subFuncionalities[index].active!),
+                    child: StatusComponent(
+                        status: subFuncionalities[index].active!),
                   ),
                 ],
               )),

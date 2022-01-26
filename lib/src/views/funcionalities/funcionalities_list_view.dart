@@ -209,7 +209,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                           color: Colors.grey.shade400,
                         ),
                         onPressed: () => {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context,
                               '/subfuncionalities/' +
                                   funcionalities[index].id.toString())
@@ -221,7 +221,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                           color: Colors.grey.shade400,
                         ),
                         onPressed: () => {
-                          Navigator.pushReplacementNamed(
+                          Navigator.pushNamed(
                               context,
                               '/funcionalities/' +
                                   funcionalities[index].id.toString())
@@ -240,7 +240,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                             color: Colors.grey.shade400,
                           ),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushNamed(
                                 context,
                                 '/funcionalities/' +
                                     funcionalities[index].id.toString());
