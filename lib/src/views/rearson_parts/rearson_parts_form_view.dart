@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/components/button_primary_component.dart';
-
 
 class RearsonPartsFormView extends StatefulWidget {
-  const RearsonPartsFormView({ Key? key }) : super(key: key);
+  const RearsonPartsFormView({Key? key}) : super(key: key);
 
   @override
   _RearsonPartsFormViewState createState() => _RearsonPartsFormViewState();
 }
 
 class _RearsonPartsFormViewState extends State<RearsonPartsFormView> {
-var contador = 0;
+  var contador = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -18,26 +16,23 @@ var contador = 0;
 
   @override
   Widget build(BuildContext context) {
+    print("teste ${contador++}");
+    MediaQueryData media = MediaQuery.of(context);
 
- print("teste ${contador++}");
-   MediaQueryData media = MediaQuery.of(context);
+    return Column(
+      children: [
+        Container(
+          color: Colors.blue,
+          height: media.size.height * 0.7,
+        )
+      ],
+    );
 
-  return Column(
-    children: [
-      Container(
-        color: Colors.blue,
-        height: media.size.height * 0.7,
-      ) 
-    ],
-  );
-    
     // return LayoutBuilder(builder:(context, constraints) {
-   
 
     //   if(constraints.maxWidth < 600){
     //     return Container(child: Text("Resposivo"),);
     //   }
-
 
     // return Container(
     //   color: Colors.red,
@@ -80,11 +75,10 @@ var contador = 0;
     //            ),
     //         ],),
     //       ),
-       
+
     //     ],
     //   ),
     // );
     // },);
-
   }
 }
