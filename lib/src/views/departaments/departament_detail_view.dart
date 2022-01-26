@@ -319,9 +319,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                 InputComponent(
                   initialValue: _controller.departament.name,
                   label: "Nome",
-                  maxLength: 50,
                   onChanged: (value) {
-                    print("te");
                     _controller.departament.name = value;
                   },
                   validator: (value) {
