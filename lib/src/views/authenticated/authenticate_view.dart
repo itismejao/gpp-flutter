@@ -233,7 +233,10 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TitleComponent('gpp'),
+                  TitleComponent(
+                    'gpp',
+                    color: Colors.white,
+                  ),
                   SizedBox(
                     width: 160,
                     child: Image.asset('lib/src/shared/assets/brand.png'),
