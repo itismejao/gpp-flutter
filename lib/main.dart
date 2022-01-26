@@ -59,6 +59,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
+import 'package:gpp/src/views/asteca/asteca_list_view.dart';
+
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 import 'package:gpp/src/views/departaments/departament_detail_view.dart';
 import 'package:gpp/src/views/departaments/departament_form_view.dart';
@@ -78,13 +81,9 @@ import 'package:gpp/src/views/users/user_list_view.dart';
 
 import 'src/views/funcionalities/funcionalities_form_view.dart';
 
-
 void main() async {
   await dotenv.load(fileName: "env");
   runApp(GppApp());
-  // runApp(MaterialApp(
-  //   home: Scaffold(body: DepartamentListView()),
-  // ));
 }
 
 class GppApp extends StatefulWidget {
@@ -104,13 +103,15 @@ class _GppAppState extends State<GppApp> {
           inputDecorationTheme:
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
-//Teste
-        return MaterialPageRoute(builder: (context) => Scaffold(body: RearsonPartsFormView() ));
-        
-      
-
+        //Teste
+        return MaterialPageRoute(
+            builder: (context) => HomeView(
+                  funcionalities: FuncionalitiesView(),
+                  page: UserListView(),
+                ));
 
         // Handle '/'
+        //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
         if (isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
@@ -149,14 +150,6 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
-          // if (settings.name == '/subfuncionalities') {
-          //   return MaterialPageRoute(
-          //       builder: (context) => HomeView(
-          //             funcionalities: FuncionalitiesView(),
-          //             page: SubFuncionalitiesListView(),
-          //           ));
-          // }
-
           if (settings.name == '/funcionalities/register') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -176,6 +169,17 @@ class _GppAppState extends State<GppApp> {
           // Handle '/departaments/:id'
 
           var uri = Uri.parse(settings.name!);
+
+          if (uri.pathSegments.length == 2 &&
+              uri.pathSegments.first == 'asteca') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: AstecaDetailView(),
+                    ));
+          }
+
           if (uri.pathSegments.length == 2 &&
               uri.pathSegments.first == 'departaments') {
             var id = uri.pathSegments[1];
@@ -227,6 +231,14 @@ class _GppAppState extends State<GppApp> {
           }
         } else {
           return MaterialPageRoute(builder: (context) => AuthenticateView());
+        }
+
+        if (settings.name == '/astecas') {
+          return MaterialPageRoute(
+              builder: (context) => HomeView(
+                    funcionalities: FuncionalitiesView(),
+                    page: AstecaListView(),
+                  ));
         }
 
         return MaterialPageRoute(builder: (context) => NotFoundView());

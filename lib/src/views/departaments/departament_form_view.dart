@@ -494,84 +494,86 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
     return Container(
       child: Form(
           key: _controller.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Text("Cadastrar Departamento",
-                    style:
-                        TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              ),
-              InputComponent(
-                label: "Nome",
-                maxLength: 50,
-                onChanged: (value) {
-                  print("te");
-                  _controller.departament.name = value;
-                },
-                validator: (value) {
-                  _controller.validate(value);
-                },
-                hintText: "Digite o nome do departamento",
-                prefixIcon: Icon(Icons.lock),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Row(
-                  children: [
-                    Radio(
-                        activeColor: secundaryColor,
-                        value: true,
-                        groupValue: _controller.departament.active,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _controller.departament.active = value;
-                          });
-                        }),
-                    Text("Habilitado"),
-                    Radio(
-                        activeColor: secundaryColor,
-                        value: false,
-                        groupValue: _controller.departament.active,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _controller.departament.active = value;
-                          });
-                        }),
-                    Text("Desabilitado"),
-                  ],
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Text("Cadastrar Departamento",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        handleCreate();
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: secundaryColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 25, bottom: 15, right: 25),
-                          child: Text(
-                            "Cadastrar",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                InputComponent(
+                  label: "Nome",
+                  onChanged: (value) {
+                    print("te");
+                    _controller.departament.name = value;
+                  },
+                  validator: (value) {
+                    _controller.validate(value);
+                  },
+                  hintText: "Digite o nome do departamento",
+                  prefixIcon: Icon(Icons.lock),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Row(
+                    children: [
+                      Radio(
+                          activeColor: secundaryColor,
+                          value: true,
+                          groupValue: _controller.departament.active,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _controller.departament.active = value;
+                            });
+                          }),
+                      Text("Habilitado"),
+                      Radio(
+                          activeColor: secundaryColor,
+                          value: false,
+                          groupValue: _controller.departament.active,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _controller.departament.active = value;
+                            });
+                          }),
+                      Text("Desabilitado"),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          handleCreate();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: secundaryColor,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15, left: 25, bottom: 15, right: 25),
+                            child: Text(
+                              "Cadastrar",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )),
     );
   }

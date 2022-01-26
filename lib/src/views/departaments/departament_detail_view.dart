@@ -205,7 +205,7 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 // ignore: must_be_immutable
 class DepartamentDetailView extends StatefulWidget {
@@ -319,9 +319,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                 InputComponent(
                   initialValue: _controller.departament.name,
                   label: "Nome",
-                  maxLength: 50,
                   onChanged: (value) {
-                    print("te");
                     _controller.departament.name = value;
                   },
                   validator: (value) {
@@ -465,7 +463,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
             )),
       );
     } else {
-      return LoadingView();
+      return LoadingComponent();
     }
   }
 }

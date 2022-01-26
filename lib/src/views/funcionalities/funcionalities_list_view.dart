@@ -3,9 +3,14 @@ import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/checkbox_component.dart';
+import 'package:gpp/src/shared/components/status_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 class FuncionalitiesListView extends StatefulWidget {
   const FuncionalitiesListView({Key? key}) : super(key: key);
@@ -56,51 +61,42 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
-          return ListView.builder(
-              itemCount: funcionalities.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(funcionalities, index, context);
-              });
+          return Container(
+            height: 360,
+            child: ListView.builder(
+                itemCount: funcionalities.length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(funcionalities, index, context);
+                }),
+          );
         }
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Nome',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700)),
-                      ],
-                    ),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CheckboxComponent(),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextComponent('Nome'),
+                    ],
                   ),
-                  Expanded(
-                    child: Center(
-                        child: Text('Status',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700))),
-                  ),
-                  Expanded(
-                    child: Center(
-                        child: Text('Ação',
-                            style: textStyle(
-                                color: Colors.grey.shade400,
-                                fontWeight: FontWeight.w700))),
-                  )
-                ],
-              ),
+                ),
+                Expanded(
+                  child: TextComponent('Status'),
+                ),
+                Expanded(
+                  child: TextComponent('Opções'),
+                ),
+              ],
             ),
             const Divider(),
-            Expanded(
+            Container(
+              height: 500,
               child: ListView.builder(
                   itemCount: funcionalities.length,
                   itemBuilder: (context, index) {
@@ -165,7 +161,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildStatus(funcionalities[index].active!),
+                        StatusComponent(status: funcionalities[index].active!),
                         IconButton(
                           icon: Icon(
                             Icons.edit,
@@ -182,79 +178,78 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
           );
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(
-                  funcionalities[index].name!,
-                  style: textStyle(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                ),
-              ),
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    child: _buildStatus(funcionalities[index].active!),
+        return Container(
+          color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CheckboxComponent(),
+                Expanded(
+                  child: TextComponent(
+                    funcionalities[index].name!,
                   ),
-                ],
-              )),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                Expanded(
+                    child: Row(
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        Navigator.pushReplacementNamed(
-                            context,
-                            '/subfuncionalities/' +
-                                funcionalities[index].id.toString())
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.grey.shade400,
-                      ),
-                      onPressed: () => {
-                        Navigator.pushReplacementNamed(
-                            context,
-                            '/funcionalities/' +
-                                funcionalities[index].id.toString())
-                      },
-                    ),
-                    IconButton(
+                    StatusComponent(status: funcionalities[index].active!),
+                  ],
+                )),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
                         icon: Icon(
-                          Icons.delete,
+                          Icons.add,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () =>
-                            handleDelete(context, funcionalities[index])),
-                    IconButton(
+                        onPressed: () => {
+                          Navigator.pushNamed(
+                              context,
+                              '/subfuncionalities/' +
+                                  funcionalities[index].id.toString())
+                        },
+                      ),
+                      IconButton(
                         icon: Icon(
-                          Icons.list,
+                          Icons.edit,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
+                        onPressed: () => {
+                          Navigator.pushNamed(
                               context,
                               '/funcionalities/' +
-                                  funcionalities[index].id.toString());
-                        }),
-                  ],
+                                  funcionalities[index].id.toString())
+                        },
+                      ),
+                      IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () =>
+                              handleDelete(context, funcionalities[index])),
+                      IconButton(
+                          icon: Icon(
+                            Icons.list,
+                            color: Colors.grey.shade400,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context,
+                                '/funcionalities/' +
+                                    funcionalities[index].id.toString());
+                          }),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -264,7 +259,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
   _buildState() {
     switch (_controlller.state) {
       case FuncionalitiesEnum.loading:
-        return const LoadingView();
+        return const LoadingComponent();
 
       case FuncionalitiesEnum.change:
         return _buildList(_controlller.funcionalities);
@@ -273,83 +268,30 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     }
   }
 
-  Container _buildStatus(bool status) {
-    print(status);
-    if (status) {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: secundaryColor,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Ativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Inativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                TitleComponent(
                   'Funcionalidades',
-                  style: textStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        elevation: 0,
-                        primary: secundaryColor),
+                ButtonComponent(
                     onPressed: () {
                       Navigator.pushNamed(context, '/funcionalities/register');
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text('Cadastrar',
-                          style: textStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700)),
-                    ))
+                    icon: Icon(Icons.add, color: Colors.white),
+                    text: 'Adicionar')
               ],
             ),
           ),
-          Expanded(
-            child: _buildState(),
-          )
+          _buildState()
         ],
       ),
     );

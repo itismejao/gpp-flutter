@@ -7,12 +7,16 @@ import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
 import 'package:gpp/src/repositories/user_repository.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/drop_down_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/loading_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 
 // ignore: must_be_immutable
 class UserDetailView extends StatefulWidget {
@@ -149,7 +153,7 @@ class _UserDetailViewState extends State<UserDetailView> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          LoadingView(),
+          LoadingComponent(),
         ],
       );
     }
@@ -163,10 +167,7 @@ class _UserDetailViewState extends State<UserDetailView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Dados pessoais",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+              TitleComponent('Usuário'),
               Divider(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -229,71 +230,50 @@ class _UserDetailViewState extends State<UserDetailView> {
                     SizedBox(
                       height: 6,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: DropdownButtonFormField(
+                    DropDownComponent(
+                        label: 'Departamento',
+                        hintText: _controller.user.departament!.name ??
+                            'Escolha o departamento',
+                        onChanged: (DepartamentModel? value) {
+                          _controller.user.departament = value;
+                          fetchDepartamentsSubfuncionalities(value!);
+                        },
                         items: _departamentController.departaments.map((value) {
                           return DropdownMenuItem(
                             value: value,
                             child: Text(value.name!),
                           );
-                        }).toList(),
-                        // validator: (value) => validate(value),
-                        onChanged: (DepartamentModel? value) {
-                          _controller.user.departament = value;
-                          fetchDepartamentsSubfuncionalities(value!);
-                        },
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                                top: 10, left: 20, bottom: 10, right: 20),
-                            border: InputBorder.none,
-                            hintText: _controller.user.departament!.id == null
-                                ? 'Escolha o departamento'
-                                : _controller.user.departament!.name),
-                      ),
-                    ),
+                        }).toList()),
                   ],
                 ),
               ),
-              Text(
-                "Subfuncionalidades",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              TitleComponent('Funcionalidades'),
               Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            activeColor: primaryColor,
-                            checkColor: Colors.white,
-                            value: _selectedAll,
-                            onChanged: (bool? value) =>
-                                handleSelectedAll(value),
-                          ),
-                        ],
-                      ),
+                    Checkbox(
+                      activeColor: primaryColor,
+                      checkColor: Colors.white,
+                      value: _selectedAll,
+                      onChanged: (bool? value) => handleSelectedAll(value),
+                    ),
+                    SizedBox(
+                      width: 8,
                     ),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Nome',
-                              style: textStyle(
-                                  color: Colors.grey.shade400,
-                                  fontWeight: FontWeight.w700)),
+                          TextComponent('Nome'),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
+              Divider(),
               Container(
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(5)),
@@ -307,20 +287,16 @@ class _UserDetailViewState extends State<UserDetailView> {
                           ),
                           child: Row(
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Checkbox(
-                                      activeColor: primaryColor,
-                                      checkColor: Colors.white,
-                                      value: _controller
-                                          .subFuncionalities[index].active,
-                                      onChanged: (bool? value) =>
-                                          handleCheckBox(value, index),
-                                    ),
-                                  ],
-                                ),
+                              Checkbox(
+                                activeColor: primaryColor,
+                                checkColor: Colors.white,
+                                value:
+                                    _controller.subFuncionalities[index].active,
+                                onChanged: (bool? value) =>
+                                    handleCheckBox(value, index),
+                              ),
+                              SizedBox(
+                                width: 8,
                               ),
                               Expanded(
                                 child: Column(
@@ -344,24 +320,9 @@ class _UserDetailViewState extends State<UserDetailView> {
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () => handleUpdate(_controller.user),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: secundaryColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 15, left: 25, bottom: 15, right: 25),
-                          child: Text(
-                            "Editar",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
+                    ButtonComponent(
+                        onPressed: () => handleUpdate(_controller.user),
+                        text: 'Salvar')
                   ],
                 ),
               ),

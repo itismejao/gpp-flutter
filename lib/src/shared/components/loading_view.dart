@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
-class LoadingView extends StatelessWidget {
-  const LoadingView({
+class LoadingComponent extends StatelessWidget {
+  const LoadingComponent({
     Key? key,
   }) : super(key: key);
 
