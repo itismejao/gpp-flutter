@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+
 import 'package:gpp/src/shared/components/text_component.dart';
 
 class DropDownComponent extends StatelessWidget {
   final String? label;
   final Icon? icon;
   final String? hintText;
-  final List<DropdownMenuItem<String>> items;
+  final Function? onChanged;
+  final List<DropdownMenuItem<dynamic>> items;
   const DropDownComponent({
     Key? key,
     this.label,
     this.icon,
     this.hintText,
+    this.onChanged,
     required this.items,
   }) : super(key: key);
 
@@ -30,7 +33,7 @@ class DropDownComponent extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(5)),
-          child: DropdownButtonFormField<String>(
+          child: DropdownButtonFormField<dynamic>(
             isExpanded: true,
             style: TextStyle(
                 color: Colors.black,
@@ -50,8 +53,8 @@ class DropDownComponent extends StatelessWidget {
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500),
                 border: InputBorder.none),
-            items: items.toList(),
-            onChanged: (_) {},
+            items: items,
+            onChanged: (value) => onChanged!(value),
           ),
         ),
       ],
