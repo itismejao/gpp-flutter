@@ -82,9 +82,6 @@ import 'src/views/funcionalities/funcionalities_form_view.dart';
 void main() async {
   await dotenv.load(fileName: "env");
   runApp(GppApp());
-  // runApp(MaterialApp(
-  //   home: Scaffold(body: DepartamentListView()),
-  // ));
 }
 
 class GppApp extends StatefulWidget {
@@ -108,7 +105,7 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: AstecaDetailView(),
+                  page: UserListView(),
                 ));
 
         // Handle '/'
@@ -150,14 +147,6 @@ class _GppAppState extends State<GppApp> {
                       page: FuncionalitiesListView(),
                     ));
           }
-
-          // if (settings.name == '/subfuncionalities') {
-          //   return MaterialPageRoute(
-          //       builder: (context) => HomeView(
-          //             funcionalities: FuncionalitiesView(),
-          //             page: SubFuncionalitiesListView(),
-          //           ));
-          // }
 
           if (settings.name == '/funcionalities/register') {
             return MaterialPageRoute(
