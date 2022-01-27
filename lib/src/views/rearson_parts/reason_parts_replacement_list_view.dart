@@ -40,8 +40,6 @@ class _ReasonPartsReplacementListViewState
 
   @override
   Widget build(BuildContext context) {
-    print('valor da váriavel isLoeaded: ' + controller.isLoaded.toString());
-
     final media = MediaQuery.of(context);
     return Container(
       child: Padding(
