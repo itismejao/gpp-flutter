@@ -30,4 +30,18 @@ class ReasonPartsReplacementRepository {
       throw Exception(error);
     }
   }
+
+  Future<bool> delete(
+      ReasonPartsReplacementModel reasonPartsReplacement) async {
+    Response response = await api.delete(
+      endpoint + '/' + reasonPartsReplacement.id.toString(),
+    );
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 }

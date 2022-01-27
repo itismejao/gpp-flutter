@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/reason_parts_replacement_controller.dart';
+import 'package:gpp/src/models/reason_parts_replacement_model.dart';
+import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/repositories/status_code.dart';
 
 class ReasonPartsReplacementListView extends StatefulWidget {
   const ReasonPartsReplacementListView({Key? key}) : super(key: key);
@@ -28,6 +33,23 @@ class _ReasonPartsReplacementListViewState
     });
   }
 
+  handleDelete(
+      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify
+          .alert("você deseja excluir o motivo de troca de peça ?")) {
+        if (await controller.repository.delete(reasonPartsReplacement)) {
+          notify.sucess("Funcionalidade excluída!");
+          //Atualiza a lista de motivos
+          fetchAll();
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -49,7 +71,11 @@ class _ReasonPartsReplacementListViewState
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24.0),
               child: Row(
-                children: [TitleComponent('Motivos de troca de peças')],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TitleComponent('Motivos de troca de peças'),
+                  ButtonComponent(onPressed: () {}, text: 'Adicionar')
+                ],
               ),
             ),
             Divider(),
@@ -58,6 +84,7 @@ class _ReasonPartsReplacementListViewState
                 Expanded(child: TextComponent('ID')),
                 Expanded(child: TextComponent('Nome')),
                 Expanded(child: TextComponent('Status')),
+                Expanded(child: TextComponent('Opções')),
               ],
             ),
             Divider(),
@@ -82,7 +109,33 @@ class _ReasonPartsReplacementListViewState
                                 Expanded(
                                     child: TextComponent(controller
                                         .reasonPartsReplacements[index].name)),
-                                Expanded(child: TextComponent('status')),
+                                Expanded(
+                                    child: Row(
+                                  children: [
+                                    StatusComponent(
+                                        status: controller
+                                            .reasonPartsReplacements[index]
+                                            .status),
+                                  ],
+                                )),
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () => {
+                                                handleDelete(
+                                                    context,
+                                                    controller
+                                                            .reasonPartsReplacements[
+                                                        index]),
+                                              })
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
