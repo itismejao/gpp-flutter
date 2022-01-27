@@ -3,11 +3,13 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/reason_parts_replacement_controller.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
+import 'package:gpp/src/shared/repositories/styles.dart';
 
 class ReasonPartsReplacementListView extends StatefulWidget {
   const ReasonPartsReplacementListView({Key? key}) : super(key: key);
@@ -50,6 +52,98 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
+  handleCreate(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await controller.repository
+          .create(controller.reasonPartsReplacement)) {
+        Navigator.pop(context);
+        fetchAll();
+        notify.sucess('Motivo de peça adicionado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  showDialogCreate(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: new Text("Adicionar motivo de troca de peça"),
+              content: new Text("preencha as informações abaixo"),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      InputComponent(
+                        label: 'Nome',
+                        hintText: 'Digite o motivo da troca de peça',
+                        onChanged: (value) {
+                          setState(() {
+                            controller.reasonPartsReplacement.name = value!;
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            Radio(
+                                activeColor: secundaryColor,
+                                value: true,
+                                groupValue:
+                                    controller.reasonPartsReplacement.status,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    controller.reasonPartsReplacement.status =
+                                        value!;
+                                  });
+                                }),
+                            Text("Habilitado"),
+                            Radio(
+                                activeColor: secundaryColor,
+                                value: false,
+                                groupValue:
+                                    controller.reasonPartsReplacement.status,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    controller.reasonPartsReplacement.status =
+                                        value!;
+                                  });
+                                }),
+                            Text("Desabilitado"),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            ButtonComponent(
+                                onPressed: () {
+                                  handleCreate(context);
+                                },
+                                text: 'Adicionar'),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -73,8 +167,12 @@ class _ReasonPartsReplacementListViewState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleComponent('Motivos de troca de peças'),
-                  ButtonComponent(onPressed: () {}, text: 'Adicionar')
+                  TitleComponent('Motivos de troca de peças aaa'),
+                  ButtonComponent(
+                      onPressed: () {
+                        showDialogCreate(context);
+                      },
+                      text: 'Adicionar')
                 ],
               ),
             ),
@@ -108,14 +206,14 @@ class _ReasonPartsReplacementListViewState
                                         .toString())),
                                 Expanded(
                                     child: TextComponent(controller
-                                        .reasonPartsReplacements[index].name)),
+                                        .reasonPartsReplacements[index].name!)),
                                 Expanded(
                                     child: Row(
                                   children: [
                                     StatusComponent(
                                         status: controller
                                             .reasonPartsReplacements[index]
-                                            .status),
+                                            .status!),
                                   ],
                                 )),
                                 Expanded(

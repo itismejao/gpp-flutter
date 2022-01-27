@@ -6,5 +6,9 @@ class ReasonPartsReplacementController {
   ReasonPartsReplacementRepository repository =
       ReasonPartsReplacementRepository(api: gppApi);
   bool isLoaded = false;
+
+  late ReasonPartsReplacementModel reasonPartsReplacement =
+      ReasonPartsReplacementModel();
+
   late List<ReasonPartsReplacementModel> reasonPartsReplacements;
 }

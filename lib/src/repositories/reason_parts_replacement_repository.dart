@@ -31,6 +31,19 @@ class ReasonPartsReplacementRepository {
     }
   }
 
+  Future<bool> create(
+      ReasonPartsReplacementModel reasonPartsReplacement) async {
+    Response response =
+        await api.post(endpoint, reasonPartsReplacement.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
   Future<bool> delete(
       ReasonPartsReplacementModel reasonPartsReplacement) async {
     Response response = await api.delete(

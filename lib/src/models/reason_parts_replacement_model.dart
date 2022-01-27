@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReasonPartsReplacementModel {
-  int id;
-  String name;
-  bool status;
-
+  int? id;
+  String? name;
+  bool? status;
   ReasonPartsReplacementModel({
-    required this.id,
-    required this.name,
-    required this.status,
+    this.id,
+    this.name,
+    this.status,
   });
 
   factory ReasonPartsReplacementModel.fromJson(Map<String, dynamic> json) {
@@ -16,14 +15,11 @@ class ReasonPartsReplacementModel {
         id: json['id'], name: json['name'], status: json['status']);
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = <String, dynamic>{};
-  //   data['id'] = id;
-  //   data['name'] = name;
-  //   data['active'] = active! ? 1 : 0;
-  //   data['icon'] = icon;
-  //   data['route'] = route;
-  //   data['idregister'] = idRegister;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['status'] = status;
+    return data;
+  }
 }
