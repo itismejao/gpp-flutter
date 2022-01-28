@@ -52,11 +52,11 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  handleCreate(context) async {
+  handleCreate(
+      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await controller.repository
-          .create(controller.reasonPartsReplacement)) {
+      if (await controller.repository.create(reasonPartsReplacement)) {
         Navigator.pop(context);
         fetchAll();
         notify.sucess('Motivo de peça adicionado com sucesso!');
@@ -66,12 +66,11 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  handleUpdate(context) async {
+  handleUpdate(
+      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await controller.repository
-          .update(controller.reasonPartsReplacement)) {
-        controller.reasonPartsReplacement = ReasonPartsReplacementModel();
+      if (await controller.repository.update(reasonPartsReplacement)) {
         Navigator.pop(context);
         fetchAll();
         notify.sucess('Motivo de peça atualizado com sucesso!');
@@ -81,7 +80,7 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  openForm(context) {
+  openForm(context, ReasonPartsReplacementModel reasonPartsReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -89,7 +88,7 @@ class _ReasonPartsReplacementListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: controller.reasonPartsReplacement.id == null
+              title: reasonPartsReplacement.id == null
                   ? Text("Adicionar motivo de troca de peça")
                   : Text("Atualizar motivo de troca de peça"),
               content: new Text("preencha as informações abaixo"),
@@ -100,11 +99,11 @@ class _ReasonPartsReplacementListViewState
                     children: [
                       InputComponent(
                         label: 'Nome',
-                        initialValue: controller.reasonPartsReplacement.name,
+                        initialValue: reasonPartsReplacement.name,
                         hintText: 'Digite o motivo da troca de peça',
                         onChanged: (value) {
                           setState(() {
-                            controller.reasonPartsReplacement.name = value!;
+                            reasonPartsReplacement.name = value!;
                           });
                         },
                       ),
@@ -115,24 +114,20 @@ class _ReasonPartsReplacementListViewState
                             Radio(
                                 activeColor: secundaryColor,
                                 value: true,
-                                groupValue:
-                                    controller.reasonPartsReplacement.status,
+                                groupValue: reasonPartsReplacement.status,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    controller.reasonPartsReplacement.status =
-                                        value!;
+                                    reasonPartsReplacement.status = value!;
                                   });
                                 }),
                             Text("Habilitado"),
                             Radio(
                                 activeColor: secundaryColor,
                                 value: false,
-                                groupValue:
-                                    controller.reasonPartsReplacement.status,
+                                groupValue: reasonPartsReplacement.status,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    controller.reasonPartsReplacement.status =
-                                        value!;
+                                    reasonPartsReplacement.status = value!;
                                   });
                                 }),
                             Text("Desabilitado"),
@@ -143,17 +138,28 @@ class _ReasonPartsReplacementListViewState
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            controller.reasonPartsReplacement.id == null
+                            reasonPartsReplacement.id == null
                                 ? ButtonComponent(
                                     onPressed: () {
-                                      handleCreate(context);
+                                      handleCreate(
+                                          context, reasonPartsReplacement);
                                     },
                                     text: 'Adicionar')
                                 : ButtonComponent(
                                     onPressed: () {
-                                      handleUpdate(context);
+                                      handleUpdate(
+                                          context, reasonPartsReplacement);
                                     },
-                                    text: 'Atualizar')
+                                    text: 'Atualizar'),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            ButtonComponent(
+                                color: Colors.red,
+                                onPressed: () {
+                                  handleCreate(context, reasonPartsReplacement);
+                                },
+                                text: 'Cancelar')
                           ],
                         ),
                       )
@@ -191,10 +197,10 @@ class _ReasonPartsReplacementListViewState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleComponent('Motivos de troca de peças'),
+                  Flexible(child: TitleComponent('Motivos de troca de peças')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context);
+                        openForm(context, controller.reasonPartsReplacement);
                       },
                       text: 'Adicionar')
                 ],
@@ -212,7 +218,7 @@ class _ReasonPartsReplacementListViewState
             Divider(),
             controller.isLoaded
                 ? Container(
-                    height: media.size.height * 0.8,
+                    height: media.size.height * 0.5,
                     child: ListView.builder(
                       itemCount: controller.reasonPartsReplacements.length,
                       itemBuilder: (context, index) {
@@ -249,11 +255,11 @@ class _ReasonPartsReplacementListViewState
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () {
-                                            controller.reasonPartsReplacement =
+                                            openForm(
+                                                context,
                                                 controller
                                                         .reasonPartsReplacements[
-                                                    index];
-                                            openForm(context);
+                                                    index]);
                                           }),
                                       IconButton(
                                           icon: Icon(
