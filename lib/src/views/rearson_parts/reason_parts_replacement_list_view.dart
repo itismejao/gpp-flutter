@@ -66,7 +66,22 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  showDialogCreate(context) {
+  handleUpdate(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await controller.repository
+          .update(controller.reasonPartsReplacement)) {
+        controller.reasonPartsReplacement = ReasonPartsReplacementModel();
+        Navigator.pop(context);
+        fetchAll();
+        notify.sucess('Motivo de peça atualizado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  openForm(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -74,7 +89,9 @@ class _ReasonPartsReplacementListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: new Text("Adicionar motivo de troca de peça"),
+              title: controller.reasonPartsReplacement.id == null
+                  ? Text("Adicionar motivo de troca de peça")
+                  : Text("Atualizar motivo de troca de peça"),
               content: new Text("preencha as informações abaixo"),
               actions: <Widget>[
                 Padding(
@@ -83,6 +100,7 @@ class _ReasonPartsReplacementListViewState
                     children: [
                       InputComponent(
                         label: 'Nome',
+                        initialValue: controller.reasonPartsReplacement.name,
                         hintText: 'Digite o motivo da troca de peça',
                         onChanged: (value) {
                           setState(() {
@@ -125,11 +143,17 @@ class _ReasonPartsReplacementListViewState
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            ButtonComponent(
-                                onPressed: () {
-                                  handleCreate(context);
-                                },
-                                text: 'Adicionar'),
+                            controller.reasonPartsReplacement.id == null
+                                ? ButtonComponent(
+                                    onPressed: () {
+                                      handleCreate(context);
+                                    },
+                                    text: 'Adicionar')
+                                : ButtonComponent(
+                                    onPressed: () {
+                                      handleUpdate(context);
+                                    },
+                                    text: 'Atualizar')
                           ],
                         ),
                       )
@@ -167,10 +191,10 @@ class _ReasonPartsReplacementListViewState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TitleComponent('Motivos de troca de peças aaa'),
+                  TitleComponent('Motivos de troca de peças'),
                   ButtonComponent(
                       onPressed: () {
-                        showDialogCreate(context);
+                        openForm(context);
                       },
                       text: 'Adicionar')
                 ],
@@ -221,6 +245,18 @@ class _ReasonPartsReplacementListViewState
                                     children: [
                                       IconButton(
                                           icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () {
+                                            controller.reasonPartsReplacement =
+                                                controller
+                                                        .reasonPartsReplacements[
+                                                    index];
+                                            openForm(context);
+                                          }),
+                                      IconButton(
+                                          icon: Icon(
                                             Icons.delete,
                                             color: Colors.grey.shade400,
                                           ),
@@ -230,7 +266,7 @@ class _ReasonPartsReplacementListViewState
                                                     controller
                                                             .reasonPartsReplacements[
                                                         index]),
-                                              })
+                                              }),
                                     ],
                                   ),
                                 )

@@ -44,6 +44,20 @@ class ReasonPartsReplacementRepository {
     }
   }
 
+  Future<bool> update(
+      ReasonPartsReplacementModel reasonPartsReplacement) async {
+    Response response = await api.put(
+        endpoint + '/' + reasonPartsReplacement.id.toString(),
+        reasonPartsReplacement.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
   Future<bool> delete(
       ReasonPartsReplacementModel reasonPartsReplacement) async {
     Response response = await api.delete(
