@@ -105,11 +105,11 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
-        return MaterialPageRoute(
-            builder: (context) => HomeView(
-                  funcionalities: FuncionalitiesView(),
-                  page: ReasonPartsReplacementListView(),
-                ));
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: ReasonPartsReplacementListView(),
+        //         ));
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
@@ -164,6 +164,13 @@ class _GppAppState extends State<GppApp> {
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
                       page: DepartamentFormView(),
+                    ));
+          }
+          if (settings.name == '/reason_parts_replacement') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: ReasonPartsReplacementListView(),
                     ));
           }
 
