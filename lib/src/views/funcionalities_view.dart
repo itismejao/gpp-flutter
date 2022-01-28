@@ -167,8 +167,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
         Expanded(
           child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(
-                    context, subFuncionalities.route!);
+                Navigator.pushNamed(context, subFuncionalities.route!);
                 //Fecha Drawer
               },
               child: MouseRegion(
