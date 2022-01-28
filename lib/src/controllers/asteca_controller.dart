@@ -7,7 +7,7 @@ import 'package:gpp/src/shared/enumeration/asteca_enum.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class AstecaController {
-  int step = 4;
+  int step = 1;
   bool isOpenFilter = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository(api: gppApi);
