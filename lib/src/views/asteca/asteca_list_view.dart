@@ -17,7 +17,6 @@ import 'package:gpp/src/shared/enumeration/asteca_enum.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 
-import 'asteca_form_view.dart';
 import 'package:intl/intl.dart';
 
 class AstecaListView extends StatefulWidget {
@@ -36,8 +35,9 @@ class _AstecaListViewState extends State<AstecaListView> {
   buscar() async {
     NotifyController notify = NotifyController(context: context);
     try {
-      controller.astecas = await controller.repository
-          .buscar(controller.pagina, filtroAsteca: controller.filtroAsteca);
+      controller.astecas = await controller.repository.buscarTodas(
+          controller.pagina,
+          filtroAsteca: controller.filtroAsteca);
 
       controller.filtroAsteca.idAsteca = '';
       controller.filtroAsteca.documentoFiscal!.cpfCnpj = '';

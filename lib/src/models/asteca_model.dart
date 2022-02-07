@@ -1,5 +1,6 @@
 import 'package:gpp/src/models/asteca_end_cliente_model.dart';
 import 'package:gpp/src/models/asteca_motivo_model.dart';
+import 'package:gpp/src/models/asteca_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
 import 'package:gpp/src/models/produto_model.dart';
@@ -11,11 +12,12 @@ class AstecaModel {
   String? observacao;
   String? defeitoEstadoProd;
   DateTime? dataEmissao;
+  AstecaTipoPendenciaModel? astecaTipoPendencia;
   AstecaEndClienteModel? astecaEndCliente;
   AstecaMotivoModel? astecaMotivo;
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
-  List<FuncionarioModel>? funcionario;
+  FuncionarioModel? funcionario;
   AstecaModel({
     this.idAsteca,
     this.tipoAsteca,
@@ -23,6 +25,7 @@ class AstecaModel {
     this.observacao,
     this.defeitoEstadoProd,
     this.dataEmissao,
+    this.astecaTipoPendencia,
     this.astecaEndCliente,
     this.astecaMotivo,
     this.documentoFiscal,
@@ -52,11 +55,7 @@ class AstecaModel {
                 return ProdutoModel.fromJson(data);
               }).toList()
             : null,
-        funcionario: json['funcionario'] != null
-            ? json['funcionario'].map<FuncionarioModel>((data) {
-                return FuncionarioModel.fromJson(data);
-              }).toList()
-            : null);
+        funcionario: FuncionarioModel.fromJson(json['funcionario'].first));
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -75,7 +74,7 @@ class AstecaModel {
       data['produto'] = this.produto!.map((v) => v.toJson()).toList();
     }
     if (this.funcionario != null) {
-      data['funcionario'] = this.funcionario!.map((v) => v.toJson()).toList();
+      data['funcionario'] = this.funcionario;
     }
     return data;
   }

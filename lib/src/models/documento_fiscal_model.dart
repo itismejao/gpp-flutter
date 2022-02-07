@@ -8,7 +8,7 @@ class DocumentoFiscalModel {
   dynamic cpfCnpj;
   int? numDocFiscal;
   String? serieDocFiscal;
-  String? dataEmissao;
+  DateTime? dataEmissao;
   ItemDocFiscalModel? itemDocFiscal;
 
   DocumentoFiscalModel(
@@ -31,7 +31,7 @@ class DocumentoFiscalModel {
         cpfCnpj: json['cpf_cnpj'],
         numDocFiscal: json['num_doc_fiscal'],
         serieDocFiscal: json['serie_doc_fiscal'],
-        dataEmissao: json['data_emissao'],
+        dataEmissao: DateTime.parse(json['data_emissao']),
         itemDocFiscal: json['item_doc_fiscal'] != null
             ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal'])
             : null);

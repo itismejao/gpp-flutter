@@ -14,7 +14,20 @@ class AstecaRepository {
   ApiService api = gppApi;
   String endpoint = '/asteca';
 
-  Future<List<AstecaModel>> buscar(int pagina,
+  Future<AstecaModel> buscar(int id) async {
+    Response response = await api.get(endpoint + '/' + id.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return AstecaModel.fromJson(data.first);
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<List<AstecaModel>> buscarTodas(int pagina,
       {AstecaModel? filtroAsteca}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),

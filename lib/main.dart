@@ -109,7 +109,9 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: AstecaListView(),
+                  page: AstecaDetailView(
+                    id: 694273,
+                  ),
                 ));
 
         // Handle '/'
@@ -185,7 +187,9 @@ class _GppAppState extends State<GppApp> {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
-                      page: AstecaDetailView(),
+                      page: AstecaDetailView(
+                        id: 252,
+                      ),
                     ));
           }
 
