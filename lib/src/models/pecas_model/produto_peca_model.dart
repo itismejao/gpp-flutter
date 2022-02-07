@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/pecas_model/pecas_estoque.dart';
+import 'package:gpp/src/models/pecas_model/pecas_estoque_model.dart';
 
 class ProdutoPecaModel {
   int? id_produto_peca;
