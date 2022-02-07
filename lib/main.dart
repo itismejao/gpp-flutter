@@ -58,6 +58,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
 import 'package:gpp/src/views/asteca/asteca_list_view.dart';
@@ -105,11 +106,11 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
-        // return MaterialPageRoute(
-        //     builder: (context) => HomeView(
-        //           funcionalities: FuncionalitiesView(),
-        //           page: ReasonPartsReplacementListView(),
-        //         ));
+        return MaterialPageRoute(
+            builder: (context) => HomeView(
+                  funcionalities: FuncionalitiesView(),
+                  page: AstecaListView(),
+                ));
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

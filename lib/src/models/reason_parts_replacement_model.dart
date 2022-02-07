@@ -12,7 +12,7 @@ class ReasonPartsReplacementModel {
 
   factory ReasonPartsReplacementModel.fromJson(Map<String, dynamic> json) {
     return ReasonPartsReplacementModel(
-        id: json['id'], name: json['name'], status: json['status']);
+        id: json['idsteca'], name: json['name'], status: json['status']);
   }
 
   Map<String, dynamic> toJson() {

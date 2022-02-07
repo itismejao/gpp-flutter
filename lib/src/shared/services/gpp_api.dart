@@ -28,11 +28,14 @@ class ApiService {
     return headers;
   }
 
-  Future<Response> get(String endpoint) async {
+  Future<Response> get(String endpoint,
+      {Map<String, String>? queryParameters}) async {
     // ignore: avoid_print
 
     try {
-      var uri = Uri.parse(baseUrl! + endpoint);
+      var uri = Uri.parse(baseUrl! + endpoint)
+          .replace(queryParameters: queryParameters);
+
       Response response = await http
           .get(uri, headers: getHeader())
           .timeout(const Duration(seconds: 30));
