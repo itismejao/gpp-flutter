@@ -22,6 +22,21 @@ class AddressingDetailView extends StatefulWidget {
 
  class _AddressingDetailViewState extends State<AddressingDetailView>  {
     int selected = 1;
+//     late FocusNode myFocusNode;
+
+// @override
+// void initState(){
+//   super.initState();
+
+//    myFocusNode = FocusNode();
+// }    
+
+// @override
+//   void dispose() {
+    
+//     myFocusNode.dispose();
+//     super.dispose();
+//   }
  
  @override
    Widget build(BuildContext context) {
@@ -31,20 +46,23 @@ class AddressingDetailView extends StatefulWidget {
         //  child: _enderecoMenu(),
       //  ),
         Expanded(
-          flex: 4,
+       //   flex: 4,
+         
           child: Column(
             children: [
               _buildEnderecamentoList(MediaQuery.of(context)),
             ],
           ),
-        )
+          ),
+        
       ],
     );
   }
 
      
   _buildEnderecamentoList(media) {
-    return Column(
+    
+    return Column(        
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -52,16 +70,16 @@ class AddressingDetailView extends StatefulWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
+              Row(                
+                children: [                   
                   Icon(
                     Icons.settings,
                     size: 32,
                   ),
                   SizedBox(
-                    width: 12,
+                    width: 6,
                   ),
-                  TitleComponent('Peças'),
+                  TitleComponent('Pisos'),
                 ],
               ),
               ButtonComponent(
@@ -94,17 +112,7 @@ class AddressingDetailView extends StatefulWidget {
           child: Row(
             children: [
               Expanded(
-                child: const TextComponent('ID'),
-              ),
-              Expanded(
                 child: const TextComponent('Nome'),
-              ),
-              Expanded(
-                flex: 3,
-                child: const TextComponent('Motivo'),
-              ),
-              Expanded(
-                child: const TextComponent('Quantidade'),
               ),
               Expanded(
                 child: const TextComponent('Ações'),
@@ -114,6 +122,7 @@ class AddressingDetailView extends StatefulWidget {
         ),
         Divider(),
         Container(
+          
           height: media.size.height * 0.60,
           child: ListView.builder(
               itemCount: 7,
@@ -122,36 +131,8 @@ class AddressingDetailView extends StatefulWidget {
                   color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                   child: Row(
                     children: [
-                      Expanded(
-                        child: TextComponent('0001'),
-                      ),
-                      Expanded(
-                        child: TextComponent('Porta Esquerda'),
-                      ),
-                      Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: DropDownComponent(
-                                items: <String>[
-                                  'Peça com defeito',
-                                  'Cor errada',
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                hintText: 'Selecione o motivo',
-                              ),
-                            ),
-                          )),
-                      Expanded(
-                        child: TextComponent('47'),
+                     Expanded(
+                        child: TextComponent('Porta A'),                        
                       ),
                       Expanded(
                         child: Row(
@@ -161,10 +142,10 @@ class AddressingDetailView extends StatefulWidget {
                             IconButton(
                                 icon: Icon(
                                   Icons.delete,
-                                  color: Colors.grey.shade400,
+                                  color: Colors.red.shade400,
                                 ),
                                 onPressed: () {
-                                  // handleDelete(context, departament[index])
+                                   _deletePisoDialogParts(context);
                                 }),
                           ],
                         ),
@@ -195,4 +176,104 @@ class AddressingDetailView extends StatefulWidget {
       ],
     );
   }
+
+  //  _corredorDialogParts(context) {
+  //   MediaQueryData media = MediaQuery.of(context);
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //          return StatefulBuilder(builder: (context, setState) {
+  //           return AlertDialog(
+  //             title: Row(
+  //               children: [
+  //                 Icon(
+  //                   Icons.settings,
+  //                   size: 32,
+  //                 ),
+  //                 SizedBox(
+  //                   width: 12,
+  //                 ),
+  //                 TitleComponent('Peças'),
+  //               ],
+  //             ),
+  //             content: Container(
+  //               width: media.size.width * 0.80,
+  //               height: media.size.height * 0.80,
+  //               child: Column(
+  //                 children: [
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(vertical: 8.0),
+  //                     child: Row(
+  //                       children: [
+  //                         Text(
+  //                           'Selecione uma ou mais peças para realizar a manutenção',
+  //                           style: TextStyle(
+  //                             letterSpacing: 0.15,
+  //                             fontSize: 16,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //            );
+  //         });
+  //       });
+
+
+
+   _deletePisoDialogParts(context) {
+    MediaQueryData media = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+           return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    size: 32,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  TitleComponent('Peças'),
+                ],
+              ),
+              content: Container(
+                width: media.size.width * 0.30,
+                height: media.size.height * 0.20,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Deseja excluir o Piso',
+                            style: TextStyle(
+                              letterSpacing: 0.15,
+                              fontSize: 16,
+                            ),
+                          ),
+                           ButtonComponent(
+                            color: secundaryColor,
+                            onPressed: () {
+             //              _buildDialogEndressing(context);
+                            },
+                            text: 'Adicionar')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+             );
+          });
+        });
+        
+   }
  }
