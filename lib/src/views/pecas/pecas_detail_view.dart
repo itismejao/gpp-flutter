@@ -122,11 +122,23 @@ class _PecasDetailViewState extends State<PecasDetailView> {
               children: [
                 // Produto
                 SizedBox(
-                  width: 50,
+                  width: 80,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'ID',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ID',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
                       ),
                     ),
                   ),
@@ -134,28 +146,63 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Padding(padding: EdgeInsets.only(right: 10)),
                 // Fim Produto
                 Flexible(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
                     child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Nome Produto',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Nome Produto',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
+                    ),
                   ),
-                )),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                ),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 // Fornecedor
                 SizedBox(
-                  width: 50,
+                  width: 80,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'ID',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ID',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Nome Fornecedor',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Nome Fornecedor',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
@@ -174,19 +221,41 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               children: [
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Descrição Peça',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Descrição Peça',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 SizedBox(
                   width: 100,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Quantidade',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Quantidade',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
                       ),
                     ),
                   ),
@@ -197,33 +266,77 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               children: [
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Número',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Número',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Código de Fabrica',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Código de Fabrica',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Custo R\$',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Custo R\$',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Unidade',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Unidade',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
@@ -241,26 +354,78 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               children: [
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: 'Largura'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Largura',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
+                    ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: 'Altura'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Altura',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
+                    ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: 'Profundidade'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Profundidade',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
+                    ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(hintText: 'Und. Medida'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Und. Medida',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -279,37 +444,85 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               children: [
                 SizedBox(
-                  width: 50,
+                  width: 80,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'ID',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ID',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Nome Linha',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Nome Linha',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 50)),
+                Padding(padding: EdgeInsets.only(right: 30)),
                 SizedBox(
-                  width: 50,
+                  width: 80,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(hintText: 'ID'),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ID',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Nome Espécie',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Nome Espécie',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
@@ -327,26 +540,48 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               children: [
                 SizedBox(
-                  width: 50,
+                  width: 80,
                   child: Flexible(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'ID',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: TextFormField(
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'ID',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Descrição Material',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: 'Descrição Material',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 50)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -357,30 +592,6 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
               ],
             ),
-            // TESTES
-            // Row(
-            //   children: [
-            //     SizedBox(
-            //       width: 50,
-            //       child: Flexible(
-            //         child: TextFormField(
-            //           decoration: InputDecoration(
-            //             hintText: 'ID',
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //     Padding(padding: EdgeInsets.only(right: 10)),
-            //     Flexible(
-            //       child: TextFormField(
-            //         decoration: InputDecoration(
-            //           hintText: 'Descrição Material',
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // FIM TESTES
           ],
         ),
       ],
