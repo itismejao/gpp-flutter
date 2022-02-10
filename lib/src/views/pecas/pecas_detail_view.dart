@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/pecas_controller.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
@@ -16,6 +17,8 @@ class PecasDetailView extends StatefulWidget {
 }
 
 class _PecasDetailViewState extends State<PecasDetailView> {
+  PecasController _pecasController = PecasController();
+
   int selected = 1;
 
   @override
@@ -130,6 +133,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: TextFormField(
+                        onChanged: (value) {
+                          _pecasController.pecasModel.id_produto = int.parse(value);
+                        },
                         keyboardType: TextInputType.number,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -174,6 +180,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: TextFormField(
+                        onChanged: (value) {
+                          // _pecasController.pecasModel.id_fornecedor = int.parse(value);
+                        },
                         keyboardType: TextInputType.number,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -227,6 +236,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.descricao = value;
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -272,6 +284,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.numero = value;
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -291,6 +306,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.codigo_fabrica = value;
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -310,6 +328,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.custo = double.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -329,6 +350,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.unidade = int.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -360,6 +384,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.largura = double.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -379,6 +406,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.altura = double.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -398,6 +428,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.profundidade = double.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -417,6 +450,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        _pecasController.pecasModel.unidade_medida = int.parse(value);
+                      },
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -588,7 +624,12 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 SizedBox(
                   width: 100,
                   height: 30,
-                  child: ElevatedButton(onPressed: () {}, child: Text('Salvar')),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _pecasController.create();
+                    },
+                    child: Text('Salvar'),
+                  ),
                 ),
               ],
             ),
