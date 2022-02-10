@@ -1,10 +1,7 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/asteca_model.dart';
-import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/shared/exceptions/asteca_exception.dart';
 
-import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 import 'package:http/http.dart';
 
 import 'package:gpp/src/shared/repositories/status_code.dart';

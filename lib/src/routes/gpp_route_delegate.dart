@@ -4,7 +4,8 @@ import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/routes/gpp_route_path.dart';
 import 'package:gpp/src/views/appbar_view.dart';
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
-import 'package:gpp/src/views/departaments/departament_view.dart';
+import 'package:gpp/src/views/departamentos/departament_view.dart';
+
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
 
@@ -15,9 +16,9 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
   String _currentPage = "/home";
   late ResponsiveController _responsive = ResponsiveController();
   //Modelos
-  UserModel? _user;
+  UsuarioModel? _user;
 
-  handleSelectUser(UserModel user) {
+  handleSelectUser(UsuarioModel user) {
     _currentPage = "/users";
     _user = user;
     notifyListeners();
@@ -104,7 +105,7 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
       _user = null;
     } else if (path.isUsersDetails) {
       currentPage = "/users";
-      _user = UserModel(id: path.id);
+      _user = UsuarioModel(id: path.id);
     }
   }
 

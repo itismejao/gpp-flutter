@@ -9,10 +9,6 @@ class RearsonPartsFormView extends StatefulWidget {
 
 class _RearsonPartsFormViewState extends State<RearsonPartsFormView> {
   var contador = 0;
-  @override
-  void initState() {
-    // TODO: implement initState
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
@@ -35,7 +35,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     });
   }
 
-  handleDelete(context, FuncionalitieModel funcionalitie) async {
+  handleDelete(context, FuncionalidadeModel funcionalitie) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify.alert("você deseja excluir essa funcionalidade?")) {
@@ -57,7 +57,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     fetchFuncionalities();
   }
 
-  Widget _buildList(List<FuncionalitieModel> funcionalities) {
+  Widget _buildList(List<FuncionalidadeModel> funcionalities) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -111,7 +111,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(List<FuncionalitieModel> funcionalities, int index,
+  Widget _buildListItem(List<FuncionalidadeModel> funcionalities, int index,
       BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -142,7 +142,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                     Row(
                       children: [
                         Text(
-                          funcionalities[index].name ?? '',
+                          funcionalities[index].nome ?? '',
                           style: textStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -150,7 +150,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                     Row(
                       children: [
                         Text(
-                          funcionalities[index].name ?? '',
+                          funcionalities[index].nome ?? '',
                           style: textStyle(color: Colors.grey.shade400),
                         ),
                       ],
@@ -161,7 +161,8 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        StatusComponent(status: funcionalities[index].active!),
+                        StatusComponent(
+                            status: funcionalities[index].situacao!),
                         IconButton(
                           icon: Icon(
                             Icons.edit,
@@ -190,13 +191,13 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                 CheckboxComponent(),
                 Expanded(
                   child: TextComponent(
-                    funcionalities[index].name!,
+                    funcionalities[index].nome!,
                   ),
                 ),
                 Expanded(
                     child: Row(
                   children: [
-                    StatusComponent(status: funcionalities[index].active!),
+                    StatusComponent(status: funcionalities[index].situacao!),
                   ],
                 )),
                 Expanded(
@@ -212,7 +213,9 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                           Navigator.pushNamed(
                               context,
                               '/subfuncionalities/' +
-                                  funcionalities[index].id.toString())
+                                  funcionalities[index]
+                                      .idFuncionalidade
+                                      .toString())
                         },
                       ),
                       IconButton(
@@ -224,7 +227,9 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                           Navigator.pushNamed(
                               context,
                               '/funcionalities/' +
-                                  funcionalities[index].id.toString())
+                                  funcionalities[index]
+                                      .idFuncionalidade
+                                      .toString())
                         },
                       ),
                       IconButton(
@@ -243,7 +248,9 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
                             Navigator.pushNamed(
                                 context,
                                 '/funcionalities/' +
-                                    funcionalities[index].id.toString());
+                                    funcionalities[index]
+                                        .idFuncionalidade
+                                        .toString());
                           }),
                     ],
                   ),

@@ -11,8 +11,9 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
-import 'package:gpp/src/views/departaments/departament_form_view.dart';
+
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/views/departamentos/departament_form_view.dart';
 
 class DepartamentListView extends StatefulWidget {
   const DepartamentListView({Key? key}) : super(key: key);
@@ -28,13 +29,17 @@ class _DepartamentListViewState extends State<DepartamentListView> {
       DepartamentController(DepartamentRepository(api: gppApi));
 
   changeDepartaments() async {
-    if (mounted) {
+    try {
       setState(() {
         _controller.state = DepartamentEnum.loading;
       });
-    }
-    await _controller.fetchAll();
-    if (mounted) {
+
+      await _controller.fetchAll();
+
+      setState(() {
+        _controller.state = DepartamentEnum.changeDepartament;
+      });
+    } catch (e) {
       setState(() {
         _controller.state = DepartamentEnum.changeDepartament;
       });
@@ -53,7 +58,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     }
   }
 
-  handleEdit(context, DepartamentModel departament) async {
+  handleEdit(context, DepartamentoModel departament) async {
     // bool? isEdit = await showDialog(
     //     context: context,
     //     builder: (context) {
@@ -69,7 +74,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     // }
   }
 
-  handleDelete(context, DepartamentModel departament) async {
+  handleDelete(context, DepartamentoModel departament) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify.alert("você deseja excluir essa funcionalidade?")) {
@@ -92,14 +97,14 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     changeDepartaments();
   }
 
-  Widget _buildList(List<DepartamentModel> departaments) {
+  Widget _buildList() {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return ListView.builder(
-              itemCount: departaments.length,
+              itemCount: _controller.departaments.length,
               itemBuilder: (context, index) {
-                return _buildListItem(departaments, index, context);
+                return _buildListItem(index, context);
               });
         }
 
@@ -121,9 +126,9 @@ class _DepartamentListViewState extends State<DepartamentListView> {
             Container(
               height: 400,
               child: ListView.builder(
-                  itemCount: departaments.length,
+                  itemCount: _controller.departaments.length,
                   itemBuilder: (context, index) {
-                    return _buildListItem(departaments, index, context);
+                    return _buildListItem(index, context);
                   }),
             )
           ],
@@ -134,8 +139,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(
-      List<DepartamentModel> departament, int index, BuildContext context) {
+  Widget _buildListItem(int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -165,7 +169,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                     Row(
                       children: [
                         Text(
-                          departament[index].name ?? '',
+                          _controller.departaments[index].nome ?? '',
                           style: textStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -176,7 +180,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildStatus(departament[index].active!),
+                        _buildStatus(_controller.departaments[index].situacao!),
                         Row(
                           children: [
                             IconButton(
@@ -188,7 +192,9 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                                 Navigator.pushNamed(
                                     context,
                                     '/departaments/' +
-                                        departament[index].id.toString())
+                                        _controller
+                                            .departaments[index].idDepartamento
+                                            .toString())
 
                                 //  handleEdit(context, departament[index]),
                               },
@@ -198,8 +204,8 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                                 Icons.delete,
                                 color: Colors.grey.shade400,
                               ),
-                              onPressed: () =>
-                                  handleDelete(context, departament[index]),
+                              onPressed: () => handleDelete(
+                                  context, _controller.departaments[index]),
                             ),
                           ],
                         ),
@@ -224,12 +230,13 @@ class _DepartamentListViewState extends State<DepartamentListView> {
               children: [
                 Expanded(
                     child: TextComponent(
-                  departament[index].name!,
+                  _controller.departaments[index].nome!,
                 )),
                 Expanded(
                     child: Row(
                   children: [
-                    StatusComponent(status: departament[index].active!)
+                    StatusComponent(
+                        status: _controller.departaments[index].situacao!)
                   ],
                 )),
                 Expanded(
@@ -244,7 +251,9 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                             Navigator.pushNamed(
                                 context,
                                 '/departaments/' +
-                                    departament[index].id.toString());
+                                    _controller
+                                        .departaments[index].idDepartamento
+                                        .toString());
                           }
                           //handleEdit(context, departament[index]),
                           ),
@@ -253,8 +262,8 @@ class _DepartamentListViewState extends State<DepartamentListView> {
                           Icons.delete,
                           color: Colors.grey.shade400,
                         ),
-                        onPressed: () =>
-                            handleDelete(context, departament[index]),
+                        onPressed: () => handleDelete(
+                            context, _controller.departaments[index]),
                       ),
                     ],
                   ),
@@ -308,16 +317,16 @@ class _DepartamentListViewState extends State<DepartamentListView> {
     }
   }
 
-  Widget _buildDepartaments() {
-    switch (_controller.state) {
-      case DepartamentEnum.loading:
-        return const LoadingComponent();
-      case DepartamentEnum.notDepartament:
-        return Container();
-      case DepartamentEnum.changeDepartament:
-        return _buildList(_controller.departaments);
-    }
-  }
+  // Widget _buildDepartaments() {
+  //   switch (_controller.state) {
+  //     case DepartamentEnum.loading:
+  //       return const LoadingComponent();
+  //     case DepartamentEnum.notDepartament:
+  //       return Container();
+  //     case DepartamentEnum.changeDepartament:
+  //       return _buildList(_controller.departaments);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +348,9 @@ class _DepartamentListViewState extends State<DepartamentListView> {
               ],
             ),
           ),
-          _buildDepartaments()
+          _controller.state == DepartamentEnum.changeDepartament
+              ? _buildList()
+              : LoadingComponent()
         ],
       ),
     );

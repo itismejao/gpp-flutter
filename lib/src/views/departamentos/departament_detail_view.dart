@@ -11,7 +11,7 @@
 
 // // ignore: must_be_immutable
 // class DepartamentDetailView extends StatefulWidget {
-//   DepartamentModel departament;
+//   DepartamentoModel departament;
 
 //   DepartamentDetailView({
 //     Key? key,
@@ -231,7 +231,8 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   }
 
   fetchSubFuncionalities() async {
-    DepartamentModel departament = DepartamentModel(id: int.parse(widget.id));
+    DepartamentoModel departament =
+        DepartamentoModel(idDepartamento: int.parse(widget.id));
     await _controller.changeDepartamentSubFuncionalities(departament);
     setState(() {
       _controller.state = DepartamentEnum.changeDepartament;
@@ -241,9 +242,9 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   handleCheckBox(bool? value, int index) {
     setState(() {
       if (value!) {
-        _controller.subFuncionalities[index].active = true;
+        _controller.subFuncionalities[index].situacao = true;
       } else {
-        _controller.subFuncionalities[index].active = false;
+        _controller.subFuncionalities[index].situacao = false;
       }
     });
   }
@@ -253,7 +254,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
       _selectedAll = value;
 
       for (var i = 0; i < _controller.subFuncionalities.length; i++) {
-        _controller.subFuncionalities[i].active = value;
+        _controller.subFuncionalities[i].situacao = value;
       }
     });
   }
@@ -317,10 +318,10 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ),
                 InputComponent(
-                  initialValue: _controller.departament.name,
+                  initialValue: _controller.departament.nome,
                   label: "Nome",
                   onChanged: (value) {
-                    _controller.departament.name = value;
+                    _controller.departament.nome = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -335,20 +336,20 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                       Radio(
                           activeColor: secundaryColor,
                           value: true,
-                          groupValue: _controller.departament.active,
+                          groupValue: _controller.departament.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.departament.active = value;
+                              _controller.departament.situacao = value;
                             });
                           }),
                       Text("Habilitado"),
                       Radio(
                           activeColor: secundaryColor,
                           value: false,
-                          groupValue: _controller.departament.active,
+                          groupValue: _controller.departament.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.departament.active = value;
+                              _controller.departament.situacao = value;
                             });
                           }),
                       Text("Desabilitado"),
@@ -406,7 +407,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                                       activeColor: primaryColor,
                                       checkColor: Colors.white,
                                       value: _controller
-                                          .subFuncionalities[index].active,
+                                          .subFuncionalities[index].situacao,
                                       onChanged: (bool? value) =>
                                           handleCheckBox(value, index),
                                     ),
@@ -419,7 +420,7 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
                                   children: [
                                     Text(
                                       _controller
-                                          .subFuncionalities[index].name!,
+                                          .subFuncionalities[index].nome!,
                                       style: textStyle(
                                         color: Colors.grey.shade500,
                                       ),

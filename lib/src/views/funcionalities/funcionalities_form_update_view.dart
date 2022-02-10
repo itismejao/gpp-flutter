@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 // ignore: must_be_immutable
 class FuncionalitieFormUpdateView extends StatefulWidget {
-  FuncionalitieModel funcionalitie;
+  FuncionalidadeModel funcionalidade;
 
   FuncionalitieFormUpdateView({
     Key? key,
-    required this.funcionalitie,
+    required this.funcionalidade,
   }) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class _FuncionalitieFormUpdateViewState
     extends State<FuncionalitieFormUpdateView> {
   FuncionalitiesController _controlller = FuncionalitiesController();
 
-  handleUpdate(context, FuncionalitieModel funcionalitie) async {
+  handleUpdate(context, FuncionalidadeModel funcionalitie) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _controlller.update()) {
@@ -44,11 +44,11 @@ class _FuncionalitieFormUpdateViewState
           child: Column(
             children: [
               TextFormField(
-                initialValue: widget.funcionalitie.name,
+                initialValue: widget.funcionalidade.nome,
                 maxLength: 255,
                 onChanged: (value) {
                   setState(() {
-                    widget.funcionalitie.name = value;
+                    widget.funcionalidade.nome = value;
                   });
                 },
                 validator: (value) => _controlller.validate(value),
@@ -62,11 +62,11 @@ class _FuncionalitieFormUpdateViewState
                     'Funcionalidade', const Icon(Icons.view_list)),
               ),
               TextFormField(
-                initialValue: widget.funcionalitie.icon,
+                initialValue: widget.funcionalidade.icone,
                 maxLength: 255,
                 onChanged: (value) {
                   setState(() {
-                    widget.funcionalitie.icon = value;
+                    widget.funcionalidade.icone = value;
                   });
                 },
                 validator: (value) => _controlller.validate(value),
@@ -83,10 +83,10 @@ class _FuncionalitieFormUpdateViewState
                 children: [
                   Radio(
                       value: true,
-                      groupValue: widget.funcionalitie.active,
+                      groupValue: widget.funcionalidade.situacao,
                       onChanged: (bool? value) {
                         setState(() {
-                          widget.funcionalitie.active = value;
+                          widget.funcionalidade.situacao = value;
                         });
                       }),
                   SizedBox(
@@ -95,10 +95,10 @@ class _FuncionalitieFormUpdateViewState
                   Text("Habilitado"),
                   Radio(
                       value: false,
-                      groupValue: widget.funcionalitie.active,
+                      groupValue: widget.funcionalidade.situacao,
                       onChanged: (bool? value) {
                         setState(() {
-                          widget.funcionalitie.active = value;
+                          widget.funcionalidade.situacao = value;
                         });
                       }),
                   SizedBox(
@@ -115,7 +115,7 @@ class _FuncionalitieFormUpdateViewState
                   ElevatedButton(
                       style: buttonStyle,
                       onPressed: () =>
-                          handleUpdate(context, widget.funcionalitie),
+                          handleUpdate(context, widget.funcionalidade),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Text('Atualizar',

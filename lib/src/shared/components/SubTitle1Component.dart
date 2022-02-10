@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SubTitle1Component extends StatelessWidget {
-  String text;
-  Color? color;
-  SubTitle1Component({
+  final String text;
+  final Color? color;
+  const SubTitle1Component({
     Key? key,
     required this.text,
     this.color,

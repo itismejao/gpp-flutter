@@ -6,14 +6,12 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/drop_down_component.dart';
+
 import 'package:gpp/src/shared/components/input_component.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
-
-import 'package:gpp/src/shared/enumeration/asteca_enum.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 

@@ -34,17 +34,24 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
   late SubFuncionalitiesController _controller;
   final ResponsiveController _responsive = ResponsiveController();
   fetch() async {
-    await _controller.fetch(widget.id);
-    setState(() {
-      _controller.state = SubFuncionalitiesEnum.change;
-    });
+    try {
+      await _controller.fetch(widget.id);
+      setState(() {
+        _controller.state = SubFuncionalitiesEnum.change;
+      });
+    } catch (e) {
+      setState(() {
+        _controller.state = SubFuncionalitiesEnum.change;
+      });
+    }
   }
 
-  handleDelete(SubFuncionalitiesModel subFuncionalities, context) async {
+  handleDelete(SubFuncionalidadeModel subFuncionalities, context) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify.alert("você deseja excluir essa subfuncionalidade?")) {
-        if (await _controller.delete(subFuncionalities)) {
+        if (await _controller.delete(
+            _controllerFuncionalities.funcionalitie, subFuncionalities)) {
           notify.sucess("SubFuncionalidade excluída!");
           Navigator.pushReplacementNamed(
               context, '/funcionalities/' + widget.id);
@@ -66,8 +73,8 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _controllerFuncionalities.update()) {
-        notify.sucess("SubFuncionalidade atualizada!");
-        Navigator.pushReplacementNamed(context, '/funcionalities');
+        notify.sucess("Funcionalidade atualizada!");
+        Navigator.pushReplacementNamed(context, '/funcionalidades');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -109,10 +116,10 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                     children: [
                       InputComponent(
                         initialValue:
-                            _controllerFuncionalities.funcionalitie.name,
+                            _controllerFuncionalities.funcionalitie.nome,
                         label: "Nome",
                         onChanged: (value) {
-                          _controllerFuncionalities.funcionalitie.name = value;
+                          _controllerFuncionalities.funcionalitie.icone = value;
                         },
                         validator: (value) {
                           _controller.validate(value);
@@ -125,10 +132,10 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                       ),
                       InputComponent(
                         initialValue:
-                            _controllerFuncionalities.funcionalitie.icon,
+                            _controllerFuncionalities.funcionalitie.icone,
                         label: "Icon",
                         onChanged: (value) {
-                          _controllerFuncionalities.funcionalitie.icon = value;
+                          _controllerFuncionalities.funcionalitie.icone = value;
                         },
                         validator: (value) {
                           _controllerFuncionalities.validate(value);
@@ -146,11 +153,11 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                                 activeColor: secundaryColor,
                                 value: true,
                                 groupValue: _controllerFuncionalities
-                                    .funcionalitie.active,
+                                    .funcionalitie.situacao,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _controllerFuncionalities
-                                        .funcionalitie.active = value;
+                                        .funcionalitie.situacao = value;
                                   });
                                 }),
                             Text("Habilitado"),
@@ -158,11 +165,11 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                                 activeColor: secundaryColor,
                                 value: false,
                                 groupValue: _controllerFuncionalities
-                                    .funcionalitie.active,
+                                    .funcionalitie.situacao,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _controllerFuncionalities
-                                        .funcionalitie.active = value;
+                                        .funcionalitie.situacao = value;
                                   });
                                 }),
                             Text("Desabilitado"),
@@ -197,7 +204,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
     }
   }
 
-  Widget _buildList(List<SubFuncionalitiesModel> subFuncionalities) {
+  Widget _buildList(List<SubFuncionalidadeModel> subFuncionalities) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -244,7 +251,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(List<SubFuncionalitiesModel> subFuncionalities,
+  Widget _buildListItem(List<SubFuncionalidadeModel> subFuncionalities,
       int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -259,13 +266,13 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextComponent(subFuncionalities[index].name ?? ''),
+                        TextComponent(subFuncionalities[index].nome ?? ''),
                       ],
                     ),
                     SizedBox(
                       height: 12,
                     ),
-                    StatusComponent(status: subFuncionalities[index].active!),
+                    StatusComponent(status: subFuncionalities[index].situacao!),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -312,7 +319,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
           child: Row(
             children: [
               Expanded(
-                child: TextComponent(subFuncionalities[index].name!),
+                child: TextComponent(subFuncionalities[index].nome!),
               ),
               Expanded(
                   child: Row(
@@ -321,7 +328,7 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
                   SizedBox(
                     width: 60,
                     child: StatusComponent(
-                        status: subFuncionalities[index].active!),
+                        status: subFuncionalities[index].situacao!),
                   ),
                 ],
               )),
@@ -358,46 +365,5 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
         );
       },
     );
-  }
-
-  Container _buildStatus(bool status) {
-    print(status);
-    if (status) {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: secundaryColor,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Ativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        height: 20,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10.0) //                 <--- border radius here
-              ),
-        ),
-        child: Center(
-          child: Text(
-            "Inativo",
-            style: textStyle(
-                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-        ),
-      );
-    }
   }
 }

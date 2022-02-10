@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
-import 'package:gpp/src/repositories/funcionalities_repository.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
+import 'package:gpp/src/repositories/FuncionalidadeRepository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
@@ -9,8 +9,8 @@ class FuncionalitiesController {
 
   late final FuncionalitiesRepository repository =
       FuncionalitiesRepository(api: gppApi);
-  List<FuncionalitieModel> funcionalities = [];
-  FuncionalitieModel funcionalitie = FuncionalitieModel();
+  List<FuncionalidadeModel> funcionalities = [];
+  FuncionalidadeModel funcionalitie = FuncionalidadeModel();
   FuncionalitiesEnum state = FuncionalitiesEnum.notChange;
   bool groupValue = false;
 
@@ -25,15 +25,15 @@ class FuncionalitiesController {
   }
 
   void setFuncionalitieName(value) {
-    funcionalitie.name = value;
+    funcionalitie.nome = value;
   }
 
   void setFuncionalitieIcon(value) {
-    funcionalitie.icon = value;
+    funcionalitie.icone = value;
   }
 
   void setFuncionalitieActive(value) {
-    funcionalitie.active = value;
+    funcionalitie.situacao = value;
   }
 
   //Validação
@@ -56,7 +56,7 @@ class FuncionalitiesController {
     return await repository.update(funcionalitie);
   }
 
-  Future<bool> delete(FuncionalitieModel funcionalitie) async {
+  Future<bool> delete(FuncionalidadeModel funcionalitie) async {
     return await repository.delete(funcionalitie);
   }
 }

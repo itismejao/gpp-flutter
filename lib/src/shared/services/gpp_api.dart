@@ -30,8 +30,6 @@ class ApiService {
 
   Future<Response> get(String endpoint,
       {Map<String, String>? queryParameters}) async {
-    // ignore: avoid_print
-
     try {
       var uri = Uri.parse(baseUrl! + endpoint)
           .replace(queryParameters: queryParameters);
@@ -46,9 +44,9 @@ class ApiService {
     }
   }
 
-  Future<dynamic> post(String endpoint, body) async {
+  Future<dynamic> post(String path, body) async {
     try {
-      var uri = Uri.parse(baseUrl! + endpoint);
+      var uri = Uri.parse(baseUrl! + path);
       var response = await http
           .post(uri, headers: getHeader(), body: jsonEncode(body))
           .timeout(const Duration(seconds: 10));
