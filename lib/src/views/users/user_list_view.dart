@@ -31,15 +31,16 @@ class _UserListViewState extends State<UserListView> {
         _controller.state = UserEnum.loading;
       });
 
-      _controller.changeUser();
+      await _controller.changeUser();
 
       setState(() {
         _controller.state = UserEnum.changeUser;
       });
     } catch (e) {
-      setState(() {
-        _controller.state = UserEnum.changeUser;
-      });
+      print(e);
+      // setState(() {
+      //   _controller.state = UserEnum.changeUser;
+      // });
     }
   }
 

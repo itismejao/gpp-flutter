@@ -121,8 +121,8 @@ class _GppAppState extends State<GppApp> {
           if (settings.name == '/') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                    ));
+                    funcionalities: FuncionalitiesView(),
+                    page: AstecaListView()));
           }
 
           if (settings.name == '/logout') {

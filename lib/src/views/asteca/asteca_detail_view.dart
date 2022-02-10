@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 
 import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
@@ -28,6 +30,9 @@ class AstecaDetailView extends StatefulWidget {
 
 class _AstecaDetailViewState extends State<AstecaDetailView> {
   late AstecaController _controller;
+
+  late MotivoTrocaPecaController motivoTrocaPecaController;
+
   late ResponsiveController _responsive;
   late MaskFormatter maskFormatter;
 
@@ -46,6 +51,32 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     });
   }
 
+  buscarPendencias() async {
+    setState(() {
+      _controller.carregado = false;
+    });
+
+    _controller.astecaTipoPendencia =
+        await _controller.repository.buscarPendencias();
+
+    setState(() {
+      _controller.carregado = true;
+    });
+  }
+
+  buscarMotivosTrocaPeca() async {
+    setState(() {
+      _controller.carregado = false;
+    });
+
+    motivoTrocaPecaController.motivoTrocaPecas =
+        await motivoTrocaPecaController.repository.buscarTodos();
+
+    setState(() {
+      _controller.carregado = true;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,8 +87,17 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     //Instância máscaras
     maskFormatter = MaskFormatter();
 
+    //Instância motivo de troca de peca controller
+    motivoTrocaPecaController = MotivoTrocaPecaController();
+
     //Busca a asteca, utilizando o id como parâmetro
     buscar();
+
+    //Busca lista de pendências
+    buscarPendencias();
+
+    //Buscar motivos de troca de peças
+    buscarMotivosTrocaPeca();
   }
 
   @override
@@ -277,7 +317,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               duration: const Duration(seconds: 1),
                               child: Container(
                                 height: 240,
-                                width: 350,
+                                width: 700,
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade50,
                                     borderRadius: BorderRadius.circular(5)),
@@ -1572,13 +1612,15 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   color: Colors.grey.shade200,
                                   borderRadius: BorderRadius.circular(5)),
                               child: DropDownComponent(
-                                items: <String>[
-                                  'Peça com defeito',
-                                  'Cor errada',
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
+                                onChanged: (value) {
+                                  print(value);
+                                },
+                                items: motivoTrocaPecaController
+                                    .motivoTrocaPecas
+                                    .map((value) {
+                                  return DropdownMenuItem<MotivoTrocaPecaModel>(
                                     value: value,
-                                    child: Text(value),
+                                    child: Text(value.nome.toString()),
                                   );
                                 }).toList(),
                                 hintText: 'Selecione o motivo',

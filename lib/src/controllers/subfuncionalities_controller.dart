@@ -3,7 +3,6 @@ import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class SubFuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

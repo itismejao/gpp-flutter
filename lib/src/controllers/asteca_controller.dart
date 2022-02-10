@@ -12,12 +12,7 @@ class AstecaController {
   bool isOpenFilter = false;
   int pagina = 1;
   bool carregado = false;
-  List<AstecaTipoPendenciaModel> astecaTipoPendencia = [
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 881, descricao: 'PEÇA SEPARADA NO BOX'),
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR')
-  ];
+  List<AstecaTipoPendenciaModel> astecaTipoPendencia = [];
 
   AstecaModel asteca = AstecaModel(
       documentoFiscal: DocumentoFiscalModel(),

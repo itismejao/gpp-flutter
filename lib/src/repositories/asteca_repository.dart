@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 
 import 'package:http/http.dart';
 
@@ -10,6 +11,23 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class AstecaRepository {
   ApiService api = gppApi;
   String endpoint = '/asteca';
+
+  Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
+    Response response = await api.get(endpoint + '/pendencia');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
+          .map<AstecaTipoPendenciaModel>(
+              (data) => AstecaTipoPendenciaModel.fromJson(data))
+          .toList();
+      return astecaTipoPendencia;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
 
   Future<AstecaModel> buscar(int id) async {
     Response response = await api.get(endpoint + '/' + id.toString());

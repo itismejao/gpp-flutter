@@ -77,7 +77,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CheckboxComponent(),
+                //  CheckboxComponent(),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -188,7 +188,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CheckboxComponent(),
+                //  CheckboxComponent(),
                 Expanded(
                   child: TextComponent(
                     funcionalities[index].nome!,
