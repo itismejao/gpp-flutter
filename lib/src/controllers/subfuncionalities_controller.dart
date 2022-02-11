@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
+import 'package:gpp/src/repositories/SubFuncionalidadeRepository.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
 
 class SubFuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final SubFuncionalitiesRepository repository =
-      SubFuncionalitiesRepository();
+  late final SubFuncionalidadeRepository repository =
+      SubFuncionalidadeRepository();
 
   List<SubFuncionalidadeModel> subFuncionalities = [];
 

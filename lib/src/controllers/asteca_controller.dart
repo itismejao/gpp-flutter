@@ -3,7 +3,7 @@ import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
-import 'package:gpp/src/repositories/asteca_repository.dart';
+import 'package:gpp/src/repositories/AstecaRepository.dart';
 
 class AstecaController {
   bool abrirDropDownButton = false;

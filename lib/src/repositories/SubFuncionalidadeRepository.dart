@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class SubFuncionalitiesRepository {
+class SubFuncionalidadeRepository {
   ApiService api = gppApi;
 
   Future<List<SubFuncionalidadeModel>> fetch(String id) async {

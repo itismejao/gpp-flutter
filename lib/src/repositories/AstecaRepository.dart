@@ -11,23 +11,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class AstecaRepository {
   ApiService api = gppApi;
   String endpoint = '/asteca';
-
-  Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
-    Response response = await api.get(endpoint + '/pendencia');
-
-    if (response.statusCode == StatusCode.OK) {
-      var data = jsonDecode(response.body);
-
-      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
-          .map<AstecaTipoPendenciaModel>(
-              (data) => AstecaTipoPendenciaModel.fromJson(data))
-          .toList();
-      return astecaTipoPendencia;
-    } else {
-      var error = jsonDecode(response.body)['error'];
-      throw error;
-    }
-  }
+  PendenciaRepository pendencia = PendenciaRepository();
 
   Future<AstecaModel> buscar(int id) async {
     Response response = await api.get(endpoint + '/' + id.toString());
@@ -261,4 +245,25 @@ class AstecaRepository {
 // //       throw AstecaException("Departamento não foi atualizado!");
 // //     }
 // //   }
+}
+
+class PendenciaRepository {
+  ApiService api = gppApi;
+
+  Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
+    Response response = await api.get('/asteca' + '/pendencia');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
+          .map<AstecaTipoPendenciaModel>(
+              (data) => AstecaTipoPendenciaModel.fromJson(data))
+          .toList();
+      return astecaTipoPendencia;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
 }

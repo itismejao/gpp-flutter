@@ -5,7 +5,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
@@ -15,7 +15,7 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
+
 import 'package:gpp/src/shared/components/loading_view.dart';
 
 // ignore: must_be_immutable
@@ -35,7 +35,7 @@ class _UserDetailViewState extends State<UserDetailView> {
   late final UsuarioController _controller;
 
   late final DepartamentController _departamentController =
-      DepartamentController(DepartamentRepository(api: gppApi));
+      DepartamentController(DepartamentoRepository());
 
   bool _selectedAll = false;
 

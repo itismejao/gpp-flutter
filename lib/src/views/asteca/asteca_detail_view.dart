@@ -57,7 +57,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     });
 
     _controller.astecaTipoPendencia =
-        await _controller.repository.buscarPendencias();
+        await _controller.repository.pendencia.buscarPendencias();
 
     setState(() {
       _controller.carregado = true;

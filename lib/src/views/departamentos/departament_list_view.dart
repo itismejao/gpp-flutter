@@ -3,14 +3,13 @@ import 'package:gpp/src/controllers/departament_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
-import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/views/departamentos/departament_form_view.dart';
@@ -26,7 +25,7 @@ class _DepartamentListViewState extends State<DepartamentListView> {
   final ResponsiveController _responsive = ResponsiveController();
 
   late final DepartamentController _controller =
-      DepartamentController(DepartamentRepository(api: gppApi));
+      DepartamentController(DepartamentoRepository());
 
   changeDepartaments() async {
     try {

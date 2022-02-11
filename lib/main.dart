@@ -184,7 +184,6 @@ class _GppAppState extends State<GppApp> {
 
           if (uri.pathSegments.length == 2 &&
               uri.pathSegments.first == 'asteca') {
-            var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
