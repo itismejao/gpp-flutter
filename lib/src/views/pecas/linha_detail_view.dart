@@ -73,10 +73,8 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             children: [
               SizedBox(
                 width: 180,
-                child: Flexible(
-                  child: InputComponent(
-                    label: 'Selecione a Linha',
-                  ),
+                child: InputComponent(
+                  label: 'Selecione a Linha',
                 ),
               ),
               Padding(padding: EdgeInsets.only(right: 30)),
