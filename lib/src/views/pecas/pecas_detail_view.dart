@@ -1,7 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
@@ -9,7 +9,7 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/pecas/cores_detail_view.dart';
-import 'package:gpp/src/views/pecas/especie_detail_view.dart';
+import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 
 class PecasDetailView extends StatefulWidget {
@@ -22,7 +22,7 @@ class PecasDetailView extends StatefulWidget {
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
 
-  int selected = 2;
+  int selected = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 child: ItemMenu(
                   color: selected == 4 ? Colors.grey.shade50 : Colors.transparent,
                   borderColor: selected == 4 ? secundaryColor : Colors.transparent,
-                  data: 'Espécie',
+                  data: 'Linha e Espécie',
                 ),
               ),
             ),
@@ -261,7 +261,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 // Fim Fornecedor
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               children: [
                 Text(
@@ -335,7 +335,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               children: [
                 Text(
@@ -385,7 +385,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               children: [
                 Text(
@@ -461,7 +461,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 20)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               children: [
                 Text(
