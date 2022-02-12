@@ -344,7 +344,7 @@ packages:
     dependency: "direct main"
     description:
       name: mask_text_input_formatter
-      url: "https://pub.dartlang.org"
+      url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
   matcher:
