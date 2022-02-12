@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
@@ -12,7 +14,8 @@ class PecasRepository {
   });
 
   Future<bool> create(PecasModel pecas) async {
-    Response response = await api.postTeste('/create', pecas.toJson());
+    print(jsonEncode(pecas.toJson()));
+    Response response = await api.post('/pecas', pecas.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
