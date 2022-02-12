@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:gpp/src/views/departaments/departament_list_view.dart';
+import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 
 class DepartamentView extends StatefulWidget {
   const DepartamentView({Key? key}) : super(key: key);

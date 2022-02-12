@@ -7,8 +7,7 @@ class ReasonPartsReplacementController {
       ReasonPartsReplacementRepository(api: gppApi);
   bool isLoaded = false;
 
-  late ReasonPartsReplacementModel reasonPartsReplacement =
-      ReasonPartsReplacementModel();
+  late MotivoTrocaPecaModel reasonPartsReplacement = MotivoTrocaPecaModel();
 
-  late List<ReasonPartsReplacementModel> reasonPartsReplacements;
+  late List<MotivoTrocaPecaModel> reasonPartsReplacements;
 }

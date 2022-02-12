@@ -44,8 +44,11 @@ class MockApiService extends _i1.Mock implements _i3.ApiService {
       (super.noSuchMethod(Invocation.method(#getHeader, []),
           returnValue: <String, String>{}) as Map<String, String>);
   @override
-  _i4.Future<_i2.Response> get(String? endpoint) =>
-      (super.noSuchMethod(Invocation.method(#get, [endpoint]),
+  _i4.Future<_i2.Response> get(String? endpoint,
+          {Map<String, String>? queryParameters}) =>
+      (super.noSuchMethod(
+              Invocation.method(
+                  #get, [endpoint], {#queryParameters: queryParameters}),
               returnValue: Future<_i2.Response>.value(_FakeResponse_0()))
           as _i4.Future<_i2.Response>);
   @override

@@ -474,7 +474,7 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
     try {
       if (await _controller.create()) {
         notify.sucess("Departamento cadastrado!");
-        Navigator.pushReplacementNamed(context, '/departaments');
+        Navigator.pushReplacementNamed(context, '/departamentos');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -509,7 +509,7 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
                   label: "Nome",
                   onChanged: (value) {
                     print("te");
-                    _controller.departament.name = value;
+                    _controller.departament.nome = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -525,20 +525,20 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
                       Radio(
                           activeColor: secundaryColor,
                           value: true,
-                          groupValue: _controller.departament.active,
+                          groupValue: _controller.departament.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.departament.active = value;
+                              _controller.departament.situacao = value;
                             });
                           }),
                       Text("Habilitado"),
                       Radio(
                           activeColor: secundaryColor,
                           value: false,
-                          groupValue: _controller.departament.active,
+                          groupValue: _controller.departament.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.departament.active = value;
+                              _controller.departament.situacao = value;
                             });
                           }),
                       Text("Desabilitado"),

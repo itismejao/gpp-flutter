@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-
+import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
-
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/utils/mask_formatter.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
+import 'package:intl/intl.dart';
 
 class AstecaDetailView extends StatefulWidget {
-  const AstecaDetailView({Key? key}) : super(key: key);
+  final int id;
+  const AstecaDetailView({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
   _AstecaDetailViewState createState() => _AstecaDetailViewState();
@@ -23,6 +29,22 @@ class AstecaDetailView extends StatefulWidget {
 class _AstecaDetailViewState extends State<AstecaDetailView> {
   late AstecaController _controller;
   late ResponsiveController _responsive;
+  late MaskFormatter maskFormatter;
+
+  buscar() async {
+    setState(() {
+      _controller.carregado = false;
+    });
+    _controller.asteca = await _controller.repository.buscar(widget.id);
+
+    //remover após teste
+    _controller.asteca.astecaTipoPendencia = AstecaTipoPendenciaModel(
+        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR');
+
+    setState(() {
+      _controller.carregado = true;
+    });
+  }
 
   @override
   void initState() {
@@ -30,6 +52,12 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
     _controller = AstecaController();
     _responsive = ResponsiveController();
+
+    //Instância máscaras
+    maskFormatter = MaskFormatter();
+
+    //Busca a asteca, utilizando o id como parâmetro
+    buscar();
   }
 
   @override
@@ -100,36 +128,218 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         )),
       );
     } else {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: _buildAstecaMenu(media)),
-          Expanded(
-            flex: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  _buildAstecaNavigator(media),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ButtonComponent(
-                              color: secundaryColor,
-                              icon: Icon(Icons.save, color: Colors.white),
-                              onPressed: () {},
-                              text: 'Salvar')
-                        ],
-                      )),
-                ],
-              ),
-            ),
-          )
-        ],
-      );
+      return _controller.carregado
+          ? Column(
+              children: [
+                Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: const TitleComponent(
+                                  'Asteca',
+                                ),
+                              ),
+                              // Expanded(
+                              //   child: Container(
+                              //     decoration: BoxDecoration(
+                              //         color: Colors.pink,
+                              //         borderRadius: BorderRadius.circular(5)),
+                              //     child: DropdownButtonFormField<String>(
+                              //       icon: Visibility(
+                              //           visible: false,
+                              //           child: Icon(Icons.arrow_downward)),
+                              //       hint: Row(
+                              //         children: [
+                              //           TextComponent(
+                              //             'A FAZER',
+                              //             color: Colors.white,
+                              //           ),
+                              //         ],
+                              //       ),
+                              //       decoration: InputDecoration(
+                              //           contentPadding: EdgeInsets.only(
+                              //               left: 16, top: 6, bottom: 6),
+                              //           border: InputBorder.none),
+                              //       items: <String>['A', 'B', 'C', 'D']
+                              //           .map((String value) {
+                              //         return DropdownMenuItem<String>(
+                              //           value: value,
+                              //           child: Row(
+                              //             children: [
+                              //               Container(
+                              //                 width: 16,
+                              //                 height: 16,
+                              //                 decoration: BoxDecoration(
+                              //                     color: Colors.pink,
+                              //                     borderRadius:
+                              //                         BorderRadius.circular(2)),
+                              //               ),
+                              //               SizedBox(
+                              //                 width: 8,
+                              //               ),
+                              //               TextComponent(value),
+                              //             ],
+                              //           ),
+                              //         );
+                              //       }).toList(),
+                              //       onChanged: (_) {},
+                              //     ),
+                              //   ),
+                              // ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      print('ss');
+                                      _controller.abrirDropDownButton =
+                                          !_controller.abrirDropDownButton;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: secundaryColor,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 12, top: 12, bottom: 12),
+                                        child: TextComponent(
+                                            _controller
+                                                    .asteca
+                                                    .astecaTipoPendencia!
+                                                    .idTipoPendencia
+                                                    .toString() +
+                                                ' - ' +
+                                                _controller
+                                                    .asteca
+                                                    .astecaTipoPendencia!
+                                                    .descricao
+                                                    .toString(),
+                                            color: Colors.white)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: Divider(),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(child: _buildAstecaMenu(media)),
+                            Expanded(
+                              flex: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: [
+                                    _buildAstecaNavigator(media),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            ButtonComponent(
+                                                color: secundaryColor,
+                                                icon: Icon(Icons.save,
+                                                    color: Colors.white),
+                                                onPressed: () {},
+                                                text: 'Salvar')
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    _controller.abrirDropDownButton
+                        ? Positioned(
+                            top: 60,
+                            right: 14,
+                            child: AnimatedOpacity(
+                              opacity: 1,
+                              duration: const Duration(seconds: 1),
+                              child: Container(
+                                height: 240,
+                                width: 350,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: ListView.builder(
+                                  itemCount:
+                                      _controller.astecaTipoPendencia.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _controller
+                                                  .asteca.astecaTipoPendencia =
+                                              _controller
+                                                  .astecaTipoPendencia[index];
+
+                                          _controller.abrirDropDownButton =
+                                              false;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 16),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 16,
+                                              height: 16,
+                                              decoration: BoxDecoration(
+                                                  color: secundaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(2)),
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            TextComponent(
+                                              _controller
+                                                      .astecaTipoPendencia[
+                                                          index]
+                                                      .idTipoPendencia
+                                                      .toString() +
+                                                  ' - ' +
+                                                  _controller
+                                                      .astecaTipoPendencia[
+                                                          index]
+                                                      .descricao
+                                                      .toString(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ))
+                        : Container()
+                  ],
+                ),
+              ],
+            )
+          : LoadingComponent();
     }
   }
 
@@ -260,16 +470,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: const TitleComponent(
-            'Asteca',
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
-          child: Divider(),
-        ),
         Row(
           children: [
             Expanded(
@@ -277,6 +477,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 onTap: () {
                   setState(() {
                     _controller.step = 1;
+                    _controller.abrirDropDownButton = false;
                   });
                 },
                 child: ItemMenu(
@@ -299,6 +500,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 onTap: () {
                   setState(() {
                     _controller.step = 2;
+                    _controller.abrirDropDownButton = false;
                   });
                 },
                 child: ItemMenu(
@@ -321,6 +523,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 onTap: () {
                   setState(() {
                     _controller.step = 3;
+                    _controller.abrirDropDownButton = false;
                   });
                 },
                 child: ItemMenu(
@@ -343,6 +546,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 onTap: () {
                   setState(() {
                     _controller.step = 4;
+                    _controller.abrirDropDownButton = false;
                   });
                 },
                 child: ItemMenu(
@@ -401,13 +605,12 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: Divider(),
             ),
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
                 label: 'Nº Asteca',
-                initialValue: '38135',
+                initialValue: _controller.asteca.idAsteca,
               ),
             ),
             Container(
@@ -421,7 +624,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
                 label: 'Nº Fiscal',
-                initialValue: '38135',
+                initialValue: _controller.asteca.idAsteca.toString(),
               ),
             ),
             Container(
@@ -568,17 +771,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nº Asteca',
-                  initialValue: '38135',
+                  initialValue: _controller.asteca.idAsteca.toString(),
                 ),
               ),
               SizedBox(
@@ -587,8 +787,20 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  key: UniqueKey(),
+                  initialValue: _controller.asteca.documentoFiscal!.cpfCnpj
+                              .toString()
+                              .length ==
+                          11
+                      ? maskFormatter
+                          .cpf(_controller.asteca.documentoFiscal!.cpfCnpj
+                              .toString())
+                          .getMaskedText()
+                      : maskFormatter
+                          .cnpj(_controller.asteca.documentoFiscal!.cpfCnpj
+                              .toString())
+                          .getMaskedText(),
                   label: 'CPF/CNPJ',
-                  initialValue: '001.463.861-40',
                 ),
               ),
               SizedBox(
@@ -597,8 +809,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: 'Maria Angela Rocha da Fonseca',
+                  initialValue: _controller.asteca.documentoFiscal!.nome,
                 ),
               ),
             ],
@@ -610,8 +823,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nº Fiscal',
-                  initialValue: '38135',
+                  initialValue: _controller.asteca.documentoFiscal!.numDocFiscal
+                      .toString(),
                 ),
               ),
               SizedBox(
@@ -619,8 +834,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Série',
-                  initialValue: '10',
+                  initialValue:
+                      _controller.asteca.documentoFiscal!.serieDocFiscal,
                 ),
               ),
               SizedBox(
@@ -628,8 +845,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Filial de saída',
-                  initialValue: '10',
+                  initialValue: _controller
+                      .asteca.documentoFiscal!.idFilialSaida
+                      .toString(),
                 ),
               ),
               SizedBox(
@@ -637,8 +857,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Filial venda',
-                  initialValue: '10',
+                  initialValue: _controller
+                      .asteca.documentoFiscal!.idFilialVenda
+                      .toString(),
                 ),
               )
             ],
@@ -650,6 +873,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Tipo',
                   initialValue: 'Cliente',
                 ),
@@ -659,8 +883,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Data de abertura',
-                  initialValue: '30/06/2021',
+                  initialValue: DateFormat('yyyy/MM/dd')
+                      .format(_controller.asteca.dataEmissao!),
                 ),
               ),
               SizedBox(
@@ -668,8 +894,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Data de compra',
-                  initialValue: '30/06/2021',
+                  initialValue: DateFormat('yyyy/MM/dd')
+                      .format(_controller.asteca.documentoFiscal!.dataEmissao!),
                 ),
               ),
               SizedBox(
@@ -677,8 +905,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Filial Asteca',
-                  initialValue: '500',
+                  initialValue: _controller.asteca.idFilialRegistro.toString(),
                 ),
               )
             ],
@@ -699,17 +928,15 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'RE',
-                  initialValue: '1032445',
+                  initialValue:
+                      _controller.asteca.funcionario!.idFuncionario.toString(),
                 ),
               ),
               SizedBox(
@@ -718,8 +945,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: 'Kesley Alves de Oliveira',
+                  initialValue: _controller.asteca.funcionario!.nome,
                 ),
               ),
             ],
@@ -740,17 +968,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Defeito',
-                  initialValue: 'Defeito de fabricação',
+                  initialValue: _controller.asteca.defeitoEstadoProd!,
                 ),
               ),
             ],
@@ -762,10 +987,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   maxLines: 5,
                   label: 'Observação',
-                  initialValue:
-                      'Solicitado pelo técnico, enviar 30 unidades de adesivos/ tapa furos.',
+                  initialValue: _controller.asteca.observacao,
                 ),
               ),
             ],
@@ -803,10 +1028,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     ),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                child: Divider(),
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 10),
@@ -920,27 +1141,28 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             children: [
               Expanded(
+                flex: 4,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Logradouro',
-                  initialValue:
-                      'Avenida Perimental Norte NR 1 AP 1903  Torre Itaparica',
+                  initialValue: _controller.asteca.astecaEndCliente?.logradouro
+                      .toString(),
                 ),
               ),
               SizedBox(
                 width: 12,
               ),
               Expanded(
+                flex: 3,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Complemento',
-                  initialValue: 'AP 1903 Torre Itaparica',
+                  initialValue: _controller.asteca.astecaEndCliente?.complemento
+                      .toString(),
                 ),
               ),
               SizedBox(
@@ -948,8 +1170,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Número',
-                  initialValue: '01',
+                  initialValue:
+                      _controller.asteca.astecaEndCliente?.numero.toString(),
                 ),
               ),
             ],
@@ -961,8 +1185,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Bairro',
-                  initialValue: 'Setor Candida de Morais',
+                  initialValue:
+                      _controller.asteca.astecaEndCliente?.bairro.toString(),
                 ),
               ),
               SizedBox(
@@ -970,8 +1196,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Cidade',
-                  initialValue: ' Goiânia',
+                  initialValue: maskFormatter
+                      .cep(_controller.asteca.astecaEndCliente?.cep.toString())
+                      .getMaskedText(),
                 ),
               ),
               SizedBox(
@@ -979,8 +1208,21 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
+                  label: 'Cidade',
+                  initialValue: _controller.asteca.astecaEndCliente?.localidade
+                      .toString(),
+                ),
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Estado',
-                  initialValue: 'GO',
+                  initialValue:
+                      _controller.asteca.astecaEndCliente?.uf.toString(),
                 ),
               ),
             ],
@@ -992,8 +1234,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Referência',
-                  initialValue: 'Cond. Borges Landeiro',
+                  initialValue: _controller
+                      .asteca.astecaEndCliente?.pontoReferencia1
+                      .toString(),
                 ),
               ),
             ],
@@ -1020,17 +1265,17 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Telefone',
-                  initialValue: '(62) 99999-9999',
+                  initialValue: maskFormatter
+                      .telefone(
+                          '${_controller.asteca.astecaEndCliente?.ddd.toString()} ${_controller.asteca.astecaEndCliente?.telefone.toString()}')
+                      .getMaskedText(),
                 ),
               ),
             ],
@@ -1147,17 +1392,15 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'ID',
-                  initialValue: '121245',
+                  initialValue:
+                      _controller.asteca.produto?[0].idProduto.toString(),
                 ),
               ),
               SizedBox(
@@ -1166,8 +1409,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: 'Coz Jazz 3 Pçs IPLDA IP2 IPH1G BEGE',
+                  initialValue: _controller.asteca.produto?[0].resumida,
                 ),
               ),
               SizedBox(
@@ -1175,8 +1419,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               ),
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'LD',
-                  initialValue: '02',
+                  initialValue: _controller
+                      .asteca.documentoFiscal?.itemDocFiscal?.idLd
+                      .toString(),
                 ),
               ),
             ],
@@ -1197,17 +1444,16 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0),
-          child: const Divider(),
-        ),
-        Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: Row(
             children: [
               Expanded(
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'ID',
-                  initialValue: '4545',
+                  initialValue: _controller
+                      .asteca.produto?[0].fornecedor?.idFornecedor
+                      .toString(),
                 ),
               ),
               SizedBox(
@@ -1216,8 +1462,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: 'Fabricante',
+                  initialValue:
+                      _controller.asteca.produto?[0].fornecedor?.cliente?.nome,
                 ),
               ),
               SizedBox(
@@ -1252,7 +1500,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 ],
               ),
               ButtonComponent(
-                  color: secundaryColor,
+                  color: primaryColor,
                   onPressed: () {
                     _buildDialogParts(context);
                   },

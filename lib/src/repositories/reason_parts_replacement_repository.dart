@@ -7,21 +7,21 @@ import 'package:http/http.dart';
 
 class ReasonPartsReplacementRepository {
   ApiService api;
-  String endpoint = '/parts-reason-replacement';
+  String path = '/motivos-troca-peca';
 
   ReasonPartsReplacementRepository({
     required this.api,
   });
 
-  Future<List<ReasonPartsReplacementModel>> fetchAll() async {
-    Response response = await api.get(endpoint);
+  Future<List<MotivoTrocaPecaModel>> buscarTodos() async {
+    Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<ReasonPartsReplacementModel> reasonPartsReplacement = data.first
-          .map<ReasonPartsReplacementModel>(
-              (data) => ReasonPartsReplacementModel.fromJson(data))
+      List<MotivoTrocaPecaModel> reasonPartsReplacement = data
+          .map<MotivoTrocaPecaModel>(
+              (data) => MotivoTrocaPecaModel.fromJson(data))
           .toList();
 
       return reasonPartsReplacement;
@@ -31,10 +31,8 @@ class ReasonPartsReplacementRepository {
     }
   }
 
-  Future<bool> create(
-      ReasonPartsReplacementModel reasonPartsReplacement) async {
-    Response response =
-        await api.post(endpoint, reasonPartsReplacement.toJson());
+  Future<bool> create(MotivoTrocaPecaModel reasonPartsReplacement) async {
+    Response response = await api.post(path, reasonPartsReplacement.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -44,10 +42,9 @@ class ReasonPartsReplacementRepository {
     }
   }
 
-  Future<bool> update(
-      ReasonPartsReplacementModel reasonPartsReplacement) async {
+  Future<bool> update(MotivoTrocaPecaModel reasonPartsReplacement) async {
     Response response = await api.put(
-        endpoint + '/' + reasonPartsReplacement.id.toString(),
+        path + '/' + reasonPartsReplacement.idMotivoTrocaPeca.toString(),
         reasonPartsReplacement.toJson());
 
     if (response.statusCode == StatusCode.OK) {
@@ -58,10 +55,9 @@ class ReasonPartsReplacementRepository {
     }
   }
 
-  Future<bool> delete(
-      ReasonPartsReplacementModel reasonPartsReplacement) async {
+  Future<bool> excluir(MotivoTrocaPecaModel reasonPartsReplacement) async {
     Response response = await api.delete(
-      endpoint + '/' + reasonPartsReplacement.id.toString(),
+      path + '/' + reasonPartsReplacement.idMotivoTrocaPeca.toString(),
     );
 
     if (response.statusCode == StatusCode.OK) {

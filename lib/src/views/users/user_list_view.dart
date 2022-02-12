@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/repositories/user_repository.dart';
+
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
+
 import 'package:gpp/src/shared/components/loading_view.dart';
 
 class UserListView extends StatefulWidget {
@@ -23,17 +23,20 @@ class UserListView extends StatefulWidget {
 }
 
 class _UserListViewState extends State<UserListView> {
-  late final UserController _controller =
-      UserController(repository: UserRepository(api: gppApi));
+  late final UsuarioController _controller;
   final ResponsiveController _responsive = ResponsiveController();
   void changeUsers() async {
-    if (mounted) {
+    try {
       setState(() {
         _controller.state = UserEnum.loading;
       });
-    }
-    await _controller.changeUser();
-    if (mounted) {
+
+      _controller.changeUser();
+
+      setState(() {
+        _controller.state = UserEnum.changeUser;
+      });
+    } catch (e) {
       setState(() {
         _controller.state = UserEnum.changeUser;
       });
@@ -41,13 +44,17 @@ class _UserListViewState extends State<UserListView> {
   }
 
   void handleSearch(value) {
-    if (mounted) {
+    try {
       setState(() {
         _controller.state = UserEnum.loading;
       });
-    }
-    _controller.search(value);
-    if (mounted) {
+
+      _controller.search(value);
+
+      setState(() {
+        _controller.state = UserEnum.changeUser;
+      });
+    } catch (e) {
       setState(() {
         _controller.state = UserEnum.changeUser;
       });
@@ -59,6 +66,9 @@ class _UserListViewState extends State<UserListView> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+
+    //Cria instância do controller de usuários
+    _controller = UsuarioController();
 
     changeUsers();
   }
@@ -144,7 +154,7 @@ class _UserListViewState extends State<UserListView> {
     }
   }
 
-  Widget _buildList(List<UserModel> users) {
+  Widget _buildList(List<UsuarioModel> users) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -192,7 +202,7 @@ class _UserListViewState extends State<UserListView> {
   }
 
   Widget _buildListItem(
-      List<UserModel> users, int index, BuildContext context) {
+      List<UsuarioModel> users, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -230,7 +240,7 @@ class _UserListViewState extends State<UserListView> {
                     Row(
                       children: [
                         Text(
-                          users[index].departament!.name ?? '',
+                          users[index].departament!.nome ?? '',
                           style: textStyle(color: Colors.grey.shade400),
                         ),
                       ],
@@ -277,7 +287,7 @@ class _UserListViewState extends State<UserListView> {
                 )),
                 Expanded(
                     child: TextComponent(
-                  users[index].departament!.name ?? '',
+                  users[index].departament!.nome ?? '',
                 )),
                 Expanded(
                     child: TextComponent(

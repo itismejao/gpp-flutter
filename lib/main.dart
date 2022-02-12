@@ -58,16 +58,17 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gpp/src/models/asteca_model.dart';
+
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/addressing/addressing_detail_view.dart';
 import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
 import 'package:gpp/src/views/asteca/asteca_list_view.dart';
 
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
-import 'package:gpp/src/views/departaments/departament_detail_view.dart';
-import 'package:gpp/src/views/departaments/departament_form_view.dart';
-import 'package:gpp/src/views/departaments/departament_list_view.dart';
+import 'package:gpp/src/views/departamentos/departament_detail_view.dart';
+import 'package:gpp/src/views/departamentos/departament_form_view.dart';
+import 'package:gpp/src/views/departamentos/departament_list_view.dart';
+
 import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
 import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
@@ -75,7 +76,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
+
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
 import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
@@ -107,15 +108,25 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
+<<<<<<< HEAD
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
                   page: AddressingDetailView(),
                 ));
+=======
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: AstecaDetailView(
+        //             id: 694273,
+        //           ),
+        //         ));
+>>>>>>> gppd
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-        if (isAuthenticated()) {
+        if (!isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -128,7 +139,7 @@ class _GppAppState extends State<GppApp> {
           }
 
           //Handle '/users
-          if (settings.name == '/users') {
+          if (settings.name == '/usuarios') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
@@ -137,7 +148,7 @@ class _GppAppState extends State<GppApp> {
           }
 
           //Handle '/departaments
-          if (settings.name == '/departaments') {
+          if (settings.name == '/departamentos') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
@@ -145,7 +156,7 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
-          if (settings.name == '/funcionalities') {
+          if (settings.name == '/funcionalidades') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
@@ -168,7 +179,7 @@ class _GppAppState extends State<GppApp> {
                       page: DepartamentFormView(),
                     ));
           }
-          if (settings.name == '/reason_parts_replacement') {
+          if (settings.name == '/motivos-troca-pecas') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
@@ -186,7 +197,9 @@ class _GppAppState extends State<GppApp> {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
-                      page: AstecaDetailView(),
+                      page: AstecaDetailView(
+                        id: 252,
+                      ),
                     ));
           }
 

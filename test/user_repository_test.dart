@@ -9,25 +9,25 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/repositories/user_repository.dart';
+import 'package:gpp/src/repositories/UsuarioRepository.dart';
 import 'package:gpp/src/shared/exceptions/user_exception.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'api_service_test.mocks.dart';
+import 'user_repository_test.mocks.dart';
 
 @GenerateMocks([ApiService])
 void main() {
   dotenv.testLoad(fileInput: File("env").readAsStringSync());
 
   final api = MockApiService();
-  final repository = UserRepository(api: api);
+  final repository = UsuarioRepository();
 
   group('Usuários: ', () {
     String dataReceived = ''' [
@@ -81,14 +81,14 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final users = await repository.fetchUser('1');
-      expect(users, isA<List<UserModel>>());
+      expect(users, isA<List<UsuarioModel>>());
     });
 
     test('Valida se os usuáriso não foram encontrados', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.fetchAll(),
+      expect(() async => await repository.buscarTodos(),
           throwsA(isA<UserException>()));
     });
   });
@@ -209,8 +209,9 @@ void main() {
     test('Valida busca funcionalidades relacionadas ao usuário', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final response = await repository.fetchFuncionalities(UserModel(uid: 1));
-      expect(response, isA<List<FuncionalitieModel>>());
+      final response =
+          await repository.buscarFuncionalidades(UsuarioModel(uid: 1));
+      expect(response, isA<List<FuncionalidadeModel>>());
     });
   });
 
@@ -339,7 +340,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final response = await repository.fetchSubFuncionalities('1');
-      expect(response, isA<List<SubFuncionalitiesModel>>());
+      expect(response, isA<List<SubFuncionalidadeModel>>());
     });
 
     test(

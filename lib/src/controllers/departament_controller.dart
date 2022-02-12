@@ -7,9 +7,9 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 class DepartamentController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DepartamentRepository repository;
-  DepartamentModel departament = DepartamentModel();
-  List<DepartamentModel> departaments = [];
-  List<SubFuncionalitiesModel> subFuncionalities = [];
+  DepartamentoModel departament = DepartamentoModel();
+  List<DepartamentoModel> departaments = [];
+  List<SubFuncionalidadeModel> subFuncionalities = [];
   DepartamentEnum state = DepartamentEnum.notDepartament;
 
   DepartamentController(
@@ -21,7 +21,7 @@ class DepartamentController {
   }
 
   Future<void> fetchAll() async {
-    departaments = await repository.fetchAll();
+    departaments = await repository.buscarTodos();
   }
 
   Future<bool> updateDepartamentSubFuncionalities() async {
@@ -30,11 +30,11 @@ class DepartamentController {
   }
 
   Future<void> changeDepartamentSubFuncionalities(
-      DepartamentModel departament) async {
+      DepartamentoModel departament) async {
     subFuncionalities = await repository.fetchSubFuncionalities(departament);
   }
 
-  // Future<bool> insertOrUpdate(DepartamentModel departament) async {
+  // Future<bool> insertOrUpdate(DepartamentoModel departament) async {
   //   if (departament.id == null) {
   //     return create(departament);
   //   } else {
@@ -44,7 +44,7 @@ class DepartamentController {
 
   Future<bool> create() async {
     if (formKey.currentState!.validate()) {
-      return await repository.create(departament);
+      return await repository.criar(departament);
     }
 
     return false;
@@ -54,8 +54,8 @@ class DepartamentController {
     return await repository.update(departament);
   }
 
-  Future<bool> delete(DepartamentModel departament) async {
-    return await repository.delete(departament);
+  Future<bool> delete(DepartamentoModel departament) async {
+    return await repository.excluir(departament);
   }
 
   // List<UserModel> usersSearch = [];

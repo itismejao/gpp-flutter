@@ -12,30 +12,32 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class DepartamentRepository {
   ApiService api;
 
+  String path = '/departamentos';
+
   DepartamentRepository({
     required this.api,
   });
 
-  Future<DepartamentModel> fetch(String id) async {
+  Future<DepartamentoModel> fetch(String id) async {
     Response response = await api.get('/departamentos/' + id);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      return DepartamentModel.fromJson(data.first.first);
+      return DepartamentoModel.fromJson(data.first.first);
     } else {
       throw DepartamentException("Não foi possível encontrar departamentos !");
     }
   }
 
-  Future<List<DepartamentModel>> fetchAll() async {
-    Response response = await api.get('/departamentos');
+  Future<List<DepartamentoModel>> buscarTodos() async {
+    Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<DepartamentModel> departament = data.first
-          .map<DepartamentModel>((data) => DepartamentModel.fromJson(data))
+      List<DepartamentoModel> departament = data.first
+          .map<DepartamentoModel>((data) => DepartamentoModel.fromJson(data))
           .toList();
       return departament;
     } else {
@@ -43,17 +45,17 @@ class DepartamentRepository {
     }
   }
 
-  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(
-      DepartamentModel departament) async {
-    Response response = await api.get(
-        '/departamentos/itensfuncionalidades/' + departament.id.toString());
+  Future<List<SubFuncionalidadeModel>> fetchSubFuncionalities(
+      DepartamentoModel departament) async {
+    Response response = await api.get('/departamentos/itensfuncionalidades/' +
+        departament.idDepartamento.toString());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<SubFuncionalitiesModel> subFuncionalities = data.first
-          .map<SubFuncionalitiesModel>(
-              (data) => SubFuncionalitiesModel.fromJson(data))
+      List<SubFuncionalidadeModel> subFuncionalities = data.first
+          .map<SubFuncionalidadeModel>(
+              (data) => SubFuncionalidadeModel.fromJson(data))
           .toList();
       return subFuncionalities;
     } else {
@@ -62,14 +64,15 @@ class DepartamentRepository {
     }
   }
 
-  Future<bool> updateDepartmentSubFuncionalities(DepartamentModel departament,
-      List<SubFuncionalitiesModel> subFuncionalities) async {
+  Future<bool> updateDepartmentSubFuncionalities(DepartamentoModel departament,
+      List<SubFuncionalidadeModel> subFuncionalities) async {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
 
     Response response = await api.put(
-        '/departamentos/itensfuncionalidades/' + departament.id.toString(),
+        '/departamentos/itensfuncionalidades/' +
+            departament.idDepartamento.toString(),
         dataSend);
 
     if (response.statusCode == StatusCode.OK) {
@@ -80,8 +83,8 @@ class DepartamentRepository {
     }
   }
 
-  Future<bool> create(DepartamentModel departament) async {
-    Response response = await api.post('/departamentos', departament.toJson());
+  Future<bool> criar(DepartamentoModel departament) async {
+    Response response = await api.post(path, departament.toJson());
     print(departament.toJson());
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -91,9 +94,9 @@ class DepartamentRepository {
     }
   }
 
-  Future<bool> delete(DepartamentModel departament) async {
+  Future<bool> excluir(DepartamentoModel departament) async {
     Response response = await api.delete(
-      '/departamentos/' + departament.id.toString(),
+      path + '/' + departament.idDepartamento.toString(),
     );
 
     if (response.statusCode == StatusCode.OK) {
@@ -104,9 +107,10 @@ class DepartamentRepository {
     }
   }
 
-  Future<bool> update(DepartamentModel departament) async {
+  Future<bool> update(DepartamentoModel departament) async {
     Response response = await api.put(
-        '/departamentos/' + departament.id.toString(), departament.toJson());
+        '/departamentos/' + departament.idDepartamento.toString(),
+        departament.toJson());
 
     print(departament.toJson());
     if (response.statusCode == StatusCode.OK) {

@@ -19,7 +19,7 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
     try {
       if (await _controller.create()) {
         notify.sucess("Funcionalidade cadastrado!");
-        Navigator.pushReplacementNamed(context, '/funcionalities');
+        Navigator.pushReplacementNamed(context, '/funcionalidades');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -45,7 +45,7 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
                 InputComponent(
                   label: "Nome",
                   onChanged: (value) {
-                    _controller.funcionalitie.name = value;
+                    _controller.funcionalitie.nome = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -55,7 +55,7 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
                 InputComponent(
                   label: "Icon",
                   onChanged: (value) {
-                    _controller.funcionalitie.icon = value;
+                    _controller.funcionalitie.icone = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -72,20 +72,20 @@ class _FuncionalitiesFormViewState extends State<FuncionalitiesFormView> {
                       Radio(
                           activeColor: secundaryColor,
                           value: true,
-                          groupValue: _controller.funcionalitie.active,
+                          groupValue: _controller.funcionalitie.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.funcionalitie.active = value;
+                              _controller.funcionalitie.situacao = value;
                             });
                           }),
                       Text("Habilitado"),
                       Radio(
                           activeColor: secundaryColor,
                           value: false,
-                          groupValue: _controller.funcionalitie.active,
+                          groupValue: _controller.funcionalitie.situacao,
                           onChanged: (bool? value) {
                             setState(() {
-                              _controller.funcionalitie.active = value;
+                              _controller.funcionalitie.situacao = value;
                             });
                           }),
                       Text("Desabilitado"),

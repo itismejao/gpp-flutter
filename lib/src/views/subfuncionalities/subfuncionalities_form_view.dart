@@ -52,7 +52,7 @@ class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {
                 InputComponent(
                   label: "Nome",
                   onChanged: (value) {
-                    _controller.subFuncionalitie.name = value;
+                    _controller.subFuncionalitie.nome = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -66,7 +66,7 @@ class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {
                 InputComponent(
                   label: "Rota",
                   onChanged: (value) {
-                    _controller.subFuncionalitie.route = value;
+                    _controller.subFuncionalitie.rota = value;
                   },
                   validator: (value) {
                     _controller.validate(value);
@@ -82,20 +82,20 @@ class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {
                     Radio(
                         activeColor: secundaryColor,
                         value: true,
-                        groupValue: _controller.subFuncionalitie.active,
+                        groupValue: _controller.subFuncionalitie.situacao,
                         onChanged: (bool? value) {
                           setState(() {
-                            _controller.subFuncionalitie.active = value;
+                            _controller.subFuncionalitie.situacao = value;
                           });
                         }),
                     Text("Habilitado"),
                     Radio(
                         activeColor: secundaryColor,
                         value: false,
-                        groupValue: _controller.subFuncionalitie.active,
+                        groupValue: _controller.subFuncionalitie.situacao,
                         onChanged: (bool? value) {
                           setState(() {
-                            _controller.subFuncionalitie.active = value;
+                            _controller.subFuncionalitie.situacao = value;
                           });
                         }),
                     Text("Desabilitado"),
