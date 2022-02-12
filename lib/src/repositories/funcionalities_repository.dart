@@ -44,7 +44,7 @@ class FuncionalitiesRepository {
   Future<bool> create(FuncionalitieModel funcionalitie) async {
     print(jsonEncode(funcionalitie.toJson()));
     Response response =
-        await api.post('/funcionalidades', funcionalitie.toJson());
+        await api.post('/funcionalidades', funcionalitie.toJson()); // alteração
 
     if (response.statusCode == StatusCode.OK) {
       return true;

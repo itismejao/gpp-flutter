@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:gpp/src/controllers/piso_enderecamento_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
@@ -21,6 +22,9 @@ class AddressingDetailView extends StatefulWidget {
 }
 
  class _AddressingDetailViewState extends State<AddressingDetailView>  {
+   late PisoEnderecamentoController _controllerPiso;
+
+   
     int selected = 1;
 //     late FocusNode myFocusNode;
 
@@ -53,8 +57,7 @@ class AddressingDetailView extends StatefulWidget {
               _buildEnderecamentoList(MediaQuery.of(context)),
             ],
           ),
-          ),
-        
+        ),
       ],
     );
   }
@@ -85,7 +88,7 @@ class AddressingDetailView extends StatefulWidget {
               ButtonComponent(
                   color: secundaryColor,
                   onPressed: () {
-      //              _buildDialogEndressing(context);
+                    _cadastroPisoDialogParts(context);
                   },
                   text: 'Adicionar')
             ],
@@ -144,9 +147,10 @@ class AddressingDetailView extends StatefulWidget {
                                   Icons.delete,
                                   color: Colors.red.shade400,
                                 ),
-                                onPressed: () {
-                                   _deletePisoDialogParts(context);
-                                }),
+                               onPressed: () {
+                                _deletePisoDialogParts(context);
+                              },
+                            )
                           ],
                         ),
                       ),
@@ -177,54 +181,7 @@ class AddressingDetailView extends StatefulWidget {
     );
   }
 
-  //  _corredorDialogParts(context) {
-  //   MediaQueryData media = MediaQuery.of(context);
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //          return StatefulBuilder(builder: (context, setState) {
-  //           return AlertDialog(
-  //             title: Row(
-  //               children: [
-  //                 Icon(
-  //                   Icons.settings,
-  //                   size: 32,
-  //                 ),
-  //                 SizedBox(
-  //                   width: 12,
-  //                 ),
-  //                 TitleComponent('Peças'),
-  //               ],
-  //             ),
-  //             content: Container(
-  //               width: media.size.width * 0.80,
-  //               height: media.size.height * 0.80,
-  //               child: Column(
-  //                 children: [
-  //                   Padding(
-  //                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //                     child: Row(
-  //                       children: [
-  //                         Text(
-  //                           'Selecione uma ou mais peças para realizar a manutenção',
-  //                           style: TextStyle(
-  //                             letterSpacing: 0.15,
-  //                             fontSize: 16,
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //             ),
-  //            );
-  //         });
-  //       });
-
-
-
-   _deletePisoDialogParts(context) {
+   _cadastroPisoDialogParts(context) {
     MediaQueryData media = MediaQuery.of(context);
     showDialog(
         context: context,
@@ -240,7 +197,104 @@ class AddressingDetailView extends StatefulWidget {
                   SizedBox(
                     width: 12,
                   ),
-                  TitleComponent('Peças'),
+                  TitleComponent('Cadastro de Piso'),
+                ],
+              ),
+              content: Container(
+                width: media.size.width * 0.30,
+                height: media.size.height * 0.50,
+                child: Column(
+                  children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    //    child: Row(
+                    //     children: [
+                    //       Text(
+                    //         'Filial:',
+                    //           style: TextStyle(
+                    //           letterSpacing: 0.15,
+                    //           fontSize: 20,
+                    //           ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         'Piso:',
+                    //           style: TextStyle(
+                    //           letterSpacing: 0.15,
+                    //           fontSize: 20,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Divider(),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: InputComponent(
+                      label: 'Filial',
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: InputComponent(
+                      label: 'Nº Asteca',
+                      initialValue: '38135',
+                    ),
+                  ),
+                  
+                   Padding(padding: EdgeInsets.only(bottom: 40)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                           ButtonComponent(
+                            color: Colors.grey,
+                            onPressed: () {
+                            },
+                            text: 'Sair'),
+
+                           Padding (padding:EdgeInsets.only(left: 20)),
+                             ButtonComponent(
+                            color: secundaryColor,
+                            onPressed: () {
+                            },
+                            text: 'Adicionar')
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            );
+        });
+      });
+    }
+
+    _deletePisoDialogParts(context) {
+    MediaQueryData media = MediaQuery.of(context);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+           return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    size: 32,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  TitleComponent('Piso'),
                 ],
               ),
               content: Container(
@@ -259,21 +313,38 @@ class AddressingDetailView extends StatefulWidget {
                               fontSize: 16,
                             ),
                           ),
-                           ButtonComponent(
-                            color: secundaryColor,
-                            onPressed: () {
-             //              _buildDialogEndressing(context);
-                            },
-                            text: 'Adicionar')
                         ],
                       ),
-                    )
+                    ),
+                    Padding(padding: EdgeInsets.only(bottom: 40)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                           ButtonComponent(
+                            color: Colors.grey,
+                            onPressed: () {
+                            },
+                            text: 'Sair'),
+
+                           Padding (padding:EdgeInsets.only(left: 20)),
+                             ButtonComponent(
+                            color: Colors.red,
+                            onPressed: () {
+                            },
+                            text: 'Excluir')
+                        ],
+                      ),
                   ],
                 ),
               ),
              );
           });
         });
-        
+      }
+
+
+      
    }
- }
+  
+ 
