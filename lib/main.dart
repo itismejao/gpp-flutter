@@ -114,7 +114,7 @@ class _GppAppState extends State<GppApp> {
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-        if (isAuthenticated()) {
+        if (!isAuthenticated()) {
           if (settings.name == '/') {
             return MaterialPageRoute(
                 builder: (context) => HomeView(
