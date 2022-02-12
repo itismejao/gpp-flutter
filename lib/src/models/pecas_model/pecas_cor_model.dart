@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
 
 class PecasCorModel {
-  int? id_peca_cor;
+  // int? id_peca_cor;
   String? cor;
   String? sigla;
-  int? active;
+  // int? active;
 
   PecasCorModel({
-    this.id_peca_cor,
+    // this.id_peca_cor,
     this.cor,
     this.sigla,
-    this.active,
+    // this.active,
   });
 
   factory PecasCorModel.fromJson(Map<String, dynamic> json) {
     return PecasCorModel(
-      id_peca_cor: json['id_peca_cor'],
+      // id_peca_cor: json['id_peca_cor'],
       cor: json['cor'],
       sigla: json['sigla'],
-      active: json['active'],
+      // active: json['active'],
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
 
-    data['id_peca_cor'] = this.id_peca_cor;
+    // data['id_peca_cor'] = this.id_peca_cor;
     data['cor'] = this.cor;
     data['sigla'] = this.sigla;
-    data['active'] = this.active;
+    // data['active'] = this.active;
 
     return data;
   }

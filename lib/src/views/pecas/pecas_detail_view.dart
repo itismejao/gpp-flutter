@@ -22,7 +22,7 @@ class PecasDetailView extends StatefulWidget {
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
 
-  int selected = 1;
+  int selected = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -510,15 +510,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(
-                  width: 100,
-                  height: 30,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _pecasController.create();
-                    },
-                    child: Text('Salvar'),
-                  ),
+                ButtonComponent(
+                  onPressed: () {
+                    _pecasController.create();
+                  },
+                  text: 'Salvar',
                 ),
               ],
             ),
