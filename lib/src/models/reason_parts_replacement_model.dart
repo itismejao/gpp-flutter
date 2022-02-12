@@ -1,25 +1,25 @@
-import 'package:flutter/material.dart';
-
-class ReasonPartsReplacementModel {
-  int? id;
-  String? name;
-  bool? status;
-  ReasonPartsReplacementModel({
-    this.id,
-    this.name,
-    this.status,
+class MotivoTrocaPecaModel {
+  int? idMotivoTrocaPeca;
+  String? nome;
+  bool? situacao;
+  MotivoTrocaPecaModel({
+    this.idMotivoTrocaPeca,
+    this.nome,
+    this.situacao,
   });
 
-  factory ReasonPartsReplacementModel.fromJson(Map<String, dynamic> json) {
-    return ReasonPartsReplacementModel(
-        id: json['idsteca'], name: json['name'], status: json['status']);
+  factory MotivoTrocaPecaModel.fromJson(Map<String, dynamic> json) {
+    return MotivoTrocaPecaModel(
+        idMotivoTrocaPeca: json['id_motivo_troca_peca'],
+        nome: json['nome'],
+        situacao: json['situacao']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['status'] = status;
+    data['id_motivo_troca_peca'] = idMotivoTrocaPeca;
+    data['nome'] = nome;
+    data['situacao'] = situacao;
     return data;
   }
 }

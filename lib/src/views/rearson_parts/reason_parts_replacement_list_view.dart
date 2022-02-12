@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
-import 'package:gpp/src/shared/repositories/status_code.dart';
+
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 class ReasonPartsReplacementListView extends StatefulWidget {
@@ -25,7 +25,8 @@ class _ReasonPartsReplacementListViewState
 
   fetchAll() async {
     //Carrega lista de motivos de defeito de peças
-    controller.reasonPartsReplacements = await controller.repository.fetchAll();
+    controller.reasonPartsReplacements =
+        await controller.repository.buscarTodos();
 
     //controller.isLoaded = true;
 
@@ -35,13 +36,12 @@ class _ReasonPartsReplacementListViewState
     });
   }
 
-  handleDelete(
-      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
+  handleDelete(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify
           .alert("você deseja excluir o motivo de troca de peça ?")) {
-        if (await controller.repository.delete(reasonPartsReplacement)) {
+        if (await controller.repository.excluir(reasonPartsReplacement)) {
           notify.sucess("Funcionalidade excluída!");
           //Atualiza a lista de motivos
           fetchAll();
@@ -52,8 +52,7 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  handleCreate(
-      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
+  handleCreate(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await controller.repository.create(reasonPartsReplacement)) {
@@ -66,8 +65,7 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  handleUpdate(
-      context, ReasonPartsReplacementModel reasonPartsReplacement) async {
+  handleUpdate(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await controller.repository.update(reasonPartsReplacement)) {
@@ -80,7 +78,7 @@ class _ReasonPartsReplacementListViewState
     }
   }
 
-  openForm(context, ReasonPartsReplacementModel reasonPartsReplacement) {
+  openForm(context, MotivoTrocaPecaModel reasonPartsReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -88,7 +86,7 @@ class _ReasonPartsReplacementListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: reasonPartsReplacement.id == null
+              title: reasonPartsReplacement.idMotivoTrocaPeca == null
                   ? Text("Adicionar motivo de troca de peça")
                   : Text("Atualizar motivo de troca de peça"),
               content: new Text("preencha as informações abaixo"),
@@ -99,11 +97,11 @@ class _ReasonPartsReplacementListViewState
                     children: [
                       InputComponent(
                         label: 'Nome',
-                        initialValue: reasonPartsReplacement.name,
+                        initialValue: reasonPartsReplacement.nome,
                         hintText: 'Digite o motivo da troca de peça',
                         onChanged: (value) {
                           setState(() {
-                            reasonPartsReplacement.name = value!;
+                            reasonPartsReplacement.nome = value!;
                           });
                         },
                       ),
@@ -114,20 +112,20 @@ class _ReasonPartsReplacementListViewState
                             Radio(
                                 activeColor: secundaryColor,
                                 value: true,
-                                groupValue: reasonPartsReplacement.status,
+                                groupValue: reasonPartsReplacement.situacao,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    reasonPartsReplacement.status = value!;
+                                    reasonPartsReplacement.situacao = value!;
                                   });
                                 }),
                             Text("Habilitado"),
                             Radio(
                                 activeColor: secundaryColor,
                                 value: false,
-                                groupValue: reasonPartsReplacement.status,
+                                groupValue: reasonPartsReplacement.situacao,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    reasonPartsReplacement.status = value!;
+                                    reasonPartsReplacement.situacao = value!;
                                   });
                                 }),
                             Text("Desabilitado"),
@@ -138,7 +136,7 @@ class _ReasonPartsReplacementListViewState
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            reasonPartsReplacement.id == null
+                            reasonPartsReplacement.idMotivoTrocaPeca == null
                                 ? ButtonComponent(
                                     onPressed: () {
                                       handleCreate(
@@ -176,7 +174,6 @@ class _ReasonPartsReplacementListViewState
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //Iniciliza controlador
     controller = ReasonPartsReplacementController();
@@ -232,18 +229,19 @@ class _ReasonPartsReplacementListViewState
                               children: [
                                 Expanded(
                                     child: TextComponent(controller
-                                        .reasonPartsReplacements[index].id
+                                        .reasonPartsReplacements[index]
+                                        .idMotivoTrocaPeca
                                         .toString())),
                                 Expanded(
                                     child: TextComponent(controller
-                                        .reasonPartsReplacements[index].name!)),
+                                        .reasonPartsReplacements[index].nome!)),
                                 Expanded(
                                     child: Row(
                                   children: [
                                     StatusComponent(
                                         status: controller
                                             .reasonPartsReplacements[index]
-                                            .status!),
+                                            .situacao!),
                                   ],
                                 )),
                                 Expanded(

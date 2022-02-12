@@ -6,7 +6,7 @@ import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/repositories/departament_repository.dart';
-import 'package:gpp/src/repositories/user_repository.dart';
+
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
@@ -32,8 +32,7 @@ class UserDetailView extends StatefulWidget {
 }
 
 class _UserDetailViewState extends State<UserDetailView> {
-  late final UserController _controller =
-      UserController(repository: UserRepository(api: gppApi));
+  late final UsuarioController _controller;
 
   late final DepartamentController _departamentController =
       DepartamentController(DepartamentRepository(api: gppApi));
@@ -53,9 +52,9 @@ class _UserDetailViewState extends State<UserDetailView> {
   handleCheckBox(bool? value, int index) {
     setState(() {
       if (value!) {
-        _controller.subFuncionalities[index].active = true;
+        _controller.subFuncionalities[index].situacao = true;
       } else {
-        _controller.subFuncionalities[index].active = false;
+        _controller.subFuncionalities[index].situacao = false;
       }
     });
   }
@@ -65,7 +64,7 @@ class _UserDetailViewState extends State<UserDetailView> {
       _selectedAll = value;
 
       for (var i = 0; i < _controller.subFuncionalities.length; i++) {
-        _controller.subFuncionalities[i].active = value;
+        _controller.subFuncionalities[i].situacao = value;
       }
     });
   }
@@ -74,14 +73,14 @@ class _UserDetailViewState extends State<UserDetailView> {
     setState(() {
       _selectedAll = true;
       for (var i = 0; i < _controller.subFuncionalities.length; i++) {
-        if (!_controller.subFuncionalities[i].active!) {
+        if (!_controller.subFuncionalities[i].situacao!) {
           _selectedAll = false;
         }
       }
     });
   }
 
-  void handleUpdate(UserModel user) async {
+  void handleUpdate(UsuarioModel user) async {
     NotifyController nofity = NotifyController(context: context);
 
     try {
@@ -96,7 +95,7 @@ class _UserDetailViewState extends State<UserDetailView> {
     }
   }
 
-  fetchDepartamentsSubfuncionalities(DepartamentModel departament) async {
+  fetchDepartamentsSubfuncionalities(DepartamentoModel departament) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify.alert(
@@ -133,6 +132,9 @@ class _UserDetailViewState extends State<UserDetailView> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+
+    _controller = UsuarioController();
+
     //Carrega o usuário
     fetchUser();
 
@@ -232,16 +234,16 @@ class _UserDetailViewState extends State<UserDetailView> {
                     ),
                     DropDownComponent(
                         label: 'Departamento',
-                        hintText: _controller.user.departament!.name ??
+                        hintText: _controller.user.departament!.nome ??
                             'Escolha o departamento',
-                        onChanged: (DepartamentModel? value) {
+                        onChanged: (DepartamentoModel? value) {
                           _controller.user.departament = value;
                           fetchDepartamentsSubfuncionalities(value!);
                         },
                         items: _departamentController.departaments.map((value) {
                           return DropdownMenuItem(
                             value: value,
-                            child: Text(value.name!),
+                            child: Text(value.nome!),
                           );
                         }).toList()),
                   ],
@@ -290,8 +292,8 @@ class _UserDetailViewState extends State<UserDetailView> {
                               Checkbox(
                                 activeColor: primaryColor,
                                 checkColor: Colors.white,
-                                value:
-                                    _controller.subFuncionalities[index].active,
+                                value: _controller
+                                    .subFuncionalities[index].situacao,
                                 onChanged: (bool? value) =>
                                     handleCheckBox(value, index),
                               ),
@@ -304,7 +306,7 @@ class _UserDetailViewState extends State<UserDetailView> {
                                   children: [
                                     Text(
                                       _controller
-                                          .subFuncionalities[index].name!,
+                                          .subFuncionalities[index].nome!,
                                       style: textStyle(
                                         color: Colors.grey.shade500,
                                       ),

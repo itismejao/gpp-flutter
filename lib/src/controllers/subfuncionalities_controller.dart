@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
 import 'package:gpp/src/shared/enumeration/subfuncionalities_enum.dart';
@@ -8,11 +9,11 @@ class SubFuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late final SubFuncionalitiesRepository repository =
-      SubFuncionalitiesRepository(api: gppApi);
+      SubFuncionalitiesRepository();
 
-  List<SubFuncionalitiesModel> subFuncionalities = [];
+  List<SubFuncionalidadeModel> subFuncionalities = [];
 
-  SubFuncionalitiesModel subFuncionalitie = SubFuncionalitiesModel();
+  SubFuncionalidadeModel subFuncionalitie = SubFuncionalidadeModel();
   SubFuncionalitiesEnum state = SubFuncionalitiesEnum.notChange;
   // bool groupValue = false;
 
@@ -23,19 +24,15 @@ class SubFuncionalitiesController {
   }
 
   void setSubFuncionalitieName(value) {
-    subFuncionalitie.name = value;
-  }
-
-  void setSubFuncionalitieIcon(value) {
-    subFuncionalitie.icon = value;
+    subFuncionalitie.nome = value;
   }
 
   void setSubFuncionalitieRoute(value) {
-    subFuncionalitie.route = value;
+    subFuncionalitie.rota = value;
   }
 
   void setSubFuncionalitieActive(value) {
-    subFuncionalitie.active = value;
+    subFuncionalitie.situacao = value;
   }
 
   // //Validação
@@ -56,11 +53,12 @@ class SubFuncionalitiesController {
     return await repository.create(id, subFuncionalitie);
   }
 
-  Future<bool> update(SubFuncionalitiesModel subFuncionalitie) async {
+  Future<bool> update(SubFuncionalidadeModel subFuncionalitie) async {
     return await repository.update(subFuncionalitie);
   }
 
-  Future<bool> delete(SubFuncionalitiesModel subFuncionalitie) async {
-    return await repository.delete(subFuncionalitie);
+  Future<bool> delete(FuncionalidadeModel funcionalidade,
+      SubFuncionalidadeModel subFuncionalitie) async {
+    return await repository.delete(funcionalidade, subFuncionalitie);
   }
 }

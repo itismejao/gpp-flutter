@@ -3,55 +3,54 @@ import 'dart:convert';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:http/http.dart';
 
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/exceptions/user_exception.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
-class UserRepository {
-  ApiService api;
+class UsuarioRepository {
+  ApiService api = gppApi;
 
-  UserRepository({
-    required this.api,
-  });
+  String path = '/usuarios';
 
-  Future<UserModel> fetchUser(String id) async {
+  Future<UsuarioModel> fetchUser(String id) async {
     Response response = await api.get('/user/' + id);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      return UserModel.fromJson(data.first);
+      return UsuarioModel.fromJson(data.first);
     } else {
       throw UserException('Usuário não encontrado !');
     }
   }
 
-  Future<List<UserModel>> fetchAll() async {
-    Response response = await api.get('/user');
+  Future<List<UsuarioModel>> buscarTodos() async {
+    Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<UserModel> users = data.first
-          .map<UserModel>((data) => UserModel.fromJson(data))
+      List<UsuarioModel> users = data
+          .map<UsuarioModel>((data) => UsuarioModel.fromJson(data))
           .toList();
       return users;
     } else {
-      throw UserException('Usuários não encontrados !');
+      var error = jsonDecode(response.body)['error'];
+      throw error;
     }
   }
 
-  Future<List<SubFuncionalitiesModel>> fetchSubFuncionalities(String id) async {
+  Future<List<SubFuncionalidadeModel>> fetchSubFuncionalities(String id) async {
     Response response = await api.get('/user/itensfuncionalidades/' + id);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<SubFuncionalitiesModel> subFuncionalities = data.first
-          .map<SubFuncionalitiesModel>(
-              (data) => SubFuncionalitiesModel.fromJson(data))
+      List<SubFuncionalidadeModel> subFuncionalities = data.first
+          .map<SubFuncionalidadeModel>(
+              (data) => SubFuncionalidadeModel.fromJson(data))
           .toList();
       return subFuncionalities;
     } else {
@@ -61,7 +60,7 @@ class UserRepository {
   }
 
   Future<bool> updateUserSubFuncionalities(
-      UserModel user, List<SubFuncionalitiesModel> subFuncionalities) async {
+      UsuarioModel user, List<SubFuncionalidadeModel> subFuncionalities) async {
     List<Map<String, dynamic>> dataSend = subFuncionalities
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
@@ -79,15 +78,17 @@ class UserRepository {
     }
   }
 
-  Future<List<FuncionalitieModel>> fetchFuncionalities(UserModel user) async {
+  Future<List<FuncionalidadeModel>> buscarFuncionalidades(
+      UsuarioModel user) async {
     Response response =
-        await api.get('/user/funcionalidades/' + user.id.toString());
+        await api.get(path + '/' + user.id.toString() + '/funcionalidades');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<FuncionalitieModel> funcionalidades = data.first
-          .map<FuncionalitieModel>((data) => FuncionalitieModel.fromJson(data))
+      List<FuncionalidadeModel> funcionalidades = data
+          .map<FuncionalidadeModel>(
+              (data) => FuncionalidadeModel.fromJson(data))
           .toList();
 
       return funcionalidades;
@@ -97,7 +98,7 @@ class UserRepository {
     }
   }
 
-  Future<bool> update(UserModel user) async {
+  Future<bool> update(UsuarioModel user) async {
     print(jsonEncode(user.toJson()));
     Response response =
         await api.put('/user/' + user.id.toString(), user.toJson());

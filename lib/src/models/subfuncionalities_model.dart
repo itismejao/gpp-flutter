@@ -1,48 +1,43 @@
 import 'package:flutter/material.dart';
 
-class SubFuncionalitiesModel {
-  int? id;
-  String? name;
-  String? icon;
-  String? route;
-  bool? active;
+class SubFuncionalidadeModel {
+  int? idSubFuncionalidade;
+  String? nome;
 
-  String? idRegister;
+  String? rota;
+  bool? situacao;
+
   Color? colorButton;
   BoxDecoration? boxDecoration;
+
+  SubFuncionalidadeModel({
+    this.idSubFuncionalidade,
+    this.nome,
+    this.rota,
+    this.situacao,
+    this.colorButton,
+    this.boxDecoration,
+  });
   // Border? border =
   //     Border(left: BorderSide(color: Colors.grey.shade200, width: 2));
 
-  SubFuncionalitiesModel(
-      {this.id,
-      this.name,
-      this.active,
-      this.icon,
-      this.route,
-      this.idRegister});
-
-  factory SubFuncionalitiesModel.fromJson(Map<String, dynamic> json) {
-    int? id = json['id'];
-
-    bool? active = json['active'];
-
-    return SubFuncionalitiesModel(
-        id: id,
-        name: json['name'],
-        active: active,
-        icon: json['icon'],
-        route: json['route'],
-        idRegister: json['idregister']);
+  factory SubFuncionalidadeModel.fromJson(Map<String, dynamic> json) {
+    return SubFuncionalidadeModel(
+      idSubFuncionalidade: json['id_sub_funcionalidade'],
+      nome: json['nome'],
+      situacao: json['situacao'],
+      rota: json['rota'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['active'] = active! ? 1 : 0;
-    data['icon'] = icon;
-    data['route'] = route;
-    data['idregister'] = idRegister;
+    data['id_sub_funcionalidade'] = idSubFuncionalidade;
+    data['name'] = nome;
+    data['situacao'] = situacao;
+
+    data['rota'] = rota;
+
     return data;
   }
 }

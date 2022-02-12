@@ -1,30 +1,26 @@
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/repositories/user_repository.dart';
+import 'package:gpp/src/repositories/UsuarioRepository.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/global.dart';
 
-class UserController {
-  UserRepository repository;
-  UserModel user = UserModel();
-  List<UserModel> users = [];
-  List<UserModel> usersSearch = [];
-  List<SubFuncionalitiesModel> subFuncionalities = [];
+class UsuarioController {
+  UsuarioRepository repository = UsuarioRepository();
+  UsuarioModel user = UsuarioModel();
+  List<UsuarioModel> users = [];
+  List<UsuarioModel> usersSearch = [];
+  List<SubFuncionalidadeModel> subFuncionalities = [];
   UserEnum state = UserEnum.notUser;
-  List<FuncionalitieModel> funcionalities = [];
-  List<FuncionalitieModel> funcionalitiesSearch = [];
-
-  UserController({
-    required this.repository,
-  });
+  List<FuncionalidadeModel> funcionalities = [];
+  List<FuncionalidadeModel> funcionalitiesSearch = [];
 
   Future<void> fetchUser(String id) async {
     user = await repository.fetchUser(id);
   }
 
   Future<void> changeUser() async {
-    users = await repository.fetchAll();
+    users = await repository.buscarTodos();
   }
 
   Future<void> changeUserFuncionalities(String id) async {
@@ -41,16 +37,16 @@ class UserController {
   }
 
   Future<bool> updateUserSubFuncionalities(
-      UserModel user, List<SubFuncionalitiesModel> subFuncionalities) async {
+      UsuarioModel user, List<SubFuncionalidadeModel> subFuncionalities) async {
     return await repository.updateUserSubFuncionalities(
         user, subFuncionalities);
   }
 
   Future<void> changeFuncionalities() async {
-    UserModel user = UserModel();
+    UsuarioModel user = UsuarioModel();
     user.id = authenticateUser!.id;
 
-    funcionalities = await repository.fetchFuncionalities(user);
+    funcionalities = await repository.buscarFuncionalidades(user);
   }
 
   void searchFuncionalities(String value) {
@@ -58,9 +54,9 @@ class UserController {
 
     if (value != "") {
       for (var funcionalitie in funcionalities) {
-        for (var subFuncionalitie in funcionalitie.subFuncionalities!) {
-          if (funcionalitie.name!.toLowerCase().contains(value.toLowerCase()) ||
-              subFuncionalitie.name!
+        for (var subFuncionalitie in funcionalitie.subFuncionalidades!) {
+          if (funcionalitie.nome!.toLowerCase().contains(value.toLowerCase()) ||
+              subFuncionalitie.nome!
                   .toLowerCase()
                   .contains(value.toLowerCase())) {
             funcionalitie.isExpanded = true;
@@ -72,7 +68,7 @@ class UserController {
     }
   }
 
-  Future<bool> update(UserModel user) async {
+  Future<bool> update(UsuarioModel user) async {
     return await repository.update(user);
   }
 }

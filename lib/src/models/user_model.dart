@@ -1,6 +1,6 @@
 import 'package:gpp/src/models/departament_model.dart';
 
-class UserModel {
+class UsuarioModel {
   int? id;
   int? uid;
   String? name;
@@ -14,9 +14,9 @@ class UserModel {
   String? iddepto;
 
   String? foto;
-  DepartamentModel? departament;
+  DepartamentoModel? departament;
 
-  UserModel(
+  UsuarioModel(
       {this.id,
       this.uid,
       this.name,
@@ -31,8 +31,8 @@ class UserModel {
       this.departament,
       this.foto});
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
+  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
+    return UsuarioModel(
         id: json['id'],
         uid: json['uid'],
         name: json['name'],
@@ -44,10 +44,10 @@ class UserModel {
         updatedAt: json['updated_at'],
         active: json['active'],
         iddepto: json['iddepto'],
-        departament: DepartamentModel(
-            id: json['departament_id'],
-            name: json['departament_name'],
-            active: json['departament_active']),
+        departament: DepartamentoModel(
+            idDepartamento: json['departament_id'],
+            nome: json['departament_name'],
+            situacao: json['departament_active']),
         foto: json['foto']);
   }
 

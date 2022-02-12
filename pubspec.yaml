@@ -44,6 +44,7 @@ dependencies:
   crypto: ^3.0.1
   basic_utils: ^3.9.4
   intl: ^0.17.0
+  mask_text_input_formatter: ^2.1.0
 
 dev_dependencies:
   flutter_test:

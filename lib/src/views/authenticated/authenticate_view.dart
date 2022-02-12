@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/authenticate_controller.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/repositories/authenticate_repository.dart';
+
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
-import 'package:gpp/src/shared/enumeration/authenticate_enum.dart';
+
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 
@@ -22,45 +22,41 @@ class AuthenticateView extends StatefulWidget {
 }
 
 class _AuthenticateViewState extends State<AuthenticateView> {
-  late AuthenticateController _controller =
-      AuthenticateController(AuthenticateRepository());
+  late AutenticacaoController controller;
   final ResponsiveController _responsive = ResponsiveController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    //Criar instência do controller de autenticação
+    controller = AutenticacaoController();
+  }
 
   void handleVisiblePassword() {
     setState(() {
-      _controller.visiblePassword = !_controller.visiblePassword;
+      controller.visiblePassword = !controller.visiblePassword;
     });
   }
 
-  void handleAutheticated(context) async {
+  void autenticar(context) async {
     NotifyController nofity = NotifyController(context: context);
     try {
-      setState(() {
-        _controller.state = AuthenticateEnum.loading;
-      });
-
-      if (await _controller.login()) {
+      if (await controller.repository.criar(controller.autenticacao)) {
         setState(() {
-          _controller.state = AuthenticateEnum.logged;
+          controller.autenticado = true;
         });
 
         Navigator.pushReplacementNamed(context, '/');
-      } else {
-        setState(() {
-          _controller.state = AuthenticateEnum.notLogged;
-        });
       }
     } catch (e) {
       nofity.error(e.toString());
-      setState(() {
-        _controller.state = AuthenticateEnum.error;
-      });
     }
   }
 
   Form _buildFormAuthenticated(MediaQueryData mediaQuery) {
     return Form(
-      key: _controller.formKey,
+      key: controller.formKey,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -73,10 +69,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "RE",
                 keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  _controller.setUserUID(int.parse(value));
+                onChanged: (value) {
+                  controller.autenticacao.id = value;
                 },
-                validator: _controller.validateInput,
                 hintText: "Digite seu RE",
                 prefixIcon: Icon(Icons.account_box),
               ),
@@ -86,9 +81,10 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "Senha",
                 maxLines: 1,
-                obscureText: !_controller.visiblePassword,
-                onSaved: _controller.setUserPassword,
-                validator: _controller.validateInput,
+                obscureText: !controller.visiblePassword,
+                onChanged: (value) {
+                  controller.autenticacao.senha = value;
+                },
                 hintText: "Digite sua senha",
                 prefixIcon: Icon(Icons.lock),
                 suffixIcon: GestureDetector(
@@ -108,7 +104,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                   Expanded(
                     child: ButtonComponent(
                         color: secundaryColor,
-                        onPressed: () => handleAutheticated(context),
+                        onPressed: () => autenticar(context),
                         text: "Entrar"),
                   ),
                 ],
@@ -120,64 +116,54 @@ class _AuthenticateViewState extends State<AuthenticateView> {
     );
   }
 
-  _buildState(context, MediaQueryData mediaQuery) {
-    switch (_controller.state) {
-      case AuthenticateEnum.loading:
-        return LoadingComponent();
-
-      default:
-        return _buildFormAuthenticated(mediaQuery);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
     Widget page = LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        if (_responsive.isMobile(constraints.maxWidth)) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _buildAppBar(mediaQuery),
-              Container(
-                height: mediaQuery.size.height,
-                color: Colors.white,
-                child: _buildState(context, mediaQuery),
-              ),
-            ],
-          );
-        }
+        // if (_responsive.isMobile(constraints.maxWidth)) {
+        //   return Column(
+        //     mainAxisAlignment: MainAxisAlignment.end,
+        //     children: [
+        //       _buildAppBar(mediaQuery),
+        //       Container(
+        //         height: mediaQuery.size.height,
+        //         color: Colors.white,
+        //         child: _buildState(context, mediaQuery),
+        //       ),
+        //     ],
+        //   );
+        // }
 
-        if (_responsive.isTable(constraints.maxWidth)) {
-          return Column(
-            children: [
-              _buildAppBar(mediaQuery),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildMessageWelcome(),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 400,
-                    height: 460,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                    ),
-                    child: _buildState(context, mediaQuery),
-                  ),
-                ],
-              )
-            ],
-          );
-        }
+        // if (_responsive.isTable(constraints.maxWidth)) {
+        //   return Column(
+        //     children: [
+        //       _buildAppBar(mediaQuery),
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: [
+        //           _buildMessageWelcome(),
+        //         ],
+        //       ),
+        //       Row(
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: [
+        //           Container(
+        //             width: 400,
+        //             height: 460,
+        //             decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(10),
+        //               color: Colors.white,
+        //             ),
+        //             child: _buildState(context, mediaQuery),
+        //           ),
+        //         ],
+        //       )
+        //     ],
+        //   );
+        // }
 
         return Column(
           children: [
@@ -203,7 +189,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
                           ),
-                          child: _buildState(context, mediaQuery),
+                          child: !controller.autenticado
+                              ? _buildFormAuthenticated(mediaQuery)
+                              : LoadingComponent(),
                         ),
                       ],
                     )

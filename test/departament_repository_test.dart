@@ -21,7 +21,7 @@ import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'api_service_test.mocks.dart';
+import 'departament_repository_test.mocks.dart';
 
 @GenerateMocks([ApiService])
 void main() {
@@ -80,9 +80,9 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
 
-      final departament = await repository.fetchAll();
+      final departament = await repository.buscarTodos();
 
-      expect(departament, isA<List<DepartamentModel>>());
+      expect(departament, isA<List<DepartamentoModel>>());
     });
 
     test('Valida se não foi possível realizar a busca de departamentos',
@@ -90,7 +90,7 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 404));
 
-      expect(() async => await repository.fetchAll(),
+      expect(() async => await repository.buscarTodos(),
           throwsA(isA<DepartamentException>()));
     });
   });
@@ -184,17 +184,17 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
 
-      DepartamentModel departament = DepartamentModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
+      DepartamentoModel departament = DepartamentoModel(
+          idDepartamento: 1,
+          nome: "Tecnologia",
+          situacao: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
       final subFucionalities =
           await repository.fetchSubFuncionalities(departament);
 
-      expect(subFucionalities, isA<List<SubFuncionalitiesModel>>());
+      expect(subFucionalities, isA<List<SubFuncionalidadeModel>>());
     });
 
     test(
@@ -203,10 +203,10 @@ void main() {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      DepartamentModel departament = DepartamentModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
+      DepartamentoModel departament = DepartamentoModel(
+          idDepartamento: 1,
+          nome: "Tecnologia",
+          situacao: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
@@ -222,16 +222,19 @@ void main() {
       when(api.put(any, any))
           .thenAnswer((realInvocation) async => Response('', 200));
 
-      DepartamentModel departament = DepartamentModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
+      DepartamentoModel departament = DepartamentoModel(
+          idDepartamento: 1,
+          nome: "Tecnologia",
+          situacao: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
-      List<SubFuncionalitiesModel> subFuncionalities = [
-        SubFuncionalitiesModel(
-            id: 5, name: "Funcionalidades", active: true, idRegister: "33")
+      List<SubFuncionalidadeModel> subFuncionalities = [
+        SubFuncionalidadeModel(
+          idSubFuncionalidade: 5,
+          nome: "Funcionalidades",
+          situacao: true,
+        )
       ];
 
       final response = await repository.updateDepartmentSubFuncionalities(
@@ -246,16 +249,15 @@ void main() {
       when(api.put(any, any))
           .thenAnswer((realInvocation) async => Response('', 404));
 
-      DepartamentModel departament = DepartamentModel(
-          id: 1,
-          name: "Tecnologia",
-          active: true,
+      DepartamentoModel departament = DepartamentoModel(
+          idDepartamento: 1,
+          nome: "Tecnologia",
+          situacao: true,
           createdAt: "2021-12-24 17:05:12",
           updatedAt: "2021-12-24 17:05:12");
 
-      List<SubFuncionalitiesModel> subFuncionalities = [
-        SubFuncionalitiesModel(
-            name: "Funcionalidades", active: true, idRegister: "33")
+      List<SubFuncionalidadeModel> subFuncionalities = [
+        SubFuncionalidadeModel(nome: "Funcionalidades", situacao: true)
       ];
 
       expect(

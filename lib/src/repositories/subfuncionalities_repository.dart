@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/shared/exceptions/subfuncionalities_exception.dart';
@@ -8,21 +9,18 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class SubFuncionalitiesRepository {
-  ApiService api;
+  ApiService api = gppApi;
 
-  SubFuncionalitiesRepository({
-    required this.api,
-  });
-
-  Future<List<SubFuncionalitiesModel>> fetch(String id) async {
-    Response response = await api.get('/itensfuncionalidades/' + id);
+  Future<List<SubFuncionalidadeModel>> fetch(String id) async {
+    Response response =
+        await api.get('/funcionalidades/' + id + '/subfuncionalidades');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<SubFuncionalitiesModel> subfuncionalidades = data.first
-          .map<SubFuncionalitiesModel>(
-              (data) => SubFuncionalitiesModel.fromJson(data))
+      List<SubFuncionalidadeModel> subfuncionalidades = data
+          .map<SubFuncionalidadeModel>(
+              (data) => SubFuncionalidadeModel.fromJson(data))
           .toList();
 
       return subfuncionalidades;
@@ -32,7 +30,7 @@ class SubFuncionalitiesRepository {
   }
 
   Future<bool> create(
-      String id, SubFuncionalitiesModel subFuncionalitie) async {
+      String id, SubFuncionalidadeModel subFuncionalitie) async {
     Response response = await api.post(
         '/itensfuncionalidades/' + id, subFuncionalitie.toJson());
 
@@ -43,9 +41,10 @@ class SubFuncionalitiesRepository {
     }
   }
 
-  Future<bool> update(SubFuncionalitiesModel subFuncionalitie) async {
+  Future<bool> update(SubFuncionalidadeModel subFuncionalitie) async {
     Response response = await api.put(
-        '/itensfuncionalidades/' + subFuncionalitie.id.toString(),
+        '/itensfuncionalidades/' +
+            subFuncionalitie.idSubFuncionalidade.toString(),
         subFuncionalitie.toJson());
 
     if (response.statusCode == StatusCode.OK) {
@@ -55,9 +54,10 @@ class SubFuncionalitiesRepository {
     }
   }
 
-  Future<bool> delete(SubFuncionalitiesModel funcionalitie) async {
+  Future<bool> delete(FuncionalidadeModel funcionalidade,
+      SubFuncionalidadeModel subFuncionalidade) async {
     Response response = await api.delete(
-      '/itensfuncionalidades/' + funcionalitie.id.toString(),
+      '/funcionalidades/${funcionalidade.idFuncionalidade}/subfuncionalidades/${subFuncionalidade.idSubFuncionalidade}',
     );
 
     if (response.statusCode == StatusCode.OK) {

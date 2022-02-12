@@ -18,7 +18,7 @@ import 'package:http/http.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'api_service_test.mocks.dart';
+import 'asteca_repository_test.mocks.dart';
 
 @GenerateMocks([ApiService])
 void main() {

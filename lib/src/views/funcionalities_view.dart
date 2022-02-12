@@ -6,12 +6,10 @@ import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:gpp/src/controllers/user_controller.dart';
-import 'package:gpp/src/models/funcionalitie_model.dart';
+import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/repositories/user_repository.dart';
+
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 // ignore: must_be_immutable
 class FuncionalitiesView extends StatefulWidget {
@@ -24,41 +22,38 @@ class FuncionalitiesView extends StatefulWidget {
 }
 
 class _FuncionalitiesViewState extends State<FuncionalitiesView> {
-  late final UserController _controller =
-      UserController(repository: UserRepository(api: gppApi));
-
-  final ScrollController controller = ScrollController();
+  late final UsuarioController controller;
 
   handleSearchFuncionalities(value) {
     setState(() {
-      _controller.state = UserEnum.loading;
+      controller.state = UserEnum.loading;
     });
 
-    _controller.searchFuncionalities(value);
+    controller.searchFuncionalities(value);
 
     setState(() {
-      _controller.state = UserEnum.changeUser;
+      controller.state = UserEnum.changeUser;
     });
   }
 
-  changeUserFuncionalities() async {
+  buscarFuncionalidades() async {
     NotifyController nofity = NotifyController(context: context);
     if (mounted) {
       setState(() {
-        _controller.state = UserEnum.loading;
+        controller.state = UserEnum.loading;
       });
     }
     try {
-      await _controller.changeFuncionalities();
+      await controller.changeFuncionalities();
     } catch (e) {
       nofity.error(e.toString());
       setState(() {
-        _controller.state = UserEnum.error;
+        controller.state = UserEnum.error;
       });
     }
     if (mounted) {
       setState(() {
-        _controller.state = UserEnum.changeUser;
+        controller.state = UserEnum.changeUser;
       });
     }
   }
@@ -69,7 +64,10 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     // TODO: implement initState
     super.initState();
 
-    changeUserFuncionalities();
+    //Cria instância do controller de usuários
+    controller = UsuarioController();
+
+    buscarFuncionalidades();
   }
 
   funcionalities(MediaQueryData mediaQuery, context) {
@@ -79,19 +77,19 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
           height: 12,
         ),
         Expanded(
-          child: _controller.state == UserEnum.changeUser
-              ? _controller.funcionalitiesSearch.isEmpty
+          child: controller.state == UserEnum.changeUser
+              ? controller.funcionalitiesSearch.isEmpty
                   ? _buildListFuncionalities(
-                      _controller.funcionalities, mediaQuery, context)
+                      controller.funcionalities, mediaQuery, context)
                   : _buildListFuncionalities(
-                      _controller.funcionalitiesSearch, mediaQuery, context)
+                      controller.funcionalitiesSearch, mediaQuery, context)
               : const ShimmerWidget(),
         ),
       ],
     );
   }
 
-  _buildListFuncionalities(List<FuncionalitieModel> funcionalities,
+  _buildListFuncionalities(List<FuncionalidadeModel> funcionalities,
       MediaQueryData mediaQuery, context) {
     return ListView.builder(
       itemCount: funcionalities.length,
@@ -101,7 +99,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
           onTap: () {
             setState(() {
               funcionalities[index1].isExpanded =
-                  !funcionalities[index1].isExpanded;
+                  !funcionalities[index1].isExpanded!;
             });
           },
           child: Column(
@@ -115,19 +113,20 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                     children: [
                       Row(
                         children: [
-                          Icon(IconData(int.parse(funcionalities[index1].icon!),
+                          Icon(IconData(
+                              int.parse(funcionalities[index1].icone!),
                               fontFamily: 'MaterialIcons')),
                           SizedBox(
                             width: 6,
                           ),
                           TextComponent(
                             StringUtils.capitalize(
-                                funcionalities[index1].name!),
+                                funcionalities[index1].nome!),
                             fontWeight: FontWeight.bold,
                           ),
                         ],
                       ),
-                      funcionalities[index1].isExpanded
+                      funcionalities[index1].isExpanded!
                           ? const Icon(Icons.expand_more)
                           : const Icon(Icons.expand_less)
                     ],
@@ -141,11 +140,11 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                         duration: const Duration(milliseconds: 500),
                         child: SizedBox(
                             height:
-                                !funcionalities[index1].isExpanded ? 0 : null,
+                                !funcionalities[index1].isExpanded! ? 0 : null,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: funcionalities[index1]
-                                    .subFuncionalities!
+                                    .subFuncionalidades!
                                     .map((subFuncionalities) {
                                   return _buildListSubFuncionalities(
                                       subFuncionalities, mediaQuery, context);
@@ -160,14 +159,14 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     );
   }
 
-  Widget _buildListSubFuncionalities(SubFuncionalitiesModel subFuncionalities,
+  Widget _buildListSubFuncionalities(SubFuncionalidadeModel subFuncionalities,
       MediaQueryData mediaQuery, context) {
     return Row(
       children: [
         Expanded(
           child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, subFuncionalities.route!);
+                Navigator.pushNamed(context, subFuncionalities.rota!);
                 //Fecha Drawer
               },
               child: MouseRegion(
@@ -194,7 +193,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8.0, horizontal: 28),
                             child: TextComponent(
-                                subFuncionalities.name.toString()),
+                                subFuncionalities.nome.toString()),
                           ),
                         ),
                       ),
@@ -208,7 +207,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   stateManagement(MediaQueryData mediaQuery, context) {
-    switch (_controller.state) {
+    switch (controller.state) {
       case UserEnum.error:
         return Container(
           child: Text("Não foi encontrado funcionalidades"),
