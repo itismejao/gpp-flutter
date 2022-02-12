@@ -1,79 +1,70 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
-import 'package:gpp/src/shared/exceptions/piso_enderecamento_exception.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PisoEnderecamentoRepository {
   ApiService api;
+  String path = '/enderecamento-piso';
 
   PisoEnderecamentoRepository({
     required this.api,
   });
 
-  Future<PisoEnderecamentoModel> fetch(String id) async {
-    Response response = await api.get('/enderecamento-piso/' + id);
+  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
+    Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      return PisoEnderecamentoModel.fromJson(data.first.first);
-    } else {
-      throw PisoEnderecamentoException("Piso não encontrado !");
-    }
-  }
-
-  Future<List<PisoEnderecamentoModel>> fetchAll() async {
-    Response response = await api.get('/enderecamento-piso');
-
-    if (response.statusCode == StatusCode.OK) {
-      var data = jsonDecode(response.body);
-
-      List<PisoEnderecamentoModel> pisoEnderecamento = data.first
-          .map<PisoEnderecamentoModel>((data) => PisoEnderecamentoModel.fromJson(data))
+      List<PisoEnderecamentoModel> enderecamentoPiso = data
+          .map<PisoEnderecamentoModel>(
+              (data) => PisoEnderecamentoModel.fromJson(data))
           .toList();
 
-      return pisoEnderecamento;
+      return enderecamentoPiso;
     } else {
-      throw PisoEnderecamentoException("Piso não encontrada !");
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
     }
   }
 
-  Future<bool> create(PisoEnderecamentoModel pisoEnderecamento) async {
-    print(jsonEncode(pisoEnderecamento.toJson()));
-    Response response =
-        await api.post('/enderecamento-piso', pisoEnderecamento.toJson()); // alteração
+  Future<bool> create(PisoEnderecamentoModel enderecamentoPiso) async {
+    Response response = await api.post(path, enderecamentoPiso.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw PisoEnderecamentoException("Piso não foi cadastrado !");
+      var error = json.decode(response.body)['error'];
+      throw error;
     }
   }
 
-  Future<bool> update(PisoEnderecamentoModel pisoEnderecamento) async {
+  Future<bool> update(PisoEnderecamentoModel enderecamentoPiso) async {
     Response response = await api.put(
-        '/enderecamento-piso/' + pisoEnderecamento.id_piso.toString(),
-        pisoEnderecamento.toJson());
+        path + '/' + enderecamentoPiso.id_piso.toString(),
+        enderecamentoPiso.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw PisoEnderecamentoException("Piso não foi atualizado !");
+      var error = json.decode(response.body)['error'];
+      throw error;
     }
   }
 
-  Future<bool> delete(PisoEnderecamentoModel pisoEnderecamento) async {
+  Future<bool> excluir(PisoEnderecamentoModel enderecamentoPiso) async {
     Response response = await api.delete(
-      '/enderecamento-piso/' + pisoEnderecamento.id_piso.toString(),
+      path + '/' + enderecamentoPiso.id_piso.toString(),
     );
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw PisoEnderecamentoException("Piso não foi deletado !");
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
     }
   }
 }
