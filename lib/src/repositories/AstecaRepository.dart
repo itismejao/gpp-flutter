@@ -19,7 +19,7 @@ class AstecaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      return AstecaModel.fromJson(data.first);
+      return AstecaModel.fromJson(data);
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;

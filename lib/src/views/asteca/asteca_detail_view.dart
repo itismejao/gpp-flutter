@@ -42,10 +42,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     });
     _controller.asteca = await _controller.repository.buscar(widget.id);
 
-    //remover após teste
-    _controller.asteca.astecaTipoPendencia = AstecaTipoPendenciaModel(
-        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR');
-
     setState(() {
       _controller.carregado = true;
     });
@@ -56,7 +52,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
       _controller.carregado = false;
     });
 
-    _controller.astecaTipoPendencia =
+    _controller.astecaTipoPendencias =
         await _controller.repository.pendencia.buscarPendencias();
 
     setState(() {
@@ -253,13 +249,13 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                         child: TextComponent(
                                             _controller
                                                     .asteca
-                                                    .astecaTipoPendencia!
+                                                    .astecaTipoPendencia![0]
                                                     .idTipoPendencia
                                                     .toString() +
                                                 ' - ' +
                                                 _controller
                                                     .asteca
-                                                    .astecaTipoPendencia!
+                                                    .astecaTipoPendencia![0]
                                                     .descricao
                                                     .toString(),
                                             color: Colors.white)),
@@ -323,15 +319,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: ListView.builder(
                                   itemCount:
-                                      _controller.astecaTipoPendencia.length,
+                                      _controller.astecaTipoPendencias.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          _controller
-                                                  .asteca.astecaTipoPendencia =
+                                          _controller.astecaTipoPendencia =
                                               _controller
-                                                  .astecaTipoPendencia[index];
+                                                  .astecaTipoPendencias[index];
 
                                           _controller.abrirDropDownButton =
                                               false;
@@ -355,13 +350,13 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                             ),
                                             TextComponent(
                                               _controller
-                                                      .astecaTipoPendencia[
+                                                      .astecaTipoPendencias[
                                                           index]
                                                       .idTipoPendencia
                                                       .toString() +
                                                   ' - ' +
                                                   _controller
-                                                      .astecaTipoPendencia[
+                                                      .astecaTipoPendencias[
                                                           index]
                                                       .descricao
                                                       .toString(),

@@ -12,12 +12,12 @@ class AstecaController {
   bool isOpenFilter = false;
   int pagina = 1;
   bool carregado = false;
-  List<AstecaTipoPendenciaModel> astecaTipoPendencia = [];
+  late AstecaTipoPendenciaModel astecaTipoPendencia;
+  List<AstecaTipoPendenciaModel> astecaTipoPendencias = [];
 
   AstecaModel asteca = AstecaModel(
-      documentoFiscal: DocumentoFiscalModel(),
-      astecaTipoPendencia: AstecaTipoPendenciaModel(
-          idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR'));
+    documentoFiscal: DocumentoFiscalModel(),
+  );
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
   AstecaModel filtroAsteca = AstecaModel(
