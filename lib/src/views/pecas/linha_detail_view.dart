@@ -63,7 +63,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
               Padding(padding: EdgeInsets.only(bottom: 30)),
               Flexible(
                 child: InputComponent(
-                  label: 'Linha',
+                  label: 'Nome da Linha',
                   onChanged: (value) {
                     _pecasLinhaController.pecasLinhaModel.linha = value;
                   },
@@ -155,7 +155,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
               Padding(padding: EdgeInsets.only(right: 30)),
               Flexible(
                 child: InputComponent(
-                  label: 'Espécie',
+                  label: 'Nome da Espécie',
                   onChanged: (value) {
                     _pecasEspecieController.pecasEspecieModel.especie = value;
                   },

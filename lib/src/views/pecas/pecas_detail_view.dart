@@ -22,7 +22,7 @@ class PecasDetailView extends StatefulWidget {
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
 
-  int selected = 4;
+  int selected = 3;
 
   @override
   Widget build(BuildContext context) {
