@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
@@ -13,6 +14,7 @@ class EspecieDetailView extends StatefulWidget {
 
 class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
+  PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,12 +77,18 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                 width: 180,
                 child: InputComponent(
                   label: 'Selecione a Linha',
+                  onChanged: (value) {
+                    _pecasEspecieController.pecasEspecieModel.id_peca_linha = int.parse(value);
+                  },
                 ),
               ),
               Padding(padding: EdgeInsets.only(right: 30)),
               Flexible(
                 child: InputComponent(
                   label: 'Espécie',
+                  onChanged: (value) {
+                    _pecasEspecieController.pecasEspecieModel.especie = value;
+                  },
                 ),
               ),
             ],
@@ -90,7 +98,9 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ButtonComponent(
-                onPressed: () {},
+                onPressed: () {
+                  _pecasEspecieController.create();
+                },
                 text: 'Salvar',
               ),
             ],
