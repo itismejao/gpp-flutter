@@ -96,15 +96,6 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
           Padding(padding: EdgeInsets.only(bottom: 30)),
           Row(
             children: [
-              // SizedBox(
-              //   width: 180,
-              //   child: InputComponent(
-              //     label: 'Selecione a Linha',
-              //     onChanged: (value) {
-              //       _pecasEspecieController.pecasEspecieModel.id_peca_linha = int.parse(value);
-              //     },
-              //   ),
-              // ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

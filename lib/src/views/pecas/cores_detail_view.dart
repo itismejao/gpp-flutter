@@ -29,6 +29,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
         ),
       ),
       Divider(),
+      Padding(padding: EdgeInsets.only(bottom: 30)),
       Column(
         children: [
           Row(

@@ -162,6 +162,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
           ),
         ),
         Divider(),
+        Padding(padding: EdgeInsets.only(bottom: 30)),
         Column(
           children: [
             Row(
