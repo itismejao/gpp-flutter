@@ -3,6 +3,8 @@ import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 
 import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
+import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -71,6 +73,13 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     setState(() {
       _controller.carregado = true;
     });
+  }
+
+  handlePendencia(
+      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+    await _controller.repository.pendencia.criar(asteca, pendencia);
+    //Atualiza asteca
+    await buscar();
   }
 
   @override
@@ -234,7 +243,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      print('ss');
                                       _controller.abrirDropDownButton =
                                           !_controller.abrirDropDownButton;
                                     });
@@ -246,19 +254,27 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                     child: Padding(
                                         padding: const EdgeInsets.only(
                                             left: 12, top: 12, bottom: 12),
-                                        child: TextComponent(
-                                            _controller
-                                                    .asteca
-                                                    .astecaTipoPendencia![0]
-                                                    .idTipoPendencia
-                                                    .toString() +
-                                                ' - ' +
+                                        child: _controller
+                                                .asteca
+                                                .astecaTipoPendencias!
+                                                .isNotEmpty
+                                            ? TextComponent(
                                                 _controller
-                                                    .asteca
-                                                    .astecaTipoPendencia![0]
-                                                    .descricao
-                                                    .toString(),
-                                            color: Colors.white)),
+                                                        .asteca
+                                                        .astecaTipoPendencias!
+                                                        .last
+                                                        .idTipoPendencia
+                                                        .toString() +
+                                                    ' - ' +
+                                                    _controller
+                                                        .asteca
+                                                        .astecaTipoPendencias!
+                                                        .last
+                                                        .descricao!,
+                                                color: Colors.white)
+                                            : TextComponent(
+                                                'Aguardando Pendência',
+                                                color: Colors.white)),
                                   ),
                                 ),
                               ),
@@ -324,9 +340,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          _controller.astecaTipoPendencia =
+                                          handlePendencia(
+                                              _controller.asteca,
                                               _controller
-                                                  .astecaTipoPendencias[index];
+                                                  .astecaTipoPendencias[index]);
 
                                           _controller.abrirDropDownButton =
                                               false;

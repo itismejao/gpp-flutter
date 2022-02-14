@@ -11,7 +11,7 @@ class AstecaController {
 
   String? pendenciaFiltro;
 
-  int step = 4;
+  int step = 1;
   bool isOpenFilter = false;
 
   bool carregado = false;

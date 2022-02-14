@@ -12,7 +12,7 @@ class AstecaModel {
   String? observacao;
   String? defeitoEstadoProd;
   DateTime? dataEmissao;
-  List<AstecaTipoPendenciaModel>? astecaTipoPendencia;
+  List<AstecaTipoPendenciaModel>? astecaTipoPendencias;
   AstecaEndClienteModel? astecaEndCliente;
   AstecaMotivoModel? astecaMotivo;
   DocumentoFiscalModel? documentoFiscal;
@@ -26,7 +26,7 @@ class AstecaModel {
     this.observacao,
     this.defeitoEstadoProd,
     this.dataEmissao,
-    this.astecaTipoPendencia,
+    this.astecaTipoPendencias,
     this.astecaEndCliente,
     this.astecaMotivo,
     this.documentoFiscal,
@@ -57,7 +57,7 @@ class AstecaModel {
               }).toList()
             : null,
         funcionario: FuncionarioModel.fromJson(json['funcionario'].first),
-        astecaTipoPendencia: json['pendencia'] != null
+        astecaTipoPendencias: json['pendencia'] != null
             ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
                 return AstecaTipoPendenciaModel.fromJson(data);
               }).toList()

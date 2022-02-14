@@ -46,7 +46,7 @@ class _AstecaListViewState extends State<AstecaListView> {
 
       controller.filtroAsteca.idAsteca = '';
       controller.filtroAsteca.documentoFiscal!.cpfCnpj = '';
-      controller.filtroAsteca.documentoFiscal!.numDocFiscal = null;
+      controller.filtroAsteca.documentoFiscal!.numDocFiscal = '';
       //Atualiza o status para carregado
       setState(() {
         controller.carregado = true;
@@ -103,14 +103,14 @@ class _AstecaListViewState extends State<AstecaListView> {
     return Colors.red;
   }
 
-  tipoAsteca(int tipoAsteca) {
+  tipoAsteca(int? tipoAsteca) {
     switch (tipoAsteca) {
       case 1:
         return 'Cliente';
       case 2:
         return 'Estoque';
       default:
-        return '';
+        return 'Aguardando tipo de asteca';
     }
   }
 
@@ -332,16 +332,19 @@ class _AstecaListViewState extends State<AstecaListView> {
                             )),
                         Expanded(
                             child: TextComponent(
-                          tipoAsteca(asteca[index].tipoAsteca!),
+                          tipoAsteca(asteca[index].tipoAsteca),
                         )),
                         Expanded(
                             flex: 2,
-                            child: TextComponent(
-                              asteca[index]
-                                  .astecaTipoPendencia!
-                                  .first
-                                  .descricao!,
-                            )),
+                            child:
+                                asteca[index].astecaTipoPendencias!.isNotEmpty
+                                    ? TextComponent(
+                                        asteca[index]
+                                            .astecaTipoPendencias!
+                                            .last
+                                            .descricao!,
+                                      )
+                                    : TextComponent('Aguardando pendência')),
                         Expanded(
                             flex: 3,
                             child: TextComponent(

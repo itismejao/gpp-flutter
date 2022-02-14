@@ -272,4 +272,17 @@ class PendenciaRepository {
       throw error;
     }
   }
+
+  Future<bool> criar(
+      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+    Response response = await api.post(
+        '/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
 }

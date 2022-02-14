@@ -6,7 +6,7 @@ class DocumentoFiscalModel {
   int? idFilialVenda;
   String? nome;
   dynamic cpfCnpj;
-  int? numDocFiscal;
+  dynamic? numDocFiscal;
   String? serieDocFiscal;
   DateTime? dataEmissao;
   ItemDocFiscalModel? itemDocFiscal;
