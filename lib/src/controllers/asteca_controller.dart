@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
@@ -8,10 +9,13 @@ import 'package:gpp/src/repositories/AstecaRepository.dart';
 class AstecaController {
   bool abrirDropDownButton = false;
 
+  String? pendenciaFiltro;
+
   int step = 4;
   bool isOpenFilter = false;
-  int pagina = 1;
+
   bool carregado = false;
+  PaginaModel pagina = PaginaModel(atual: 1);
   late AstecaTipoPendenciaModel astecaTipoPendencia;
   List<AstecaTipoPendenciaModel> astecaTipoPendencias = [];
 

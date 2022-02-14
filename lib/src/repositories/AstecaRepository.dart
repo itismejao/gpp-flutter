@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 
@@ -26,14 +27,15 @@ class AstecaRepository {
     }
   }
 
-  Future<List<AstecaModel>> buscarTodas(int pagina,
-      {AstecaModel? filtroAsteca}) async {
+  Future<List> buscarTodas(int pagina,
+      {AstecaModel? filtroAsteca, String? pendencia}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'idAsteca': filtroAsteca?.idAsteca ?? '',
       'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
       'numeroNotaFiscalVenda':
           filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+      'pendencia': pendencia?.toString() ?? '',
     };
 
     Response response =
@@ -42,9 +44,13 @@ class AstecaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaModel> astecas =
-          data.map<AstecaModel>((data) => AstecaModel.fromJson(data)).toList();
-      return astecas;
+      List<AstecaModel> astecas = data['astecas']
+          .map<AstecaModel>((data) => AstecaModel.fromJson(data))
+          .toList();
+
+      //Obtém a pagina
+      PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
+      return [astecas, pagina];
     } else {
       var error = json.decode(response.body)['error'];
       throw error;

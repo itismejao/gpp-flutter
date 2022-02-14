@@ -18,6 +18,7 @@ class AstecaModel {
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
+
   AstecaModel({
     this.idAsteca,
     this.tipoAsteca,

@@ -30,12 +30,19 @@ class _AstecaListViewState extends State<AstecaListView> {
 
   late final AstecaController controller;
 
-  buscar() async {
+  buscarTodas() async {
     NotifyController notify = NotifyController(context: context);
     try {
-      controller.astecas = await controller.repository.buscarTodas(
-          controller.pagina,
-          filtroAsteca: controller.filtroAsteca);
+      setState(() {
+        controller.carregado = false;
+      });
+      var retorno = await controller.repository.buscarTodas(
+          controller.pagina.atual!,
+          filtroAsteca: controller.filtroAsteca,
+          pendencia: controller.pendenciaFiltro);
+
+      controller.astecas = retorno[0];
+      controller.pagina = retorno[1];
 
       controller.filtroAsteca.idAsteca = '';
       controller.filtroAsteca.documentoFiscal!.cpfCnpj = '';
@@ -54,8 +61,8 @@ class _AstecaListViewState extends State<AstecaListView> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         //proxima página
-        controller.pagina++;
-        await buscar();
+        controller.pagina.atual = controller.pagina.atual! + 1;
+        await buscarTodas();
       }
     });
   }
@@ -68,7 +75,9 @@ class _AstecaListViewState extends State<AstecaListView> {
 
     //Iniciliza o controlador de asteca
     controller = AstecaController();
-    buscar();
+
+    //Função responsável por buscar a lista de astecas
+    buscarTodas();
 
     //ScrollController
     proximaPagina();
@@ -90,8 +99,18 @@ class _AstecaListViewState extends State<AstecaListView> {
       return Colors.yellow;
     }
     //Se os dias em atraso for maior que 30, situação = vermelha
-    if (diasEmAtraso > 30) {
-      return Colors.red;
+
+    return Colors.red;
+  }
+
+  tipoAsteca(int tipoAsteca) {
+    switch (tipoAsteca) {
+      case 1:
+        return 'Cliente';
+      case 2:
+        return 'Estoque';
+      default:
+        return '';
     }
   }
 
@@ -107,7 +126,6 @@ class _AstecaListViewState extends State<AstecaListView> {
         }
 
         return ListView.builder(
-            controller: scrollController,
             itemCount: controller.astecas.length,
             itemBuilder: (context, index) {
               return _buildListItem(controller.astecas, index, context);
@@ -245,28 +263,44 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          flex: 2,
                           child: Row(
                             children: [
-                              Icon(Icons.description),
-                              SizedBox(
-                                width: 12,
-                              ),
                               TextComponent(
-                                asteca[index].documentoFiscal!.nome!,
+                                'ID',
                                 fontWeight: FontWeight.bold,
                               )
                             ],
                           ),
                         ),
                         Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                            flex: 2,
                             child: TextComponent(
-                              'ID: ' + asteca[index].idAsteca.toString(),
-                            ),
-                          ),
-                        ),
+                              'Nome',
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent(
+                              'Data de abertura',
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Expanded(
+                            child: TextComponent(
+                          'Tipo asteca',
+                          fontWeight: FontWeight.bold,
+                        )),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent(
+                              'Pendência',
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Expanded(
+                            flex: 3,
+                            child: TextComponent(
+                              'Defeito',
+                              fontWeight: FontWeight.bold,
+                            ))
                       ],
                     ),
                     Divider(),
@@ -274,62 +308,46 @@ class _AstecaListViewState extends State<AstecaListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: TextComponent(
-                            'Nota Fiscal: ' +
-                                controller.astecas[index].documentoFiscal!
-                                    .numDocFiscal
-                                    .toString(),
+                          child: Row(
+                            children: [
+                              TextComponent(
+                                '#' + asteca[index].idAsteca.toString(),
+                              )
+                            ],
                           ),
                         ),
-                        Spacer(flex: 1),
                         Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: TextComponent('Serie: ' +
-                                controller.astecas[index].documentoFiscal!
-                                    .serieDocFiscal!),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextComponent(
-                            'Filial de Venda: ' +
-                                controller.astecas[index].documentoFiscal!
-                                    .idFilialVenda
-                                    .toString(),
-                          ),
-                        ),
-                        Spacer(flex: 1),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                            flex: 2,
                             child: TextComponent(
-                              'Data de Abertura: ' +
-                                  DateFormat('dd-MM-yyyy').format(
-                                      controller.astecas[index].dataEmissao!),
-                            ),
-                          ),
+                              asteca[index].documentoFiscal?.nome ?? '',
+                            )),
+                        VerticalDivider(
+                          color: Colors.red,
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
+                        Expanded(
+                            flex: 2,
                             child: TextComponent(
-                              'Defeito: ' +
-                                  controller.astecas[index].defeitoEstadoProd!,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
+                              DateFormat('yyyy-MM-dd')
+                                  .format(asteca[index].dataEmissao!),
+                            )),
+                        Expanded(
+                            child: TextComponent(
+                          tipoAsteca(asteca[index].tipoAsteca!),
+                        )),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent(
+                              asteca[index]
+                                  .astecaTipoPendencia!
+                                  .first
+                                  .descricao!,
+                            )),
+                        Expanded(
+                            flex: 3,
+                            child: TextComponent(
+                              asteca[index].defeitoEstadoProd!,
+                            ))
+                      ],
                     ),
                   ],
                 ),
@@ -362,7 +380,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         controller.filtroAsteca.idAsteca = value;
                         //Limpa o formúlario
                         controller.filtroFormKey.currentState!.reset();
-                        buscar();
+                        buscarTodas();
                       },
                       prefixIcon: Icon(
                         Icons.search,
@@ -398,6 +416,24 @@ class _AstecaListViewState extends State<AstecaListView> {
                     children: [
                       Expanded(
                         child: InputComponent(
+                          label: 'Pendência:',
+                          maxLines: 1,
+                          onChanged: (value) {
+                            controller.pendenciaFiltro = value;
+                            ;
+                          },
+                          hintText: 'Digite a pendência',
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
                           label: 'CPF ou CNPJ:',
                           maxLines: 1,
                           onChanged: (value) {
@@ -429,7 +465,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                       children: [
                         ButtonComponent(
                             onPressed: () {
-                              buscar();
+                              buscarTodas();
                             },
                             text: 'Pesquisar')
                       ],
@@ -439,11 +475,63 @@ class _AstecaListViewState extends State<AstecaListView> {
               ),
             ),
           ),
-          Divider(),
           Container(
-            height: media.height * 0.8,
+            height: media.height * 0.7,
             child: controller.carregado ? _buildList() : LoadingComponent(),
           ),
+          Container(
+            height: media.height * 0.10,
+            width: media.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                controller.pagina.total != null
+                    ? TextComponent('Total de páginas: ' +
+                        controller.pagina.total.toString())
+                    : TextComponent('Total de páginas: 0'),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.first_page),
+                        onPressed: () {
+                          controller.pagina.atual = 1;
+                          buscarTodas();
+                        }),
+                    IconButton(
+                        icon: const Icon(
+                          Icons.navigate_before_rounded,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          if (controller.pagina.atual! > 0) {
+                            controller.pagina.atual =
+                                controller.pagina.atual! - 1;
+                            buscarTodas();
+                          }
+                        }),
+                    TextComponent(controller.pagina.atual.toString()),
+                    IconButton(
+                        icon: Icon(Icons.navigate_next_rounded),
+                        onPressed: () {
+                          if (controller.pagina.atual !=
+                              controller.pagina.total) {
+                            controller.pagina.atual =
+                                controller.pagina.atual! + 1;
+                          }
+
+                          buscarTodas();
+                        }),
+                    IconButton(
+                        icon: Icon(Icons.last_page),
+                        onPressed: () {
+                          controller.pagina.atual = controller.pagina.total;
+                          buscarTodas();
+                        }),
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
