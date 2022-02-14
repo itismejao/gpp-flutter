@@ -14,4 +14,8 @@ class PecasLinhaController {
   Future<bool> create() async {
     return await pecasLinhaRepository.create(pecasLinhaModel);
   }
+
+  Future<List<PecasLinhaModel>> buscarTodos() async {
+    return await pecasLinhaRepository.buscarTodos();
+  }
 }

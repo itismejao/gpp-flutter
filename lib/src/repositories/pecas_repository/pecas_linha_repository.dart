@@ -13,6 +13,21 @@ class PecasLinhaRepository {
     required this.api,
   });
 
+  Future<List<PecasLinhaModel>> buscarTodos() async {
+    Response response = await api.get('/peca-linha');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
+
+      return pecasLinha;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
   Future<bool> create(PecasLinhaModel pecasLinhaModel) async {
     print(jsonEncode(pecasLinhaModel.toJson()));
 
