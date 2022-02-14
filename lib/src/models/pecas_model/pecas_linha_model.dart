@@ -13,7 +13,7 @@ class PecasLinhaModel {
 
   factory PecasLinhaModel.fromJson(Map<String, dynamic> json) {
     return PecasLinhaModel(
-      // id_peca_linha: json['id_peca_linha'],
+      id_peca_linha: json['id_peca_linha'],
       linha: json['linha'],
       // active: json['active'],
     );

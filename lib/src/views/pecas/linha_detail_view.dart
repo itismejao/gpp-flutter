@@ -21,7 +21,8 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   // final items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  PecasLinhaModel? selectedLinha;
+  PecasLinhaModel selectedLinha = new PecasLinhaModel(id_peca_linha: 1,linha: 'COZINHA');
+  List<PecasLinhaModel> _pecasLinha = [];
 
   @override
   void initState() {
@@ -118,12 +119,12 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<PecasLinhaModel>(
-                              value: selectedLinha,
+                              value: _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha.id_peca_linha,  orElse: () => _pecasLinha[0]),
                               items: _pecasLinha
                                   .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
-                                        value: dadosLinha,
-                                        child: Text(dadosLinha.linha.toString()),
-                                      ))
+                                value: dadosLinha,
+                                child: Text(dadosLinha.linha!),
+                              ))
                                   .toList(),
                               onChanged: (value) {
                                 setState(() {
