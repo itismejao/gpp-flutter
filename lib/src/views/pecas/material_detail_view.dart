@@ -18,7 +18,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
-  PecasGrupoModel? selectedGrupo = new PecasGrupoModel(id_peca_grupo_material: 2, grupo: 'teste');
+  PecasGrupoModel? selectedGrupo;
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +102,12 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<PecasGrupoModel>(
-                                value: _pecasGrupo.firstWhere(
-                                    (element) => element.id_peca_grupo_material == selectedGrupo!.id_peca_grupo_material,
-                                    orElse: () => _pecasGrupo[0]),
+                                hint: Text('Selecione'),
+                                value: selectedGrupo?.id_peca_grupo_material == null
+                                    ? selectedGrupo
+                                    : _pecasGrupo.firstWhere(
+                                        (element) => element.id_peca_grupo_material == selectedGrupo!.id_peca_grupo_material,
+                                        orElse: () => _pecasGrupo[0]),
                                 items: _pecasGrupo
                                     .map((dadosGrupo) => DropdownMenuItem<PecasGrupoModel>(
                                           value: dadosGrupo,
@@ -159,7 +162,11 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
               children: [
                 ButtonComponent(
                   onPressed: () {
-                    _pecasMaterialController.create();
+                    if (selectedGrupo?.id_peca_grupo_material == null) {
+                      print('Selecione o grupo');
+                    } else {
+                      _pecasMaterialController.create();
+                    }
                   },
                   text: 'Salvar',
                 ),

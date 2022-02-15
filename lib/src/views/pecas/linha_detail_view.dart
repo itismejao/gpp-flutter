@@ -21,7 +21,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   // final items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  PecasLinhaModel selectedLinha = new PecasLinhaModel(id_peca_linha: 1, linha: 'COZINHA');
+  PecasLinhaModel? selectedLinha;
   List<PecasLinhaModel> _pecasLinha = [];
 
   @override
@@ -119,8 +119,11 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<PecasLinhaModel>(
-                              value: _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha.id_peca_linha,
-                                  orElse: () => _pecasLinha[0]),
+                              hint: Text('Selecione'),
+                              value: selectedLinha?.id_peca_linha == null
+                                  ? selectedLinha
+                                  : _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha!.id_peca_linha,
+                                      orElse: () => _pecasLinha[0]),
                               items: _pecasLinha
                                   .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
                                         value: dadosLinha,
@@ -163,7 +166,11 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             children: [
               ButtonComponent(
                 onPressed: () {
-                  _pecasEspecieController.create();
+                  if (selectedLinha?.id_peca_linha == null) {
+                    print('Selecione a linha');
+                  } else {
+                    _pecasEspecieController.create();
+                  }
                 },
                 text: 'Salvar',
               ),
