@@ -108,13 +108,15 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                                 items: _pecasGrupo
                                     .map((dadosGrupo) => DropdownMenuItem<PecasGrupoModel>(
                                           value: dadosGrupo,
-                                          child: Text(dadosGrupo.grupo.toString()),
+                                          child: Text(dadosGrupo.grupo.toString().toUpperCase()),
                                         ))
                                     .toList(),
                                 onChanged: (value) {
                                   setState(() {
                                     selectedGrupo = value!;
                                   });
+                                  _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                      value!.id_peca_grupo_material;
                                 },
                                 icon: Icon(
                                   Icons.arrow_drop_down_rounded,
@@ -136,7 +138,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                     onChanged: (value) {
                       _pecasMaterialController.pecasMaterialModel.material = value;
                       _pecasMaterialController.pecasMaterialModel.situacao = 1;
-                      _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material = 21;
+                      // _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material = 21;
                     },
                   ),
                 ),

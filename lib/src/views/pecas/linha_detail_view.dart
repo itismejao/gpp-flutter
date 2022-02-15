@@ -124,13 +124,14 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                               items: _pecasLinha
                                   .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
                                         value: dadosLinha,
-                                        child: Text(dadosLinha.linha!),
+                                        child: Text(dadosLinha.linha!.toString().toUpperCase()),
                                       ))
                                   .toList(),
                               onChanged: (value) {
                                 setState(() {
                                   selectedLinha = value!;
                                 });
+                                _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
                               },
                               icon: Icon(
                                 Icons.arrow_drop_down_rounded,
@@ -162,7 +163,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             children: [
               ButtonComponent(
                 onPressed: () {
-                  // _pecasEspecieController.create();
+                  _pecasEspecieController.create();
                 },
                 text: 'Salvar',
               ),
