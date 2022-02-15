@@ -18,7 +18,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
-  PecasGrupoModel? selectedGrupo;
+  PecasGrupoModel? selectedGrupo = new PecasGrupoModel(id_peca_grupo_material: 2, grupo: 'teste');
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +95,16 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                           final List<PecasGrupoModel> _pecasGrupo = snapshot.data;
 
                           return Container(
-                            // padding: EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+                            padding: EdgeInsets.only(left: 12, right: 12),
                             decoration: BoxDecoration(
                               color: Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<PecasGrupoModel>(
-                                value: selectedGrupo,
+                                value: _pecasGrupo.firstWhere(
+                                    (element) => element.id_peca_grupo_material == selectedGrupo!.id_peca_grupo_material,
+                                    orElse: () => _pecasGrupo[0]),
                                 items: _pecasGrupo
                                     .map((dadosGrupo) => DropdownMenuItem<PecasGrupoModel>(
                                           value: dadosGrupo,

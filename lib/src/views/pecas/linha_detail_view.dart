@@ -21,7 +21,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   // final items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  PecasLinhaModel selectedLinha = new PecasLinhaModel(id_peca_linha: 1,linha: 'COZINHA');
+  PecasLinhaModel selectedLinha = new PecasLinhaModel(id_peca_linha: 1, linha: 'COZINHA');
   List<PecasLinhaModel> _pecasLinha = [];
 
   @override
@@ -112,19 +112,20 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                         final List<PecasLinhaModel> _pecasLinha = snapshot.data;
 
                         return Container(
-                          // padding: EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+                          padding: EdgeInsets.only(left: 12, right: 12),
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<PecasLinhaModel>(
-                              value: _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha.id_peca_linha,  orElse: () => _pecasLinha[0]),
+                              value: _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha.id_peca_linha,
+                                  orElse: () => _pecasLinha[0]),
                               items: _pecasLinha
                                   .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
-                                value: dadosLinha,
-                                child: Text(dadosLinha.linha!),
-                              ))
+                                        value: dadosLinha,
+                                        child: Text(dadosLinha.linha!),
+                                      ))
                                   .toList(),
                               onChanged: (value) {
                                 setState(() {
