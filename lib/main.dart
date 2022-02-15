@@ -58,9 +58,11 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/addressing/addressing_list._view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
 import 'package:gpp/src/views/asteca/asteca_list_view.dart';
 
@@ -111,7 +113,7 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: AddressingListView(
+                  page: CadastroCorredorView(
                   ),
                 ));
 
@@ -205,6 +207,8 @@ class _GppAppState extends State<GppApp> {
                       ),
                     ));
           }
+
+
 
           if (uri.pathSegments.length == 2 &&
               uri.pathSegments.first == 'funcionalities') {
