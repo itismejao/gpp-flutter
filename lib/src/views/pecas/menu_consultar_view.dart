@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
+import 'package:gpp/src/views/pecas/cores_list_view.dart';
+import 'package:gpp/src/views/pecas/linha_list_view.dart';
+import 'package:gpp/src/views/pecas/material_list_view.dart';
+import 'package:gpp/src/views/pecas/pecas_list_view.dart';
 
 class MenuConsultarView extends StatefulWidget {
   const MenuConsultarView({Key? key}) : super(key: key);
@@ -125,13 +129,13 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
   _pecasNavigator() {
     switch (selected) {
       case 1:
-        return Text('Peças');
+        return PecasListView();
       case 2:
-        return Text('Cores');
+        return CoresListView();
       case 3:
-        return Text('Fabricação');
+        return MaterialListView();
       case 4:
-        return Text('Linha e Espécie');
+        return LinhaListView();
     }
   }
 }
