@@ -75,7 +75,9 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
@@ -111,7 +113,7 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: PecasDetailView(),
+                  page: MenuCadastrarView(),
                 ));
 
         // Handle '/'
