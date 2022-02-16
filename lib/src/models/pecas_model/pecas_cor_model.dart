@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PecasCorModel {
-  // int? id_peca_cor;
+  int? id_peca_cor;
   String? cor;
   String? sigla;
   // int? active;
 
   PecasCorModel({
-    // this.id_peca_cor,
+    this.id_peca_cor,
     this.cor,
     this.sigla,
     // this.active,
@@ -15,7 +15,7 @@ class PecasCorModel {
 
   factory PecasCorModel.fromJson(Map<String, dynamic> json) {
     return PecasCorModel(
-      // id_peca_cor: json['id_peca_cor'],
+      id_peca_cor: json['id_peca_cor'],
       cor: json['cor'],
       sigla: json['sigla'],
       // active: json['active'],

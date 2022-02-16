@@ -9,7 +9,17 @@ class PecasCorController {
   late final PecasCorRepository pecasCorRepository = PecasCorRepository(api: gppApi);
   PecasCorModel pecasCorModel = PecasCorModel();
 
+  List<PecasCorModel> listaPecasCorModel = [];
+
   Future<bool> create() async {
     return await pecasCorRepository.create(pecasCorModel);
+  }
+
+  Future<void> buscarTodos() async {
+    listaPecasCorModel = await pecasCorRepository.buscarTodos();
+  }
+
+  Future<List<PecasCorModel>> buscarTodos2() async {
+    return await pecasCorRepository.buscarTodos();
   }
 }
