@@ -58,6 +58,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/addressing/addressing_list._view.dart';
@@ -209,6 +210,8 @@ class _GppAppState extends State<GppApp> {
                       ),
                     ));
           }
+
+
 
           if (uri.pathSegments.length == 2 &&
               uri.pathSegments.first == 'funcionalities') {

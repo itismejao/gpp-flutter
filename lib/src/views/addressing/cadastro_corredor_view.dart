@@ -87,14 +87,23 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                           });
                         },
                       ),
-                 
-                       InputComponent(
-                        label: 'Piso',
+                      InputComponent(
+                        label: 'Filial',
                         initialValue: corredorEnderecamentoReplacement.id_corredor.toString(),
-                        hintText: 'Digite o piso',
+                        hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
                             corredorEnderecamentoReplacement.id_corredor = 500;
+                          });
+                        },
+                      ),
+                       InputComponent(
+                        label: 'Piso',
+                        initialValue: corredorEnderecamentoReplacement.id_piso.toString(),
+                        hintText: 'Digite o piso',
+                        onChanged: (value) {
+                          setState(() {
+                            corredorEnderecamentoReplacement.id_piso = 500;
                           });
                         },
                       ),
@@ -189,8 +198,9 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                             child: Row(
                               children: [
                                  Expanded(
-                                      child: TextComponent(controller
-                                        .corredorEnderecamentoReplacements[index].desc_corredor!)),
+                                      child: 
+                                      TextComponent(controller.
+                                      corredorEnderecamentoReplacements[index].desc_corredor!)),
                                 Expanded(
                                     child: Row(
                                 )),

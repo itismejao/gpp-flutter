@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/addressing_floor_controller.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
+import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
@@ -9,9 +11,11 @@ import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
+import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
 
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class AddressingListView extends StatefulWidget {
   const AddressingListView({Key? key}) : super(key: key);
@@ -75,9 +79,9 @@ class _AddressingListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: pisoEnderecamentoReplacement.id_piso == null
-                  ? Text("Cadastro do Piso")
-                  : Text("Atualizar motivo de troca de peça"),
+              title:  Text("Cadastro do Piso"),
+            // pisoEnderecamentoReplacement.id_piso == null
+                   
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -112,19 +116,19 @@ class _AddressingListViewState
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            pisoEnderecamentoReplacement.id_piso == null
-                                ? ButtonComponent(
+                          //  pisoEnderecamentoReplacement.id_piso == null
+                                 ButtonComponent(
                                     onPressed: () {
                                       handleCreate(
                                           context, pisoEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
-                                :ButtonComponent(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      handleCreate(context, pisoEnderecamentoReplacement);
-                                    },
-                                    text: 'Cancelar')
+                                // :ButtonComponent(
+                                //     color: Colors.red,
+                                //     onPressed: () {
+                                //       handleCreate(context, pisoEnderecamentoReplacement);
+                                //     },
+                                //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -202,11 +206,12 @@ class _AddressingListViewState
                                 Expanded(
                                   child: Row(
                                     children: [
-                                     ButtonComponent(
-                                          onPressed: () {
-                                           // openForm(context, controller.corredorEnderecamentoReplacement);
-                                          },
-                                          text: 'Prateleira'),
+                                      ButtonComponent(
+                                        onPressed: () {
+                                         // openForm(context, controller.pisoEnderecamentoReplacement);
+                                       //  Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroCorredorView(),));
+                                        },
+                                        text: 'Adicionar'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
@@ -234,12 +239,6 @@ class _AddressingListViewState
         ),
       ),
     );
-
-
-    
-
-
-
-
   }
-}
+}  
+
