@@ -1,38 +1,40 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/corredor_enderecamento_model.dart';
+import 'package:gpp/src/models/estante_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class PisoEnderecamentoRepository {
+class EstanteEnderecamentoRepository {
   ApiService api;
-  String path = '/enderecamento-piso';
+  String path = '/enderecamento-estante';
 
-  PisoEnderecamentoRepository({
+  EstanteEnderecamentoRepository({
     required this.api,
   });
 
-  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
+  Future<List<EstanteEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PisoEnderecamentoModel> enderecamentoPiso = data
-          .map<PisoEnderecamentoModel>(
-              (data) => PisoEnderecamentoModel.fromJson(data))
+      List<EstanteEnderecamentoModel> enderecamentoCorredor = data
+          .map<EstanteEnderecamentoModel>(
+              (data) => EstanteEnderecamentoModel.fromJson(data))
           .toList();
 
-      return enderecamentoPiso;
+      return enderecamentoCorredor;
     } else {
       var error = json.decode(response.body)['error'];
       throw Exception(error);
     }
   }
 
-  Future<bool> create(PisoEnderecamentoModel enderecamentoPiso) async {
-    Response response = await api.post(path, enderecamentoPiso.toJson());
+  Future<bool> create(EstanteEnderecamentoModel enderecamentoEstante) async {
+    Response response = await api.post(path, enderecamentoEstante.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -55,9 +57,9 @@ class PisoEnderecamentoRepository {
   //   }
   // }
 
-  Future<bool> excluir(PisoEnderecamentoModel enderecamentoPiso) async {
+  Future<bool> excluir(EstanteEnderecamentoModel enderecamentoEstante) async {
     Response response = await api.delete(
-      path + '/' + enderecamentoPiso.id_piso.toString(),
+      path + '/' + enderecamentoEstante.id_estante.toString(),
     );
 
     if (response.statusCode == StatusCode.OK) {

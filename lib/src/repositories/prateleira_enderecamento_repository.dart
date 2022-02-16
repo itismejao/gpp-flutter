@@ -1,38 +1,38 @@
 import 'dart:convert';
 
-import 'package:gpp/src/models/piso_enderecamento_model.dart';
+import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class PisoEnderecamentoRepository {
+class PrateleiraEnderecamentoRepository {
   ApiService api;
-  String path = '/enderecamento-piso';
+  String path = '/enderecamento-prateleira';
 
-  PisoEnderecamentoRepository({
+  PrateleiraEnderecamentoRepository({
     required this.api,
   });
 
-  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
+  Future<List<PrateleiraEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PisoEnderecamentoModel> enderecamentoPiso = data
-          .map<PisoEnderecamentoModel>(
-              (data) => PisoEnderecamentoModel.fromJson(data))
+      List<PrateleiraEnderecamentoModel> enderecamentoCorredor = data
+          .map<PrateleiraEnderecamentoModel>(
+              (data) => PrateleiraEnderecamentoModel.fromJson(data))
           .toList();
 
-      return enderecamentoPiso;
+      return enderecamentoCorredor;
     } else {
       var error = json.decode(response.body)['error'];
       throw Exception(error);
     }
   }
 
-  Future<bool> create(PisoEnderecamentoModel enderecamentoPiso) async {
-    Response response = await api.post(path, enderecamentoPiso.toJson());
+  Future<bool> create(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
+    Response response = await api.post(path, enderecamentoPrateleira.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -55,9 +55,9 @@ class PisoEnderecamentoRepository {
   //   }
   // }
 
-  Future<bool> excluir(PisoEnderecamentoModel enderecamentoPiso) async {
+  Future<bool> excluir(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
     Response response = await api.delete(
-      path + '/' + enderecamentoPiso.id_piso.toString(),
+      path + '/' + enderecamentoPrateleira.id_estante.toString(),
     );
 
     if (response.statusCode == StatusCode.OK) {

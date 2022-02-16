@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/addressing_floor_controller.dart';
+import 'package:gpp/src/controllers/enderecamento_box_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/models/piso_enderecamento_model.dart';
+import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
-import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
-import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
 
 
-import 'package:gpp/src/shared/repositories/styles.dart';
-
-class AddressingListView extends StatefulWidget {
-  const AddressingListView({Key? key}) : super(key: key);
+class CadastroBoxView extends StatefulWidget {
+  const CadastroBoxView({ Key? key }) : super(key: key);
 
   @override
-  _AddressingListViewState createState() =>
-      _AddressingListViewState();
+  _CadastroBoxViewState createState() => _CadastroBoxViewState();
 }
 
-class _AddressingListViewState
-    extends State<AddressingListView> {
-  late AddressingFloorController controller;
+class _CadastroBoxViewState extends State<CadastroBoxView> {
+  late EnderecamentoBoxController controller;
+
 
   fetchAll() async {
     //Carrega lista de motivos de defeito de peças
-    controller.pisoEnderecamentoReplacements =
+    controller.boxEnderecamentoReplacements =
         await controller.repository.buscarTodos();
 
     controller.isLoaded = true;
@@ -38,26 +33,26 @@ class _AddressingListViewState
     });
   }
 
-  handleCreate(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) async {
+  handleCreate(context,BoxEnderecamentoModel boxEnderecamentoReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await controller.repository.create(pisoEnderecamentoReplacement)) {
+      if (await controller.repository.create(boxEnderecamentoReplacement)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Motivo de peça adicionado com sucesso!');
+        notify.sucess('Box adicionada com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  handleDelete(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) async {
+  handleDelete(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify
-          .alert("você deseja excluir o piso?")) {
-        if (await controller.repository.excluir(pisoEnderecamentoReplacement)) {
-          notify.sucess("Piso excluído!");
+          .alert("você deseja excluir o Box?")) {
+        if (await controller.repository.excluir(boxEnderecamentoReplacement)) {
+          notify.sucess("Box excluído!");
           //Atualiza a lista de motivos
           fetchAll();
         }
@@ -66,8 +61,7 @@ class _AddressingListViewState
       notify.error(e.toString());
     }
   }
-
-  openForm(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
+openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -75,8 +69,8 @@ class _AddressingListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: pisoEnderecamentoReplacement.id_piso == null
-                  ? Text("Cadastro do Piso")
+              title: boxEnderecamentoReplacement.id_box == null
+                  ? Text("Cadastro do Box")
                   : Text("Atualizar motivo de troca de peça"),
               actions: <Widget>[
                 Padding(
@@ -84,22 +78,23 @@ class _AddressingListViewState
                   child: Column(
                     children: [
                       InputComponent(
-                        label: 'Piso',
-                        initialValue: pisoEnderecamentoReplacement.desc_piso,
-                        hintText: 'Digite o nome do Piso',
+                        label: 'Box',
+                        initialValue: boxEnderecamentoReplacement.desc_box,
+                        hintText: 'Digite o nome do Box',
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.desc_piso = value!;
+                            boxEnderecamentoReplacement.desc_box = value!;
                           });
                         },
                       ),
-                      InputComponent(
-                        label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
-                        hintText: 'Digite a filial',
+                 
+                       InputComponent(
+                        label: 'Corredor',
+                        initialValue: boxEnderecamentoReplacement.id_box.toString(),
+                        hintText: 'Digite o corredor',
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = 500;
+                            boxEnderecamentoReplacement.id_box = 500;
                           });
                         },
                       ),
@@ -112,17 +107,17 @@ class _AddressingListViewState
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            pisoEnderecamentoReplacement.id_piso == null
+                            boxEnderecamentoReplacement.id_box == null
                                 ? ButtonComponent(
                                     onPressed: () {
                                       handleCreate(
-                                          context, pisoEnderecamentoReplacement);
+                                          context, boxEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
                                 :ButtonComponent(
                                     color: Colors.red,
                                     onPressed: () {
-                                      handleCreate(context, pisoEnderecamentoReplacement);
+                                      handleCreate(context, boxEnderecamentoReplacement);
                                     },
                                     text: 'Cancelar')
                           ],
@@ -144,7 +139,7 @@ class _AddressingListViewState
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = AddressingFloorController();
+    controller = EnderecamentoBoxController();
     //Quando o widget for inserido na árvore chama o fetchAll
     fetchAll();
   }
@@ -162,10 +157,10 @@ class _AddressingListViewState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(child: TitleComponent('Pisos')),
+                  Flexible(child: TitleComponent('Prateleira')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.pisoEnderecamentoReplacement);
+                        openForm(context, controller.boxEnderecamentoReplacement);
                       },
                       text: 'Adicionar')
                 ],
@@ -183,7 +178,7 @@ class _AddressingListViewState
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: controller.pisoEnderecamentoReplacements.length,
+                      itemCount: controller.boxEnderecamentoReplacements.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -193,20 +188,20 @@ class _AddressingListViewState
                                 : Colors.grey.shade50,
                             child: Row(
                               children: [
-                                Expanded(
-                                    child: TextComponent(controller
-                                        .pisoEnderecamentoReplacements[index].desc_piso!)),
+                                 Expanded(
+                                      child: TextComponent(controller
+                                        .boxEnderecamentoReplacements[index].desc_box!)),
                                 Expanded(
                                     child: Row(
                                 )),
                                 Expanded(
                                   child: Row(
                                     children: [
-                                     ButtonComponent(
+                                        ButtonComponent(
                                           onPressed: () {
                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
-                                          text: 'Prateleira'),
+                                          text: 'Box'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
@@ -216,7 +211,7 @@ class _AddressingListViewState
                                                 handleDelete(
                                                     context,
                                                     controller
-                                                            .pisoEnderecamentoReplacements[
+                                                            .boxEnderecamentoReplacements[
                                                         index]),
                                               }),
                                     ],
@@ -234,12 +229,5 @@ class _AddressingListViewState
         ),
       ),
     );
-
-
-    
-
-
-
-
   }
-}
+ }
