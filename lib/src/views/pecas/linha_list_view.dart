@@ -80,7 +80,6 @@ class _LinhaListViewState extends State<LinhaListView> {
               return CircularProgressIndicator();
             } else {
               return Container(
-                width: 1000,
                 height: 500,
                 child: ListView.builder(
                   itemCount: _pecasLinha.length,

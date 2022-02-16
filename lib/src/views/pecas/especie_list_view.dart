@@ -84,7 +84,6 @@ class _EspecieListViewState extends State<EspecieListView> {
               return CircularProgressIndicator();
             } else {
               return Container(
-                width: 1000,
                 height: 500,
                 child: ListView.builder(
                   itemCount: _pecasEspecie.length,

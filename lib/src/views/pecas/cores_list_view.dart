@@ -90,7 +90,6 @@ class _CoresListViewState extends State<CoresListView> {
               return CircularProgressIndicator();
             } else {
               return Container(
-                width: 1000,
                 height: 500,
                 child: ListView.builder(
                   itemCount: _pecaCor.length,

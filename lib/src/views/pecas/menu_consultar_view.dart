@@ -64,7 +64,7 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                 child: ItemMenu(
                   color: selected == 1 ? Colors.grey.shade50 : Colors.transparent,
                   borderColor: selected == 1 ? secundaryColor : Colors.transparent,
-                  data: 'Peça',
+                  data: 'Peças',
                 ),
               ),
             ),
