@@ -27,7 +27,7 @@ class _CoresListViewState extends State<CoresListView> {
       builder: (context, AsyncSnapshot snapshot) {
         print('Aqui 1');
 
-        List<PecasCorModel> _pecaCorCor = snapshot.data;
+        List<PecasCorModel> _pecaCorCor = snapshot.data ?? [];
         print('Aqui 2');
         return Container(
           width: 500,
