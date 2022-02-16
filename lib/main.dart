@@ -110,11 +110,11 @@ class _GppAppState extends State<GppApp> {
           inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
-        return MaterialPageRoute(
-            builder: (context) => HomeView(
-                  funcionalities: FuncionalitiesView(),
-                  page: MenuConsultarView(),
-                ));
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: MenuConsultarView(),
+        //         ));
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
@@ -251,11 +251,19 @@ class _GppAppState extends State<GppApp> {
                   ));
         }
 
-        if (settings.name == '/products/register') {
+        if (settings.name == '/pecas/consultar') {
           return MaterialPageRoute(
               builder: (context) => HomeView(
                     funcionalities: FuncionalitiesView(),
-                    page: PecasDetailView(),
+                    page: MenuConsultarView(),
+                  ));
+        }
+
+        if (settings.name == '/pecas/cadastrar') {
+          return MaterialPageRoute(
+              builder: (context) => HomeView(
+                    funcionalities: FuncionalitiesView(),
+                    page: MenuCadastrarView(),
                   ));
         }
 
