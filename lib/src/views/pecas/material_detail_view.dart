@@ -118,7 +118,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                                   setState(() {
                                     selectedGrupo = value!;
                                   });
-                                  _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                  _pecasMaterialController.pecasMaterialModel.id_peca_material_fabricacao =
                                       value!.id_peca_grupo_material;
                                 },
                                 icon: Icon(

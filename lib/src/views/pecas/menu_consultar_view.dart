@@ -17,7 +17,7 @@ class MenuConsultarView extends StatefulWidget {
 }
 
 class _MenuConsultarViewState extends State<MenuConsultarView> {
-  int selected = 5;
+  int selected = 1;
 
   @override
   Widget build(BuildContext context) {
