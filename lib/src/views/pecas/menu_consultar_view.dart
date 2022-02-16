@@ -3,6 +3,8 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 import 'package:gpp/src/views/pecas/cores_list_view.dart';
+import 'package:gpp/src/views/pecas/especie_list_view.dart';
+import 'package:gpp/src/views/pecas/grupo_list_view.dart';
 import 'package:gpp/src/views/pecas/linha_list_view.dart';
 import 'package:gpp/src/views/pecas/material_list_view.dart';
 import 'package:gpp/src/views/pecas/pecas_list_view.dart';
@@ -15,7 +17,7 @@ class MenuConsultarView extends StatefulWidget {
 }
 
 class _MenuConsultarViewState extends State<MenuConsultarView> {
-  int selected = 2;
+  int selected = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +100,7 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                 child: ItemMenu(
                   color: selected == 3 ? Colors.grey.shade50 : Colors.transparent,
                   borderColor: selected == 3 ? secundaryColor : Colors.transparent,
-                  data: 'Fabricação',
+                  data: 'Grupo Fabricação',
                 ),
               ),
             ),
@@ -116,7 +118,43 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                 child: ItemMenu(
                   color: selected == 4 ? Colors.grey.shade50 : Colors.transparent,
                   borderColor: selected == 4 ? secundaryColor : Colors.transparent,
-                  data: 'Linha e Espécie',
+                  data: 'Material Fabricação',
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selected = 5;
+                  });
+                },
+                child: ItemMenu(
+                  color: selected == 5 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: selected == 5 ? secundaryColor : Colors.transparent,
+                  data: 'Linha',
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selected = 6;
+                  });
+                },
+                child: ItemMenu(
+                  color: selected == 6 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: selected == 6 ? secundaryColor : Colors.transparent,
+                  data: 'Espécie',
                 ),
               ),
             ),
@@ -133,9 +171,13 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
       case 2:
         return CoresListView();
       case 3:
-        return MaterialListView();
+        return GrupoListView();
       case 4:
+        return MaterialListView();
+      case 5:
         return LinhaListView();
+      case 6:
+        return EspecieListView();
     }
   }
 }

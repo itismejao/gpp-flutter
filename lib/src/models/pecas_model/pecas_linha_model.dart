@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 class PecasLinhaModel {
   int? id_peca_linha;
   String? linha;
-  // int? active;
+  int? situacao;
 
   PecasLinhaModel({
     this.id_peca_linha,
     this.linha,
-    // this.active,
+    this.situacao,
   });
 
   factory PecasLinhaModel.fromJson(Map<String, dynamic> json) {
     return PecasLinhaModel(
       id_peca_linha: json['id_peca_linha'],
       linha: json['linha'],
-      // active: json['active'],
+      situacao: json['situacao'],
     );
   }
 

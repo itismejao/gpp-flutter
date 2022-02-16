@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 class PecasEspecieModel {
-  // int? id_peca_especie;
+  int? id_peca_especie;
   String? especie;
-  int? active;
+  int? situacao;
   int? id_peca_linha;
 
   PecasEspecieModel({
-    // this.id_peca_especie,
+    this.id_peca_especie,
     this.especie,
-    // this.active,
+    this.situacao,
     this.id_peca_linha,
   });
 
   factory PecasEspecieModel.fromJson(Map<String, dynamic> json) {
     return PecasEspecieModel(
-      // id_peca_especie: json['id_peca_especie'],
+      id_peca_especie: json['id_peca_especie'],
       especie: json['especie'],
-      // active: json['active'],
+      situacao: json['situacao'],
       id_peca_linha: json['id_peca_linha'],
     );
   }

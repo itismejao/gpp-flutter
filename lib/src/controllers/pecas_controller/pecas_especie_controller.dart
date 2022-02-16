@@ -12,4 +12,8 @@ class PecasEspecieController {
   Future<bool> create() async {
     return await pecasEspecieRepository.create(pecasEspecieModel);
   }
+
+  Future<List<PecasEspecieModel>> buscarTodos() async {
+    return await pecasEspecieRepository.buscarTodos();
+  }
 }

@@ -24,4 +24,19 @@ class PecasEspecieRepository {
       throw 'Ocorreu um erro ao tentar inserir uma espécie';
     }
   }
+
+  Future<List<PecasEspecieModel>> buscarTodos() async {
+    Response response = await api.get('/peca-especie');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<PecasEspecieModel> pecasEspecie = data.map<PecasEspecieModel>((data) => PecasEspecieModel.fromJson(data)).toList();
+
+      return pecasEspecie;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
 }

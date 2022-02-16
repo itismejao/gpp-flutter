@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
-import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
-class CoresListView extends StatefulWidget {
-  const CoresListView({Key? key}) : super(key: key);
+class EspecieListView extends StatefulWidget {
+  const EspecieListView({Key? key}) : super(key: key);
 
   @override
-  _CoresListViewState createState() => _CoresListViewState();
+  _EspecieListViewState createState() => _EspecieListViewState();
 }
 
-class _CoresListViewState extends State<CoresListView> {
-  PecasCorController _pecasCorController = PecasCorController();
-
-  @override
-  initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-  }
+class _EspecieListViewState extends State<EspecieListView> {
+  PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +31,7 @@ class _CoresListViewState extends State<CoresListView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TitleComponent(
-                      'Cores',
+                      'Espécie',
                     ),
                     ButtonComponent(
                         onPressed: () {
@@ -63,13 +57,13 @@ class _CoresListViewState extends State<CoresListView> {
               ),
             ),
             Expanded(
-              child: TextComponent('Cor'),
-            ),
-            Expanded(
-              child: TextComponent('Sigla'),
+              child: TextComponent('Espécie'),
             ),
             Expanded(
               child: TextComponent('Situação'),
+            ),
+            Expanded(
+              child: TextComponent('Linha Vinculada'),
             ),
             Expanded(
               child: Text(
@@ -82,9 +76,9 @@ class _CoresListViewState extends State<CoresListView> {
         ),
         Divider(),
         FutureBuilder(
-          future: _pecasCorController.buscarTodos(),
+          future: _pecasEspecieController.buscarTodos(),
           builder: (context, AsyncSnapshot snapshot) {
-            List<PecasCorModel> _pecaCor = snapshot.data ?? [];
+            List<PecasEspecieModel> _pecasEspecie = snapshot.data ?? [];
 
             if (!snapshot.hasData) {
               return CircularProgressIndicator();
@@ -93,7 +87,7 @@ class _CoresListViewState extends State<CoresListView> {
                 width: 1000,
                 height: 500,
                 child: ListView.builder(
-                  itemCount: _pecaCor.length,
+                  itemCount: _pecasEspecie.length,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Row(
@@ -103,19 +97,19 @@ class _CoresListViewState extends State<CoresListView> {
                           CheckboxComponent(),
                           Expanded(
                             child: Text(
-                              _pecaCor[index].id_peca_cor.toString(),
+                              _pecasEspecie[index].id_peca_especie.toString(),
                               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
-                            child: Text(_pecaCor[index].cor.toString()),
+                            child: Text(_pecasEspecie[index].especie.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecaCor[index].sigla.toString()),
+                            child: Text(_pecasEspecie[index].situacao.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecaCor[index].situacao.toString()),
+                            child: Text(_pecasEspecie[index].id_peca_linha.toString()),
                           ),
                           Expanded(
                             child: Row(

@@ -15,11 +15,11 @@ class PecasCorController {
     return await pecasCorRepository.create(pecasCorModel);
   }
 
-  Future<void> buscarTodos() async {
-    listaPecasCorModel = await pecasCorRepository.buscarTodos();
+  Future<List<PecasCorModel>> buscarTodos() async {
+    return await pecasCorRepository.buscarTodos();
   }
 
-  Future<List<PecasCorModel>> buscarTodos2() async {
-    return await pecasCorRepository.buscarTodos();
+  Future<void> buscarTodos2() async {
+    listaPecasCorModel = await pecasCorRepository.buscarTodos();
   }
 }
