@@ -10,7 +10,14 @@ import 'package:gpp/src/shared/components/title_component.dart';
 
 
 class CadastroCorredorView extends StatefulWidget {
-  const CadastroCorredorView({ Key? key }) : super(key: key);
+   
+   int? corredorEnderecamentoModel;
+   CadastroCorredorView({this.corredorEnderecamentoModel});
+        
+ // int id;
+
+ //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+ //const CadastroCorredorView({ Key? key }) : super(key: key);
 
   @override
   _CadastroCorredorViewState createState() => _CadastroCorredorViewState();
@@ -18,6 +25,7 @@ class CadastroCorredorView extends StatefulWidget {
 
 class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   late EnderecamentoCorredorController controller;
+  int? corredorEnderecamentoModel;
 
 
   fetchAll() async {
@@ -69,9 +77,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: corredorEnderecamentoReplacement.id_corredor == null
-                  ? Text("Cadastro do Piso")
-                  : Text("Atualizar motivo de troca de peça"),
+              title: Text("Cadastro do Piso"),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -87,23 +93,13 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                           });
                         },
                       ),
-                      InputComponent(
-                        label: 'Filial',
-                        initialValue: corredorEnderecamentoReplacement.id_corredor.toString(),
-                        hintText: 'Digite a filial',
-                        onChanged: (value) {
-                          setState(() {
-                            corredorEnderecamentoReplacement.id_corredor = 500;
-                          });
-                        },
-                      ),
                        InputComponent(
                         label: 'Piso',
                         initialValue: corredorEnderecamentoReplacement.id_piso.toString(),
                         hintText: 'Digite o piso',
                         onChanged: (value) {
                           setState(() {
-                            corredorEnderecamentoReplacement.id_piso = 500;
+                          //  corredorEnderecamentoReplacement.id_piso = corredorEnderecamentoModel;
                           });
                         },
                       ),
@@ -116,19 +112,12 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            corredorEnderecamentoReplacement.id_corredor == null
-                                ? ButtonComponent(
+                                 ButtonComponent(
                                     onPressed: () {
                                       handleCreate(
                                           context, corredorEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
-                                :ButtonComponent(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      handleCreate(context, corredorEnderecamentoReplacement);
-                                    },
-                                    text: 'Cancelar')
                           ],
                         ),
                       )
@@ -149,6 +138,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     super.initState();
     //Iniciliza controlador
     controller = EnderecamentoCorredorController();
+    corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
     fetchAll();
   }
@@ -185,7 +175,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
             Divider(),
             controller.isLoaded
                 ? Container(
-                    height: media.size.height * 0.5,
+                    height: media.size.height * 0.3,
                     child: ListView.builder(
                       itemCount: controller.corredorEnderecamentoReplacements.length,
                       itemBuilder: (context, index) {
@@ -211,7 +201,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                                           onPressed: () {
                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
-                                          text: 'Prateleira'),
+                                          text: 'Estante'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,

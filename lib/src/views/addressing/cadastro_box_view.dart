@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/addressing_floor_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_box_controller.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/box_enderecamento_model.dart';
+import 'package:gpp/src/models/corredor_enderecamento_model.dart';
+import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
+import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
+
+import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class CadastroBoxView extends StatefulWidget {
-  const CadastroBoxView({ Key? key }) : super(key: key);
+  const CadastroBoxView({Key? key}) : super(key: key);
 
   @override
-  _CadastroBoxViewState createState() => _CadastroBoxViewState();
+  _CadastroBoxViewState createState() =>
+      _CadastroBoxViewState();
 }
 
-class _CadastroBoxViewState extends State<CadastroBoxView> {
+class _CadastroBoxViewState
+    extends State<CadastroBoxView> {
   late EnderecamentoBoxController controller;
-
 
   fetchAll() async {
     //Carrega lista de motivos de defeito de peças
@@ -33,13 +44,13 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     });
   }
 
-  handleCreate(context,BoxEnderecamentoModel boxEnderecamentoReplacement) async {
+  handleCreate(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await controller.repository.create(boxEnderecamentoReplacement)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Box adicionada com sucesso!');
+        notify.sucess('Box adicionado com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -50,7 +61,7 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify
-          .alert("você deseja excluir o Box?")) {
+          .alert("você deseja excluir o box?")) {
         if (await controller.repository.excluir(boxEnderecamentoReplacement)) {
           notify.sucess("Box excluído!");
           //Atualiza a lista de motivos
@@ -61,7 +72,8 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
       notify.error(e.toString());
     }
   }
-openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
+
+  openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -69,9 +81,9 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: boxEnderecamentoReplacement.id_box == null
-                  ? Text("Cadastro do Box")
-                  : Text("Atualizar motivo de troca de peça"),
+              title:  Text("Cadastro do Box"),
+            // pisoEnderecamentoReplacement.id_piso == null
+                   
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -80,24 +92,23 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
                       InputComponent(
                         label: 'Box',
                         initialValue: boxEnderecamentoReplacement.desc_box,
-                        hintText: 'Digite o nome do Box',
+                        hintText: 'Digite o nome do Piso',
                         onChanged: (value) {
                           setState(() {
                             boxEnderecamentoReplacement.desc_box = value!;
                           });
                         },
                       ),
-                 
-                       InputComponent(
-                        label: 'Corredor',
-                        initialValue: boxEnderecamentoReplacement.id_box.toString(),
-                        hintText: 'Digite o corredor',
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoReplacement.id_box = 500;
-                          });
-                        },
-                      ),
+                      // InputComponent(
+                      //   label: 'Filial',
+                      //   initialValue: boxEnderecamentoReplacement.id_filial.toString(),
+                      //   hintText: 'Digite a filial',
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       pisoEnderecamentoReplacement.id_filial = 500;
+                      //     });
+                      //   },
+                      // ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
@@ -107,19 +118,20 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            boxEnderecamentoReplacement.id_box == null
-                                ? ButtonComponent(
-                                    onPressed: () {
+                          //  pisoEnderecamentoReplacement.id_piso == null
+                                 ButtonComponent(
+                                    onPressed: (
+                                    ) {
                                       handleCreate(
                                           context, boxEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
-                                :ButtonComponent(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      handleCreate(context, boxEnderecamentoReplacement);
-                                    },
-                                    text: 'Cancelar')
+                                // :ButtonComponent(
+                                //     color: Colors.red,
+                                //     onPressed: () {
+                                //       handleCreate(context, pisoEnderecamentoReplacement);
+                                //     },
+                                //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -157,7 +169,7 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(child: TitleComponent('Prateleira')),
+                  Flexible(child: TitleComponent('Box')),
                   ButtonComponent(
                       onPressed: () {
                         openForm(context, controller.boxEnderecamentoReplacement);
@@ -170,6 +182,8 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
             Row(
               children: [
                 Expanded(child: TextComponent('Nome')),
+                Expanded(child: TextComponent('Medida')),
+                Expanded(child: TextComponent('Emissão')),
                 Expanded(child: TextComponent('Opções')),
               ],
             ),
@@ -188,20 +202,34 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
                                 : Colors.grey.shade50,
                             child: Row(
                               children: [
-                                 Expanded(
-                                      child: TextComponent(controller
+                                Expanded(
+                                    child: TextComponent(controller
                                         .boxEnderecamentoReplacements[index].desc_box!)),
                                 Expanded(
                                     child: Row(
                                 )),
                                 Expanded(
+                                    child: TextComponent(controller
+                                        .boxEnderecamentoReplacements[index].desc_box!)),
+                                Expanded(
+                                    child: Row(
+                                )),
+                                 Expanded(
+                                    child: TextComponent(controller
+                                        .boxEnderecamentoReplacements[index].desc_box!)),
+                                Expanded(
+                                    child: Row(
+                                )),                               
+                                Expanded(
                                   child: Row(
                                     children: [
-                                        ButtonComponent(
-                                          onPressed: () {
-                                           // openForm(context, controller.corredorEnderecamentoReplacement);
-                                          },
-                                          text: 'Box'),
+                                      ButtonComponent(
+                                        onPressed: () {
+                                            Navigator.pushNamed(context, '/piso/${controller
+                                           .boxEnderecamentoReplacements[index].id_box}/corredores');                                       // openForm(context, controller.pisoEnderecamentoReplacement);
+                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroCorredorView(),));
+                                        },
+                                        text: 'Adicionar'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
@@ -230,4 +258,5 @@ openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
       ),
     );
   }
- }
+}  
+

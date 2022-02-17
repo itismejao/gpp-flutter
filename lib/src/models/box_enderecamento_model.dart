@@ -2,6 +2,7 @@ class BoxEnderecamentoModel {
   int? id_box;
   String? desc_box;
   int? id_prateleira;
+ 
 
   BoxEnderecamentoModel({
     this.id_box,
@@ -25,3 +26,4 @@ class BoxEnderecamentoModel {
     return data;
     }
 }
+

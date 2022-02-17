@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 
 class BoxEnderecamentoRepository {
   ApiService api;
-  String path = '/enderecamento-corredor';
+  String path = '/enderecamento-box';
 
   BoxEnderecamentoRepository({
     required this.api,

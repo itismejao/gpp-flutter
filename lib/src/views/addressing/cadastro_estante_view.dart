@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_estante_controller.dart';
+import 'package:gpp/src/controllers/enderecamento_prateleira_cotroller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/estante_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -24,6 +25,8 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     //Carrega lista de motivos de defeito de peças
     controller.estanteEnderecamentoReplacements =
         await controller.repository.buscarTodos();
+
+        
 
     controller.isLoaded = true;
 
@@ -69,9 +72,8 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: estanteEnderecamentoReplacement.id_corredor == null
-                  ? Text("Cadastro da Estante")
-                  : Text("Atualizar motivo de troca de peça"),
+              title: 
+                  Text("Cadastro da Estante"),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -87,17 +89,18 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                           });
                         },
                       ),
-                 
+                      
                        InputComponent(
                         label: 'Corredor',
-                        initialValue: estanteEnderecamentoReplacement.id_estante.toString(),
-                        hintText: 'Digite o corredor',
+                        initialValue: estanteEnderecamentoReplacement.id_corredor.toString(),
+                        hintText: 'Digite a prateleira',
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.id_estante = 500;
+                            estanteEnderecamentoReplacement.id_corredor = 9;
                           });
                         },
                       ),
+                   
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
@@ -107,19 +110,13 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            estanteEnderecamentoReplacement.id_estante == null
-                                ? ButtonComponent(
+                                  ButtonComponent(
                                     onPressed: () {
                                       handleCreate(
                                           context, estanteEnderecamentoReplacement);
                                     },
-                                    text: 'Adicionar')
-                                :ButtonComponent(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      handleCreate(context, estanteEnderecamentoReplacement);
-                                    },
-                                    text: 'Cancelar')
+                                    text: 'Adicionar'
+                                  )
                           ],
                         ),
                       )

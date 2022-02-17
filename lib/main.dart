@@ -116,11 +116,11 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: CadastroPrateleiraView(
+                  page: AddressingListView(
                   ),
                 ));
 
-        // Handle '/'
+        // // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
         if (!isAuthenticated()) {
           if (settings.name == '/') {
@@ -195,6 +195,18 @@ class _GppAppState extends State<GppApp> {
                       funcionalities: FuncionalitiesView(),
                       page: AstecaDetailView(
                         id: 252,
+                      ),
+                    ));
+          }
+
+            if (uri.pathSegments.length == 3 &&
+              uri.pathSegments.first == 'piso' && uri.pathSegments[2] == 'corredores') {
+            var id = uri.pathSegments[1];
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: CadastroCorredorView(
+                     //   id: int.parse(id), // conversao ded id
                       ),
                     ));
           }

@@ -118,7 +118,8 @@ class _AddressingListViewState
                           children: [
                           //  pisoEnderecamentoReplacement.id_piso == null
                                  ButtonComponent(
-                                    onPressed: () {
+                                    onPressed: (
+                                    ) {
                                       handleCreate(
                                           context, pisoEnderecamentoReplacement);
                                     },
@@ -208,8 +209,9 @@ class _AddressingListViewState
                                     children: [
                                       ButtonComponent(
                                         onPressed: () {
-                                         // openForm(context, controller.pisoEnderecamentoReplacement);
-                                       //  Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroCorredorView(),));
+                                          //   Navigator.pushNamed(context, '/piso/${controller
+                                          //  .pisoEnderecamentoReplacements[index].id_piso}/corredores');                                       // openForm(context, controller.pisoEnderecamentoReplacement);
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroCorredorView(corredorEnderecamentoModel: controller.pisoEnderecamentoReplacements[index].id_piso,),));
                                         },
                                         text: 'Adicionar'),
                                       IconButton(
