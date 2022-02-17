@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 
 import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
+import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+
+import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
@@ -28,6 +32,9 @@ class AstecaDetailView extends StatefulWidget {
 
 class _AstecaDetailViewState extends State<AstecaDetailView> {
   late AstecaController _controller;
+
+  late MotivoTrocaPecaController motivoTrocaPecaController;
+
   late ResponsiveController _responsive;
   late MaskFormatter maskFormatter;
 
@@ -37,13 +44,42 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     });
     _controller.asteca = await _controller.repository.buscar(widget.id);
 
-    //remover após teste
-    _controller.asteca.astecaTipoPendencia = AstecaTipoPendenciaModel(
-        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR');
+    setState(() {
+      _controller.carregado = true;
+    });
+  }
+
+  buscarPendencias() async {
+    setState(() {
+      _controller.carregado = false;
+    });
+
+    _controller.astecaTipoPendencias =
+        await _controller.repository.pendencia.buscarPendencias();
 
     setState(() {
       _controller.carregado = true;
     });
+  }
+
+  buscarMotivosTrocaPeca() async {
+    setState(() {
+      _controller.carregado = false;
+    });
+
+    motivoTrocaPecaController.motivoTrocaPecas =
+        await motivoTrocaPecaController.repository.buscarTodos();
+
+    setState(() {
+      _controller.carregado = true;
+    });
+  }
+
+  handlePendencia(
+      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+    await _controller.repository.pendencia.criar(asteca, pendencia);
+    //Atualiza asteca
+    await buscar();
   }
 
   @override
@@ -56,8 +92,17 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     //Instância máscaras
     maskFormatter = MaskFormatter();
 
+    //Instância motivo de troca de peca controller
+    motivoTrocaPecaController = MotivoTrocaPecaController();
+
     //Busca a asteca, utilizando o id como parâmetro
     buscar();
+
+    //Busca lista de pendências
+    buscarPendencias();
+
+    //Buscar motivos de troca de peças
+    buscarMotivosTrocaPeca();
   }
 
   @override
@@ -198,7 +243,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      print('ss');
                                       _controller.abrirDropDownButton =
                                           !_controller.abrirDropDownButton;
                                     });
@@ -210,19 +254,27 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                     child: Padding(
                                         padding: const EdgeInsets.only(
                                             left: 12, top: 12, bottom: 12),
-                                        child: TextComponent(
-                                            _controller
-                                                    .asteca
-                                                    .astecaTipoPendencia!
-                                                    .idTipoPendencia
-                                                    .toString() +
-                                                ' - ' +
+                                        child: _controller
+                                                .asteca
+                                                .astecaTipoPendencias!
+                                                .isNotEmpty
+                                            ? TextComponent(
                                                 _controller
-                                                    .asteca
-                                                    .astecaTipoPendencia!
-                                                    .descricao
-                                                    .toString(),
-                                            color: Colors.white)),
+                                                        .asteca
+                                                        .astecaTipoPendencias!
+                                                        .last
+                                                        .idTipoPendencia
+                                                        .toString() +
+                                                    ' - ' +
+                                                    _controller
+                                                        .asteca
+                                                        .astecaTipoPendencias!
+                                                        .last
+                                                        .descricao!,
+                                                color: Colors.white)
+                                            : TextComponent(
+                                                'Aguardando Pendência',
+                                                color: Colors.white)),
                                   ),
                                 ),
                               ),
@@ -277,21 +329,21 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               duration: const Duration(seconds: 1),
                               child: Container(
                                 height: 240,
-                                width: 350,
+                                width: 700,
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade50,
                                     borderRadius: BorderRadius.circular(5)),
                                 child: ListView.builder(
                                   itemCount:
-                                      _controller.astecaTipoPendencia.length,
+                                      _controller.astecaTipoPendencias.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          _controller
-                                                  .asteca.astecaTipoPendencia =
+                                          handlePendencia(
+                                              _controller.asteca,
                                               _controller
-                                                  .astecaTipoPendencia[index];
+                                                  .astecaTipoPendencias[index]);
 
                                           _controller.abrirDropDownButton =
                                               false;
@@ -315,13 +367,13 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                             ),
                                             TextComponent(
                                               _controller
-                                                      .astecaTipoPendencia[
+                                                      .astecaTipoPendencias[
                                                           index]
                                                       .idTipoPendencia
                                                       .toString() +
                                                   ' - ' +
                                                   _controller
-                                                      .astecaTipoPendencia[
+                                                      .astecaTipoPendencias[
                                                           index]
                                                       .descricao
                                                       .toString(),
@@ -1572,13 +1624,15 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   color: Colors.grey.shade200,
                                   borderRadius: BorderRadius.circular(5)),
                               child: DropDownComponent(
-                                items: <String>[
-                                  'Peça com defeito',
-                                  'Cor errada',
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
+                                onChanged: (value) {
+                                  print(value);
+                                },
+                                items: motivoTrocaPecaController
+                                    .motivoTrocaPecas
+                                    .map((value) {
+                                  return DropdownMenuItem<MotivoTrocaPecaModel>(
                                     value: value,
-                                    child: Text(value),
+                                    child: Text(value.nome.toString()),
                                   );
                                 }).toList(),
                                 hintText: 'Selecione o motivo',

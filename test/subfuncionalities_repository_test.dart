@@ -11,7 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
-import 'package:gpp/src/repositories/subfuncionalities_repository.dart';
+import 'package:gpp/src/repositories/SubFuncionalidadeRepository.dart';
 import 'package:gpp/src/shared/exceptions/subfuncionalities_exception.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
@@ -25,7 +25,7 @@ void main() {
   dotenv.testLoad(fileInput: File("env").readAsStringSync());
 
   final api = MockApiService();
-  final repository = SubFuncionalitiesRepository();
+  final repository = SubFuncionalidadeRepository();
 
   group('SubFuncionalidades - Buscar: ', () {
     String dataReceived = '''[
@@ -105,12 +105,6 @@ void main() {
   });
 
   group('Funcionalidade - Exclusão: ', () {
-    SubFuncionalidadeModel subFuncionalitie = SubFuncionalidadeModel(
-      idSubFuncionalidade: 22,
-      nome: "Teste",
-      rota: "/teste",
-    );
-
     test('Valida se a funcionalidade foi deletada', () async {
       when(api.delete(any))
           .thenAnswer((realInvocation) async => Response('', 200));

@@ -12,7 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
-import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/exceptions/departament_exception.dart';
 import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 
@@ -28,7 +28,7 @@ void main() {
   dotenv.testLoad(fileInput: File("env").readAsStringSync());
 
   final api = MockApiService();
-  final repository = DepartamentRepository(api: api);
+  final repository = DepartamentoRepository();
 
   group('Departamentos: ', () {
     String dataReceived = ''' [

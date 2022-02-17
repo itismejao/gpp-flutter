@@ -12,12 +12,13 @@ class AstecaModel {
   String? observacao;
   String? defeitoEstadoProd;
   DateTime? dataEmissao;
-  AstecaTipoPendenciaModel? astecaTipoPendencia;
+  List<AstecaTipoPendenciaModel>? astecaTipoPendencias;
   AstecaEndClienteModel? astecaEndCliente;
   AstecaMotivoModel? astecaMotivo;
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
+
   AstecaModel({
     this.idAsteca,
     this.tipoAsteca,
@@ -25,7 +26,7 @@ class AstecaModel {
     this.observacao,
     this.defeitoEstadoProd,
     this.dataEmissao,
-    this.astecaTipoPendencia,
+    this.astecaTipoPendencias,
     this.astecaEndCliente,
     this.astecaMotivo,
     this.documentoFiscal,
@@ -55,7 +56,12 @@ class AstecaModel {
                 return ProdutoModel.fromJson(data);
               }).toList()
             : null,
-        funcionario: FuncionarioModel.fromJson(json['funcionario'].first));
+        funcionario: FuncionarioModel.fromJson(json['funcionario'].first),
+        astecaTipoPendencias: json['pendencia'] != null
+            ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
+                return AstecaTipoPendenciaModel.fromJson(data);
+              }).toList()
+            : null);
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

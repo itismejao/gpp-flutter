@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 
 import 'package:http/http.dart';
 
@@ -10,6 +12,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class AstecaRepository {
   ApiService api = gppApi;
   String endpoint = '/asteca';
+  PendenciaRepository pendencia = PendenciaRepository();
 
   Future<AstecaModel> buscar(int id) async {
     Response response = await api.get(endpoint + '/' + id.toString());
@@ -17,21 +20,22 @@ class AstecaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      return AstecaModel.fromJson(data.first);
+      return AstecaModel.fromJson(data);
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;
     }
   }
 
-  Future<List<AstecaModel>> buscarTodas(int pagina,
-      {AstecaModel? filtroAsteca}) async {
+  Future<List> buscarTodas(int pagina,
+      {AstecaModel? filtroAsteca, String? pendencia}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'idAsteca': filtroAsteca?.idAsteca ?? '',
       'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
       'numeroNotaFiscalVenda':
           filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+      'pendencia': pendencia?.toString() ?? '',
     };
 
     Response response =
@@ -40,9 +44,13 @@ class AstecaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaModel> astecas =
-          data.map<AstecaModel>((data) => AstecaModel.fromJson(data)).toList();
-      return astecas;
+      List<AstecaModel> astecas = data['astecas']
+          .map<AstecaModel>((data) => AstecaModel.fromJson(data))
+          .toList();
+
+      //Obtém a pagina
+      PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
+      return [astecas, pagina];
     } else {
       var error = json.decode(response.body)['error'];
       throw error;
@@ -243,4 +251,38 @@ class AstecaRepository {
 // //       throw AstecaException("Departamento não foi atualizado!");
 // //     }
 // //   }
+}
+
+class PendenciaRepository {
+  ApiService api = gppApi;
+
+  Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
+    Response response = await api.get('/asteca' + '/pendencia');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
+          .map<AstecaTipoPendenciaModel>(
+              (data) => AstecaTipoPendenciaModel.fromJson(data))
+          .toList();
+      return astecaTipoPendencia;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<bool> criar(
+      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+    Response response = await api.post(
+        '/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
 }

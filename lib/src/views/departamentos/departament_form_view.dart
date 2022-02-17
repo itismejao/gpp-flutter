@@ -454,10 +454,9 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/departament_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class DepartamentFormView extends StatefulWidget {
   const DepartamentFormView({Key? key}) : super(key: key);
@@ -486,7 +485,7 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
-    _controller = DepartamentController(DepartamentRepository(api: gppApi));
+    _controller = DepartamentController(DepartamentoRepository());
   }
 
   @override

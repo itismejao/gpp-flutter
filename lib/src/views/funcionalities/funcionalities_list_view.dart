@@ -4,7 +4,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/checkbox_component.dart';
+
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
@@ -77,7 +77,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CheckboxComponent(),
+                //  CheckboxComponent(),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -188,7 +188,7 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CheckboxComponent(),
+                //  CheckboxComponent(),
                 Expanded(
                   child: TextComponent(
                     funcionalities[index].nome!,

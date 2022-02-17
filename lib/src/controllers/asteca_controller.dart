@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
-import 'package:gpp/src/repositories/asteca_repository.dart';
+import 'package:gpp/src/repositories/AstecaRepository.dart';
 
 class AstecaController {
   bool abrirDropDownButton = false;
 
-  int step = 4;
+  String? pendenciaFiltro;
+
+  int step = 1;
   bool isOpenFilter = false;
-  int pagina = 1;
+
   bool carregado = false;
-  List<AstecaTipoPendenciaModel> astecaTipoPendencia = [
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 881, descricao: 'PEÇA SEPARADA NO BOX'),
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR')
-  ];
+  PaginaModel pagina = PaginaModel(atual: 1);
+  late AstecaTipoPendenciaModel astecaTipoPendencia;
+  List<AstecaTipoPendenciaModel> astecaTipoPendencias = [];
 
   AstecaModel asteca = AstecaModel(
-      documentoFiscal: DocumentoFiscalModel(),
-      astecaTipoPendencia: AstecaTipoPendenciaModel(
-          idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR'));
+    documentoFiscal: DocumentoFiscalModel(),
+  );
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
   AstecaModel filtroAsteca = AstecaModel(

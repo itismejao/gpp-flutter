@@ -9,14 +9,10 @@ import 'package:http/http.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
-class DepartamentRepository {
-  ApiService api;
+class DepartamentoRepository {
+  ApiService api = gppApi;
 
   String path = '/departamentos';
-
-  DepartamentRepository({
-    required this.api,
-  });
 
   Future<DepartamentoModel> fetch(String id) async {
     Response response = await api.get('/departamentos/' + id);

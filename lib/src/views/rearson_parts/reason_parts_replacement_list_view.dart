@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/reason_parts_replacement_controller.dart';
+import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
@@ -21,12 +21,11 @@ class ReasonPartsReplacementListView extends StatefulWidget {
 
 class _ReasonPartsReplacementListViewState
     extends State<ReasonPartsReplacementListView> {
-  late ReasonPartsReplacementController controller;
+  late MotivoTrocaPecaController controller;
 
   fetchAll() async {
     //Carrega lista de motivos de defeito de peças
-    controller.reasonPartsReplacements =
-        await controller.repository.buscarTodos();
+    controller.motivoTrocaPecas = await controller.repository.buscarTodos();
 
     //controller.isLoaded = true;
 
@@ -176,7 +175,7 @@ class _ReasonPartsReplacementListViewState
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = ReasonPartsReplacementController();
+    controller = MotivoTrocaPecaController();
     //Quando o widget for inserido na árvore chama o fetchAll
     fetchAll();
   }
@@ -197,7 +196,7 @@ class _ReasonPartsReplacementListViewState
                   Flexible(child: TitleComponent('Motivos de troca de peças')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.reasonPartsReplacement);
+                        openForm(context, controller.motivoTrocaPeca);
                       },
                       text: 'Adicionar')
                 ],
@@ -217,7 +216,7 @@ class _ReasonPartsReplacementListViewState
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: controller.reasonPartsReplacements.length,
+                      itemCount: controller.motivoTrocaPecas.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -229,19 +228,18 @@ class _ReasonPartsReplacementListViewState
                               children: [
                                 Expanded(
                                     child: TextComponent(controller
-                                        .reasonPartsReplacements[index]
+                                        .motivoTrocaPecas[index]
                                         .idMotivoTrocaPeca
                                         .toString())),
                                 Expanded(
                                     child: TextComponent(controller
-                                        .reasonPartsReplacements[index].nome!)),
+                                        .motivoTrocaPecas[index].nome!)),
                                 Expanded(
                                     child: Row(
                                   children: [
                                     StatusComponent(
                                         status: controller
-                                            .reasonPartsReplacements[index]
-                                            .situacao!),
+                                            .motivoTrocaPecas[index].situacao!),
                                   ],
                                 )),
                                 Expanded(
@@ -256,8 +254,7 @@ class _ReasonPartsReplacementListViewState
                                             openForm(
                                                 context,
                                                 controller
-                                                        .reasonPartsReplacements[
-                                                    index]);
+                                                    .motivoTrocaPecas[index]);
                                           }),
                                       IconButton(
                                           icon: Icon(
@@ -267,8 +264,7 @@ class _ReasonPartsReplacementListViewState
                                           onPressed: () => {
                                                 handleDelete(
                                                     context,
-                                                    controller
-                                                            .reasonPartsReplacements[
+                                                    controller.motivoTrocaPecas[
                                                         index]),
                                               }),
                                     ],
