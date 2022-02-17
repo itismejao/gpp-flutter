@@ -23,4 +23,21 @@ class PecasRepository {
       throw 'Ocorreu um erro ao criar uma peça';
     }
   }
+
+  Future<List<PecasModel>> buscarTodos() async {
+    Response response = await api.get('/peca-linha');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      // print(jsonDecode(response.body));
+
+      List<PecasModel> pecas = data.map<PecasModel>((data) => PecasModel.fromJson(data)).toList();
+
+      return pecas;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
 }

@@ -28,12 +28,8 @@ class PecasCorRepository {
   Future<List<PecasCorModel>> buscarTodos() async {
     Response response = await api.get('/peca-cor');
 
-    print(response);
-
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-
-      print(jsonDecode(response.body));
 
       List<PecasCorModel> pecasCor = data.map<PecasCorModel>((data) => PecasCorModel.fromJson(data)).toList();
 

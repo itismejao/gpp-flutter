@@ -16,4 +16,10 @@ class PecasController {
 
     return await pecasRepository.create(pecasModel);
   }
+
+  Future<List<PecasModel>> buscarTodos() async {
+    // pecasRepository.buscarTodos().then((value) => print(value));
+
+    return await pecasRepository.buscarTodos();
+  }
 }
