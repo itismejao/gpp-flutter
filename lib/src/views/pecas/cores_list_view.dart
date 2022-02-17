@@ -6,6 +6,9 @@ import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
+import 'pop_up_editar.dart';
+import 'cores_detail_view.dart';
+
 class CoresListView extends StatefulWidget {
   const CoresListView({Key? key}) : super(key: key);
 
@@ -131,7 +134,14 @@ class _CoresListViewState extends State<CoresListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {},
+                                  onPressed: () => {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                      return PopUpEditar.popUpPeca(_pecaCor[index]);
+                                      }
+                                   )
+                                  }
                                 ),
                                 IconButton(
                                     icon: Icon(

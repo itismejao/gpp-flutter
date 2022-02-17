@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
 class CoresDetailView extends StatefulWidget {
-  const CoresDetailView({Key? key}) : super(key: key);
+  PecasCorModel? pecaCor;
+
+  CoresDetailView({this.pecaCor});
 
   @override
   _CoresDetailViewState createState() => _CoresDetailViewState();
@@ -13,6 +16,17 @@ class CoresDetailView extends StatefulWidget {
 
 class _CoresDetailViewState extends State<CoresDetailView> {
   PecasCorController _pecasCorController = PecasCorController();
+  PecasCorModel? pecaCor;
+
+  @override
+  void initState() {
+    pecaCor = widget.pecaCor;
+    if (pecaCor != null)
+      _pecasCorController.pecasCorModel = pecaCor!;
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +36,39 @@ class _CoresDetailViewState extends State<CoresDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(Icons.add_box),
+            Icon(pecaCor == null ? Icons.add_box : Icons.edit),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent('Cadastrar Cores'),
+            TitleComponent(pecaCor == null ? 'Cadastrar Cores' : 'Editar Cor'),
           ],
         ),
       ),
       Divider(),
-      Padding(padding: EdgeInsets.only(bottom: 30)),
+      Padding(padding: EdgeInsets.only(bottom: 20)),
       Column(
         children: [
+          pecaCor == null ?
+              Container()
+          :
+          Row(
+              children: [
+                Flexible(
+                  child: InputComponent(
+                    enable: false,
+                    initialValue: pecaCor!.id_peca_cor.toString(),
+                    label: 'ID',
+                    onChanged: (value) {
+                      _pecasCorController.pecasCorModel.id_peca_cor = value;
+                    },
+                  ),
+                ),
+              ]
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 10)),
           Row(
             children: [
               Flexible(
                 child: InputComponent(
+                  initialValue: pecaCor == null ? '' : pecaCor!.cor,
                   label: 'Cor',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.cor = value;
@@ -45,6 +78,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
               Padding(padding: EdgeInsets.only(right: 30)),
               Flexible(
                 child: InputComponent(
+                  initialValue: pecaCor == null ? '' : pecaCor?.sigla,
                   label: 'Sigla',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.sigla = value;
@@ -57,11 +91,28 @@ class _CoresDetailViewState extends State<CoresDetailView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              pecaCor == null ?
               ButtonComponent(
                 onPressed: () {
                   _pecasCorController.create();
                 },
                 text: 'Salvar',
+              ) :
+                ButtonComponent(
+                  onPressed: () {
+                    _pecasCorController.edit();
+                  },
+                  text: 'Editar',
+                ),
+              pecaCor == null ?
+                  Container()
+                  :
+              ButtonComponent(
+                onPressed: () {
+                 Navigator.pop(context);
+                },
+                text: 'Cancelar',
+                color: Colors.red,
               ),
             ],
           ),

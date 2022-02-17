@@ -25,6 +25,18 @@ class PecasCorRepository {
     }
   }
 
+  Future<bool> edit(PecasCorModel pecasCorModel) async {
+    print(jsonEncode(pecasCorModel.toJson()));
+
+    Response response = await api.put('/peca-cor/${pecasCorModel.id_peca_cor}', pecasCorModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
+    }
+  }
+
   Future<List<PecasCorModel>> buscarTodos() async {
     Response response = await api.get('/peca-cor');
 
