@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/repositories/pecas_repository/pecas_linha_repository.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -10,7 +11,10 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class EspecieDetailView extends StatefulWidget {
-  const EspecieDetailView({Key? key}) : super(key: key);
+  PecasLinhaModel? pecasLinhaModel;
+  PecasEspecieModel? pecasEspecieModel;
+
+  EspecieDetailView({this.pecasLinhaModel, this.pecasEspecieModel});
 
   @override
   _EspecieDetailViewState createState() => _EspecieDetailViewState();
@@ -20,12 +24,25 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
-  // final items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   PecasLinhaModel? selectedLinha;
   List<PecasLinhaModel> _pecasLinha = [];
 
+  PecasLinhaModel? pecasLinhaModel;
+  PecasEspecieModel? pecasEspecieModel;
+
   @override
   void initState() {
+    pecasLinhaModel = widget.pecasLinhaModel;
+    pecasEspecieModel = widget.pecasEspecieModel;
+
+    if (pecasLinhaModel != null) {
+      _pecasLinhaController.pecasLinhaModel = pecasLinhaModel!;
+    }
+
+    if (pecasEspecieModel != null) {
+      _pecasEspecieController.pecasEspecieModel = pecasEspecieModel!;
+    }
+
     super.initState();
   }
 

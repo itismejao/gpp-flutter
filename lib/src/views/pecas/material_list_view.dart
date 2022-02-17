@@ -6,6 +6,8 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/material_detail_view.dart';
+import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 class MaterialListView extends StatefulWidget {
@@ -127,7 +129,14 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {},
+                                  onPressed: () => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return PopUpEditar.popUpPeca(
+                                              MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]));
+                                        }).then((value) => setState(() {}))
+                                  },
                                 ),
                                 IconButton(
                                     icon: Icon(

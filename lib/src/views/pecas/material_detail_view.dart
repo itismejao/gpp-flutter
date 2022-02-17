@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
 class MaterialDetailView extends StatefulWidget {
-  const MaterialDetailView({Key? key}) : super(key: key);
+  PecasGrupoModel? pecasGrupoModel;
+  PecasMaterialModel? pecasMaterialModel;
+
+  MaterialDetailView({this.pecasGrupoModel, this.pecasMaterialModel});
 
   @override
   _MaterialDetailViewState createState() => _MaterialDetailViewState();
@@ -19,6 +23,26 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
   PecasGrupoModel? selectedGrupo;
+
+  PecasGrupoModel? pecasGrupoModel;
+  PecasMaterialModel? pecasMaterialModel;
+
+  @override
+  void initState() {
+    pecasGrupoModel = widget.pecasGrupoModel;
+    pecasMaterialModel = widget.pecasMaterialModel;
+
+    if (pecasGrupoModel != null) {
+      _pecasGrupoController.pecasGrupoModel = pecasGrupoModel!;
+    }
+
+    if (pecasMaterialModel != null) {
+      _pecasMaterialController.pecasMaterialModel = pecasMaterialModel!;
+    }
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

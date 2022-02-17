@@ -5,6 +5,8 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/linha_detail_view.dart';
+import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 class LinhaListView extends StatefulWidget {
@@ -120,7 +122,13 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {},
+                                  onPressed: () => {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return PopUpEditar.popUpPeca(EspecieDetailView(pecasLinhaModel: _pecasLinha[index]));
+                                        }).then((value) => setState(() {}))
+                                  },
                                 ),
                                 IconButton(
                                     icon: Icon(

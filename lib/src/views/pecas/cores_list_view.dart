@@ -131,21 +131,17 @@ class _CoresListViewState extends State<CoresListView> {
                                   onPressed: () => {},
                                 ),
                                 IconButton(
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                      return PopUpEditar.popUpPeca(_pecaCor[index]);
-                                      }
-                                   ).then((value) => setState((){
-
-                                    }))
-                                  }
-                                ),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    onPressed: () => {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return PopUpEditar.popUpPeca(CoresDetailView(pecaCor: _pecaCor[index]));
+                                              }).then((value) => setState(() {}))
+                                        }),
                                 IconButton(
                                     icon: Icon(
                                       Icons.delete,
