@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
+import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
+import 'package:intl/intl.dart';
 
+import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
+import 'package:gpp/src/models/PecaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
-
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
@@ -17,7 +19,15 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/mask_formatter.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
-import 'package:intl/intl.dart';
+
+class ItemPeca {
+  bool marcado = false;
+  late PecaModel peca;
+  ItemPeca({
+    required this.marcado,
+    required this.peca,
+  });
+}
 
 class AstecaDetailView extends StatefulWidget {
   final int id;
@@ -32,7 +42,9 @@ class AstecaDetailView extends StatefulWidget {
 
 class _AstecaDetailViewState extends State<AstecaDetailView> {
   late AstecaController _controller;
-
+  List<ItemPeca> itemsPeca = [];
+  int marcados = 0;
+  bool abrirFiltro = false;
   late MotivoTrocaPecaController motivoTrocaPecaController;
 
   late ResponsiveController _responsive;
@@ -82,6 +94,93 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     await buscar();
   }
 
+  gerarItemPeca() {
+    itemsPeca = _controller.pecas
+        .map<ItemPeca>((peca) => ItemPeca(marcado: false, peca: peca))
+        .toList();
+  }
+
+  /**
+   * Função utilizada para marcar todas as checkbox das pecas
+   */
+  marcarTodosCheckbox(bool value) {
+    if (value) {
+      marcados = itemsPeca.length;
+    } else {
+      marcados = 0;
+    }
+    for (var itemPeca in itemsPeca) {
+      itemPeca.marcado = value;
+    }
+  }
+
+  //Nova lógica
+  marcarCheckbox(index, value) {
+    if (value) {
+      marcados++;
+    } else {
+      marcados--;
+    }
+    itemsPeca[index].marcado = value;
+  }
+
+  /**
+   * Adicionar pecas ao carrinho
+   */
+
+  adicionarPeca() {
+    setState(() {
+      for (var itemPeca in itemsPeca) {
+        //Verifica se o item está marcado
+        if (itemPeca.marcado) {
+          //Verifica se já existe item com o mesmo id adicionado na lista
+          int index = _controller.itemPedidoSaida.indexWhere(
+              (element) => element.peca!.idPeca == itemPeca.peca.idPeca);
+          //Se não existe item adiciona na lista
+          if (index < 0) {
+            _controller.itemPedidoSaida.add(ItemPedidoSaidaModel(
+                peca: itemPeca.peca,
+                valor: itemPeca.peca.custo,
+                quantidade: 1));
+          } else {
+            //Caso exista item na lista incrementa a quantidade;
+            _controller.itemPedidoSaida[index].quantidade++;
+            _controller.itemPedidoSaida[index].valor += itemPeca.peca.custo;
+          }
+        }
+        itemPeca.marcado = false;
+      }
+      marcados = 0;
+    });
+  }
+
+/**
+   * Remover peça
+   */
+  removerPeca(index) {
+    setState(() {
+      _controller.itemPedidoSaida.removeAt(index);
+    });
+  }
+
+  selecionarMotivoTrocaPeca(index, value) {
+    setState(() {
+      _controller.itemPedidoSaida[index].motivoTrocaPeca = value;
+    });
+  }
+
+  void adicionarQuantidade(index) {
+    setState(() {
+      _controller.itemPedidoSaida[index].quantidade++;
+    });
+  }
+
+  void removerQuantidade(index) {
+    setState(() {
+      _controller.itemPedidoSaida[index].quantidade--;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -103,6 +202,16 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
     //Buscar motivos de troca de peças
     buscarMotivosTrocaPeca();
+
+    //Criar objetos da lista de item peca
+
+    gerarItemPeca();
+  }
+
+  inserirQuantidade(index, value) {
+    setState(() {
+      _controller.itemPedidoSaida[index].quantidade = value;
+    });
   }
 
   @override
@@ -1587,7 +1696,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 child: const TextComponent('Nome'),
               ),
               Expanded(
-                flex: 3,
+                child: const TextComponent('Valor R\$'),
+              ),
+              Expanded(
+                flex: 2,
                 child: const TextComponent('Motivo'),
               ),
               Expanded(
@@ -1603,20 +1715,28 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         Container(
           height: media.size.height * 0.60,
           child: ListView.builder(
-              itemCount: 7,
+              itemCount: _controller.itemPedidoSaida.length,
               itemBuilder: (context, index) {
                 return Container(
                   color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextComponent('0001'),
+                        child: TextComponent(_controller
+                            .itemPedidoSaida[index].peca!.idPeca
+                            .toString()),
                       ),
                       Expanded(
-                        child: TextComponent('Porta Esquerda'),
+                        child: TextComponent(_controller
+                            .itemPedidoSaida[index].peca!.descricao!),
                       ),
                       Expanded(
-                          flex: 3,
+                        child: TextComponent(_controller
+                            .itemPedidoSaida[index].valor
+                            .toString()),
+                      ),
+                      Expanded(
+                          flex: 2,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
@@ -1625,7 +1745,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   borderRadius: BorderRadius.circular(5)),
                               child: DropDownComponent(
                                 onChanged: (value) {
-                                  print(value);
+                                  selecionarMotivoTrocaPeca(index, value);
                                 },
                                 items: motivoTrocaPecaController
                                     .motivoTrocaPecas
@@ -1640,7 +1760,39 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                             ),
                           )),
                       Expanded(
-                        child: TextComponent('47'),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.green,
+                              onPressed: () {
+                                adicionarQuantidade(index);
+                              },
+                              icon: Icon(
+                                Icons.add_outlined,
+                              ),
+                            ),
+                            Expanded(
+                              child: InputComponent(
+                                maxLines: 1,
+                                hintText: _controller
+                                    .itemPedidoSaida[index].quantidade
+                                    .toString(),
+                                onChanged: (value) {
+                                  inserirQuantidade(index, value);
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              color: Colors.red,
+                              onPressed: () {
+                                removerQuantidade(index);
+                              },
+                              icon: Icon(
+                                Icons.remove_outlined,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Expanded(
                         child: Row(
@@ -1653,7 +1805,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   color: Colors.grey.shade400,
                                 ),
                                 onPressed: () {
-                                  // handleDelete(context, departament[index])
+                                  removerPeca(index);
                                 }),
                           ],
                         ),
@@ -1738,76 +1890,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   'Digite o número de identificação da peça ou o nome',
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 220,
-                            child: DropDownComponent(
-                              icon: Icon(
-                                Icons.swap_vert,
-                              ),
-                              items: <String>[
-                                'Ordem crescente',
-                                'Ordem decrescente'
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              hintText: 'Nome',
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Container(
-                            width: 220,
-                            child: DropDownComponent(
-                              icon: Icon(
-                                Icons.swap_vert,
-                              ),
-                              items: <String>[
-                                'Ordem crescente',
-                                'Ordem decrescente'
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              hintText: 'Estoque disponível',
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Container(
-                            width: 220,
-                            child: DropDownComponent(
-                              icon: Icon(
-                                Icons.swap_vert,
-                              ),
-                              items: <String>[
-                                'Último dia',
-                                'Último 15 dias',
-                                'Último 30 dias',
-                                'Último semestre',
-                                'Último ano'
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              hintText: 'Período',
-                            ),
-                          ),
                           SizedBox(
                             width: 8,
                           ),
@@ -1816,12 +1898,89 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               color: secundaryColor,
                               onPressed: () {
                                 setState(() {
-                                  _controller.isOpenFilter =
-                                      !(_controller.isOpenFilter);
+                                  abrirFiltro = !abrirFiltro;
                                 });
                               },
                               text: 'Adicionar filtro')
                         ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.grey.shade100,
+                      height: abrirFiltro ? null : 0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 16),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 220,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Ordem crescente',
+                                  'Ordem decrescente'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Nome',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              width: 220,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Ordem crescente',
+                                  'Ordem decrescente'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Estoque disponível',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              width: 220,
+                              child: DropDownComponent(
+                                icon: Icon(
+                                  Icons.swap_vert,
+                                ),
+                                items: <String>[
+                                  'Último dia',
+                                  'Último 15 dias',
+                                  'Último 30 dias',
+                                  'Último semestre',
+                                  'Último ano'
+                                ].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                hintText: 'Período',
+                              ),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -1851,7 +2010,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     Divider(),
                     Row(
                       children: [
-                        CheckboxComponent(),
+                        CheckboxComponent(
+                          value: marcados == itemsPeca.length,
+                          onChanged: (bool value) {
+                            setState(() {
+                              marcarTodosCheckbox(value);
+                            });
+                          },
+                        ),
                         Expanded(
                           child: TextComponent('ID'),
                         ),
@@ -1860,34 +2026,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                         ),
                         Expanded(
                           child: Text(
-                            'Endereço do estoque',
-                            style: TextStyle(
-                                letterSpacing: 0.15,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Estoque disponivel',
-                            style: TextStyle(
-                                letterSpacing: 0.15,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Data de criação',
-                            style: TextStyle(
-                                letterSpacing: 0.15,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Data de alteração',
+                            'Valor R\$',
                             style: TextStyle(
                                 letterSpacing: 0.15,
                                 fontSize: 14,
@@ -1902,7 +2041,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                          itemCount: 5,
+                          itemCount: itemsPeca.length,
                           itemBuilder: (context, index) {
                             return Container(
                               color: (index % 2) == 0
@@ -1910,25 +2049,27 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   : Colors.grey.shade50,
                               child: Row(
                                 children: [
-                                  CheckboxComponent(),
+                                  CheckboxComponent(
+                                      value: itemsPeca[index].marcado,
+                                      onChanged: (bool value) => {
+                                            setState(() {
+                                              marcarCheckbox(index, value);
+                                            })
+                                          }),
                                   Expanded(
-                                    child: TextComponent('0001'),
+                                    child: TextComponent(itemsPeca[index]
+                                        .peca
+                                        .idPeca
+                                        .toString()),
                                   ),
                                   Expanded(
-                                    child: TextComponent('Porta esquerda'),
+                                    child: TextComponent(
+                                        itemsPeca[index].peca.descricao ?? ''),
                                   ),
                                   Expanded(
-                                    child: TextComponent('A-1-B-1'),
+                                    child: TextComponent(
+                                        itemsPeca[index].peca.custo.toString()),
                                   ),
-                                  Expanded(
-                                    child: TextComponent('10'),
-                                  ),
-                                  Expanded(
-                                    child: TextComponent('01/01/2022'),
-                                  ),
-                                  Expanded(
-                                    child: TextComponent('01/01/2022'),
-                                  )
                                 ],
                               ),
                             );
@@ -1942,7 +2083,8 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextComponent('Total de 7 peças selecionadas'),
+                          TextComponent(
+                              'Total de ${marcados} peças selecionadas'),
                           Row(
                             children: [
                               ButtonComponent(
@@ -1957,6 +2099,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               ButtonComponent(
                                   color: secundaryColor,
                                   onPressed: () {
+                                    adicionarPeca();
                                     Navigator.pop(context);
                                   },
                                   text: 'Adicionar')
