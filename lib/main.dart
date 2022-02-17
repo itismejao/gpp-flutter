@@ -107,13 +107,13 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
-        // return MaterialPageRoute(
-        //     builder: (context) => HomeView(
-        //           funcionalities: FuncionalitiesView(),
-        //           page: AstecaDetailView(
-        //             id: 694273,
-        //           ),
-        //         ));
+        return MaterialPageRoute(
+            builder: (context) => HomeView(
+                  funcionalities: FuncionalitiesView(),
+                  page: AstecaDetailView(
+                    id: 694273,
+                  ),
+                ));
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
