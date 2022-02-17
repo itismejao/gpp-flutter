@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
 
@@ -9,10 +10,10 @@ class PedidoSaidaModel {
   String? serieDocFiscal;
   DateTime? dataEmissao;
   int? situacao;
-  double? valorTotal;
+  double valorTotal = 0.0;
   AstecaModel? asteca;
   FuncionarioModel? funcionario;
-
+  List<ItemPedidoSaidaModel>? itemPedidoSaida;
   PedidoSaidaModel({
     this.idPedidoSaida,
     this.cpfCnpj,
@@ -21,8 +22,9 @@ class PedidoSaidaModel {
     this.serieDocFiscal,
     this.dataEmissao,
     this.situacao,
-    this.valorTotal,
+    required this.valorTotal,
     this.asteca,
     this.funcionario,
+    required this.itemPedidoSaida,
   });
 }

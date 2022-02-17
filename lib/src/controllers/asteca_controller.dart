@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/PecaModel.dart';
+import 'package:gpp/src/models/PedidoSaidaMode.dart';
 import 'package:gpp/src/models/asteca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
@@ -17,16 +18,10 @@ class AstecaController {
     PecaModel(idPeca: 5, descricao: 'Peça 5', custo: 20.0),
   ];
 
-  List<ItemPedidoSaidaModel> itemPedidoSaida = [
-    ItemPedidoSaidaModel(
-        peca: PecaModel(
-          idPeca: 1,
-          descricao: 'Peça 1',
-          custo: 20.0,
-        ),
-        quantidade: 1,
-        valor: 20.0)
-  ];
+  PedidoSaidaModel pedidoSaida = PedidoSaidaModel(
+    itemPedidoSaida: [],
+    valorTotal: 0.0,
+  );
 
   bool abrirDropDownButton = false;
 

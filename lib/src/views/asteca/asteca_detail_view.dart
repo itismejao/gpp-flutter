@@ -134,19 +134,22 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
           //Verifica se já existe item com o mesmo id adicionado na lista
-          int index = _controller.itemPedidoSaida.indexWhere(
+          int index = _controller.pedidoSaida.itemPedidoSaida!.indexWhere(
               (element) => element.peca!.idPeca == itemPeca.peca.idPeca);
           //Se não existe item adiciona na lista
           if (index < 0) {
-            _controller.itemPedidoSaida.add(ItemPedidoSaidaModel(
+            _controller.pedidoSaida.itemPedidoSaida!.add(ItemPedidoSaidaModel(
                 peca: itemPeca.peca,
                 valor: itemPeca.peca.custo,
                 quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
-            _controller.itemPedidoSaida[index].quantidade++;
-            _controller.itemPedidoSaida[index].valor += itemPeca.peca.custo;
+            _controller.pedidoSaida.itemPedidoSaida![index].quantidade++;
+            _controller.pedidoSaida.itemPedidoSaida![index].valor +=
+                itemPeca.peca.custo;
           }
+          //Soma o total
+          calcularValorTotal();
         }
         itemPeca.marcado = false;
       }
@@ -159,26 +162,54 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
    */
   removerPeca(index) {
     setState(() {
-      _controller.itemPedidoSaida.removeAt(index);
+      _controller.pedidoSaida.itemPedidoSaida!.removeAt(index);
+    });
+    calcularValorTotal();
+  }
+
+  calcularValorTotal() {
+    setState(() {
+      _controller.pedidoSaida.valorTotal = 0.0;
+      for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+        _controller.pedidoSaida.valorTotal += item.quantidade * item.valor;
+      }
     });
   }
 
   selecionarMotivoTrocaPeca(index, value) {
     setState(() {
-      _controller.itemPedidoSaida[index].motivoTrocaPeca = value;
+      _controller.pedidoSaida.itemPedidoSaida![index].motivoTrocaPeca = value;
     });
   }
 
   void adicionarQuantidade(index) {
     setState(() {
-      _controller.itemPedidoSaida[index].quantidade++;
+      _controller.pedidoSaida.itemPedidoSaida![index].quantidade++;
     });
+    calcularValorTotal();
   }
 
   void removerQuantidade(index) {
     setState(() {
-      _controller.itemPedidoSaida[index].quantidade--;
+      _controller.pedidoSaida.itemPedidoSaida![index].quantidade--;
     });
+    calcularValorTotal();
+  }
+
+  /**
+   * Função destinada a finalizar o pedido
+   */
+  finalizarPedido() {
+    //Notificação
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Row(
+              children: [TextComponent('Ok')],
+            )
+          ]);
+        });
   }
 
   @override
@@ -210,7 +241,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
   inserirQuantidade(index, value) {
     setState(() {
-      _controller.itemPedidoSaida[index].quantidade = value;
+      _controller.pedidoSaida.itemPedidoSaida![index].quantidade = value;
     });
   }
 
@@ -264,11 +295,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               SizedBox(
                                 width: 10,
                               ),
-                              ButtonComponent(
-                                  color: secundaryColor,
-                                  icon: Icon(Icons.save, color: Colors.white),
-                                  onPressed: () {},
-                                  text: 'Salvar')
                             ],
                           )
                         ],
@@ -296,7 +322,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Expanded(
-                                flex: 2,
                                 child: const TitleComponent(
                                   'Asteca',
                                 ),
@@ -412,14 +437,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
-                                          children: [
-                                            ButtonComponent(
-                                                color: secundaryColor,
-                                                icon: Icon(Icons.save,
-                                                    color: Colors.white),
-                                                onPressed: () {},
-                                                text: 'Salvar')
-                                          ],
+                                          children: [],
                                         )),
                                   ],
                                 ),
@@ -427,6 +445,24 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                             )
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Divider(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: Row(
+                            children: [
+                              ButtonComponent(
+                                  color: primaryColor,
+                                  onPressed: () {
+                                    finalizarPedido();
+                                  },
+                                  text: 'Finalizar pedido')
+                            ],
+                          ),
+                        )
                       ],
                     ),
                     _controller.abrirDropDownButton
@@ -1669,21 +1705,21 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: InputComponent(
-                  prefixIcon: Icon(
-                    Icons.search,
-                  ),
-                  hintText: 'Buscar',
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: InputComponent(
+        //           prefixIcon: Icon(
+        //             Icons.search,
+        //           ),
+        //           hintText: 'Buscar',
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -1696,14 +1732,17 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 child: const TextComponent('Nome'),
               ),
               Expanded(
+                child: const TextComponent('Quantidade'),
+              ),
+              Expanded(
                 child: const TextComponent('Valor R\$'),
+              ),
+              Expanded(
+                child: const TextComponent('Subtotal:'),
               ),
               Expanded(
                 flex: 2,
                 child: const TextComponent('Motivo'),
-              ),
-              Expanded(
-                child: const TextComponent('Quantidade'),
               ),
               Expanded(
                 child: const TextComponent('Ações'),
@@ -1715,7 +1754,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         Container(
           height: media.size.height * 0.60,
           child: ListView.builder(
-              itemCount: _controller.itemPedidoSaida.length,
+              itemCount: _controller.pedidoSaida.itemPedidoSaida!.length,
               itemBuilder: (context, index) {
                 return Container(
                   color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
@@ -1723,17 +1762,56 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                     children: [
                       Expanded(
                         child: TextComponent(_controller
-                            .itemPedidoSaida[index].peca!.idPeca
+                            .pedidoSaida.itemPedidoSaida![index].peca!.idPeca
                             .toString()),
                       ),
                       Expanded(
-                        child: TextComponent(_controller
-                            .itemPedidoSaida[index].peca!.descricao!),
+                        child: TextComponent(_controller.pedidoSaida
+                            .itemPedidoSaida![index].peca!.descricao!),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              color: Colors.green,
+                              onPressed: () {
+                                adicionarQuantidade(index);
+                              },
+                              icon: Icon(
+                                Icons.add_outlined,
+                              ),
+                            ),
+                            Expanded(
+                              child: InputComponent(
+                                maxLines: 1,
+                                hintText: _controller.pedidoSaida
+                                    .itemPedidoSaida![index].quantidade
+                                    .toString(),
+                                onChanged: (value) {
+                                  inserirQuantidade(index, value);
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              color: Colors.red,
+                              onPressed: () {
+                                removerQuantidade(index);
+                              },
+                              icon: Icon(
+                                Icons.remove_outlined,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Expanded(
                         child: TextComponent(_controller
-                            .itemPedidoSaida[index].valor
+                            .pedidoSaida.itemPedidoSaida![index].valor
                             .toString()),
+                      ),
+                      Expanded(
+                        child: TextComponent(
+                            '${_controller.pedidoSaida.itemPedidoSaida![index].quantidade * _controller.pedidoSaida.itemPedidoSaida![index].valor}'),
                       ),
                       Expanded(
                           flex: 2,
@@ -1759,41 +1837,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               ),
                             ),
                           )),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            IconButton(
-                              color: Colors.green,
-                              onPressed: () {
-                                adicionarQuantidade(index);
-                              },
-                              icon: Icon(
-                                Icons.add_outlined,
-                              ),
-                            ),
-                            Expanded(
-                              child: InputComponent(
-                                maxLines: 1,
-                                hintText: _controller
-                                    .itemPedidoSaida[index].quantidade
-                                    .toString(),
-                                onChanged: (value) {
-                                  inserirQuantidade(index, value);
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              color: Colors.red,
-                              onPressed: () {
-                                removerQuantidade(index);
-                              },
-                              icon: Icon(
-                                Icons.remove_outlined,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                       Expanded(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1824,12 +1867,16 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
             vertical: 16.0,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total: 7 peças selecionadas',
+                'Total: ${_controller.pedidoSaida.itemPedidoSaida!.length} peças selecionadas',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              )
+              ),
+              Text(
+                'Valor total: ${_controller.pedidoSaida.valorTotal}',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         )
@@ -1906,11 +1953,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                       ),
                     ),
                     Container(
-                      color: Colors.grey.shade100,
                       height: abrirFiltro ? null : 0,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
                         child: Row(
                           children: [
                             Container(
@@ -2084,7 +2129,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextComponent(
-                              'Total de ${marcados} peças selecionadas'),
+                              'Total de peças selecionadas: ${marcados}'),
                           Row(
                             children: [
                               ButtonComponent(
