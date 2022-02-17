@@ -4,6 +4,7 @@ import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 
 class CoresDetailView extends StatefulWidget {
   PecasCorModel? pecaCor;
@@ -100,7 +101,14 @@ class _CoresDetailViewState extends State<CoresDetailView> {
               ) :
                 ButtonComponent(
                   onPressed: () {
+                    Navigator.pop(context);
                     _pecasCorController.edit();
+
+                    /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenuConsultarView(selected: 2),
+                        ));*/
                   },
                   text: 'Editar',
                 ),

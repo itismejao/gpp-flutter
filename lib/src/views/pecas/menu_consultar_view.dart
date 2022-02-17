@@ -10,15 +10,23 @@ import 'package:gpp/src/views/pecas/material_list_view.dart';
 import 'package:gpp/src/views/pecas/pecas_list_view.dart';
 
 class MenuConsultarView extends StatefulWidget {
-  const MenuConsultarView({Key? key}) : super(key: key);
+  int? selected;
+
+  MenuConsultarView({this.selected});
 
   @override
   _MenuConsultarViewState createState() => _MenuConsultarViewState();
 }
 
 class _MenuConsultarViewState extends State<MenuConsultarView> {
-  int selected = 1;
 
+  int selected = 1;
+  @override
+  void initState() {
+    if (widget.selected != null)
+      selected = widget.selected!;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Row(
