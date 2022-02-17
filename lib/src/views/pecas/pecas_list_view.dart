@@ -73,69 +73,81 @@ class _PecasListViewState extends State<PecasListView> {
         Divider(),
         FutureBuilder(
           future: _pecasController.buscarTodos(),
-          builder: (context, AsyncSnapshot snapshot) {
-            List<PecasModel> _pecas = snapshot.data ?? [];
+          builder: (context, AsyncSnapshot<List<PecasModel>> snapshot) {
+            // List<PecasModel> _pecas = snapshot.data ?? [];
 
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            } else {
-              return Container(
-                height: 500,
-                child: ListView.builder(
-                  itemCount: _pecas.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Padding(padding: EdgeInsets.only(left: 10)),
-                          CheckboxComponent(),
-                          Expanded(
-                            child: Text(
-                              _pecas[index].id_peca.toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                              // textAlign: TextAlign.start,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(_pecas[index].numero.toString()),
-                          ),
-                          // Expanded(
-                          //   child: Text(_pecas[index].codigo_fabrica.toString()),
-                          // ),
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('none');
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                return Text('');
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text(
+                    '${snapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return Container(
+                    height: 500,
+                    child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Padding(padding: EdgeInsets.only(left: 10)),
+                              CheckboxComponent(),
+                              Expanded(
+                                child: Text(
+                                  snapshot.data![index].id_peca.toString(),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                  // textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(snapshot.data![index].numero.toString()),
+                              ),
+                              // Expanded(
+                              //   child: Text(_pecas[index].codigo_fabrica.toString()),
+                              // ),
 
-                          Expanded(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.grey.shade400,
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      onPressed: () => {},
                                     ),
-                                    onPressed: () {}),
-                              ],
-                            ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      onPressed: () => {},
+                                    ),
+                                    IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        onPressed: () {}),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              );
+                        );
+                      },
+                    ),
+                  );
+                }
             }
           },
         ),

@@ -1,3 +1,5 @@
+import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/models/produto_model.dart';
 
@@ -23,11 +25,13 @@ class PecasModel {
   int? id_peca_material_fabricacao;
   // DateTime? created_at;
   // DateTime? updated_at;
-  int? id_peca_cor;
+  List<PecasCorModel>? cor;
+  // int? cor;
   String? material_fabricacao;
-  String? especie;
+  // String? especie;
+  List<PecasEspecieModel>? especie;
 
-  // List<ProdutoPecaModel>? produto_peca;
+  List<ProdutoPecaModel>? produto_peca;
 
   PecasModel({
     this.id_peca,
@@ -47,39 +51,40 @@ class PecasModel {
     this.id_peca_material_fabricacao,
     // this.created_at,
     // this.updated_at,
-    this.id_peca_cor,
+    this.cor,
     this.material_fabricacao,
     this.especie,
-    // this.produto_peca,
+    this.produto_peca,
   });
 
   factory PecasModel.fromJson(Map<String, dynamic> json) {
     return PecasModel(
       id_peca: json['id_peca'],
       numero: json['numero'],
-      // codigo_fabrica: json['codigo_fabrica'],
-      // unidade: json['unidade'],
-      // descricao: json['descricao'],
-      // altura: json['altura'],
-      // largura: json['largura'],
-      // profundidade: json['profundidade'],
-      // unidade_medida: json['unidade_medida'],
-      // volumes: json['volumes'],
-      // active: json['active'],
-      // custo: json['custo'],
-      // classificacao_custo: json['classificacao_custo'],
-      // tipo_classificacao_custo: json['tipo_classificacao_custo'],
-      // id_peca_material_fabricacao: json['id_peca_material_fabricacao'],
-      // id_peca_cor: json['id_peca_cor'],
+      codigo_fabrica: json['codigo_fabrica'],
+      unidade: json['unidade'],
+      descricao: json['descricao'],
+      altura: json['altura'],
+      largura: json['largura'],
+      profundidade: json['profundidade'],
+      unidade_medida: json['unidade_medida'],
+      volumes: json['volumes'],
+      active: json['active'],
+      custo: json['custo'],
+      classificacao_custo: json['classificacao_custo'],
+      tipo_classificacao_custo: json['tipo_classificacao_custo'],
+      id_peca_material_fabricacao: json['id_peca_material_fabricacao'],
+      cor: List<PecasCorModel>.from(json["cor"].map((x) => PecasCorModel.fromJson(x))),
       // created_at: json['created_at'],
       // updated_at: json['updated_at'],
-      // material_fabricacao: json['material_fabricacao'],
-      // especie: json['especie'],
+      material_fabricacao: json['material_fabricacao'],
+      especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
       // produto_peca: json['produto_peca'] != null
       //     ? json['produto_peca'].map<ProdutoPecaModel>((data) {
       //         return ProdutoPecaModel.fromJson(data);
       //       }).toList()
       //     : null,
+      produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
 
@@ -88,24 +93,24 @@ class PecasModel {
 
     data['id_peca'] = this.id_peca;
     data['numero'] = this.numero;
-    data['codigo_fabrica'] = this.codigo_fabrica;
-    data['unidade'] = this.unidade;
-    data['descricao'] = this.descricao;
-    data['altura'] = this.altura;
-    data['largura'] = this.largura;
-    data['profundidade'] = this.profundidade;
-    data['unidade_medida'] = this.unidade_medida;
-    data['volumes'] = this.volumes;
-    data['active'] = this.active;
-    data['custo'] = this.custo;
-    data['classificacao_custo'] = this.classificacao_custo;
-    data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
-    data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
-    data['id_peca_cor'] = this.id_peca_cor;
-    // data['created_at'] = this.created_at;
-    // data['updated_at'] = this.updated_at;
-    data['material_fabricacao'] = this.material_fabricacao;
-    data['especie'] = this.especie;
+    // data['codigo_fabrica'] = this.codigo_fabrica;
+    // data['unidade'] = this.unidade;
+    // data['descricao'] = this.descricao;
+    // data['altura'] = this.altura;
+    // data['largura'] = this.largura;
+    // data['profundidade'] = this.profundidade;
+    // data['unidade_medida'] = this.unidade_medida;
+    // data['volumes'] = this.volumes;
+    // data['active'] = this.active;
+    // data['custo'] = this.custo;
+    // data['classificacao_custo'] = this.classificacao_custo;
+    // data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
+    // data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
+    // data['id_peca_cor'] = this.id_peca_cor;
+    // // data['created_at'] = this.created_at;
+    // // data['updated_at'] = this.updated_at;
+    // data['material_fabricacao'] = this.material_fabricacao;
+    // data['especie'] = this.especie;
 
     // if (this.produto_peca != null) {
     //   data['produto_peca'] = this.produto_peca!.map((value) => value.toJson()).toList();

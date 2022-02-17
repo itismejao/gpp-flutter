@@ -18,7 +18,7 @@ class PecasController {
   }
 
   Future<List<PecasModel>> buscarTodos() async {
-    // pecasRepository.buscarTodos().then((value) => print(value));
+    // pecasRepository.buscarTodos().then((value) => print(value as Map<String, dynamic>));
 
     return await pecasRepository.buscarTodos();
   }
