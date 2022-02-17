@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 class CheckboxComponent extends StatelessWidget {
-  const CheckboxComponent({
+  bool value;
+  Function onChanged;
+  CheckboxComponent({
     Key? key,
+    required this.value,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -11,9 +16,7 @@ class CheckboxComponent extends StatelessWidget {
     return Checkbox(
         activeColor: primaryColor,
         checkColor: Colors.white,
-        value: false,
-        onChanged: (bool? value) {
-          //   handleSelectedAll(value),
-        });
+        value: value,
+        onChanged: (value) => onChanged(value));
   }
 }
