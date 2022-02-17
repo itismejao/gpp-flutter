@@ -5,6 +5,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class CoresDetailView extends StatefulWidget {
   PecasCorModel? pecaCor;
@@ -62,6 +63,21 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                     },
                   ),
                 ),
+                Padding(padding: EdgeInsets.only(right: 30)),
+                DropdownButton<Situacao>(
+                value: Situacao.values[pecaCor!.situacao!],
+                onChanged: (Situacao? newValue) {
+                setState(() {
+                  pecaCor?.situacao = newValue!.index;
+                  _pecasCorController.pecasCorModel.situacao = newValue!.index;
+                });
+                },
+                items: Situacao.values.map((Situacao? situacao) {
+                return DropdownMenuItem<Situacao>(
+                value: situacao,
+                child: Text(situacao!.name));
+                }).toList()
+                )
               ]
           ),
           Padding(padding: EdgeInsets.only(bottom: 10)),

@@ -6,6 +6,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class MaterialListView extends StatefulWidget {
   const MaterialListView({Key? key}) : super(key: key);
@@ -108,7 +109,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                             child: Text(_pecasMaterial[index].sigla.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecasMaterial[index].situacao.toString()),
+                            child: Text(Situacao.values[_pecasMaterial[index].situacao!].name),
                           ),
 
                           Expanded(

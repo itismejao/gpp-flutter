@@ -6,6 +6,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class EspecieListView extends StatefulWidget {
   const EspecieListView({Key? key}) : super(key: key);
@@ -105,7 +106,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                             child: Text(_pecasEspecie[index].especie.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].situacao.toString()),
+                            child: Text(Situacao.values[_pecasEspecie[index].situacao!].name),
                           ),
                           Expanded(
                             child: Text(_pecasEspecie[index].id_peca_linha.toString()),

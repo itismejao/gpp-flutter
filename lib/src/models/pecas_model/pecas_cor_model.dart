@@ -28,8 +28,8 @@ class PecasCorModel {
     // data['id_peca_cor'] = this.id_peca_cor;
     data['cor'] = this.cor;
     data['sigla'] = this.sigla;
-    // data['situacao'] = this.situacao;
-
+    data['situacao'] = this.situacao;
+    print(data);
     return data;
   }
 }

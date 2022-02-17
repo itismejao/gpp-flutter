@@ -5,6 +5,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class LinhaListView extends StatefulWidget {
   const LinhaListView({Key? key}) : super(key: key);
@@ -101,7 +102,7 @@ class _LinhaListViewState extends State<LinhaListView> {
                             child: Text(_pecasLinha[index].linha.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecasLinha[index].situacao.toString()),
+                            child: Text(Situacao.values[_pecasLinha[index].situacao!].name),
                           ),
 
                           Expanded(

@@ -5,6 +5,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 import 'pop_up_editar.dart';
 import 'cores_detail_view.dart';
@@ -117,7 +118,7 @@ class _CoresListViewState extends State<CoresListView> {
                             child: Text(_pecaCor[index].sigla.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecaCor[index].situacao.toString()),
+                            child: Text(Situacao.values[_pecaCor[index].situacao!].name),
                           ),
                           Expanded(
                             child: Row(

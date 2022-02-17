@@ -6,6 +6,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class GrupoListView extends StatefulWidget {
   const GrupoListView({Key? key}) : super(key: key);
@@ -102,7 +103,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                             child: Text(_pecasGrupo[index].grupo.toString()),
                           ),
                           Expanded(
-                            child: Text(_pecasGrupo[index].situacao.toString()),
+                            child: Text(Situacao.values[_pecasGrupo[index].situacao!].name),
                           ),
 
                           Expanded(
