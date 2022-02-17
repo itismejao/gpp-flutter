@@ -19,7 +19,8 @@ class InputComponent extends StatelessWidget {
   final TextInputType? keyboardType;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatter;
-  const InputComponent({
+  TextEditingController? controller;
+  InputComponent({
     Key? key,
     this.label,
     this.initialValue,
@@ -36,6 +37,7 @@ class InputComponent extends StatelessWidget {
     this.keyboardType,
     this.maxLines,
     this.inputFormatter,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -100,6 +102,7 @@ class InputComponent extends StatelessWidget {
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(5)),
         child: TextFormField(
+            controller: controller,
             inputFormatters: inputFormatter,
             maxLines: maxLines,
             initialValue: initialValue,
