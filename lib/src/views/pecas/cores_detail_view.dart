@@ -51,30 +51,32 @@ class _CoresDetailViewState extends State<CoresDetailView> {
         children: [
           pecaCor == null
               ? Container()
-              : Row(children: [
-                  Flexible(
-                    child: InputComponent(
-                      enable: false,
-                      initialValue: pecaCor!.id_peca_cor.toString(),
-                      label: 'ID',
-                      onChanged: (value) {
-                        _pecasCorController.pecasCorModel.id_peca_cor = value;
-                      },
+              : Row(
+                  children: [
+                    Flexible(
+                      child: InputComponent(
+                        enable: false,
+                        initialValue: pecaCor!.id_peca_cor.toString(),
+                        label: 'ID',
+                        onChanged: (value) {
+                          _pecasCorController.pecasCorModel.id_peca_cor = value;
+                        },
+                      ),
                     ),
-                  ),
-                  Padding(padding: EdgeInsets.only(right: 30)),
-                  DropdownButton<Situacao>(
-                      value: Situacao.values[pecaCor!.situacao!],
-                      onChanged: (Situacao? newValue) {
-                        setState(() {
-                          pecaCor?.situacao = newValue!.index;
-                          _pecasCorController.pecasCorModel.situacao = newValue!.index;
-                        });
-                      },
-                      items: Situacao.values.map((Situacao? situacao) {
-                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
-                      }).toList())
-                ]),
+                    Padding(padding: EdgeInsets.only(right: 30)),
+                    DropdownButton<Situacao>(
+                        value: Situacao.values[pecaCor!.situacao!],
+                        onChanged: (Situacao? newValue) {
+                          setState(() {
+                            pecaCor?.situacao = newValue!.index;
+                            _pecasCorController.pecasCorModel.situacao = newValue!.index;
+                          });
+                        },
+                        items: Situacao.values.map((Situacao? situacao) {
+                          return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                        }).toList())
+                  ],
+                ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
           Row(
             children: [
@@ -123,15 +125,14 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                       },
                       text: 'Editar',
                     ),
-              pecaCor == null
-                  ? Container()
-                  : ButtonComponent(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      text: 'Cancelar',
-                      color: Colors.red,
-                    ),
+              Padding(padding: EdgeInsets.only(right: 20)),
+              ButtonComponent(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                text: 'Cancelar',
+                color: Colors.red,
+              ),
             ],
           ),
         ],
