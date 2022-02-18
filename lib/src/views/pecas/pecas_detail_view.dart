@@ -157,7 +157,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                     label: 'Descrição da Peça',
                     onChanged: (value) {
                       _pecasController.pecasModel.descricao = value;
-                      _pecasController.pecasModel.volumes = 1;
+                      _pecasController.pecasModel.volumes = "1";
                       _pecasController.pecasModel.active = 1;
                     },
                   ),

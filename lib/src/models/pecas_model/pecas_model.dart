@@ -17,7 +17,7 @@ class PecasModel {
   double? largura;
   double? profundidade;
   int? unidade_medida;
-  double? volumes;
+  String? volumes;
   int? active;
   double? custo;
   int? classificacao_custo;
@@ -26,6 +26,7 @@ class PecasModel {
   // DateTime? created_at;
   // DateTime? updated_at;
   List<PecasCorModel>? cor;
+  PecasCorModel? pecasCorModel;
   // int? cor;
   String? material_fabricacao;
   // String? especie;
@@ -52,6 +53,7 @@ class PecasModel {
     // this.created_at,
     // this.updated_at,
     this.cor,
+    this.pecasCorModel,
     this.material_fabricacao,
     this.especie,
     this.produto_peca,
@@ -74,17 +76,17 @@ class PecasModel {
       classificacao_custo: json['classificacao_custo'],
       tipo_classificacao_custo: json['tipo_classificacao_custo'],
       id_peca_material_fabricacao: json['id_peca_material_fabricacao'],
-      cor: List<PecasCorModel>.from(json["cor"].map((x) => PecasCorModel.fromJson(x))),
+      pecasCorModel: json["cor"] == null ? null : PecasCorModel.fromJson(json["cor"]),
       // created_at: json['created_at'],
       // updated_at: json['updated_at'],
-      material_fabricacao: json['material_fabricacao'],
-      especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
+      //material_fabricacao: json['material_fabricacao'],
+     // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
       // produto_peca: json['produto_peca'] != null
       //     ? json['produto_peca'].map<ProdutoPecaModel>((data) {
       //         return ProdutoPecaModel.fromJson(data);
       //       }).toList()
       //     : null,
-      produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
+     // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
 

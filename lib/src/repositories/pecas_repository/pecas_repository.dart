@@ -25,15 +25,17 @@ class PecasRepository {
   }
 
   Future<List<PecasModel>> buscarTodos() async {
-    Response response = await api.get('/pecas/1');
+    Response response = await api.get('/pecas');
+
+    //print(response.body);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-
+      //print(data["data"]);
       // print(jsonDecode(response.body));
 
       // Fazer trazer array no model
-      List<PecasModel> pecas = data.map<PecasModel>((data) => PecasModel.fromJson(data)).toList();
+      List<PecasModel> pecas = data["data"].map<PecasModel>((data) => PecasModel.fromJson(data)).toList();
 
       return pecas;
     } else {
