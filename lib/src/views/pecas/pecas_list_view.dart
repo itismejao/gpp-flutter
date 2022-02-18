@@ -59,7 +59,7 @@ class _PecasListViewState extends State<PecasListView> {
               child: TextComponent('Número'),
             ),
             Expanded(
-              child: TextComponent('Cd. Fabrica'),
+              child: TextComponent('Cod. Fabrica'),
             ),
             Expanded(
               child: TextComponent('Descrição'),

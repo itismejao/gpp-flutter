@@ -142,6 +142,7 @@ class _CoresListViewState extends State<CoresListView> {
                                     ),
                                     onPressed: () {
                                       _pecasCorController.excluir(_pecaCor[index]);
+                                      Navigator.pop(context);
                                     }),
                               ],
                             ),

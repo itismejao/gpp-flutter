@@ -112,27 +112,31 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                       },
                       text: 'Salvar',
                     )
-                  : ButtonComponent(
-                      onPressed: () {
-                        _pecasCorController.editar();
-                        Navigator.pop(context);
+                  : Row(
+                      children: [
+                        ButtonComponent(
+                          onPressed: () {
+                            _pecasCorController.editar();
+                            Navigator.pop(context);
 
-                        /*Navigator.push(
+                            /*Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MenuConsultarView(selected: 2),
                         ));*/
-                      },
-                      text: 'Editar',
+                          },
+                          text: 'Editar',
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 20)),
+                        ButtonComponent(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          text: 'Cancelar',
+                          color: Colors.red,
+                        ),
+                      ],
                     ),
-              Padding(padding: EdgeInsets.only(right: 20)),
-              ButtonComponent(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                text: 'Cancelar',
-                color: Colors.red,
-              ),
             ],
           ),
         ],
