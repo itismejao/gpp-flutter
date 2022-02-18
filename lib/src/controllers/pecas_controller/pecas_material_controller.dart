@@ -20,4 +20,8 @@ class PecasMaterialController {
   Future<bool> excluir(PecasMaterialModel pecasMaterialModel) async {
     return await pecasMaterialRepository.excluir(pecasMaterialModel);
   }
+
+  Future<bool> editar() async {
+    return await pecasMaterialRepository.editar(pecasMaterialModel);
+  }
 }

@@ -19,7 +19,7 @@ class MenuConsultarView extends StatefulWidget {
 }
 
 class _MenuConsultarViewState extends State<MenuConsultarView> {
-  int selected = 5;
+  int selected = 4;
 
   @override
   void initState() {

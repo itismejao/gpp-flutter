@@ -51,4 +51,16 @@ class PecasEspecieRepository {
       throw Exception(error);
     }
   }
+
+  Future<bool> editar(PecasEspecieModel pecasEspecieModel) async {
+    print(jsonEncode(pecasEspecieModel.toJson()));
+
+    Response response = await api.put('/peca-especie/${pecasEspecieModel.id_peca_especie}', pecasEspecieModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
+    }
+  }
 }

@@ -30,7 +30,7 @@ class _PecasListViewState extends State<PecasListView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TitleComponent(
-                      'Linha',
+                      'Peças',
                     ),
                     ButtonComponent(
                         onPressed: () {
@@ -56,10 +56,13 @@ class _PecasListViewState extends State<PecasListView> {
               ),
             ),
             Expanded(
-              child: TextComponent('Linha'),
+              child: TextComponent('Número'),
             ),
             Expanded(
-              child: TextComponent('Situação'),
+              child: TextComponent('Cd. Fabrica'),
+            ),
+            Expanded(
+              child: TextComponent('Descrição'),
             ),
             Expanded(
               child: Text(
@@ -111,19 +114,21 @@ class _PecasListViewState extends State<PecasListView> {
                               Expanded(
                                 child: Text(snapshot.data![index].numero.toString()),
                               ),
-                              // Expanded(
-                              //   child: Text(_pecas[index].codigo_fabrica.toString()),
-                              // ),
-
+                              Expanded(
+                                child: Text(snapshot.data![index].codigo_fabrica == null
+                                    ? ''
+                                    : snapshot.data![index].codigo_fabrica.toString()),
+                              ),
+                              Expanded(
+                                child: Text(snapshot.data![index].descricao.toString()),
+                              ),
                               Expanded(
                                 child: Row(
                                   children: [
                                     IconButton(
-                                      icon: Icon(
-                                        Icons.add,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      onPressed: () => {},
+                                      onPressed: () {},
+                                      icon: Icon(Icons.visibility),
+                                      color: Colors.grey.shade400,
                                     ),
                                     IconButton(
                                       icon: Icon(

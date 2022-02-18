@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/situacao.dart';
 
 class MaterialDetailView extends StatefulWidget {
   PecasGrupoModel? pecasGrupoModel;
@@ -54,53 +55,168 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
           child: Row(
             children: [
               Padding(padding: EdgeInsets.only(left: 20)),
-              Icon(Icons.add_box),
+              Icon(pecasGrupoModel != null || pecasMaterialModel != null ? Icons.edit : Icons.add_box),
               Padding(padding: EdgeInsets.only(right: 12)),
-              TitleComponent('Cadastrar Material de Fabricação'),
+              TitleComponent(pecasGrupoModel != null || pecasMaterialModel != null
+                  ? 'Editar Material de Fabricação'
+                  : 'Cadastrar Material de Fabricação'),
             ],
           ),
         ),
         Divider(),
+        pecasGrupoModel == null && pecasMaterialModel == null
+            ? Column(
+                children: [
+                  grupo(context),
+                  material(context),
+                ],
+              )
+            : Column(
+                children: [
+                  pecasGrupoModel == null ? Container() : grupo(context),
+                  pecasMaterialModel == null ? Padding(padding: EdgeInsets.only(bottom: 30)) : Padding(padding: EdgeInsets.zero),
+                  pecasMaterialModel == null ? Container() : material(context),
+                ],
+              ),
+      ],
+    );
+  }
+
+  grupo(BuildContext context) {
+    return Column(
+      children: [
+        pecasGrupoModel == null
+            ? Container()
+            : Row(
+                children: [
+                  Flexible(
+                    child: InputComponent(
+                      enable: false,
+                      initialValue: pecasGrupoModel == null ? '' : pecasGrupoModel!.id_peca_grupo_material.toString(),
+                      label: 'ID',
+                      onChanged: (value) {
+                        _pecasGrupoController.pecasGrupoModel.id_peca_grupo_material = value;
+                      },
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 30)),
+                  DropdownButton<Situacao>(
+                      value: Situacao.values[pecasGrupoModel!.situacao!],
+                      onChanged: (Situacao? newValue) {
+                        setState(() {
+                          pecasGrupoModel?.situacao = newValue!.index;
+                          _pecasGrupoController.pecasGrupoModel.situacao = newValue!.index;
+                        });
+                      },
+                      items: Situacao.values.map((Situacao? situacao) {
+                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                      }).toList())
+                ],
+              ),
+        Padding(padding: EdgeInsets.only(bottom: 10)),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            // Padding(padding: EdgeInsets.only(bottom: 30)),
+            Flexible(
+              child: InputComponent(
+                label: 'Grupo/Família',
+                initialValue: pecasGrupoModel == null ? '' : pecasGrupoModel!.grupo.toString(),
+                onChanged: (value) {
+                  _pecasGrupoController.pecasGrupoModel.grupo = value;
+                  _pecasGrupoController.pecasGrupoModel.situacao = 1;
+                },
+              ),
+            ),
+          ],
+        ),
+        Padding(padding: EdgeInsets.only(bottom: 30)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            pecasGrupoModel == null
+                ? ButtonComponent(
+                    onPressed: () {
+                      _pecasGrupoController.create();
+                    },
+                    text: 'Salvar',
+                  )
+                : Row(
+                    children: [
+                      ButtonComponent(
+                        onPressed: () {
+                          _pecasGrupoController.editar();
+                          Navigator.pop(context);
+                        },
+                        text: 'Editar',
+                      ),
+                      Padding(padding: EdgeInsets.only(right: 20)),
+                      ButtonComponent(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        text: 'Cancelar',
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  material(BuildContext context) {
+    return Column(
+      children: [
         Column(
           children: [
             Padding(padding: EdgeInsets.only(bottom: 30)),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(padding: EdgeInsets.only(bottom: 30)),
-                Flexible(
-                  child: InputComponent(
-                    label: 'Grupo/Família',
-                    onChanged: (value) {
-                      _pecasGrupoController.pecasGrupoModel.grupo = value;
-                      _pecasGrupoController.pecasGrupoModel.situacao = 1;
-                    },
+            pecasMaterialModel == null
+                ? Container()
+                : Row(
+                    children: [
+                      Flexible(
+                        child: InputComponent(
+                          enable: false,
+                          initialValue:
+                              pecasMaterialModel == null ? '' : pecasMaterialModel!.id_peca_material_fabricacao.toString(),
+                          label: 'ID',
+                          onChanged: (value) {
+                            _pecasMaterialController.pecasMaterialModel.id_peca_material_fabricacao = value;
+                          },
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(right: 30)),
+                      DropdownButton<Situacao>(
+                          value: Situacao.values[pecasMaterialModel!.situacao!],
+                          onChanged: (Situacao? newValue) {
+                            setState(() {
+                              pecasMaterialModel?.situacao = newValue!.index;
+                              _pecasMaterialController.pecasMaterialModel.situacao = newValue!.index;
+                            });
+                          },
+                          items: Situacao.values.map((Situacao? situacao) {
+                            return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                          }).toList())
+                    ],
                   ),
-                ),
-              ],
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ButtonComponent(
-                  onPressed: () {
-                    _pecasGrupoController.create();
-                  },
-                  text: 'Salvar',
-                ),
-              ],
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
-            Row(
-              children: [
-                Text(
-                  'Cadastrar Material',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-            Divider(),
+            Padding(padding: EdgeInsets.only(bottom: 10)),
+            pecasMaterialModel == null
+                ? Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Cadastrar Material',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      Divider(),
+                    ],
+                  )
+                : Container(),
             Padding(padding: EdgeInsets.only(bottom: 30)),
             Row(
               children: [
@@ -162,6 +278,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Nome do Material',
+                    initialValue: pecasMaterialModel == null ? '' : pecasMaterialModel!.material.toString(),
                     onChanged: (value) {
                       _pecasMaterialController.pecasMaterialModel.material = value;
                       _pecasMaterialController.pecasMaterialModel.situacao = 1;
@@ -173,6 +290,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Sigla',
+                    initialValue: pecasMaterialModel == null ? '' : pecasMaterialModel!.sigla.toString(),
                     onChanged: (value) {
                       _pecasMaterialController.pecasMaterialModel.sigla = value;
                     },
@@ -184,16 +302,36 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ButtonComponent(
-                  onPressed: () {
-                    if (selectedGrupo?.id_peca_grupo_material == null) {
-                      print('Selecione o grupo');
-                    } else {
-                      _pecasMaterialController.create();
-                    }
-                  },
-                  text: 'Salvar',
-                ),
+                pecasMaterialModel == null
+                    ? ButtonComponent(
+                        onPressed: () {
+                          if (selectedGrupo?.id_peca_grupo_material == null) {
+                            print('Selecione o grupo');
+                          } else {
+                            _pecasMaterialController.create();
+                          }
+                        },
+                        text: 'Salvar',
+                      )
+                    : Row(
+                        children: [
+                          ButtonComponent(
+                            onPressed: () {
+                              _pecasMaterialController.editar();
+                              Navigator.pop(context);
+                            },
+                            text: 'Editar',
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 20)),
+                          ButtonComponent(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            text: 'Cancelar',
+                            color: Colors.red,
+                          ),
+                        ],
+                      ),
               ],
             ),
           ],

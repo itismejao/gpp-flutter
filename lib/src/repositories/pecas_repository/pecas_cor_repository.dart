@@ -25,7 +25,7 @@ class PecasCorRepository {
     }
   }
 
-  Future<bool> edit(PecasCorModel pecasCorModel) async {
+  Future<bool> editar(PecasCorModel pecasCorModel) async {
     print(jsonEncode(pecasCorModel.toJson()));
 
     Response response = await api.put('/peca-cor/${pecasCorModel.id_peca_cor}', pecasCorModel.toJson());

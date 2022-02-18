@@ -114,8 +114,8 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                     )
                   : ButtonComponent(
                       onPressed: () {
+                        _pecasCorController.editar();
                         Navigator.pop(context);
-                        _pecasCorController.edit();
 
                         /*Navigator.push(
                         context,

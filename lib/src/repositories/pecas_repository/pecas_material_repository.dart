@@ -52,4 +52,17 @@ class PecasMaterialRepository {
       throw Exception(error);
     }
   }
+
+  Future<bool> editar(PecasMaterialModel pecasMaterialModel) async {
+    print(jsonEncode(pecasMaterialModel.toJson()));
+
+    Response response =
+        await api.put('/peca-material-fabricacao/${pecasMaterialModel.id_peca_material_fabricacao}', pecasMaterialModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
+    }
+  }
 }

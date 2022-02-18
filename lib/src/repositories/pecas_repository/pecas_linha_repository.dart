@@ -51,4 +51,16 @@ class PecasLinhaRepository {
       throw Exception(error);
     }
   }
+
+  Future<bool> editar(PecasLinhaModel pecasLinhaModel) async {
+    print(jsonEncode(pecasLinhaModel.toJson()));
+
+    Response response = await api.put('/peca-linha/${pecasLinhaModel.id_peca_linha}', pecasLinhaModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
+    }
+  }
 }

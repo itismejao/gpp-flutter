@@ -108,7 +108,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                   Flexible(
                     child: InputComponent(
                       enable: false,
-                      // initialValue: pecasLinhaModel!.id_peca_linha.toString(),
+                      initialValue: pecasLinhaModel == null ? '' : pecasLinhaModel!.id_peca_linha.toString(),
                       label: 'ID',
                       onChanged: (value) {
                         _pecasLinhaController.pecasLinhaModel.id_peca_linha = value;
@@ -137,7 +137,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             Flexible(
               child: InputComponent(
                 label: 'Nome da Linha',
-                // initialValue: pecasLinhaModel!.linha,
+                initialValue: pecasLinhaModel == null ? '' : pecasLinhaModel!.linha,
                 onChanged: (value) {
                   _pecasLinhaController.pecasLinhaModel.linha = value;
                 },
@@ -159,7 +159,10 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                 : Row(
                     children: [
                       ButtonComponent(
-                        onPressed: () {},
+                        onPressed: () {
+                          _pecasLinhaController.editar();
+                          Navigator.pop(context);
+                        },
                         text: 'Editar',
                       ),
                       Padding(padding: EdgeInsets.only(right: 20)),
@@ -181,15 +184,21 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   especie(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              'Cadastrar Espécie',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-          ],
-        ),
-        Divider(),
+        pecasEspecieModel == null
+            ? Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Cadastrar Espécie',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  Divider()
+                ],
+              )
+            : Container(),
         Padding(padding: EdgeInsets.only(bottom: 30)),
         pecasEspecieModel == null
             ? Container()
@@ -198,7 +207,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                   Flexible(
                     child: InputComponent(
                       enable: false,
-                      // initialValue: pecasEspecieModel!.id_peca_especie.toString(),
+                      initialValue: pecasEspecieModel == null ? '' : pecasEspecieModel!.id_peca_especie.toString(),
                       label: 'ID',
                       onChanged: (value) {
                         _pecasEspecieController.pecasEspecieModel.id_peca_especie = value;
@@ -235,6 +244,10 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                       return CircularProgressIndicator();
                     } else {
                       final List<PecasLinhaModel> _pecasLinha = snapshot.data;
+
+                      if (pecasEspecieModel != null) {
+                        selectedLinha?.id_peca_linha = pecasEspecieModel?.id_peca_linha;
+                      }
 
                       return Container(
                         padding: EdgeInsets.only(left: 12, right: 12),
@@ -278,7 +291,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             Flexible(
               child: InputComponent(
                 label: 'Nome da Espécie',
-                // initialValue: pecasEspecieModel!.especie,
+                initialValue: pecasEspecieModel == null ? '' : pecasEspecieModel!.especie,
                 onChanged: (value) {
                   _pecasEspecieController.pecasEspecieModel.especie = value;
                 },
@@ -304,7 +317,10 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                 : Row(
                     children: [
                       ButtonComponent(
-                        onPressed: () {},
+                        onPressed: () {
+                          _pecasEspecieController.editar();
+                          Navigator.pop(context);
+                        },
                         text: 'Editar',
                       ),
                       Padding(padding: EdgeInsets.only(right: 20)),
