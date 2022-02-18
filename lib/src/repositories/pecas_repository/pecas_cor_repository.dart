@@ -51,4 +51,16 @@ class PecasCorRepository {
       throw error;
     }
   }
+
+  Future<bool> excluir(PecasCorModel pecasCorModel) async {
+    Response response = await api.delete('/peca-cor/' + pecasCorModel.id_peca_cor.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 }

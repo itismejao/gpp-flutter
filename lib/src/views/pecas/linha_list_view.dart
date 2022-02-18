@@ -135,7 +135,9 @@ class _LinhaListViewState extends State<LinhaListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      _pecasLinhaController.excluir(_pecasLinha[index]);
+                                    }),
                               ],
                             ),
                           ),

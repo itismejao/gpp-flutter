@@ -18,4 +18,8 @@ class PecasLinhaController {
   Future<List<PecasLinhaModel>> buscarTodos() async {
     return await pecasLinhaRepository.buscarTodos();
   }
+
+  Future<bool> excluir(PecasLinhaModel pecasLinhaModel) async {
+    return await pecasLinhaRepository.excluir(pecasLinhaModel);
+  }
 }

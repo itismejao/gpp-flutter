@@ -143,7 +143,9 @@ class _MaterialListViewState extends State<MaterialListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      _pecasMaterialController.excluir(_pecasMaterial[index]);
+                                    }),
                               ],
                             ),
                           ),

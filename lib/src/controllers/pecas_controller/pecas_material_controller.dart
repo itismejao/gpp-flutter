@@ -16,4 +16,8 @@ class PecasMaterialController {
   Future<List<PecasMaterialModel>> buscarTodos() async {
     return await pecasMaterialRepository.buscarTodos();
   }
+
+  Future<bool> excluir(PecasMaterialModel pecasMaterialModel) async {
+    return await pecasMaterialRepository.excluir(pecasMaterialModel);
+  }
 }

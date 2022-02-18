@@ -39,4 +39,16 @@ class PecasLinhaRepository {
       throw 'Ocorreu um erro ao inserir uma linha';
     }
   }
+
+  Future<bool> excluir(PecasLinhaModel pecasLinhaModel) async {
+    Response response = await api.delete('/peca-linha/' + pecasLinhaModel.id_peca_linha.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 }

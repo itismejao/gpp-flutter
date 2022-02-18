@@ -136,7 +136,9 @@ class _GrupoListViewState extends State<GrupoListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      _pecasGrupoController.excluir(_pecasGrupo[index]);
+                                    }),
                               ],
                             ),
                           ),

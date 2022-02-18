@@ -147,7 +147,9 @@ class _CoresListViewState extends State<CoresListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      _pecasCorController.excluir(_pecaCor[index]);
+                                    }),
                               ],
                             ),
                           ),

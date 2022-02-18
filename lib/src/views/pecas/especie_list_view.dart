@@ -142,7 +142,9 @@ class _EspecieListViewState extends State<EspecieListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      _pecasEspecieController.excluir(_pecasEspecie[index]);
+                                    }),
                               ],
                             ),
                           ),

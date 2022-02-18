@@ -16,4 +16,8 @@ class PecasGrupoController {
   Future<List<PecasGrupoModel>> buscarTodos() async {
     return await pecasGrupoRepository.buscarTodos();
   }
+
+  Future<bool> excluir(PecasGrupoModel pecasGrupoModel) async {
+    return await pecasGrupoRepository.excluir(pecasGrupoModel);
+  }
 }

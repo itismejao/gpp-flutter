@@ -39,4 +39,16 @@ class PecasEspecieRepository {
       throw error;
     }
   }
+
+  Future<bool> excluir(PecasEspecieModel pecasEspecieModel) async {
+    Response response = await api.delete('/peca-especie/' + pecasEspecieModel.id_peca_especie.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 }

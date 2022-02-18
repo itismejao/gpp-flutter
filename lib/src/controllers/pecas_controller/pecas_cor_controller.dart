@@ -26,4 +26,8 @@ class PecasCorController {
   Future<void> buscarTodos2() async {
     listaPecasCorModel = await pecasCorRepository.buscarTodos();
   }
+
+  Future<bool> excluir(PecasCorModel pecasCorModel) async {
+    return await pecasCorRepository.excluir(pecasCorModel);
+  }
 }
