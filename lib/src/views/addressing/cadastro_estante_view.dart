@@ -189,9 +189,6 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                                       child: TextComponent(controller
                                         .estanteEnderecamentoReplacements[index].desc_estante!)),
                                 Expanded(
-                                    child: Row(
-                                )),
-                                Expanded(
                                   child: Row(
                                     children: [
                                         ButtonComponent(

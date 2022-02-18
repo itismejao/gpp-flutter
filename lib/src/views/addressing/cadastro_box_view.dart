@@ -206,30 +206,14 @@ class _CadastroBoxViewState
                                     child: TextComponent(controller
                                         .boxEnderecamentoReplacements[index].desc_box!)),
                                 Expanded(
-                                    child: Row(
-                                )),
-                                Expanded(
                                     child: TextComponent(controller
                                         .boxEnderecamentoReplacements[index].desc_box!)),
-                                Expanded(
-                                    child: Row(
-                                )),
                                  Expanded(
                                     child: TextComponent(controller
-                                        .boxEnderecamentoReplacements[index].desc_box!)),
-                                Expanded(
-                                    child: Row(
-                                )),                               
+                                        .boxEnderecamentoReplacements[index].desc_box!)),                             
                                 Expanded(
                                   child: Row(
                                     children: [
-                                      ButtonComponent(
-                                        onPressed: () {
-                                            Navigator.pushNamed(context, '/piso/${controller
-                                           .boxEnderecamentoReplacements[index].id_box}/corredores');                                       // openForm(context, controller.pisoEnderecamentoReplacement);
-                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => CadastroCorredorView(),));
-                                        },
-                                        text: 'Adicionar'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,

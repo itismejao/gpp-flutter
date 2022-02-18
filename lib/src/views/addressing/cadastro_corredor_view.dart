@@ -192,13 +192,12 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                                       TextComponent(controller.
                                       corredorEnderecamentoReplacements[index].desc_corredor!)),
                                 Expanded(
-                                    child: Row(
-                                )),
-                                Expanded(
                                   child: Row(
+                                  //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                         ButtonComponent(
                                           onPressed: () {
+                                            
                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
                                           text: 'Estante'),

@@ -192,9 +192,6 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                                       child: TextComponent(controller
                                         .prateleiraEnderecamentoReplacements[index].desc_prateleira!)),
                                 Expanded(
-                                    child: Row(
-                                )),
-                                Expanded(
                                   child: Row(
                                     children: [
                                         ButtonComponent(
