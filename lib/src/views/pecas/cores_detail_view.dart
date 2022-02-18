@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -29,6 +31,28 @@ class _CoresDetailViewState extends State<CoresDetailView> {
 
     // TODO: implement initState
     super.initState();
+  }
+
+  create(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasCorController.create()) {
+        notify.sucess("Cor cadastrada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editar(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasCorController.editar()) {
+        notify.sucess("Cor editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
   }
 
   @override
@@ -96,9 +120,11 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                   label: 'Sigla',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.sigla = value;
+                    _pecasCorController.pecasCorModel.situacao = 1; // situacao por padrão vai ativa
                   },
                 ),
-              )
+              ),
+              Padding(padding: EdgeInsets.only(right: 30)),
             ],
           ),
           Padding(padding: EdgeInsets.only(top: 30)),
@@ -108,7 +134,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
               pecaCor == null
                   ? ButtonComponent(
                       onPressed: () {
-                        _pecasCorController.create();
+                        create(context);
                       },
                       text: 'Salvar',
                     )
@@ -116,7 +142,8 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                       children: [
                         ButtonComponent(
                           onPressed: () {
-                            _pecasCorController.editar();
+                            // _pecasCorController.editar();
+                            editar(context);
                             Navigator.pop(context);
 
                             /*Navigator.push(

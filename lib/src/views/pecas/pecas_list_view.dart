@@ -142,7 +142,10 @@ class _PecasListViewState extends State<PecasListView> {
                                           Icons.delete,
                                           color: Colors.grey.shade400,
                                         ),
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                          _pecasController.excluir(snapshot.data![index]);
+                                          Navigator.pop(context);
+                                        }),
                                   ],
                                 ),
                               ),

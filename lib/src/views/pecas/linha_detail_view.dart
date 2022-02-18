@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
@@ -45,6 +46,28 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
     }
 
     super.initState();
+  }
+
+  criarLinha(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasLinhaController.create()) {
+        notify.sucess("Linha cadastrada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  criarEspecie(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasEspecieController.create()) {
+        notify.sucess("Espécie cadastrada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
   }
 
   DropdownMenuItem<String> buildMenuItem(PecasLinhaModel pecasLinhaModel) => DropdownMenuItem(
@@ -152,7 +175,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             pecasLinhaModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      _pecasLinhaController.create();
+                      criarLinha(context);
                     },
                     text: 'Salvar',
                   )
@@ -309,7 +332,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                       if (selectedLinha?.id_peca_linha == null) {
                         print('Selecione a linha');
                       } else {
-                        _pecasEspecieController.create();
+                        criarEspecie(context);
                       }
                     },
                     text: 'Salvar',

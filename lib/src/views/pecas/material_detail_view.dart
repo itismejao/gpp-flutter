@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
@@ -43,6 +44,50 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
 
     // TODO: implement initState
     super.initState();
+  }
+
+  criarGrupo(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasGrupoController.create()) {
+        notify.sucess("Grupo cadastrado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  criarMaterial(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasMaterialController.create()) {
+        notify.sucess("Material cadastrado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editarGrupo(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasGrupoController.editar()) {
+        notify.sucess("Material cadastrado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editarMaterial(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasMaterialController.editar()) {
+        notify.sucess("Material cadastrado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
   }
 
   @override
@@ -137,7 +182,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
             pecasGrupoModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      _pecasGrupoController.create();
+                      criarGrupo(context);
                     },
                     text: 'Salvar',
                   )
@@ -145,7 +190,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                     children: [
                       ButtonComponent(
                         onPressed: () {
-                          _pecasGrupoController.editar();
+                          editarGrupo(context);
                           Navigator.pop(context);
                         },
                         text: 'Editar',
@@ -308,7 +353,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                           if (selectedGrupo?.id_peca_grupo_material == null) {
                             print('Selecione o grupo');
                           } else {
-                            _pecasMaterialController.create();
+                            criarMaterial(context);
                           }
                         },
                         text: 'Salvar',
@@ -317,7 +362,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                         children: [
                           ButtonComponent(
                             onPressed: () {
-                              _pecasMaterialController.editar();
+                              editarMaterial(context);
                               Navigator.pop(context);
                             },
                             text: 'Editar',

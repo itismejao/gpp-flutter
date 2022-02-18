@@ -22,4 +22,8 @@ class PecasController {
 
     return await pecasRepository.buscarTodos();
   }
+
+  Future<bool> excluir(PecasModel pecasModel) async {
+    return await pecasRepository.excluir(pecasModel);
+  }
 }
