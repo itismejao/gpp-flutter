@@ -1,7 +1,7 @@
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MaskFormatter {
-  cpf(String? value) {
+  cpfInputFormmater(String? value) {
     return MaskTextInputFormatter(
       initialText: value.toString(),
       mask: '###.###.###-##',
@@ -9,7 +9,7 @@ class MaskFormatter {
     );
   }
 
-  cnpj(String? value) {
+  cnpjInputFormmater(String? value) {
     return MaskTextInputFormatter(
       initialText: value,
       mask: '##.###.###/####-##',
@@ -17,7 +17,7 @@ class MaskFormatter {
     );
   }
 
-  MaskTextInputFormatter telefone(String? value) {
+  MaskTextInputFormatter telefoneInputFormmater(String? value) {
     return MaskTextInputFormatter(
       initialText: value,
       mask: '(##) #####-####',
@@ -25,11 +25,18 @@ class MaskFormatter {
     );
   }
 
-  MaskTextInputFormatter cep(String? value) {
+  MaskTextInputFormatter cepInputFormmater(String? value) {
     return MaskTextInputFormatter(
       initialText: value,
       mask: '#####-###',
       filter: {"#": RegExp(r'[0-9]')},
+    );
+  }
+
+  MaskTextInputFormatter realInputFormmater(String? value) {
+    return MaskTextInputFormatter(
+      initialText: value,
+      mask: '##.###,###,###',
     );
   }
 }

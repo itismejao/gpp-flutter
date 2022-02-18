@@ -2,7 +2,7 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:gpp/src/controllers/user_controller.dart';

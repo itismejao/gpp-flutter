@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 
 class InputComponent extends StatelessWidget {
   final String? label;
-  final String? initialValue;
+  String? initialValue;
   final int? maxLength;
   final Function? onSaved;
   final Function? validator;
@@ -19,7 +19,7 @@ class InputComponent extends StatelessWidget {
   final TextInputType? keyboardType;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatter;
-  TextEditingController? controller;
+  final TextEditingController? controller;
   InputComponent({
     Key? key,
     this.label,

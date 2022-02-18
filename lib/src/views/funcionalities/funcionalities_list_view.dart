@@ -3,11 +3,11 @@ import 'package:gpp/src/controllers/funcionalities_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
 
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';

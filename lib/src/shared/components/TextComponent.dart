@@ -5,8 +5,13 @@ class TextComponent extends StatelessWidget {
   final Color? color;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final double? letterSpacing;
   const TextComponent(this.data,
-      {Key? key, this.color, this.fontWeight, this.fontSize})
+      {Key? key,
+      this.color,
+      this.fontWeight,
+      this.fontSize,
+      this.letterSpacing})
       : super(key: key);
 
   @override
@@ -15,11 +20,12 @@ class TextComponent extends StatelessWidget {
     return Text(
       data,
       style: TextStyle(
-          color: color ?? Colors.black,
-          fontSize: fontSize ?? 16 * media.textScaleFactor,
-          letterSpacing: 0.15,
-          fontStyle: FontStyle.normal,
-          fontWeight: fontWeight ?? FontWeight.w500),
+        color: color ?? Colors.black,
+        fontSize: fontSize ?? 16 * media.textScaleFactor,
+        letterSpacing: letterSpacing ?? 0.15,
+        fontStyle: FontStyle.normal,
+        fontWeight: fontWeight ?? FontWeight.w500,
+      ),
     );
   }
 }

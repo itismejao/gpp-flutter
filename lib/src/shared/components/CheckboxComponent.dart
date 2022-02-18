@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 class CheckboxComponent extends StatelessWidget {
-  bool value;
-  Function onChanged;
+  final bool value;
+  final Function onChanged;
   CheckboxComponent({
     Key? key,
     required this.value,

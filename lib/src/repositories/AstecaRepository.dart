@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/AstecaModel.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 
 import 'package:http/http.dart';

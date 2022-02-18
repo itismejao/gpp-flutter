@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/subfuncionalities_controller.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 // ignore: must_be_immutable

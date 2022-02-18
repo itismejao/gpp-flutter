@@ -75,6 +75,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pedido/PedidoView.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
@@ -114,6 +115,12 @@ class _GppAppState extends State<GppApp> {
                     id: 694273,
                   ),
                 ));
+
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: PedidoView(),
+        //         ));
 
         // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

@@ -6,8 +6,8 @@ import 'package:gpp/src/models/user_model.dart';
 
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 

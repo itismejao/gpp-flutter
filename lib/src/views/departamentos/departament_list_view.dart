@@ -4,10 +4,10 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/repositories/DepartamentoRepository.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 

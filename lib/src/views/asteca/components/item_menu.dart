@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 
 class ItemMenu extends StatelessWidget {
   final Color color;
