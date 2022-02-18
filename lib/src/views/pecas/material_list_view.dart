@@ -117,13 +117,13 @@ class _MaterialListViewState extends State<MaterialListView> {
                           Expanded(
                             child: Row(
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
+                                // IconButton(
+                                //   icon: Icon(
+                                //     Icons.add,
+                                //     color: Colors.grey.shade400,
+                                //   ),
+                                //   onPressed: () => {},
+                                // ),
                                 IconButton(
                                   icon: Icon(
                                     Icons.edit,
@@ -134,7 +134,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return PopUpEditar.popUpPeca(
-                                              MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]));
+                                              context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]));
                                         }).then((value) => setState(() {}))
                                   },
                                 ),

@@ -139,7 +139,7 @@ class _CoresListViewState extends State<CoresListView> {
                                           showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return PopUpEditar.popUpPeca(CoresDetailView(pecaCor: _pecaCor[index]));
+                                                return PopUpEditar.popUpPeca(context, CoresDetailView(pecaCor: _pecaCor[index]));
                                               }).then((value) => setState(() {}))
                                         }),
                                 IconButton(

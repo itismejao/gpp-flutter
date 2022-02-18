@@ -116,13 +116,13 @@ class _EspecieListViewState extends State<EspecieListView> {
                           Expanded(
                             child: Row(
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
+                                // IconButton(
+                                //   icon: Icon(
+                                //     Icons.add,
+                                //     color: Colors.grey.shade400,
+                                //   ),
+                                //   onPressed: () => {},
+                                // ),
                                 IconButton(
                                   icon: Icon(
                                     Icons.edit,
@@ -133,7 +133,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return PopUpEditar.popUpPeca(
-                                              EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]));
+                                              context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]));
                                         }).then((value) => setState(() {}))
                                   },
                                 ),

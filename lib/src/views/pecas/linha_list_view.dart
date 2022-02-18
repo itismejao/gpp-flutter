@@ -110,13 +110,13 @@ class _LinhaListViewState extends State<LinhaListView> {
                           Expanded(
                             child: Row(
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
+                                // IconButton(
+                                //   icon: Icon(
+                                //     Icons.add,
+                                //     color: Colors.grey.shade400,
+                                //   ),
+                                //   onPressed: () => {},
+                                // ),
                                 IconButton(
                                   icon: Icon(
                                     Icons.edit,
@@ -126,7 +126,8 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(EspecieDetailView(pecasLinhaModel: _pecasLinha[index]));
+                                          return PopUpEditar.popUpPeca(
+                                              context, EspecieDetailView(pecasLinhaModel: _pecasLinha[index]));
                                         }).then((value) => setState(() {}))
                                   },
                                 ),

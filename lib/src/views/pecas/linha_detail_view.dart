@@ -65,9 +65,10 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(Icons.add_box),
+            Icon(pecasLinhaModel != null || pecasEspecieModel != null ? Icons.edit : Icons.add_box),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent('Cadastrar Linha e Espécie'),
+            TitleComponent(
+                pecasLinhaModel != null || pecasEspecieModel != null ? 'Editar Linha e Espécie' : 'Cadastrar Linha e Espécie'),
           ],
         ),
       ),
