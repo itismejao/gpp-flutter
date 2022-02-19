@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
+import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/shared/utils/GerarPedidoPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
@@ -42,6 +44,7 @@ class AstecaDetailView extends StatefulWidget {
 
 class _AstecaDetailViewState extends State<AstecaDetailView> {
   late AstecaController _controller;
+
   List<ItemPeca> itemsPeca = [];
   List<ItemPeca> itemsPecaBusca = [];
   int marcados = 0;
@@ -172,7 +175,8 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     setState(() {
       _controller.pedidoSaida.valorTotal = 0.0;
       for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
-        _controller.pedidoSaida.valorTotal += item.quantidade * item.valor;
+        _controller.pedidoSaida.valorTotal =
+            _controller.pedidoSaida.valorTotal! + item.quantidade * item.valor;
       }
     });
   }
@@ -200,17 +204,64 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   /**
    * Função destinada a finalizar o pedido
    */
-  finalizarPedido() {
-    //Notificação
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(actions: <Widget>[
-            Row(
-              children: [TextComponent('Ok')],
-            )
-          ]);
-        });
+  finalizarPedido() async {
+    try {
+      //Criar o pedido
+      _controller.pedidoSaida.cpfCnpj =
+          _controller.asteca.documentoFiscal!.cpfCnpj;
+      _controller.pedidoSaida.filialVenda =
+          _controller.asteca.documentoFiscal!.idFilialVenda;
+      _controller.pedidoSaida.numDocFiscal =
+          _controller.asteca.documentoFiscal!.numDocFiscal;
+      _controller.pedidoSaida.serieDocFiscal =
+          _controller.asteca.documentoFiscal!.serieDocFiscal;
+
+      _controller.pedidoSaida.situacao = 1;
+      _controller.pedidoSaida.asteca = _controller.asteca;
+      _controller.pedidoSaida.funcionario = _controller.asteca.funcionario;
+
+      //Solicita o endpoint a criação do pedido
+      PedidoSaidaModel pedidoResposta =
+          await _controller.pedidoRepository.criar(_controller.pedidoSaida);
+
+      //Notificação
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(actions: <Widget>[
+              Row(
+                children: [
+                  TextComponent(
+                      'Pedido efetuado com sucesso: #${pedidoResposta.idPedidoSaida}')
+                ],
+              ),
+              Row(
+                children: [
+                  ButtonComponent(
+                      color: primaryColor,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      text: 'Ok'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  ButtonComponent(
+                      icon: Icon(
+                        Icons.print,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        GerarPedidoPDF(pedido: pedidoResposta).imprimirPDF();
+                      },
+                      text: 'Imprimir')
+                ],
+              )
+            ]);
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 
   pesquisarPecas(value) {
