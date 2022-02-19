@@ -5,7 +5,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 
 class InputComponent extends StatelessWidget {
   final String? label;
-  String? initialValue;
+  final String? initialValue;
   final int? maxLength;
   final Function? onSaved;
   final Function? validator;
