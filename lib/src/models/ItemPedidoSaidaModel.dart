@@ -14,4 +14,22 @@ class ItemPedidoSaidaModel {
     this.peca,
     this.motivoTrocaPeca,
   });
+
+  factory ItemPedidoSaidaModel.fromJson(Map<String, dynamic> json) {
+    return ItemPedidoSaidaModel(
+        quantidade: json['quantidade'],
+        valor: json['valor'],
+        motivoTrocaPeca:
+            MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca']),
+        peca: PecaModel.fromJson(json['peca']));
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['quantidade'] = quantidade;
+    data['valor'] = valor;
+    data['id_motivo_troca_peca'] = motivoTrocaPeca!.idMotivoTrocaPeca;
+    data['id_peca'] = peca!.idPeca;
+    return data;
+  }
 }
