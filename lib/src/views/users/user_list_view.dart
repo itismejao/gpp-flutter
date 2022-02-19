@@ -4,7 +4,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';

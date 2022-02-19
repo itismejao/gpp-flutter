@@ -14,7 +14,7 @@ import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/CheckboxComponent.dart';
 import 'package:gpp/src/shared/components/drop_down_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';

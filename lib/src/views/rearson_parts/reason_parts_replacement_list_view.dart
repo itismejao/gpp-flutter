@@ -3,7 +3,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';

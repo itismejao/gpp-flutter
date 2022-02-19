@@ -6,7 +6,7 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/subfuncionalities_controller.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
