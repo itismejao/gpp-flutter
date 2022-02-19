@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:gpp/src/models/PedidoSaidaMode.dart';
+import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
