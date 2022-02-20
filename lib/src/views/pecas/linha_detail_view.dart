@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
@@ -70,16 +71,16 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
     }
   }
 
-  DropdownMenuItem<String> buildMenuItem(PecasLinhaModel pecasLinhaModel) => DropdownMenuItem(
-        value: pecasLinhaModel.linha,
-        child: Text(
-          pecasLinhaModel.linha.toString(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      );
+  // DropdownMenuItem<String> buildMenuItem(PecasLinhaModel pecasLinhaModel) => DropdownMenuItem(
+  //       value: pecasLinhaModel.linha,
+  //       child: Text(
+  //         pecasLinhaModel.linha.toString(),
+  //         style: TextStyle(
+  //           fontWeight: FontWeight.bold,
+  //           fontSize: 20,
+  //         ),
+  //       ),
+  //     );
 
   @override
   Widget build(BuildContext context) {
@@ -252,6 +253,42 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                 ],
               ),
         Padding(padding: EdgeInsets.only(bottom: 10)),
+        // FutureBuilder(
+        //   future: _pecasLinhaController.buscarTodos(),
+        //   builder: (context, AsyncSnapshot snapshot) {
+        //     switch (snapshot.connectionState) {
+        //       case ConnectionState.none:
+        //         return Text("there is no connection");
+        //       case ConnectionState.active:
+        //       case ConnectionState.waiting:
+        //         return Center(child: new CircularProgressIndicator());
+        //       case ConnectionState.done:
+        //         return Container(
+        //           padding: EdgeInsets.only(left: 12, right: 12),
+        //           decoration: BoxDecoration(
+        //             color: Colors.grey.shade200,
+        //             borderRadius: BorderRadius.circular(5),
+        //           ),
+        //           child: DropdownSearch<PecasLinhaModel?>(
+        //             mode: Mode.MENU,
+        //             showSearchBox: true,
+        //             items: snapshot.data,
+        //             itemAsString: (PecasLinhaModel? u) => u!.linha!,
+        //             onSaved: (newValue) {
+        //               print(newValue);
+        //             },
+        //             dropdownSearchDecoration: InputDecoration(
+        //               labelText: 'Selecione',
+        //               hintText: 'Paises',
+        //             ),
+        //             onChanged: (value) {
+        //               _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+        //             },
+        //           ),
+        //         );
+        //     }
+        //   },
+        // ),
         Row(
           children: [
             Column(
@@ -260,54 +297,114 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
               children: [
                 TextComponent('Selecione a linha'),
                 Padding(padding: EdgeInsets.only(bottom: 6)),
-                FutureBuilder(
-                  future: _pecasLinhaController.buscarTodos(),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
-                    } else {
-                      final List<PecasLinhaModel> _pecasLinha = snapshot.data;
-
-                      if (pecasEspecieModel != null) {
-                        selectedLinha?.id_peca_linha = pecasEspecieModel?.id_peca_linha;
-                      }
-
-                      return Container(
-                        padding: EdgeInsets.only(left: 12, right: 12),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<PecasLinhaModel>(
-                            hint: Text('Selecione'),
-                            value: selectedLinha?.id_peca_linha == null
-                                ? selectedLinha
-                                : _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha!.id_peca_linha,
-                                    orElse: () => _pecasLinha[0]),
-                            items: _pecasLinha
-                                .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
-                                      value: dadosLinha,
-                                      child: Text(dadosLinha.linha!.toString().toUpperCase()),
-                                    ))
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                selectedLinha = value!;
-                              });
-                              _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
-                            },
-                            icon: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.black,
+                Container(
+                  width: 300,
+                  height: 48,
+                  child: FutureBuilder(
+                    future: _pecasLinhaController.buscarTodos(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return Text("there is no connection");
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return Center(child: new CircularProgressIndicator());
+                        case ConnectionState.done:
+                          return Container(
+                            padding: EdgeInsets.only(left: 12, right: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            iconSize: 36,
-                          ),
-                        ),
-                      );
-                    }
-                  },
+                            child: DropdownSearch<PecasLinhaModel?>(
+                              mode: Mode.DIALOG,
+                              showSearchBox: true,
+                              items: snapshot.data,
+                              itemAsString: (PecasLinhaModel? u) => u!.linha!,
+                              onChanged: (value) {
+                                _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                              },
+                              dropdownSearchDecoration: InputDecoration(
+                                labelText: 'Selecione',
+                                hintText: 'Paises',
+                                enabledBorder: InputBorder.none,
+                              ),
+                              dropDownButton: Icon(
+                                Icons.arrow_drop_down_rounded,
+                                color: Colors.black,
+                              ),
+                              showAsSuffixIcons: true,
+                              // popupTitle: Column(
+                              //   children: [
+                              //     Padding(padding: EdgeInsets.only(top: 20)),
+                              //     Row(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Padding(padding: EdgeInsets.only(left: 10)),
+                              //         Text(
+                              //           'Selecione a linha',
+                              //           style: TextStyle(fontWeight: FontWeight.bold),
+                              //         ),
+                              //         // Padding(padding: EdgeInsets.only(top: 20, left: 60)),
+                              //       ],
+                              //     ),
+                              //     Padding(padding: EdgeInsets.only(top: 20)),
+                              //   ],
+                              // ),
+                            ),
+                          );
+                      }
+                    },
+                  ),
                 ),
+                // FutureBuilder(
+                //   future: _pecasLinhaController.buscarTodos(),
+                //   builder: (context, AsyncSnapshot snapshot) {
+                //     if (!snapshot.hasData) {
+                //       return CircularProgressIndicator();
+                //     } else {
+                //       final List<PecasLinhaModel> _pecasLinha = snapshot.data;
+
+                //       if (pecasEspecieModel != null) {
+                //         selectedLinha?.id_peca_linha = pecasEspecieModel?.id_peca_linha;
+                //       }
+
+                //       return Container(
+                //         padding: EdgeInsets.only(left: 12, right: 12),
+                //         decoration: BoxDecoration(
+                //           color: Colors.grey.shade200,
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //         child: DropdownButtonHideUnderline(
+                //           child: DropdownButton<PecasLinhaModel>(
+                //             hint: Text('Selecione'),
+                //             value: selectedLinha?.id_peca_linha == null
+                //                 ? selectedLinha
+                //                 : _pecasLinha.firstWhere((element) => element.id_peca_linha == selectedLinha!.id_peca_linha,
+                //                     orElse: () => _pecasLinha[0]),
+                //             items: _pecasLinha
+                //                 .map((dadosLinha) => DropdownMenuItem<PecasLinhaModel>(
+                //                       value: dadosLinha,
+                //                       child: Text(dadosLinha.linha!.toString().toUpperCase()),
+                //                     ))
+                //                 .toList(),
+                //             onChanged: (value) {
+                //               setState(() {
+                //                 selectedLinha = value!;
+                //               });
+                //               _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                //             },
+                //             icon: Icon(
+                //               Icons.arrow_drop_down_rounded,
+                //               color: Colors.black,
+                //             ),
+                //             iconSize: 36,
+                //           ),
+                //         ),
+                //       );
+                //     }
+                //   },
+                // ),
               ],
             ),
             Padding(padding: EdgeInsets.only(right: 30)),
@@ -329,11 +426,11 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             pecasEspecieModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      if (selectedLinha?.id_peca_linha == null) {
-                        print('Selecione a linha');
-                      } else {
-                        criarEspecie(context);
-                      }
+                      // if (selectedLinha?.id_peca_linha == null) {
+                      //   print('Selecione a linha');
+                      // } else {
+                      criarEspecie(context);
+                      // }
                     },
                     text: 'Salvar',
                   )

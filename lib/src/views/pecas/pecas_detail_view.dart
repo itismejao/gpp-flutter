@@ -2,6 +2,11 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
@@ -12,6 +17,9 @@ import 'package:gpp/src/views/pecas/cores_detail_view.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dio/dio.dart';
+
 class PecasDetailView extends StatefulWidget {
   const PecasDetailView({Key? key}) : super(key: key);
 
@@ -21,6 +29,10 @@ class PecasDetailView extends StatefulWidget {
 
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
+  PecasLinhaController _pecasLinhaController = PecasLinhaController();
+  PecasEspecieController _pecasEspecieController = PecasEspecieController();
+  PecasGrupoController _pecasGrupoController = PecasGrupoController();
+  PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
   @override
   Widget build(BuildContext context) {
@@ -381,6 +393,50 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       ),
                     ],
                   ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                FutureBuilder(
+                  future: _pecasLinhaController.buscarTodos(),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("there is no connection");
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return Center(child: new CircularProgressIndicator());
+                      case ConnectionState.done:
+                        final List<PecasLinhaModel> _pecasLinha = snapshot.data;
+
+                        return Container(
+                          child: DropdownSearch<PecasLinhaModel?>(
+                            mode: Mode.MENU,
+                            // showSelectedItem: true,
+                            showSearchBox: true,
+                            // items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+                            // label: "Menu mode",
+                            // hint: "country in menu mode",
+                            items: _pecasLinha,
+                            itemAsString: (PecasLinhaModel? u) => u!.linha!,
+                            // items: snapshot.data.map<PecasLinhaModel>((value) => value.linha).toList(),
+                            onSaved: (newValue) {
+                              print(newValue);
+                            },
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: 'Selecione',
+                              hintText: 'Paises',
+                            ),
+                            // popupItemDisabled: (String s) => s.startsWith('I'),
+                            onChanged: (value) {
+                              print(value!.id_peca_linha);
+                            },
+                            // selectedItem: "Brazil",
+                          ),
+                        );
+                    }
+                  },
                 ),
               ],
             ),
