@@ -9,8 +9,8 @@ class PecasMaterialController {
   late final PecasMaterialRepository pecasMaterialRepository = PecasMaterialRepository(api: gppApi);
   PecasMaterialModel pecasMaterialModel = PecasMaterialModel();
 
-  Future<bool> create() async {
-    return await pecasMaterialRepository.create(pecasMaterialModel);
+  Future<bool> inserir() async {
+    return await pecasMaterialRepository.inserir(pecasMaterialModel);
   }
 
   Future<List<PecasMaterialModel>> buscarTodos() async {

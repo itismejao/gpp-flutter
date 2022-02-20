@@ -320,13 +320,11 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                               mode: Mode.DIALOG,
                               showSearchBox: true,
                               items: snapshot.data,
-                              itemAsString: (PecasLinhaModel? u) => u!.linha!,
+                              itemAsString: (PecasLinhaModel? value) => value!.linha!,
                               onChanged: (value) {
                                 _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
                               },
                               dropdownSearchDecoration: InputDecoration(
-                                labelText: 'Selecione',
-                                hintText: 'Paises',
                                 enabledBorder: InputBorder.none,
                               ),
                               dropDownButton: Icon(

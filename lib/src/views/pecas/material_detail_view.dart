@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
@@ -60,7 +61,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
   criarMaterial(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasMaterialController.create()) {
+      if (await _pecasMaterialController.inserir()) {
         notify.sucess("Material cadastrado com sucesso!");
       }
     } catch (e) {
@@ -271,52 +272,111 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                   children: [
                     TextComponent('Selecione o grupo'),
                     Padding(padding: EdgeInsets.only(bottom: 6)),
-                    FutureBuilder(
-                      future: _pecasGrupoController.buscarTodos(),
-                      builder: (context, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) {
-                          return CircularProgressIndicator();
-                        } else {
-                          final List<PecasGrupoModel> _pecasGrupo = snapshot.data;
-
-                          return Container(
-                            padding: EdgeInsets.only(left: 12, right: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<PecasGrupoModel>(
-                                hint: Text('Selecione'),
-                                value: selectedGrupo?.id_peca_grupo_material == null
-                                    ? selectedGrupo
-                                    : _pecasGrupo.firstWhere(
-                                        (element) => element.id_peca_grupo_material == selectedGrupo!.id_peca_grupo_material,
-                                        orElse: () => _pecasGrupo[0]),
-                                items: _pecasGrupo
-                                    .map((dadosGrupo) => DropdownMenuItem<PecasGrupoModel>(
-                                          value: dadosGrupo,
-                                          child: Text(dadosGrupo.grupo.toString().toUpperCase()),
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedGrupo = value!;
-                                  });
-                                  _pecasMaterialController.pecasMaterialModel.id_peca_material_fabricacao =
-                                      value!.id_peca_grupo_material;
-                                },
-                                icon: Icon(
-                                  Icons.arrow_drop_down_rounded,
-                                  color: Colors.black,
+                    Container(
+                      width: 200,
+                      height: 48,
+                      child: FutureBuilder(
+                        future: _pecasGrupoController.buscarTodos(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                              return Text("there is no connection");
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return Center(child: new CircularProgressIndicator());
+                            case ConnectionState.done:
+                              return Container(
+                                padding: EdgeInsets.only(left: 12, right: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                iconSize: 36,
-                              ),
-                            ),
-                          );
-                        }
-                      },
+                                child: DropdownSearch<PecasGrupoModel?>(
+                                  mode: Mode.DIALOG,
+                                  showSearchBox: true,
+                                  items: snapshot.data,
+                                  itemAsString: (PecasGrupoModel? value) => value!.grupo!,
+                                  onChanged: (value) {
+                                    _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                        value!.id_peca_grupo_material;
+                                  },
+                                  dropdownSearchDecoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                  ),
+                                  dropDownButton: Icon(
+                                    Icons.arrow_drop_down_rounded,
+                                    color: Colors.black,
+                                  ),
+                                  showAsSuffixIcons: true,
+                                  // popupTitle: Column(
+                                  //   children: [
+                                  //     Padding(padding: EdgeInsets.only(top: 20)),
+                                  //     Row(
+                                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                                  //       children: [
+                                  //         Padding(padding: EdgeInsets.only(left: 10)),
+                                  //         Text(
+                                  //           'Selecione a linha',
+                                  //           style: TextStyle(fontWeight: FontWeight.bold),
+                                  //         ),
+                                  //         // Padding(padding: EdgeInsets.only(top: 20, left: 60)),
+                                  //       ],
+                                  //     ),
+                                  //     Padding(padding: EdgeInsets.only(top: 20)),
+                                  //   ],
+                                  // ),
+                                ),
+                              );
+                          }
+                        },
+                      ),
                     ),
+                    // FutureBuilder(
+                    //   future: _pecasGrupoController.buscarTodos(),
+                    //   builder: (context, AsyncSnapshot snapshot) {
+                    //     if (!snapshot.hasData) {
+                    //       return CircularProgressIndicator();
+                    //     } else {
+                    //       final List<PecasGrupoModel> _pecasGrupo = snapshot.data;
+
+                    //       return Container(
+                    //         padding: EdgeInsets.only(left: 12, right: 12),
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.grey.shade200,
+                    //           borderRadius: BorderRadius.circular(5),
+                    //         ),
+                    //         child: DropdownButtonHideUnderline(
+                    //           child: DropdownButton<PecasGrupoModel>(
+                    //             hint: Text('Selecione'),
+                    //             value: selectedGrupo?.id_peca_grupo_material == null
+                    //                 ? selectedGrupo
+                    //                 : _pecasGrupo.firstWhere(
+                    //                     (element) => element.id_peca_grupo_material == selectedGrupo!.id_peca_grupo_material,
+                    //                     orElse: () => _pecasGrupo[0]),
+                    //             items: _pecasGrupo
+                    //                 .map((dadosGrupo) => DropdownMenuItem<PecasGrupoModel>(
+                    //                       value: dadosGrupo,
+                    //                       child: Text(dadosGrupo.grupo.toString().toUpperCase()),
+                    //                     ))
+                    //                 .toList(),
+                    //             onChanged: (value) {
+                    //               setState(() {
+                    //                 selectedGrupo = value!;
+                    //               });
+                    //               _pecasMaterialController.pecasMaterialModel.id_peca_material_fabricacao =
+                    //                   value!.id_peca_grupo_material;
+                    //             },
+                    //             icon: Icon(
+                    //               Icons.arrow_drop_down_rounded,
+                    //               color: Colors.black,
+                    //             ),
+                    //             iconSize: 36,
+                    //           ),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                   ],
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
@@ -350,11 +410,11 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                 pecasMaterialModel == null
                     ? ButtonComponent(
                         onPressed: () {
-                          if (selectedGrupo?.id_peca_grupo_material == null) {
-                            print('Selecione o grupo');
-                          } else {
-                            criarMaterial(context);
-                          }
+                          // if (selectedGrupo?.id_peca_grupo_material == null) {
+                          //   print('Selecione o grupo');
+                          // } else {
+                          criarMaterial(context);
+                          // }
                         },
                         text: 'Salvar',
                       )

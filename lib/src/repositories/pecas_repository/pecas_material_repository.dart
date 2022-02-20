@@ -28,7 +28,7 @@ class PecasMaterialRepository {
     }
   }
 
-  Future<bool> create(PecasMaterialModel pecasLinhaModel) async {
+  Future<bool> inserir(PecasMaterialModel pecasLinhaModel) async {
     print(jsonEncode(pecasLinhaModel.toJson()));
 
     Response response = await api.post('/peca-material-fabricacao', pecasLinhaModel.toJson());

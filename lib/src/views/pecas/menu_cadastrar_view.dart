@@ -16,7 +16,7 @@ class MenuCadastrarView extends StatefulWidget {
 }
 
 class _MenuCadastrarViewState extends State<MenuCadastrarView> {
-  int selected = 4;
+  int selected = 3;
 
   @override
   Widget build(BuildContext context) {
