@@ -52,7 +52,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   criarLinha(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasLinhaController.create()) {
+      if (await _pecasLinhaController.inserir()) {
         notify.sucess("Linha cadastrada com sucesso!");
       }
     } catch (e) {

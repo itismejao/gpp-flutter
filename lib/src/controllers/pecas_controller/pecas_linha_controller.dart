@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/repositories/pecas_repository/pecas_linha_repository.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
@@ -11,12 +12,16 @@ class PecasLinhaController {
   late final PecasLinhaRepository pecasLinhaRepository = PecasLinhaRepository(api: gppApi);
   PecasLinhaModel pecasLinhaModel = PecasLinhaModel();
 
-  Future<bool> create() async {
-    return await pecasLinhaRepository.create(pecasLinhaModel);
+  Future<bool> inserir() async {
+    return await pecasLinhaRepository.inserir(pecasLinhaModel);
   }
 
   Future<List<PecasLinhaModel>> buscarTodos() async {
     return await pecasLinhaRepository.buscarTodos();
+  }
+
+  Future<List<PecasLinhaModel>> buscarEspecieVinculada(int codigo) async {
+    return await pecasLinhaRepository.buscarEspecieVinculada(codigo);
   }
 
   Future<bool> excluir(PecasLinhaModel pecasLinhaModel) async {
