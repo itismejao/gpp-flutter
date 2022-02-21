@@ -146,13 +146,15 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           //Se não existe item adiciona na lista
           if (index < 0) {
             _controller.pedidoSaida.itemsPedidoSaida!.add(ItemPedidoSaidaModel(
-                peca: itemPeca.produtoPeca.peca, valor: 10, quantidade: 1));
+                peca: itemPeca.produtoPeca.peca,
+                valor: itemPeca.produtoPeca.peca.custo,
+                quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
             _controller.pedidoSaida.itemsPedidoSaida![index].quantidade++;
-            // _controller.pedidoSaida.itemPedidoSaida![index].valor +=
-            //     itemPeca.produtoPeca.peca.custo!;
-            _controller.pedidoSaida.itemsPedidoSaida![index].valor += 0;
+            _controller.pedidoSaida.itemsPedidoSaida![index].valor +=
+                itemPeca.produtoPeca.peca.custo;
+            //  _controller.pedidoSaida.itemsPedidoSaida![index].valor += 0;
           }
           //Soma o total
           calcularValorTotal();
@@ -2379,6 +2381,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               fontSize: 14,
                               fontWeight: FontWeight.bold),
                         ),
+                        Expanded(
+                          child: const TextComponent('Estoque disponível'),
+                        ),
                       ],
                     ),
                     const Padding(
@@ -2415,9 +2420,21 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                             .descricao),
                                       ),
                                       Expanded(
-                                        child: TextComponent(_controller
-                                            .produtoPecas[index].peca.custo
-                                            .toString()),
+                                          child: TextComponent(_controller
+                                              .produtoPecas[index].peca.custo
+                                              .toString())),
+                                      Expanded(
+                                        child: _controller.produtoPecas[index]
+                                                    .peca.estoque.length !=
+                                                0
+                                            ? TextComponent(_controller
+                                                .produtoPecas[index]
+                                                .peca
+                                                .estoque
+                                                .first
+                                                .saldoDisponivel
+                                                .toString())
+                                            : TextComponent('0'),
                                       ),
                                     ],
                                   ),
@@ -2461,6 +2478,19 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                                 .peca
                                                 .custo
                                                 .toString()),
+                                      ),
+                                      Expanded(
+                                        child: _controller.produtoPecas[index]
+                                                    .peca.estoque.length !=
+                                                0
+                                            ? TextComponent(_controller
+                                                .produtoPecas[index]
+                                                .peca
+                                                .estoque
+                                                .first
+                                                .saldoDisponivel
+                                                .toString())
+                                            : TextComponent('0'),
                                       ),
                                     ],
                                   ),

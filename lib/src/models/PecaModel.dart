@@ -3,7 +3,7 @@ import 'package:gpp/src/models/PecaEstoqueModel.dart';
 class PecaModel {
   int idPeca;
   String descricao;
-  double? custo;
+  double custo;
   List<PecaEstoqueModel> estoque;
 
   PecaModel({
