@@ -26,9 +26,9 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dio/dio.dart';
 
 class PecasEditAndView extends StatefulWidget {
-  PecasModel? pecasModelPopup;
+  PecasModel? pecasEditPopup;
 
-  PecasEditAndView({this.pecasModelPopup});
+  PecasEditAndView({this.pecasEditPopup});
 
   @override
   _PecasEditAndViewState createState() => _PecasEditAndViewState();
@@ -47,7 +47,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
   final txtIdFornecedor = TextEditingController();
   final txtNomeFornecedor = TextEditingController();
 
-  PecasModel? pecasModelPopup;
+  PecasModel? pecasEditPopup;
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
@@ -73,11 +73,22 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
     }
   }
 
+  editar(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasController.editar()) {
+        notify.sucess("Peça editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   @override
   void initState() {
-    pecasModelPopup = widget.pecasModelPopup;
-    if (pecasModelPopup != null) {
-      _pecasController.pecasModel = pecasModelPopup!;
+    pecasEditPopup = widget.pecasEditPopup;
+    if (pecasEditPopup != null) {
+      _pecasController.pecasModel = pecasEditPopup!;
     }
 
     // TODO: implement initState
@@ -101,7 +112,6 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
           ),
         ),
         Divider(),
-        Padding(padding: EdgeInsets.only(bottom: 30)),
         Column(
           children: [
             Row(
@@ -277,23 +287,13 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
             //     ),
             //   ],
             // ),
-            Padding(padding: EdgeInsets.only(top: 30)),
-            Row(
-              children: [
-                Text(
-                  'Informações da Peça',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-            Divider(),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
+            Padding(padding: EdgeInsets.only(top: 6)),
             Row(
               children: [
                 Flexible(
                   child: InputComponent(
                     label: 'Descrição da Peça',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.descricao == null
                             ? ''
@@ -322,7 +322,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Número',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.numero == null
                             ? ''
@@ -336,7 +336,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Código de Fabrica',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.codigo_fabrica == null
                             ? ''
@@ -350,7 +350,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Custo R\$',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.custo == null
                             ? ''
@@ -364,7 +364,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Unidade',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.unidade == null
                             ? ''
@@ -376,23 +376,13 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 30)),
-            Row(
-              children: [
-                Text(
-                  'Medidas',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-            Divider(),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
+            Padding(padding: EdgeInsets.only(top: 6)),
             Row(
               children: [
                 Flexible(
                   child: InputComponent(
                     label: 'Largura',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.largura == null
                             ? ''
@@ -406,7 +396,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Altura',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.altura == null
                             ? ''
@@ -420,7 +410,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Profundidade',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.profundidade == null
                             ? ''
@@ -434,7 +424,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Und. Medida',
-                    initialValue: pecasModelPopup == null
+                    initialValue: pecasEditPopup == null
                         ? ''
                         : _pecasController.pecasModel.unidade_medida == null
                             ? ''
@@ -446,17 +436,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 30)),
-            Row(
-              children: [
-                Text(
-                  'Linha e Espécie',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-            Divider(),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
+            Padding(padding: EdgeInsets.only(top: 6)),
             Row(
               children: [
                 Flexible(
@@ -608,152 +588,158 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 30)),
-            Row(
-              children: [
-                Text(
-                  'Material de Fabricação',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              ],
-            ),
-            Divider(),
-            Padding(padding: EdgeInsets.only(bottom: 30)),
-            Row(
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextComponent('Grupo'),
-                      Padding(padding: EdgeInsets.only(top: 6)),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 10)),
-                          // Flexible(
-                          //   child: InputComponent(
-                          //     hintText: 'Nome Grupo',
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
-                          Flexible(
-                            child: Container(
-                              width: 600,
-                              height: 48,
-                              child: FutureBuilder(
-                                future: _pecasGrupoController.buscarTodos(),
-                                builder: (context, AsyncSnapshot snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return Text("there is no connection");
-                                    case ConnectionState.active:
-                                    case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
-                                    case ConnectionState.done:
-                                      return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: DropdownSearch<PecasGrupoModel?>(
-                                          mode: Mode.DIALOG,
-                                          showSearchBox: true,
-                                          items: snapshot.data,
-                                          itemAsString: (PecasGrupoModel? value) => value!.grupo!,
-                                          onChanged: (value) {
-                                            _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
-                                                value!.id_peca_grupo_material;
-                                          },
-                                          dropdownSearchDecoration: InputDecoration(
-                                            enabledBorder: InputBorder.none,
-                                          ),
-                                          dropDownButton: Icon(
-                                            Icons.arrow_drop_down_rounded,
-                                            color: Colors.black,
-                                          ),
-                                          showAsSuffixIcons: true,
-                                          // popupTitle: Column(
-                                          //   children: [
-                                          //     Padding(padding: EdgeInsets.only(top: 20)),
-                                          //     Row(
-                                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                                          //       children: [
-                                          //         Padding(padding: EdgeInsets.only(left: 10)),
-                                          //         Text(
-                                          //           'Selecione a linha',
-                                          //           style: TextStyle(fontWeight: FontWeight.bold),
-                                          //         ),
-                                          //         // Padding(padding: EdgeInsets.only(top: 20, left: 60)),
-                                          //       ],
-                                          //     ),
-                                          //     Padding(padding: EdgeInsets.only(top: 20)),
-                                          //   ],
-                                          // ),
-                                        ),
-                                      );
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(padding: EdgeInsets.only(right: 30)),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextComponent('Material'),
-                      Padding(padding: EdgeInsets.only(top: 6)),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(right: 10)),
-                          Flexible(
-                            child: InputComponent(
-                              hintText: 'Nome Material',
-                              onChanged: (value) {},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            Padding(padding: EdgeInsets.only(top: 6)),
+            // Row(
+            //   children: [
+            //     Flexible(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           TextComponent('Grupo'),
+            //           Padding(padding: EdgeInsets.only(top: 6)),
+            //           Row(
+            //             children: [
+            //               SizedBox(
+            //                 width: 80,
+            //                 child: Flexible(
+            //                   child: InputComponent(
+            //                     hintText: 'ID',
+            //                     onChanged: (value) {},
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(padding: EdgeInsets.only(right: 10)),
+            //               // Flexible(
+            //               //   child: InputComponent(
+            //               //     hintText: 'Nome Grupo',
+            //               //     onChanged: (value) {},
+            //               //   ),
+            //               // ),
+            //               Flexible(
+            //                 child: Container(
+            //                   width: 600,
+            //                   height: 48,
+            //                   child: FutureBuilder(
+            //                     future: _pecasGrupoController.buscarTodos(),
+            //                     builder: (context, AsyncSnapshot snapshot) {
+            //                       switch (snapshot.connectionState) {
+            //                         case ConnectionState.none:
+            //                           return Text("there is no connection");
+            //                         case ConnectionState.active:
+            //                         case ConnectionState.waiting:
+            //                           return Center(child: new CircularProgressIndicator());
+            //                         case ConnectionState.done:
+            //                           return Container(
+            //                             padding: EdgeInsets.only(left: 12, right: 12),
+            //                             decoration: BoxDecoration(
+            //                               color: Colors.grey.shade200,
+            //                               borderRadius: BorderRadius.circular(5),
+            //                             ),
+            //                             child: DropdownSearch<PecasGrupoModel?>(
+            //                               mode: Mode.DIALOG,
+            //                               showSearchBox: true,
+            //                               items: snapshot.data,
+            //                               itemAsString: (PecasGrupoModel? value) => value!.grupo!,
+            //                               onChanged: (value) {
+            //                                 _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+            //                                     value!.id_peca_grupo_material;
+            //                               },
+            //                               dropdownSearchDecoration: InputDecoration(
+            //                                 enabledBorder: InputBorder.none,
+            //                               ),
+            //                               dropDownButton: Icon(
+            //                                 Icons.arrow_drop_down_rounded,
+            //                                 color: Colors.black,
+            //                               ),
+            //                               showAsSuffixIcons: true,
+            //                               // popupTitle: Column(
+            //                               //   children: [
+            //                               //     Padding(padding: EdgeInsets.only(top: 20)),
+            //                               //     Row(
+            //                               //       crossAxisAlignment: CrossAxisAlignment.start,
+            //                               //       children: [
+            //                               //         Padding(padding: EdgeInsets.only(left: 10)),
+            //                               //         Text(
+            //                               //           'Selecione a linha',
+            //                               //           style: TextStyle(fontWeight: FontWeight.bold),
+            //                               //         ),
+            //                               //         // Padding(padding: EdgeInsets.only(top: 20, left: 60)),
+            //                               //       ],
+            //                               //     ),
+            //                               //     Padding(padding: EdgeInsets.only(top: 20)),
+            //                               //   ],
+            //                               // ),
+            //                             ),
+            //                           );
+            //                       }
+            //                     },
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     Padding(padding: EdgeInsets.only(right: 30)),
+            //     Flexible(
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           TextComponent('Material'),
+            //           Padding(padding: EdgeInsets.only(top: 6)),
+            //           Row(
+            //             children: [
+            //               SizedBox(
+            //                 width: 80,
+            //                 child: Flexible(
+            //                   child: InputComponent(
+            //                     hintText: 'ID',
+            //                     onChanged: (value) {},
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(padding: EdgeInsets.only(right: 10)),
+            //               Flexible(
+            //                 child: InputComponent(
+            //                   hintText: 'Nome Material',
+            //                   onChanged: (value) {},
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ButtonComponent(
                   onPressed: () {
-                    criar(context);
+                    // _pecasCorController.editar();
+                    editar(context);
+                    Navigator.pop(context);
+
+                    /*Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MenuConsultarView(selected: 2),
+                        ));*/
                   },
-                  text: 'Salvar',
+                  text: 'Editar',
+                ),
+                Padding(padding: EdgeInsets.only(right: 20)),
+                ButtonComponent(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  text: 'Cancelar',
+                  color: Colors.red,
                 ),
               ],
             ),

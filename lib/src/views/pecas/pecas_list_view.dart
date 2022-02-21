@@ -146,7 +146,7 @@ class _PecasListViewState extends State<PecasListView> {
                                               return PopUpEditar.popUpPeca(
                                                   context,
                                                   PecasEditAndView(
-                                                    pecasModelPopup: snapshot.data![index],
+                                                    pecasEditPopup: snapshot.data![index],
                                                   ));
                                             }).then((value) => setState(() {}))
                                       },

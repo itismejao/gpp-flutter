@@ -24,4 +24,8 @@ class PecasController {
   Future<bool> excluir(PecasModel pecasModel) async {
     return await pecasRepository.excluir(pecasModel);
   }
+
+  Future<bool> editar() async {
+    return await pecasRepository.editar(pecasModel);
+  }
 }
