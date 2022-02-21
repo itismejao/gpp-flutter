@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
@@ -45,14 +46,21 @@ class _PecasDetailViewState extends State<PecasDetailView> {
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
-    // print('Aqui popula dentro da funcao >>');
-    // print(produtoModel.id_produto);
+  }
+
+  criar(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasController.criar()) {
+        notify.sucess("Peça cadastrada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
   }
 
   @override
   void initState() {
-    // _pecasLinhaController.buscarEspecieVinculada(1);
-    // produtoModel = _produtoController.buscar2('14634');
     // TODO: implement initState
     super.initState();
   }
@@ -666,7 +674,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
               children: [
                 ButtonComponent(
                   onPressed: () {
-                    _pecasController.create();
+                    criar(context);
                   },
                   text: 'Salvar',
                 ),

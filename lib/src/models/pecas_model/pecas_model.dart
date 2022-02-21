@@ -85,7 +85,7 @@ class PecasModel {
       // created_at: json['created_at'],
       // updated_at: json['updated_at'],
       pecasMaterialModel: json['material_fabricacao'] == null ? null : PecasMaterialModel.fromJson(json['material_fabricacao']),
-     // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
+      // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
       pecasEspecieModel: json["especie"] == null ? null : PecasEspecieModel.fromJson(json["especie"]),
 
       // produto_peca: json['produto_peca'] != null
@@ -93,7 +93,7 @@ class PecasModel {
       //         return ProdutoPecaModel.fromJson(data);
       //       }).toList()
       //     : null,
-     // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
+      // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
 
@@ -102,23 +102,23 @@ class PecasModel {
 
     data['id_peca'] = this.id_peca;
     data['numero'] = this.numero;
-    // data['codigo_fabrica'] = this.codigo_fabrica;
-    // data['unidade'] = this.unidade;
-    // data['descricao'] = this.descricao;
-    // data['altura'] = this.altura;
-    // data['largura'] = this.largura;
-    // data['profundidade'] = this.profundidade;
-    // data['unidade_medida'] = this.unidade_medida;
-    // data['volumes'] = this.volumes;
-    // data['active'] = this.active;
-    // data['custo'] = this.custo;
-    // data['classificacao_custo'] = this.classificacao_custo;
-    // data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
-    // data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
-    // data['id_peca_cor'] = this.id_peca_cor;
-    // // data['created_at'] = this.created_at;
-    // // data['updated_at'] = this.updated_at;
-    // data['material_fabricacao'] = this.material_fabricacao;
+    data['codigo_fabrica'] = this.codigo_fabrica;
+    data['unidade'] = this.unidade;
+    data['descricao'] = this.descricao;
+    data['altura'] = this.altura;
+    data['largura'] = this.largura;
+    data['profundidade'] = this.profundidade;
+    data['unidade_medida'] = this.unidade_medida;
+    data['volumes'] = this.volumes;
+    data['active'] = this.active;
+    data['custo'] = this.custo;
+    data['classificacao_custo'] = this.classificacao_custo;
+    data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
+    data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
+    data['cor'] = this.pecasCorModel;
+    // data['created_at'] = this.created_at;
+    // data['updated_at'] = this.updated_at;
+    data['material_fabricacao'] = this.material_fabricacao;
     // data['especie'] = this.especie;
 
     // if (this.produto_peca != null) {

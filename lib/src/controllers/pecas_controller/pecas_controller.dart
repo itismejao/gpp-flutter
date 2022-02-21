@@ -9,12 +9,12 @@ class PecasController {
   late final PecasRepository pecasRepository = PecasRepository(api: gppApi);
   PecasModel pecasModel = PecasModel();
 
-  Future<bool> create() async {
+  Future<bool> criar() async {
     // if (!formKey.currentState!.validate()) {
     //   return false;
     // }
 
-    return await pecasRepository.create(pecasModel);
+    return await pecasRepository.criar(pecasModel);
   }
 
   Future<List<PecasModel>> buscarTodos() async {

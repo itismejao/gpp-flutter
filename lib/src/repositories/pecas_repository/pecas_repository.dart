@@ -13,7 +13,7 @@ class PecasRepository {
     required this.api,
   });
 
-  Future<bool> create(PecasModel pecas) async {
+  Future<bool> criar(PecasModel pecas) async {
     print(jsonEncode(pecas.toJson()));
     Response response = await api.post('/pecas', pecas.toJson());
 
