@@ -15,7 +15,7 @@ class PedidoSaidaModel {
   AstecaModel? asteca;
   FuncionarioModel? funcionario;
   ClienteModel? cliente;
-  List<ItemPedidoSaidaModel>? itemPedidoSaida;
+  List<ItemPedidoSaidaModel>? itemsPedidoSaida;
   PedidoSaidaModel({
     this.idPedidoSaida,
     this.cpfCnpj,
@@ -28,7 +28,7 @@ class PedidoSaidaModel {
     this.asteca,
     this.funcionario,
     this.cliente,
-    this.itemPedidoSaida,
+    this.itemsPedidoSaida,
   });
 
   factory PedidoSaidaModel.fromJson(Map<String, dynamic> json) {
@@ -42,15 +42,15 @@ class PedidoSaidaModel {
       situacao: json['situacao'],
       valorTotal: json['valor_total'],
       funcionario: json['funcionario'] != null
-          ? FuncionarioModel.fromJson(json['funcionario'])
+          ? FuncionarioModel.fromJson(json['funcionario'].first)
           : null,
       cliente: json['cliente'] != null
           ? ClienteModel.fromJson(json['cliente'])
           : null,
       asteca:
           json['asteca'] != null ? AstecaModel.fromJson(json['asteca']) : null,
-      itemPedidoSaida: json['item_pedido_saida'] != null
-          ? json['item_pedido_saida'].map<ItemPedidoSaidaModel>((data) {
+      itemsPedidoSaida: json['items_pedido_saida'] != null
+          ? json['items_pedido_saida'].map<ItemPedidoSaidaModel>((data) {
               return ItemPedidoSaidaModel.fromJson(data);
             }).toList()
           : null,
@@ -69,7 +69,7 @@ class PedidoSaidaModel {
     data['id_funcionario'] = funcionario!.idFuncionario;
 
     data['items_pedido_saida'] =
-        itemPedidoSaida!.map((e) => e.toJson()).toList();
+        itemsPedidoSaida!.map((e) => e.toJson()).toList();
     return data;
   }
 }

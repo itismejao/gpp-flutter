@@ -18,7 +18,7 @@ class AstecaController {
   late List<ProdutoPecaModel> produtoPecas;
 
   PedidoSaidaModel pedidoSaida = PedidoSaidaModel(
-    itemPedidoSaida: [],
+    itemsPedidoSaida: [],
     valorTotal: 0.0,
   );
 

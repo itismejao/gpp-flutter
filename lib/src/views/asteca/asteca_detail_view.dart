@@ -140,19 +140,19 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
           //Verifica se já existe item com o mesmo id adicionado na lista
-          int index = _controller.pedidoSaida.itemPedidoSaida!.indexWhere(
+          int index = _controller.pedidoSaida.itemsPedidoSaida!.indexWhere(
               (element) =>
                   element.peca!.idPeca == itemPeca.produtoPeca.peca.idPeca);
           //Se não existe item adiciona na lista
           if (index < 0) {
-            _controller.pedidoSaida.itemPedidoSaida!.add(ItemPedidoSaidaModel(
+            _controller.pedidoSaida.itemsPedidoSaida!.add(ItemPedidoSaidaModel(
                 peca: itemPeca.produtoPeca.peca, valor: 10, quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
-            _controller.pedidoSaida.itemPedidoSaida![index].quantidade++;
+            _controller.pedidoSaida.itemsPedidoSaida![index].quantidade++;
             // _controller.pedidoSaida.itemPedidoSaida![index].valor +=
             //     itemPeca.produtoPeca.peca.custo!;
-            _controller.pedidoSaida.itemPedidoSaida![index].valor += 0;
+            _controller.pedidoSaida.itemsPedidoSaida![index].valor += 0;
           }
           //Soma o total
           calcularValorTotal();
@@ -162,7 +162,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
       marcados = 0;
     });
 
-    print(_controller.pedidoSaida.itemPedidoSaida!.length);
+    print(_controller.pedidoSaida.itemsPedidoSaida!.length);
   }
 
 /**
@@ -170,7 +170,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
    */
   removerPeca(index) {
     setState(() {
-      _controller.pedidoSaida.itemPedidoSaida!.removeAt(index);
+      _controller.pedidoSaida.itemsPedidoSaida!.removeAt(index);
     });
     calcularValorTotal();
   }
@@ -178,7 +178,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   calcularValorTotal() {
     setState(() {
       _controller.pedidoSaida.valorTotal = 0.0;
-      for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+      for (var item in _controller.pedidoSaida.itemsPedidoSaida!) {
         _controller.pedidoSaida.valorTotal =
             _controller.pedidoSaida.valorTotal! + item.quantidade * item.valor;
       }
@@ -187,27 +187,27 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
   selecionarMotivoTrocaPeca(index, value) {
     setState(() {
-      _controller.pedidoSaida.itemPedidoSaida![index].motivoTrocaPeca = value;
+      _controller.pedidoSaida.itemsPedidoSaida![index].motivoTrocaPeca = value;
     });
   }
 
   void adicionarQuantidade(index) {
     setState(() {
-      _controller.pedidoSaida.itemPedidoSaida![index].quantidade++;
+      _controller.pedidoSaida.itemsPedidoSaida![index].quantidade++;
     });
     calcularValorTotal();
   }
 
   void removerQuantidade(index) {
     setState(() {
-      _controller.pedidoSaida.itemPedidoSaida![index].quantidade--;
+      _controller.pedidoSaida.itemsPedidoSaida![index].quantidade--;
     });
     calcularValorTotal();
   }
 
   bool verificaEstoque() {
     bool verificaEstoque = true;
-    for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+    for (var item in _controller.pedidoSaida.itemsPedidoSaida!) {
       if (item.peca!.estoque.isEmpty) {
         verificaEstoque = false;
         break;
@@ -223,7 +223,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
   verificarSelecaoMotivoTrocaPeca() {
     bool verificaSelecaoMotivoTrocaPeca = true;
-    for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+    for (var item in _controller.pedidoSaida.itemsPedidoSaida!) {
       if (item.motivoTrocaPeca == null) {
         verificaSelecaoMotivoTrocaPeca = false;
         break;
@@ -293,9 +293,33 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               return AlertDialog(actions: <Widget>[
                 Row(
                   children: [
-                    TextComponent(
-                        'Pedido efetuado com sucesso: #${pedidoResposta.idPedidoSaida}')
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: TextComponent(
+                            'Nº Pedido: #${pedidoResposta.idPedidoSaida}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Nome do cliente: ${pedidoResposta.cliente!.nome}'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Filial venda: ${pedidoResposta.filialVenda}'),
+                        )
+                      ],
+                    )
                   ],
+                ),
+                SizedBox(
+                  height: 24,
                 ),
                 Row(
                   children: [
@@ -392,19 +416,20 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     print(value);
 
     setState(() {
-      _controller.pedidoSaida.itemPedidoSaida![index].quantidade =
+      _controller.pedidoSaida.itemsPedidoSaida![index].quantidade =
           int.parse(value);
     });
     calcularValorTotal();
   }
 
   _buildSituacaoEstoque(index) {
-    if (_controller.pedidoSaida.itemPedidoSaida![index].peca!.estoque.isEmpty) {
+    if (_controller
+        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque.isEmpty) {
       return Colors.red.shade100;
     } else {
-      if (_controller.pedidoSaida.itemPedidoSaida![index].peca!.estoque.first
+      if (_controller.pedidoSaida.itemsPedidoSaida![index].peca!.estoque.first
               .saldoDisponivel <
-          _controller.pedidoSaida.itemPedidoSaida![index].quantidade) {
+          _controller.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
       } else {
         if (index % 2 == 0) {
@@ -2004,7 +2029,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         Container(
           height: media.size.height * 0.40,
           child: ListView.builder(
-              itemCount: _controller.pedidoSaida.itemPedidoSaida!.length,
+              itemCount: _controller.pedidoSaida.itemsPedidoSaida!.length,
               itemBuilder: (context, index) {
                 return Container(
                   color: _buildSituacaoEstoque(index),
@@ -2014,12 +2039,12 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                       children: [
                         Expanded(
                           child: TextComponent(_controller
-                              .pedidoSaida.itemPedidoSaida![index].peca!.idPeca
+                              .pedidoSaida.itemsPedidoSaida![index].peca!.idPeca
                               .toString()),
                         ),
                         Expanded(
                           child: TextComponent(_controller.pedidoSaida
-                              .itemPedidoSaida![index].peca!.descricao),
+                              .itemsPedidoSaida![index].peca!.descricao),
                         ),
                         Expanded(
                           flex: 2,
@@ -2040,7 +2065,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                   key: UniqueKey(),
                                   maxLines: 1,
                                   initialValue: _controller.pedidoSaida
-                                      .itemPedidoSaida![index].quantidade
+                                      .itemsPedidoSaida![index].quantidade
                                       .toString(),
                                   onFieldSubmitted: (value) {
                                     inserirQuantidade(index, value);
@@ -2061,7 +2086,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                         ),
                         Expanded(
                           child: TextComponent(_controller
-                              .pedidoSaida.itemPedidoSaida![index].valor
+                              .pedidoSaida.itemsPedidoSaida![index].valor
                               .toString()),
                         ),
                         Expanded(
@@ -2069,10 +2094,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                               maskFormatter
                                   .realInputFormmater((_controller
                                               .pedidoSaida
-                                              .itemPedidoSaida![index]
+                                              .itemsPedidoSaida![index]
                                               .quantidade *
                                           _controller.pedidoSaida
-                                              .itemPedidoSaida![index].valor)
+                                              .itemsPedidoSaida![index].valor)
                                       .toString())
                                   .getMaskedText()),
                         ),
@@ -2131,7 +2156,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Total: ${_controller.pedidoSaida.itemPedidoSaida!.length} peças selecionadas',
+              'Total: ${_controller.pedidoSaida.itemsPedidoSaida!.length} peças selecionadas',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             Text(

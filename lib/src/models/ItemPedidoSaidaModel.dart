@@ -28,8 +28,8 @@ class ItemPedidoSaidaModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['quantidade'] = quantidade;
     data['valor'] = valor;
-    data['id_motivo_troca_peca'] = motivoTrocaPeca!.idMotivoTrocaPeca;
-    data['id_peca'] = peca!.idPeca;
+    data['motivo_troca_peca'] = motivoTrocaPeca!.toJson();
+    data['peca'] = peca!.toJson();
     return data;
   }
 }
