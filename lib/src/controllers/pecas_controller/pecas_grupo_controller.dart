@@ -20,4 +20,8 @@ class PecasGrupoController {
   Future<bool> excluir(PecasGrupoModel pecasGrupoModel) async {
     return await pecasGrupoRepository.excluir(pecasGrupoModel);
   }
+
+  Future<bool> editar() async {
+    return await pecasGrupoRepository.editar(pecasGrupoModel);
+  }
 }

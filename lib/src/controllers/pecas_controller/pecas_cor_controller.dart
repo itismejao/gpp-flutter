@@ -15,8 +15,8 @@ class PecasCorController {
     return await pecasCorRepository.create(pecasCorModel);
   }
 
-  Future<bool> edit() async {
-    return await pecasCorRepository.edit(pecasCorModel);
+  Future<bool> editar() async {
+    return await pecasCorRepository.editar(pecasCorModel);
   }
 
   Future<List<PecasCorModel>> buscarTodos() async {

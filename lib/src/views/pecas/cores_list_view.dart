@@ -124,13 +124,6 @@ class _CoresListViewState extends State<CoresListView> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  onPressed: () => {},
-                                ),
-                                IconButton(
                                     icon: Icon(
                                       Icons.edit,
                                       color: Colors.grey.shade400,
@@ -149,6 +142,7 @@ class _CoresListViewState extends State<CoresListView> {
                                     ),
                                     onPressed: () {
                                       _pecasCorController.excluir(_pecaCor[index]);
+                                      Navigator.pop(context);
                                     }),
                               ],
                             ),

@@ -20,4 +20,8 @@ class PecasEspecieController {
   Future<bool> excluir(PecasEspecieModel pecasEspecieModel) async {
     return await pecasEspecieRepository.excluir(pecasEspecieModel);
   }
+
+  Future<bool> editar() async {
+    return await pecasEspecieRepository.editar(pecasEspecieModel);
+  }
 }

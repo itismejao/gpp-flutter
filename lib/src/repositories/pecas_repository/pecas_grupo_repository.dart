@@ -52,4 +52,16 @@ class PecasGrupoRepository {
       throw Exception(error);
     }
   }
+
+  Future<bool> editar(PecasGrupoModel pecasGrupoModel) async {
+    print(jsonEncode(pecasGrupoModel.toJson()));
+
+    Response response = await api.put('/peca-grupo-material/${pecasGrupoModel.id_peca_grupo_material}', pecasGrupoModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
+    }
+  }
 }

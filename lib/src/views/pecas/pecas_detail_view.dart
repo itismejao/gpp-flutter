@@ -2,6 +2,12 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
@@ -12,6 +18,9 @@ import 'package:gpp/src/views/pecas/cores_detail_view.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:dio/dio.dart';
+
 class PecasDetailView extends StatefulWidget {
   const PecasDetailView({Key? key}) : super(key: key);
 
@@ -21,6 +30,17 @@ class PecasDetailView extends StatefulWidget {
 
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
+  PecasLinhaController _pecasLinhaController = PecasLinhaController();
+  PecasEspecieController _pecasEspecieController = PecasEspecieController();
+  PecasGrupoController _pecasGrupoController = PecasGrupoController();
+  PecasMaterialController _pecasMaterialController = PecasMaterialController();
+
+  @override
+  void initState() {
+    _pecasLinhaController.buscarEspecieVinculada(1);
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -295,10 +315,53 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
+                          // Flexible(
+                          //   child: InputComponent(
+                          //     hintText: 'Nome Linha',
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
                           Flexible(
-                            child: InputComponent(
-                              hintText: 'Nome Linha',
-                              onChanged: (value) {},
+                            child: Container(
+                              width: 600,
+                              height: 48,
+                              child: FutureBuilder(
+                                future: _pecasLinhaController.buscarTodos(),
+                                builder: (context, AsyncSnapshot snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Text("Sem Conexão");
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return Center(child: new CircularProgressIndicator());
+                                    case ConnectionState.done:
+                                      return Container(
+                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: DropdownSearch<PecasLinhaModel?>(
+                                          mode: Mode.DIALOG,
+                                          showSearchBox: true,
+                                          items: snapshot.data,
+                                          itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                                          onChanged: (value) {
+                                            _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                                          },
+                                          dropdownSearchDecoration: InputDecoration(
+                                            enabledBorder: InputBorder.none,
+                                          ),
+                                          dropDownButton: Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          showAsSuffixIcons: true,
+                                        ),
+                                      );
+                                  }
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -326,12 +389,55 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
+                          // Flexible(
+                          //   child: InputComponent(
+                          //     hintText: 'Nome Espécie',
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
                           Flexible(
-                            child: InputComponent(
-                              hintText: 'Nome Espécie',
-                              onChanged: (value) {},
+                            child: Container(
+                              width: 600,
+                              height: 48,
+                              child: FutureBuilder(
+                                future: _pecasLinhaController.buscarEspecieVinculada(1),
+                                builder: (context, AsyncSnapshot snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Text("Sem conexão");
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return Center(child: new CircularProgressIndicator());
+                                    case ConnectionState.done:
+                                      return Container(
+                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: DropdownSearch<PecasLinhaModel?>(
+                                          mode: Mode.DIALOG,
+                                          showSearchBox: true,
+                                          items: snapshot.data,
+                                          itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                                          onChanged: (value) {
+                                            _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                                          },
+                                          dropdownSearchDecoration: InputDecoration(
+                                            enabledBorder: InputBorder.none,
+                                          ),
+                                          dropDownButton: Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          showAsSuffixIcons: true,
+                                        ),
+                                      );
+                                  }
+                                },
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ],
@@ -357,7 +463,99 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextComponent('Espécie'),
+                      TextComponent('Grupo'),
+                      Padding(padding: EdgeInsets.only(top: 6)),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 80,
+                            child: Flexible(
+                              child: InputComponent(
+                                hintText: 'ID',
+                                onChanged: (value) {},
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 10)),
+                          // Flexible(
+                          //   child: InputComponent(
+                          //     hintText: 'Nome Grupo',
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
+                          Flexible(
+                            child: Container(
+                              width: 600,
+                              height: 48,
+                              child: FutureBuilder(
+                                future: _pecasGrupoController.buscarTodos(),
+                                builder: (context, AsyncSnapshot snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return Text("there is no connection");
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return Center(child: new CircularProgressIndicator());
+                                    case ConnectionState.done:
+                                      return Container(
+                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius: BorderRadius.circular(5),
+                                        ),
+                                        child: DropdownSearch<PecasGrupoModel?>(
+                                          mode: Mode.DIALOG,
+                                          showSearchBox: true,
+                                          items: snapshot.data,
+                                          itemAsString: (PecasGrupoModel? value) => value!.grupo!,
+                                          onChanged: (value) {
+                                            _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                                value!.id_peca_grupo_material;
+                                          },
+                                          dropdownSearchDecoration: InputDecoration(
+                                            enabledBorder: InputBorder.none,
+                                          ),
+                                          dropDownButton: Icon(
+                                            Icons.arrow_drop_down_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          showAsSuffixIcons: true,
+                                          // popupTitle: Column(
+                                          //   children: [
+                                          //     Padding(padding: EdgeInsets.only(top: 20)),
+                                          //     Row(
+                                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                                          //       children: [
+                                          //         Padding(padding: EdgeInsets.only(left: 10)),
+                                          //         Text(
+                                          //           'Selecione a linha',
+                                          //           style: TextStyle(fontWeight: FontWeight.bold),
+                                          //         ),
+                                          //         // Padding(padding: EdgeInsets.only(top: 20, left: 60)),
+                                          //       ],
+                                          //     ),
+                                          //     Padding(padding: EdgeInsets.only(top: 20)),
+                                          //   ],
+                                          // ),
+                                        ),
+                                      );
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(padding: EdgeInsets.only(right: 30)),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextComponent('Material'),
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
@@ -373,7 +571,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           Padding(padding: EdgeInsets.only(right: 10)),
                           Flexible(
                             child: InputComponent(
-                              hintText: 'Descrição Material',
+                              hintText: 'Nome Material',
                               onChanged: (value) {},
                             ),
                           ),

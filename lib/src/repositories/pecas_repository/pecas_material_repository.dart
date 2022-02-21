@@ -28,7 +28,7 @@ class PecasMaterialRepository {
     }
   }
 
-  Future<bool> create(PecasMaterialModel pecasLinhaModel) async {
+  Future<bool> inserir(PecasMaterialModel pecasLinhaModel) async {
     print(jsonEncode(pecasLinhaModel.toJson()));
 
     Response response = await api.post('/peca-material-fabricacao', pecasLinhaModel.toJson());
@@ -50,6 +50,19 @@ class PecasMaterialRepository {
     } else {
       var error = json.decode(response.body)['error'];
       throw Exception(error);
+    }
+  }
+
+  Future<bool> editar(PecasMaterialModel pecasMaterialModel) async {
+    print(jsonEncode(pecasMaterialModel.toJson()));
+
+    Response response =
+        await api.put('/peca-material-fabricacao/${pecasMaterialModel.id_peca_material_fabricacao}', pecasMaterialModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar uma cor';
     }
   }
 }

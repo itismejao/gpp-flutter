@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -31,6 +33,28 @@ class _CoresDetailViewState extends State<CoresDetailView> {
     super.initState();
   }
 
+  create(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasCorController.create()) {
+        notify.sucess("Cor cadastrada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editar(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasCorController.editar()) {
+        notify.sucess("Cor editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -51,30 +75,32 @@ class _CoresDetailViewState extends State<CoresDetailView> {
         children: [
           pecaCor == null
               ? Container()
-              : Row(children: [
-                  Flexible(
-                    child: InputComponent(
-                      enable: false,
-                      initialValue: pecaCor!.id_peca_cor.toString(),
-                      label: 'ID',
-                      onChanged: (value) {
-                        _pecasCorController.pecasCorModel.id_peca_cor = value;
-                      },
+              : Row(
+                  children: [
+                    Flexible(
+                      child: InputComponent(
+                        enable: false,
+                        initialValue: pecaCor!.id_peca_cor.toString(),
+                        label: 'ID',
+                        onChanged: (value) {
+                          _pecasCorController.pecasCorModel.id_peca_cor = value;
+                        },
+                      ),
                     ),
-                  ),
-                  Padding(padding: EdgeInsets.only(right: 30)),
-                  DropdownButton<Situacao>(
-                      value: Situacao.values[pecaCor!.situacao!],
-                      onChanged: (Situacao? newValue) {
-                        setState(() {
-                          pecaCor?.situacao = newValue!.index;
-                          _pecasCorController.pecasCorModel.situacao = newValue!.index;
-                        });
-                      },
-                      items: Situacao.values.map((Situacao? situacao) {
-                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
-                      }).toList())
-                ]),
+                    Padding(padding: EdgeInsets.only(right: 30)),
+                    DropdownButton<Situacao>(
+                        value: Situacao.values[pecaCor!.situacao!],
+                        onChanged: (Situacao? newValue) {
+                          setState(() {
+                            pecaCor?.situacao = newValue!.index;
+                            _pecasCorController.pecasCorModel.situacao = newValue!.index;
+                          });
+                        },
+                        items: Situacao.values.map((Situacao? situacao) {
+                          return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                        }).toList())
+                  ],
+                ),
           Padding(padding: EdgeInsets.only(bottom: 10)),
           Row(
             children: [
@@ -94,9 +120,11 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                   label: 'Sigla',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.sigla = value;
+                    _pecasCorController.pecasCorModel.situacao = 1; // situacao por padrão vai ativa
                   },
                 ),
-              )
+              ),
+              Padding(padding: EdgeInsets.only(right: 30)),
             ],
           ),
           Padding(padding: EdgeInsets.only(top: 30)),
@@ -106,31 +134,35 @@ class _CoresDetailViewState extends State<CoresDetailView> {
               pecaCor == null
                   ? ButtonComponent(
                       onPressed: () {
-                        _pecasCorController.create();
+                        create(context);
                       },
                       text: 'Salvar',
                     )
-                  : ButtonComponent(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        _pecasCorController.edit();
+                  : Row(
+                      children: [
+                        ButtonComponent(
+                          onPressed: () {
+                            // _pecasCorController.editar();
+                            editar(context);
+                            Navigator.pop(context);
 
-                        /*Navigator.push(
+                            /*Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => MenuConsultarView(selected: 2),
                         ));*/
-                      },
-                      text: 'Editar',
-                    ),
-              pecaCor == null
-                  ? Container()
-                  : ButtonComponent(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      text: 'Cancelar',
-                      color: Colors.red,
+                          },
+                          text: 'Editar',
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 20)),
+                        ButtonComponent(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          text: 'Cancelar',
+                          color: Colors.red,
+                        ),
+                      ],
                     ),
             ],
           ),

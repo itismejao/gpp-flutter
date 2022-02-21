@@ -43,4 +43,16 @@ class PecasRepository {
       throw error;
     }
   }
+
+  Future<bool> excluir(PecasModel pecasModel) async {
+    Response response = await api.delete('/pecas/' + pecasModel.id_peca.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 }
