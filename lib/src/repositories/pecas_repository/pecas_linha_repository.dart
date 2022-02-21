@@ -22,6 +22,9 @@ class PecasLinhaRepository {
 
       List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
 
+      // print('Buscar Todos');
+      // print(pecasLinha[0].especie?[1].id_peca_especie);
+
       return pecasLinha;
     } else {
       var error = json.decode(response.body)['error'];
@@ -29,20 +32,19 @@ class PecasLinhaRepository {
     }
   }
 
-  Future<List<PecasLinhaModel>> buscarEspecieVinculada(int codigo) async {
-    Response response = await api.get('/peca-linha/' + codigo.toString());
+  Future<List<PecasLinhaModel>> buscarEspecieVinculada(String codigo) async {
+    Response response = await api.get('/peca-linha' + '/' + codigo);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
+      // List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
 
-      // print(jsonDecode(response.body));
+      List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
 
-      // List<PecasLinhaModel> pecasEspecie = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
-      List<PecasLinhaModel> pecasEspecie = data["data"].map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
+      print('Buscar Especie vinculada');
+      print(pecasLinha[0].id_peca_linha);
 
-      print(pecasEspecie);
-
-      return pecasEspecie;
+      return pecasLinha;
     } else {
       var error = json.decode(response.body)['error'];
       throw error;

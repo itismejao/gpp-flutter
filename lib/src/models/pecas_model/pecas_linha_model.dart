@@ -16,9 +16,9 @@ class PecasLinhaModel {
   });
 
   factory PecasLinhaModel.fromJson(Map<String, dynamic> json) {
-    List<PecasEspecieModel>? _especie;
+    // List<PecasEspecieModel>? _especie;
 
-    json["especie"] == null ? null : json["especie"].map<PecasEspecieModel>((data) => PecasEspecieModel.fromJson(data)).toList();
+    // json["especie"] == null ? null : json["especie"].map<PecasEspecieModel>((data) => PecasEspecieModel.fromJson(data)).toList();
     //print('Espcies\n');
     //print(json["especie"]);
     //json["especie"].map((x) => print(x));
@@ -26,7 +26,11 @@ class PecasLinhaModel {
       id_peca_linha: json['id_peca_linha'],
       linha: json['linha'],
       situacao: json['situacao'],
-      especie: _especie,
+      especie: json['especie'] != null
+          ? json['especie'].map<PecasEspecieModel>((data) {
+              return PecasEspecieModel.fromJson(data);
+            }).toList()
+          : null,
     );
   }
 

@@ -10,6 +10,7 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.d
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
@@ -25,7 +26,9 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dio/dio.dart';
 
 class PecasDetailView extends StatefulWidget {
-  const PecasDetailView({Key? key}) : super(key: key);
+  PecasModel? pecasModelPopup;
+
+  PecasDetailView({this.pecasModelPopup});
 
   @override
   _PecasDetailViewState createState() => _PecasDetailViewState();
@@ -44,8 +47,19 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   final txtIdFornecedor = TextEditingController();
   final txtNomeFornecedor = TextEditingController();
 
+  PecasModel? pecasModelPopup;
+
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
+  }
+
+  buscarLinhaEspecie(String codigo) async {
+    await _pecasLinhaController.buscarEspecieVinculada(codigo);
+
+    await _pecasLinhaController.buscarTodos();
+
+    print('Dentro funcao');
+    // print(await _pecasLinhaController.buscarEspecieVinculada(codigo));
   }
 
   criar(context) async {
@@ -61,6 +75,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
 
   @override
   void initState() {
+    pecasModelPopup = widget.pecasModelPopup;
+    if (pecasModelPopup != null) {
+      _pecasController.pecasModel = pecasModelPopup!;
+    }
+
     // TODO: implement initState
     super.initState();
   }
@@ -75,9 +94,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
           child: Row(
             children: [
               Padding(padding: EdgeInsets.only(left: 20)),
-              Icon(Icons.add_box),
+              Icon(pecasModelPopup == null ? Icons.add_box : Icons.edit),
               Padding(padding: EdgeInsets.only(right: 12)),
-              TitleComponent('Cadastrar Peças'),
+              TitleComponent(pecasModelPopup == null ? 'Cadastrar Peças' : 'Editar Peças'),
             ],
           ),
         ),
@@ -109,6 +128,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           suffixIcon: IconButton(
                             onPressed: () async {
                               await buscaProduto(txtIdProduto.text);
+
                               txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
                               txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
                               txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
@@ -195,7 +215,19 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 // Fim Fornecedor
               ],
             ),
+            // Row(
+            //   children: [
+            //     ButtonComponent(
+            //       onPressed: () async {
+            //         print('chamou botao');
+            //         await buscarLinhaEspecie('1');
 
+            //         // print(_pecasLinhaController.listaPecasLinhaModel?[0].especie?[0].especie);
+            //       },
+            //       text: 'Salvar teste',
+            //     ),
+            //   ],
+            // ),
             // Row(
             //   children: [
             //     Flexible(
@@ -261,6 +293,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Descrição da Peça',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.descricao == null
+                            ? ''
+                            : _pecasController.pecasModel.descricao.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.descricao = value;
                       _pecasController.pecasModel.volumes = "1";
@@ -285,6 +322,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Número',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.numero == null
+                            ? ''
+                            : _pecasController.pecasModel.numero.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.numero = value;
                     },
@@ -294,6 +336,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Código de Fabrica',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.codigo_fabrica == null
+                            ? ''
+                            : _pecasController.pecasModel.codigo_fabrica.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.codigo_fabrica = value;
                     },
@@ -303,6 +350,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Custo R\$',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.custo == null
+                            ? ''
+                            : _pecasController.pecasModel.custo.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.custo = double.parse(value);
                     },
@@ -312,6 +364,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Unidade',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.unidade == null
+                            ? ''
+                            : _pecasController.pecasModel.unidade.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.unidade = int.parse(value);
                     },
@@ -335,6 +392,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Largura',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.largura == null
+                            ? ''
+                            : _pecasController.pecasModel.largura.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.largura = double.parse(value);
                     },
@@ -344,6 +406,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Altura',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.altura == null
+                            ? ''
+                            : _pecasController.pecasModel.altura.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.altura = double.parse(value);
                     },
@@ -353,6 +420,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Profundidade',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.profundidade == null
+                            ? ''
+                            : _pecasController.pecasModel.profundidade.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.profundidade = double.parse(value);
                     },
@@ -362,6 +434,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Und. Medida',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.unidade_medida == null
+                            ? ''
+                            : _pecasController.pecasModel.unidade_medida.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.unidade_medida = int.parse(value);
                     },
@@ -433,7 +510,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           items: snapshot.data,
                                           itemAsString: (PecasLinhaModel? value) => value!.linha!,
                                           onChanged: (value) {
-                                            _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                                            _pecasLinhaController.pecasLinhaModel.id_peca_linha = value!.id_peca_linha;
                                           },
                                           dropdownSearchDecoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -486,7 +563,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                               width: 600,
                               height: 48,
                               child: FutureBuilder(
-                                future: _pecasLinhaController.buscarEspecieVinculada(1),
+                                future: _pecasLinhaController.buscarEspecieVinculada('1'),
                                 builder: (context, AsyncSnapshot snapshot) {
                                   switch (snapshot.connectionState) {
                                     case ConnectionState.none:

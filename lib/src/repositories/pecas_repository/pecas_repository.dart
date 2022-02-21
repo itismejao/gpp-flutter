@@ -44,6 +44,29 @@ class PecasRepository {
     }
   }
 
+  Future<PecasModel> buscar(String codigo) async {
+    Response response = await api.get('/pecas/' + codigo);
+
+    print(response.body);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      print('buscou peca');
+      print(data);
+
+      PecasModel pecas = PecasModel.fromJson(data);
+
+      print('buscou peca 2');
+      print(pecas.id_peca);
+
+      return pecas;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
   Future<bool> excluir(PecasModel pecasModel) async {
     Response response = await api.delete('/pecas/' + pecasModel.id_peca.toString());
 

@@ -10,17 +10,15 @@ class PecasController {
   PecasModel pecasModel = PecasModel();
 
   Future<bool> criar() async {
-    // if (!formKey.currentState!.validate()) {
-    //   return false;
-    // }
-
     return await pecasRepository.criar(pecasModel);
   }
 
   Future<List<PecasModel>> buscarTodos() async {
-    // pecasRepository.buscarTodos().then((value) => print(value as Map<String, dynamic>));
-
     return await pecasRepository.buscarTodos();
+  }
+
+  Future<PecasModel> buscar(String codigo) async {
+    return await pecasRepository.buscar(codigo);
   }
 
   Future<bool> excluir(PecasModel pecasModel) async {

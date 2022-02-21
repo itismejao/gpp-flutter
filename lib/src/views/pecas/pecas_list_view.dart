@@ -5,6 +5,8 @@ import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
 class PecasListView extends StatefulWidget {
   const PecasListView({Key? key}) : super(key: key);
@@ -122,6 +124,7 @@ class _PecasListViewState extends State<PecasListView> {
                               Expanded(
                                 child: Text(snapshot.data![index].descricao.toString()),
                               ),
+
                               Expanded(
                                 child: Row(
                                   children: [
@@ -135,7 +138,17 @@ class _PecasListViewState extends State<PecasListView> {
                                         Icons.edit,
                                         color: Colors.grey.shade400,
                                       ),
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return PopUpEditar.popUpPeca(
+                                                  context,
+                                                  PecasDetailView(
+                                                    pecasModelPopup: snapshot.data![index],
+                                                  ));
+                                            }).then((value) => setState(() {}))
+                                      },
                                     ),
                                     IconButton(
                                         icon: Icon(
@@ -144,7 +157,7 @@ class _PecasListViewState extends State<PecasListView> {
                                         ),
                                         onPressed: () {
                                           _pecasController.excluir(snapshot.data![index]);
-                                          Navigator.pop(context);
+                                          // Navigator.pop(context);
                                         }),
                                   ],
                                 ),

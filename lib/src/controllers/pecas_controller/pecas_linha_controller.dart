@@ -12,6 +12,8 @@ class PecasLinhaController {
   late final PecasLinhaRepository pecasLinhaRepository = PecasLinhaRepository(api: gppApi);
   PecasLinhaModel pecasLinhaModel = PecasLinhaModel();
 
+  List<PecasLinhaModel>? listaPecasLinhaModel;
+
   Future<bool> inserir() async {
     return await pecasLinhaRepository.inserir(pecasLinhaModel);
   }
@@ -20,7 +22,7 @@ class PecasLinhaController {
     return await pecasLinhaRepository.buscarTodos();
   }
 
-  Future<List<PecasLinhaModel>> buscarEspecieVinculada(int codigo) async {
+  Future<List<PecasLinhaModel>> buscarEspecieVinculada(String codigo) async {
     return await pecasLinhaRepository.buscarEspecieVinculada(codigo);
   }
 
