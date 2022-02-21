@@ -18,8 +18,10 @@ class PecasLinhaModel {
   factory PecasLinhaModel.fromJson(Map<String, dynamic> json) {
     List<PecasEspecieModel>? _especie;
 
-    json["especie"] == null ? null : json["especie"].map((x) => _especie!.add(PecasEspecieModel.fromJson(x)));
-
+    json["especie"] == null ? null : json["especie"].map<PecasEspecieModel>((data) => PecasEspecieModel.fromJson(data)).toList();
+    //print('Espcies\n');
+    //print(json["especie"]);
+    //json["especie"].map((x) => print(x));
     return PecasLinhaModel(
       id_peca_linha: json['id_peca_linha'],
       linha: json['linha'],
