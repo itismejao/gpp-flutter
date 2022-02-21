@@ -221,12 +221,50 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     return verificaEstoque;
   }
 
+  verificarSelecaoMotivoTrocaPeca() {
+    bool verificaSelecaoMotivoTrocaPeca = true;
+    for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+      if (item.motivoTrocaPeca == null) {
+        verificaSelecaoMotivoTrocaPeca = false;
+        break;
+      }
+    }
+    return verificaSelecaoMotivoTrocaPeca;
+  }
+
   /**
    * Função destinada a finalizar o pedido
    */
 
   finalizarPedido() async {
     try {
+      if (!verificarSelecaoMotivoTrocaPeca()) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(actions: <Widget>[
+                Row(
+                  children: [
+                    TextComponent('Selecione o motivo de troca da peça')
+                  ],
+                ),
+                Row(
+                  children: [
+                    ButtonComponent(
+                        color: primaryColor,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        text: 'Ok'),
+                    SizedBox(
+                      width: 8,
+                    ),
+                  ],
+                )
+              ]);
+            });
+      }
+
       if (verificaEstoque()) {
         print('as');
 

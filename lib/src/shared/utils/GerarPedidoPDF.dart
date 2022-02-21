@@ -38,6 +38,7 @@ class GerarPedidoPDF {
             pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [pw.Text('GPP')]),
+            pw.Divider(),
             pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [pw.Text(pedido.cpfCnpj.toString())]),
