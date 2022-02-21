@@ -6,8 +6,10 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.da
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
+import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
 import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
@@ -34,10 +36,23 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
+  ProdutoController _produtoController = ProdutoController();
+
+  final txtIdProduto = TextEditingController();
+  final txtNomeProduto = TextEditingController();
+  final txtIdFornecedor = TextEditingController();
+  final txtNomeFornecedor = TextEditingController();
+
+  buscaProduto(String codigo) async {
+    await _produtoController.buscar(codigo);
+    // print('Aqui popula dentro da funcao >>');
+    // print(produtoModel.id_produto);
+  }
 
   @override
   void initState() {
-    _pecasLinhaController.buscarEspecieVinculada(1);
+    // _pecasLinhaController.buscarEspecieVinculada(1);
+    // produtoModel = _produtoController.buscar2('14634');
     // TODO: implement initState
     super.initState();
   }
@@ -66,7 +81,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
               children: [
                 // Produto
                 SizedBox(
-                  width: 80,
+                  width: 120,
                   child: Flexible(
                     child: Container(
                       decoration: BoxDecoration(
@@ -74,9 +89,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: TextFormField(
-                        onChanged: (value) {
-                          // _pecasController.pecasModel.id_produto = int.parse(value);
-                        },
+                        controller: txtIdProduto,
                         keyboardType: TextInputType.number,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -85,6 +98,15 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           hintText: 'ID',
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                          suffixIcon: IconButton(
+                            onPressed: () async {
+                              await buscaProduto(txtIdProduto.text);
+                              txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
+                              txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
+                              txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+                            },
+                            icon: Icon(Icons.search),
+                          ),
                         ),
                       ),
                     ),
@@ -99,6 +121,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: txtNomeProduto,
+                      enabled: false,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -121,6 +145,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: TextFormField(
+                        controller: txtIdFornecedor,
+                        enabled: false,
                         onChanged: (value) {
                           // _pecasController.pecasModel.id_fornecedor = int.parse(value);
                         },
@@ -145,6 +171,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
+                      controller: txtNomeFornecedor,
+                      enabled: false,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
@@ -159,6 +187,56 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 // Fim Fornecedor
               ],
             ),
+
+            // Row(
+            //   children: [
+            //     Flexible(
+            //       child: Container(
+            //         width: 600,
+            //         height: 48,
+            //         child: FutureBuilder(
+            //           future: _produtoController.buscarTodos2('14634'),
+            //           builder: (context, AsyncSnapshot snapshot) {
+            //             switch (snapshot.connectionState) {
+            //               case ConnectionState.none:
+            //                 return Text("Sem Conexão");
+            //               case ConnectionState.active:
+            //               case ConnectionState.waiting:
+            //                 return Center(child: new CircularProgressIndicator());
+            //               case ConnectionState.done:
+            //                 return Container(
+            //                   padding: EdgeInsets.only(left: 12, right: 12),
+            //                   decoration: BoxDecoration(
+            //                     color: Colors.grey.shade200,
+            //                     borderRadius: BorderRadius.circular(5),
+            //                   ),
+            //                   child: DropdownSearch<ProdutoModel?>(
+            //                     mode: Mode.DIALOG,
+            //                     showSearchBox: true,
+            //                     items: snapshot.data,
+            //                     itemAsString: (ProdutoModel? value) =>
+            //                         value?.id_produto == null ? 'Produto Nulo' : value!.id_produto!.toString(),
+            //                     onChanged: (value) {
+            //                       print(value?.id_produto);
+            //                       _pecasController.pecasModel.id_peca = value!.id_produto;
+            //                     },
+            //                     dropdownSearchDecoration: InputDecoration(
+            //                       enabledBorder: InputBorder.none,
+            //                     ),
+            //                     dropDownButton: Icon(
+            //                       Icons.arrow_drop_down_rounded,
+            //                       color: Colors.black,
+            //                     ),
+            //                     showAsSuffixIcons: true,
+            //                   ),
+            //                 );
+            //             }
+            //           },
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Padding(padding: EdgeInsets.only(top: 30)),
             Row(
               children: [

@@ -35,9 +35,9 @@ class PecasLinhaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      print(jsonDecode(response.body));
+      // print(jsonDecode(response.body));
 
-      // List<PecasEspecieModel> pecasEspecie = data.map<PecasEspecieModel>((data) => PecasLinhaModel.fromJsonEspecie(data)).toList();
+      // List<PecasLinhaModel> pecasEspecie = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
       List<PecasLinhaModel> pecasEspecie = data["data"].map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
 
       print(pecasEspecie);

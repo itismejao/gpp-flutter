@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/cliente_model.dart';
 
-class FornecedorModel {
+class FornecedorPecasModel {
   int? id_fornecedor;
   String? enviado;
   String? cli_forn_principal;
 
   ClienteModel? cliente;
 
-  FornecedorModel({
+  FornecedorPecasModel({
     this.id_fornecedor,
     this.enviado,
     this.cli_forn_principal,
     this.cliente,
   });
 
-  factory FornecedorModel.fromJson(Map<String, dynamic> json) {
-    return FornecedorModel(
+  factory FornecedorPecasModel.fromJson(Map<String, dynamic> json) {
+    return FornecedorPecasModel(
       id_fornecedor: json['id_fornecedor'],
       enviado: json['enviado'],
       cli_forn_principal: json['cli_forn_principal'],
