@@ -6,6 +6,7 @@ import 'package:gpp/src/shared/components/checkbox_component.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/pecas_edit_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
 class PecasListView extends StatefulWidget {
@@ -144,7 +145,7 @@ class _PecasListViewState extends State<PecasListView> {
                                             builder: (BuildContext context) {
                                               return PopUpEditar.popUpPeca(
                                                   context,
-                                                  PecasDetailView(
+                                                  PecasEditAndView(
                                                     pecasModelPopup: snapshot.data![index],
                                                   ));
                                             }).then((value) => setState(() {}))

@@ -25,14 +25,16 @@ import 'package:gpp/src/views/pecas/material_detail_view.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dio/dio.dart';
 
-class PecasDetailView extends StatefulWidget {
-  const PecasDetailView({Key? key}) : super(key: key);
+class PecasEditAndView extends StatefulWidget {
+  PecasModel? pecasModelPopup;
+
+  PecasEditAndView({this.pecasModelPopup});
 
   @override
-  _PecasDetailViewState createState() => _PecasDetailViewState();
+  _PecasEditAndViewState createState() => _PecasEditAndViewState();
 }
 
-class _PecasDetailViewState extends State<PecasDetailView> {
+class _PecasEditAndViewState extends State<PecasEditAndView> {
   PecasController _pecasController = PecasController();
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
@@ -44,6 +46,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   final txtNomeProduto = TextEditingController();
   final txtIdFornecedor = TextEditingController();
   final txtNomeFornecedor = TextEditingController();
+
+  PecasModel? pecasModelPopup;
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
@@ -71,6 +75,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
 
   @override
   void initState() {
+    pecasModelPopup = widget.pecasModelPopup;
+    if (pecasModelPopup != null) {
+      _pecasController.pecasModel = pecasModelPopup!;
+    }
+
     // TODO: implement initState
     super.initState();
   }
@@ -85,9 +94,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
           child: Row(
             children: [
               Padding(padding: EdgeInsets.only(left: 20)),
-              Icon(Icons.add_box),
+              Icon(Icons.edit),
               Padding(padding: EdgeInsets.only(right: 12)),
-              TitleComponent('Cadastrar Peças'),
+              TitleComponent('Editar Peças'),
             ],
           ),
         ),
@@ -284,6 +293,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Descrição da Peça',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.descricao == null
+                            ? ''
+                            : _pecasController.pecasModel.descricao.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.descricao = value;
                       _pecasController.pecasModel.volumes = "1";
@@ -308,6 +322,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Número',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.numero == null
+                            ? ''
+                            : _pecasController.pecasModel.numero.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.numero = value;
                     },
@@ -317,6 +336,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Código de Fabrica',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.codigo_fabrica == null
+                            ? ''
+                            : _pecasController.pecasModel.codigo_fabrica.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.codigo_fabrica = value;
                     },
@@ -326,6 +350,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Custo R\$',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.custo == null
+                            ? ''
+                            : _pecasController.pecasModel.custo.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.custo = double.parse(value);
                     },
@@ -335,6 +364,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Unidade',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.unidade == null
+                            ? ''
+                            : _pecasController.pecasModel.unidade.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.unidade = int.parse(value);
                     },
@@ -358,6 +392,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Largura',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.largura == null
+                            ? ''
+                            : _pecasController.pecasModel.largura.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.largura = double.parse(value);
                     },
@@ -367,6 +406,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Altura',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.altura == null
+                            ? ''
+                            : _pecasController.pecasModel.altura.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.altura = double.parse(value);
                     },
@@ -376,6 +420,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Profundidade',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.profundidade == null
+                            ? ''
+                            : _pecasController.pecasModel.profundidade.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.profundidade = double.parse(value);
                     },
@@ -385,6 +434,11 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Und. Medida',
+                    initialValue: pecasModelPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.unidade_medida == null
+                            ? ''
+                            : _pecasController.pecasModel.unidade_medida.toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.unidade_medida = int.parse(value);
                     },
