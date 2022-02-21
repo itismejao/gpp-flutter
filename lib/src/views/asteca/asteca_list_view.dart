@@ -205,7 +205,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           'Data de Abertura: ' +
-                              DateFormat('yyyy-MM-dd').format(
+                              DateFormat('dd-MM-yyyy').format(
                                   controller.astecas[index].dataEmissao!),
                         ),
                       ),
@@ -327,7 +327,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('yyyy-MM-dd')
+                              DateFormat('dd-MM-yyyy')
                                   .format(asteca[index].dataEmissao!),
                             )),
                         Expanded(

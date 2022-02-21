@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/ProdutoPecaModel.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/controllers/AstecaController.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/PecaModel.dart';
+
 import 'package:gpp/src/models/AstecaModel.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
@@ -24,10 +25,10 @@ import 'package:gpp/src/views/asteca/components/item_menu.dart';
 
 class ItemPeca {
   bool marcado = false;
-  late PecaModel peca;
+  late ProdutoPecaModel produtoPeca;
   ItemPeca({
     required this.marcado,
-    required this.peca,
+    required this.produtoPeca,
   });
 }
 
@@ -99,8 +100,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   }
 
   gerarItemPeca() {
-    itemsPeca = _controller.pecas
-        .map<ItemPeca>((peca) => ItemPeca(marcado: false, peca: peca))
+    itemsPeca = _controller.produtoPecas
+        .map<ItemPeca>(
+            (produtoPeca) => ItemPeca(marcado: false, produtoPeca: produtoPeca))
         .toList();
   }
 
@@ -139,18 +141,18 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         if (itemPeca.marcado) {
           //Verifica se já existe item com o mesmo id adicionado na lista
           int index = _controller.pedidoSaida.itemPedidoSaida!.indexWhere(
-              (element) => element.peca!.idPeca == itemPeca.peca.idPeca);
+              (element) =>
+                  element.peca!.idPeca == itemPeca.produtoPeca.peca.idPeca);
           //Se não existe item adiciona na lista
           if (index < 0) {
             _controller.pedidoSaida.itemPedidoSaida!.add(ItemPedidoSaidaModel(
-                peca: itemPeca.peca,
-                valor: itemPeca.peca.custo,
-                quantidade: 1));
+                peca: itemPeca.produtoPeca.peca, valor: 10, quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
             _controller.pedidoSaida.itemPedidoSaida![index].quantidade++;
-            _controller.pedidoSaida.itemPedidoSaida![index].valor +=
-                itemPeca.peca.custo;
+            // _controller.pedidoSaida.itemPedidoSaida![index].valor +=
+            //     itemPeca.produtoPeca.peca.custo!;
+            _controller.pedidoSaida.itemPedidoSaida![index].valor += 0;
           }
           //Soma o total
           calcularValorTotal();
@@ -159,6 +161,8 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
       }
       marcados = 0;
     });
+
+    print(_controller.pedidoSaida.itemPedidoSaida!.length);
   }
 
 /**
@@ -201,64 +205,87 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     calcularValorTotal();
   }
 
+  bool verificaEstoque() {
+    bool verificaEstoque = true;
+    for (var item in _controller.pedidoSaida.itemPedidoSaida!) {
+      if (item.peca!.estoque.isEmpty) {
+        verificaEstoque = false;
+        break;
+      } else {
+        if (item.quantidade > item.peca!.estoque.first.saldoDisponivel) {
+          verificaEstoque = false;
+          break;
+        }
+      }
+    }
+    return verificaEstoque;
+  }
+
   /**
    * Função destinada a finalizar o pedido
    */
+
   finalizarPedido() async {
     try {
-      //Criar o pedido
-      _controller.pedidoSaida.cpfCnpj =
-          _controller.asteca.documentoFiscal!.cpfCnpj;
-      _controller.pedidoSaida.filialVenda =
-          _controller.asteca.documentoFiscal!.idFilialVenda;
-      _controller.pedidoSaida.numDocFiscal =
-          _controller.asteca.documentoFiscal!.numDocFiscal;
-      _controller.pedidoSaida.serieDocFiscal =
-          _controller.asteca.documentoFiscal!.serieDocFiscal;
+      if (verificaEstoque()) {
+        print('as');
 
-      _controller.pedidoSaida.situacao = 1;
-      _controller.pedidoSaida.asteca = _controller.asteca;
-      _controller.pedidoSaida.funcionario = _controller.asteca.funcionario;
+        //Criar o pedido
+        _controller.pedidoSaida.cpfCnpj =
+            _controller.asteca.documentoFiscal!.cpfCnpj;
+        _controller.pedidoSaida.filialVenda =
+            _controller.asteca.documentoFiscal!.idFilialVenda;
+        _controller.pedidoSaida.numDocFiscal =
+            _controller.asteca.documentoFiscal!.numDocFiscal;
+        _controller.pedidoSaida.serieDocFiscal =
+            _controller.asteca.documentoFiscal!.serieDocFiscal;
 
-      //Solicita o endpoint a criação do pedido
-      PedidoSaidaModel pedidoResposta =
-          await _controller.pedidoRepository.criar(_controller.pedidoSaida);
+        _controller.pedidoSaida.situacao = 1;
+        _controller.pedidoSaida.asteca = _controller.asteca;
+        _controller.pedidoSaida.funcionario = _controller.asteca.funcionario;
 
-      //Notificação
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(actions: <Widget>[
-              Row(
-                children: [
-                  TextComponent(
-                      'Pedido efetuado com sucesso: #${pedidoResposta.idPedidoSaida}')
-                ],
-              ),
-              Row(
-                children: [
-                  ButtonComponent(
-                      color: primaryColor,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      text: 'Ok'),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  ButtonComponent(
-                      icon: Icon(
-                        Icons.print,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        GerarPedidoPDF(pedido: pedidoResposta).imprimirPDF();
-                      },
-                      text: 'Imprimir')
-                ],
-              )
-            ]);
-          });
+        //Solicita o endpoint a criação do pedido
+        PedidoSaidaModel pedidoResposta =
+            await _controller.pedidoRepository.criar(_controller.pedidoSaida);
+
+        //Notificação
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(actions: <Widget>[
+                Row(
+                  children: [
+                    TextComponent(
+                        'Pedido efetuado com sucesso: #${pedidoResposta.idPedidoSaida}')
+                  ],
+                ),
+                Row(
+                  children: [
+                    ButtonComponent(
+                        color: primaryColor,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        text: 'Ok'),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    ButtonComponent(
+                        icon: Icon(
+                          Icons.print,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          GerarPedidoPDF(pedido: pedidoResposta).imprimirPDF();
+                        },
+                        text: 'Imprimir')
+                  ],
+                )
+              ]);
+            });
+      } else {
+        print('Estoque inválido');
+      }
     } catch (e) {
       print(e);
     }
@@ -267,10 +294,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   pesquisarPecas(value) {
     itemsPecaBusca = itemsPeca
         .where((element) =>
-            element.peca.descricao!
+            element.produtoPeca.peca.descricao
                 .toLowerCase()
                 .contains(value.toString().toLowerCase()) ||
-            element.peca.idPeca.toString().contains(value))
+            element.produtoPeca.peca.idPeca.toString().contains(value))
         .toList();
   }
 
@@ -284,6 +311,20 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               element.idTipoPendencia.toString().contains(value))
           .toList();
     });
+  }
+
+  buscarProdutoPecas() async {
+    setState(() {
+      _controller.carregaProdutoPeca = false;
+    });
+    _controller.produtoPecas = await _controller.pecaRepository
+        .buscarTodos(_controller.asteca.produto!.first.idProduto!);
+    setState(() {
+      _controller.carregaProdutoPeca = true;
+    });
+
+    //gerarItemPeca
+    gerarItemPeca();
   }
 
   @override
@@ -307,10 +348,6 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
     //Buscar motivos de troca de peças
     buscarMotivosTrocaPeca();
-
-    //Criar objetos da lista de item peca
-
-    gerarItemPeca();
   }
 
   inserirQuantidade(index, value) {
@@ -321,6 +358,22 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
           int.parse(value);
     });
     calcularValorTotal();
+  }
+
+  _buildSituacaoEstoque(index) {
+    if (_controller.pedidoSaida.itemPedidoSaida![index].peca!.estoque.isEmpty) {
+      return Colors.red.shade100;
+    } else {
+      if (_controller.pedidoSaida.itemPedidoSaida![index].peca!.estoque.first
+              .saldoDisponivel <
+          _controller.pedidoSaida.itemPedidoSaida![index].quantidade) {
+        return Colors.red.shade100;
+      } else {
+        if (index % 2 == 0) {
+          return Colors.white;
+        } else {}
+      }
+    }
   }
 
   @override
@@ -1880,7 +1933,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         // ),
         const Divider(),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
           child: Row(
             children: [
               Expanded(
@@ -1916,114 +1969,118 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
               itemCount: _controller.pedidoSaida.itemPedidoSaida!.length,
               itemBuilder: (context, index) {
                 return Container(
-                  color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextComponent(_controller
-                            .pedidoSaida.itemPedidoSaida![index].peca!.idPeca
-                            .toString()),
-                      ),
-                      Expanded(
-                        child: TextComponent(_controller.pedidoSaida
-                            .itemPedidoSaida![index].peca!.descricao!),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              color: Colors.red,
-                              onPressed: () {
-                                removerQuantidade(index);
-                              },
-                              icon: Icon(
-                                Icons.remove_circle_outlined,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: InputComponent(
-                                key: UniqueKey(),
-                                maxLines: 1,
-                                initialValue: _controller.pedidoSaida
-                                    .itemPedidoSaida![index].quantidade
-                                    .toString(),
-                                onFieldSubmitted: (value) {
-                                  inserirQuantidade(index, value);
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              color: Colors.green,
-                              onPressed: () {
-                                adicionarQuantidade(index);
-                              },
-                              icon: Icon(
-                                Icons.add_circle_outlined,
-                              ),
-                            ),
-                          ],
+                  color: _buildSituacaoEstoque(index),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextComponent(_controller
+                              .pedidoSaida.itemPedidoSaida![index].peca!.idPeca
+                              .toString()),
                         ),
-                      ),
-                      Expanded(
-                        child: TextComponent(_controller
-                            .pedidoSaida.itemPedidoSaida![index].valor
-                            .toString()),
-                      ),
-                      Expanded(
-                        child: TextComponent('R\$: ' +
-                            maskFormatter
-                                .realInputFormmater((_controller
-                                            .pedidoSaida
-                                            .itemPedidoSaida![index]
-                                            .quantidade *
-                                        _controller.pedidoSaida
-                                            .itemPedidoSaida![index].valor)
-                                    .toString())
-                                .getMaskedText()),
-                      ),
-                      Expanded(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: DropDownComponent(
-                                onChanged: (value) {
-                                  selecionarMotivoTrocaPeca(index, value);
-                                },
-                                items: motivoTrocaPecaController
-                                    .motivoTrocaPecas
-                                    .map((value) {
-                                  return DropdownMenuItem<MotivoTrocaPecaModel>(
-                                    value: value,
-                                    child: Text(value.nome.toString()),
-                                  );
-                                }).toList(),
-                                hintText: 'Selecione o motivo',
-                              ),
-                            ),
-                          )),
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.grey.shade400,
-                                ),
+                        Expanded(
+                          child: TextComponent(_controller.pedidoSaida
+                              .itemPedidoSaida![index].peca!.descricao),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: [
+                              IconButton(
+                                color: Colors.red,
                                 onPressed: () {
-                                  removerPeca(index);
-                                }),
-                          ],
+                                  removerQuantidade(index);
+                                },
+                                icon: Icon(
+                                  Icons.remove_circle_outlined,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: InputComponent(
+                                  key: UniqueKey(),
+                                  maxLines: 1,
+                                  initialValue: _controller.pedidoSaida
+                                      .itemPedidoSaida![index].quantidade
+                                      .toString(),
+                                  onFieldSubmitted: (value) {
+                                    inserirQuantidade(index, value);
+                                  },
+                                ),
+                              ),
+                              IconButton(
+                                color: Colors.green,
+                                onPressed: () {
+                                  adicionarQuantidade(index);
+                                },
+                                icon: Icon(
+                                  Icons.add_circle_outlined,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: TextComponent(_controller
+                              .pedidoSaida.itemPedidoSaida![index].valor
+                              .toString()),
+                        ),
+                        Expanded(
+                          child: TextComponent('R\$: ' +
+                              maskFormatter
+                                  .realInputFormmater((_controller
+                                              .pedidoSaida
+                                              .itemPedidoSaida![index]
+                                              .quantidade *
+                                          _controller.pedidoSaida
+                                              .itemPedidoSaida![index].valor)
+                                      .toString())
+                                  .getMaskedText()),
+                        ),
+                        Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: DropDownComponent(
+                                  onChanged: (value) {
+                                    selecionarMotivoTrocaPeca(index, value);
+                                  },
+                                  items: motivoTrocaPecaController
+                                      .motivoTrocaPecas
+                                      .map((value) {
+                                    return DropdownMenuItem<
+                                        MotivoTrocaPecaModel>(
+                                      value: value,
+                                      child: Text(value.nome.toString()),
+                                    );
+                                  }).toList(),
+                                  hintText: 'Selecione o motivo',
+                                ),
+                              ),
+                            )),
+                        Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                  onPressed: () {
+                                    removerPeca(index);
+                                  }),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }),
@@ -2053,7 +2110,10 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
     );
   }
 
-  exibirPecas(context) {
+  exibirPecas(context) async {
+    //Carrega peças
+    await buscarProdutoPecas();
+
     MediaQueryData media = MediaQuery.of(context);
     showDialog(
         context: context,
@@ -2273,20 +2333,19 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                                 })
                                               }),
                                       Expanded(
-                                        child: TextComponent(itemsPeca[index]
-                                            .peca
-                                            .idPeca
+                                        child: TextComponent(_controller
+                                            .produtoPecas[index].peca.idPeca
                                             .toString()),
                                       ),
                                       Expanded(
-                                        child: TextComponent(
-                                            itemsPeca[index].peca.descricao ??
-                                                ''),
+                                        child: TextComponent(_controller
+                                            .produtoPecas[index]
+                                            .peca
+                                            .descricao),
                                       ),
                                       Expanded(
-                                        child: TextComponent(itemsPeca[index]
-                                            .peca
-                                            .custo
+                                        child: TextComponent(_controller
+                                            .produtoPecas[index].peca.custo
                                             .toString()),
                                       ),
                                     ],
@@ -2312,6 +2371,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                       Expanded(
                                         child: TextComponent(
                                             itemsPecaBusca[index]
+                                                .produtoPeca
                                                 .peca
                                                 .idPeca
                                                 .toString()),
@@ -2319,13 +2379,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                                       Expanded(
                                         child: TextComponent(
                                             itemsPecaBusca[index]
-                                                    .peca
-                                                    .descricao ??
-                                                ''),
+                                                .produtoPeca
+                                                .peca
+                                                .descricao),
                                       ),
                                       Expanded(
                                         child: TextComponent(
                                             itemsPecaBusca[index]
+                                                .produtoPeca
                                                 .peca
                                                 .custo
                                                 .toString()),
