@@ -199,10 +199,14 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   }
 
   void removerQuantidade(index) {
-    setState(() {
-      _controller.pedidoSaida.itemsPedidoSaida![index].quantidade--;
-    });
-    calcularValorTotal();
+    if (_controller.pedidoSaida.itemsPedidoSaida![index].quantidade > 1) {
+      setState(() {
+        _controller.pedidoSaida.itemsPedidoSaida![index].quantidade--;
+      });
+      calcularValorTotal();
+    } else {
+      removerPeca(index);
+    }
   }
 
   bool verificaEstoque() {
@@ -413,13 +417,17 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
   }
 
   inserirQuantidade(index, value) {
-    print(value);
+    int quantidade = int.parse(value);
 
-    setState(() {
-      _controller.pedidoSaida.itemsPedidoSaida![index].quantidade =
-          int.parse(value);
-    });
-    calcularValorTotal();
+    if (quantidade == 0) {
+      removerPeca(index);
+    } else if (quantidade > 0) {
+      setState(() {
+        _controller.pedidoSaida.itemsPedidoSaida![index].quantidade =
+            quantidade;
+      });
+      calcularValorTotal();
+    }
   }
 
   _buildSituacaoEstoque(index) {
