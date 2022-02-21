@@ -1,5 +1,6 @@
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/models/produto_model.dart';
 
@@ -29,8 +30,10 @@ class PecasModel {
   PecasCorModel? pecasCorModel;
   // int? cor;
   String? material_fabricacao;
+  PecasMaterialModel? pecasMaterialModel;
   // String? especie;
   List<PecasEspecieModel>? especie;
+  PecasEspecieModel? pecasEspecieModel;
 
   List<ProdutoPecaModel>? produto_peca;
 
@@ -55,7 +58,9 @@ class PecasModel {
     this.cor,
     this.pecasCorModel,
     this.material_fabricacao,
+    this.pecasMaterialModel,
     this.especie,
+    this.pecasEspecieModel,
     this.produto_peca,
   });
 
@@ -79,8 +84,10 @@ class PecasModel {
       pecasCorModel: json["cor"] == null ? null : PecasCorModel.fromJson(json["cor"]),
       // created_at: json['created_at'],
       // updated_at: json['updated_at'],
-      //material_fabricacao: json['material_fabricacao'],
+      pecasMaterialModel: json['material_fabricacao'] == null ? null : PecasMaterialModel.fromJson(json['material_fabricacao']),
      // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
+      pecasEspecieModel: json["especie"] == null ? null : PecasEspecieModel.fromJson(json["especie"]),
+
       // produto_peca: json['produto_peca'] != null
       //     ? json['produto_peca'].map<ProdutoPecaModel>((data) {
       //         return ProdutoPecaModel.fromJson(data);
