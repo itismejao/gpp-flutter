@@ -29,7 +29,7 @@ class PecasCorModel {
     data['cor'] = this.cor;
     data['sigla'] = this.sigla;
     data['situacao'] = this.situacao;
-    print(data);
+
     return data;
   }
 }
