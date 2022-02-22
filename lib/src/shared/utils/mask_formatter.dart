@@ -1,7 +1,16 @@
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MaskFormatter {
-  cpfInputFormmater(String? value) {
+  MaskTextInputFormatter? cpfCnpjFormatter(String value) {
+    if (value.length == 11) {
+      return cpfFormatter(value);
+    } else if (value.length == 14) {
+      return cnpjFormatter(value);
+    }
+    null;
+  }
+
+  cpfFormatter(String? value) {
     return MaskTextInputFormatter(
       initialText: value.toString(),
       mask: '###.###.###-##',
@@ -9,7 +18,7 @@ class MaskFormatter {
     );
   }
 
-  cnpjInputFormmater(String? value) {
+  cnpjFormatter(String? value) {
     return MaskTextInputFormatter(
       initialText: value,
       mask: '##.###.###/####-##',

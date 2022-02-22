@@ -15,4 +15,12 @@ class PecaEstoqueModel {
         saldoDisponivel: json['saldo_disponivel'],
         saldoReservado: json['saldo_reservado']);
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_peca_estoque'] = idPecaEstoque;
+    data['saldo_disponivel'] = saldoDisponivel;
+    data['saldo_reservado'] = saldoReservado;
+    return data;
+  }
 }

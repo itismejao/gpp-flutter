@@ -75,6 +75,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pedido/PedidoListView.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
@@ -107,13 +108,13 @@ class _GppAppState extends State<GppApp> {
               const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         //Teste
-        return MaterialPageRoute(
-            builder: (context) => HomeView(
-                  funcionalities: FuncionalitiesView(),
-                  page: AstecaDetailView(
-                    id: 694273,
-                  ),
-                ));
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: AstecaDetailView(
+        //             id: 694273,
+        //           ),
+        //         ));
 
         // return MaterialPageRoute(
         //     builder: (context) => HomeView(
@@ -129,6 +130,15 @@ class _GppAppState extends State<GppApp> {
                 builder: (context) => HomeView(
                     funcionalities: FuncionalitiesView(),
                     page: AstecaListView()));
+          }
+
+          //Handle '/users
+          if (settings.name == '/pedidos') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: PedidoListView(),
+                    ));
           }
 
           if (settings.name == '/logout') {

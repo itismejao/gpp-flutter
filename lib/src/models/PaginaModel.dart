@@ -1,9 +1,9 @@
 class PaginaModel {
-  int? total;
-  int? atual;
+  int total;
+  int atual;
   PaginaModel({
-    this.total,
-    this.atual,
+    required this.total,
+    required this.atual,
   });
 
   factory PaginaModel.fromJson(Map<String, dynamic> json) {

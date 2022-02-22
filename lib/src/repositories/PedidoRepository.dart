@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -8,16 +9,23 @@ import 'package:http/http.dart';
 class PedidoRepository {
   ApiService api = gppApi;
 
-  Future<List<PedidoSaidaModel>> buscarTodos() async {
-    Response response = await api.get('/pedido-saida');
+  Future<List> buscarTodos(int pagina) async {
+    Map<String, String> queryParameters = {
+      'pagina': pagina.toString(),
+    };
+
+    Response response =
+        await api.get('/pedido-saida', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PedidoSaidaModel> pedidos = data
+      List<PedidoSaidaModel> pedidos = data['pedidos']
           .map<PedidoSaidaModel>((data) => PedidoSaidaModel.fromJson(data))
           .toList();
-      return pedidos;
+      //Obtém a pagina
+      PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
+      return [pedidos, pagina];
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;

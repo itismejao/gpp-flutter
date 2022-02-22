@@ -276,7 +276,7 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
 
         //Criar o pedido
         _controller.pedidoSaida.cpfCnpj =
-            _controller.asteca.documentoFiscal!.cpfCnpj;
+            _controller.asteca.documentoFiscal!.cpfCnpj.toString();
         _controller.pedidoSaida.filialVenda =
             _controller.asteca.documentoFiscal!.idFilialVenda;
         _controller.pedidoSaida.numDocFiscal =
@@ -287,7 +287,8 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
         _controller.pedidoSaida.situacao = 1;
         _controller.pedidoSaida.asteca = _controller.asteca;
         _controller.pedidoSaida.funcionario = _controller.asteca.funcionario;
-
+        _controller.pedidoSaida.cliente =
+            _controller.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
         PedidoSaidaModel pedidoResposta =
             await _controller.pedidoRepository.criar(_controller.pedidoSaida);
@@ -1266,20 +1267,11 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 flex: 2,
                 child: InputComponent(
                   key: UniqueKey(),
-                  initialValue: _controller.asteca.documentoFiscal!.cpfCnpj
-                              .toString()
-                              .length ==
-                          11
-                      ? maskFormatter
-                          .cpfInputFormmater(_controller
-                              .asteca.documentoFiscal!.cpfCnpj
-                              .toString())
-                          .getMaskedText()
-                      : maskFormatter
-                          .cnpjInputFormmater(_controller
-                              .asteca.documentoFiscal!.cpfCnpj
-                              .toString())
-                          .getMaskedText(),
+                  initialValue: maskFormatter
+                      .cpfCnpjFormatter(_controller
+                          .asteca.documentoFiscal!.cpfCnpj
+                          .toString())!
+                      .getMaskedText(),
                   label: 'CPF/CNPJ',
                 ),
               ),
@@ -1717,9 +1709,9 @@ class _AstecaDetailViewState extends State<AstecaDetailView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Referência',
-                  initialValue: _controller
-                      .asteca.astecaEndCliente?.pontoReferencia1
-                      .toString(),
+                  initialValue:
+                      _controller.asteca.astecaEndCliente!.pontoReferencia1 ??
+                          '',
                 ),
               ),
             ],

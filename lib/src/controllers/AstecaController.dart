@@ -30,7 +30,7 @@ class AstecaController {
   bool isOpenFilter = false;
 
   bool carregado = false;
-  PaginaModel pagina = PaginaModel(atual: 1);
+  PaginaModel pagina = PaginaModel(total: 0, atual: 1);
   late AstecaTipoPendenciaModel astecaTipoPendencia;
   List<AstecaTipoPendenciaModel> astecaTipoPendencias = [];
   List<AstecaTipoPendenciaModel> astecaTipoPendenciasBuscar = [];

@@ -5,7 +5,7 @@ import 'package:gpp/src/models/funcionario_model.dart';
 
 class PedidoSaidaModel {
   int? idPedidoSaida;
-  int? cpfCnpj;
+  String? cpfCnpj;
   int? filialVenda;
   int? numDocFiscal;
   String? serieDocFiscal;
@@ -67,6 +67,7 @@ class PedidoSaidaModel {
     data['valor_total'] = valorTotal;
     data['id_asteca'] = asteca!.idAsteca;
     data['id_funcionario'] = funcionario!.idFuncionario;
+    data['cliente'] = cliente!.toJson();
 
     data['items_pedido_saida'] =
         itemsPedidoSaida!.map((e) => e.toJson()).toList();
