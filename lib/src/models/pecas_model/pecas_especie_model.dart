@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 
 class PecasEspecieModel {
   int? id_peca_especie;
@@ -6,11 +7,14 @@ class PecasEspecieModel {
   int? situacao;
   int? id_peca_linha;
 
+  PecasLinhaModel? linha;
+
   PecasEspecieModel({
     this.id_peca_especie,
     this.especie,
     this.situacao,
     this.id_peca_linha,
+    this.linha,
   });
 
   factory PecasEspecieModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +23,7 @@ class PecasEspecieModel {
       especie: json['especie'],
       situacao: json['situacao'],
       id_peca_linha: json['id_peca_linha'],
+      linha: json["linha"] == null ? null : PecasLinhaModel.fromJson(json["linha"]),
     );
   }
 

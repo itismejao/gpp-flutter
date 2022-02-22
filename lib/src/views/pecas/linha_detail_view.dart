@@ -319,6 +319,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                             child: DropdownSearch<PecasLinhaModel?>(
                               mode: Mode.DIALOG,
                               showSearchBox: true,
+                              selectedItem: pecasEspecieModel == null ? snapshot.data[0] : pecasEspecieModel!.linha,
                               items: snapshot.data,
                               itemAsString: (PecasLinhaModel? value) => value!.linha!,
                               onChanged: (value) {

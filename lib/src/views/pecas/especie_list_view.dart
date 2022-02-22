@@ -111,7 +111,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                             child: Text(Situacao.values[_pecasEspecie[index].situacao!].name),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].id_peca_linha.toString()),
+                            child: Text(_pecasEspecie[index].linha!.linha.toString()),
                           ),
                           Expanded(
                             child: Row(

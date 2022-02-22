@@ -294,6 +294,8 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                                 child: DropdownSearch<PecasGrupoModel?>(
                                   mode: Mode.DIALOG,
                                   showSearchBox: true,
+                                  selectedItem:
+                                      pecasMaterialModel == null ? snapshot.data[0] : pecasMaterialModel!.grupo_material,
                                   items: snapshot.data,
                                   itemAsString: (PecasGrupoModel? value) => value!.grupo!,
                                   onChanged: (value) {

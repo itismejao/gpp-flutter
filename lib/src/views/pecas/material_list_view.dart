@@ -69,6 +69,9 @@ class _MaterialListViewState extends State<MaterialListView> {
               child: TextComponent('Situação'),
             ),
             Expanded(
+              child: TextComponent('Grupo Vinculado'),
+            ),
+            Expanded(
               child: Text(
                 'Opções',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
@@ -113,7 +116,9 @@ class _MaterialListViewState extends State<MaterialListView> {
                           Expanded(
                             child: Text(Situacao.values[_pecasMaterial[index].situacao!].name),
                           ),
-
+                          Expanded(
+                            child: Text(_pecasMaterial[index].grupo_material!.grupo.toString()),
+                          ),
                           Expanded(
                             child: Row(
                               children: [
