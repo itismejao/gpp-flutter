@@ -13,16 +13,16 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 
-class UserListView extends StatefulWidget {
-  const UserListView({
+class UsuarioListView extends StatefulWidget {
+  const UsuarioListView({
     Key? key,
   }) : super(key: key);
 
   @override
-  _UserListViewState createState() => _UserListViewState();
+  _UsuarioListViewState createState() => _UsuarioListViewState();
 }
 
-class _UserListViewState extends State<UserListView> {
+class _UsuarioListViewState extends State<UsuarioListView> {
   late final UsuarioController _controller;
   final ResponsiveController _responsive = ResponsiveController();
   void changeUsers() async {

@@ -32,18 +32,18 @@ class ItemPeca {
   });
 }
 
-class AstecaDetailView extends StatefulWidget {
+class AstecaDetalheView extends StatefulWidget {
   final int id;
-  const AstecaDetailView({
+  const AstecaDetalheView({
     Key? key,
     required this.id,
   }) : super(key: key);
 
   @override
-  _AstecaDetailViewState createState() => _AstecaDetailViewState();
+  _AstecaDetalheViewState createState() => _AstecaDetalheViewState();
 }
 
-class _AstecaDetailViewState extends State<AstecaDetailView> {
+class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late AstecaController _controller;
 
   List<ItemPeca> itemsPeca = [];

@@ -97,182 +97,148 @@ class GppApp extends StatefulWidget {
 
 class _GppAppState extends State<GppApp> {
   @override
+  obterRota(settings) {
+    Uri uri = Uri.parse(settings.name);
+    Widget pagina = NotFoundView();
+//Se existe 1 parâmetros da url
+    if (uri.pathSegments.length == 0) {
+      pagina = AstecaListView();
+    } else if (uri.pathSegments.length == 1) {
+      if (uri.pathSegments.first == 'astecas') {
+        pagina = AstecaListView();
+      } else if (uri.pathSegments.first == 'pedidos') {
+        pagina = PedidoListView();
+      } else if (uri.pathSegments.first == 'departamentos') {
+        pagina = DepartamentoListView();
+      } else if (uri.pathSegments.first == 'usuarios') {
+        pagina = UsuarioListView();
+      } else if (uri.pathSegments.first == 'motivos-defeitos') {
+        pagina = MotivosTrocaPecasListView();
+      }
+      //Se existe 2 parâmetros da url
+    } else if (uri.pathSegments.length == 2) {
+      var id = int.parse(uri.pathSegments[1]);
+
+      if (uri.pathSegments.first == 'astecas') {
+        pagina = AstecaDetalheView(id: id);
+      }
+    }
+
+    return MaterialPageRoute(
+        builder: (context) =>
+            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'GPP - Gerenciamento de Peças e Pedidos',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Mada',
-          inputDecorationTheme:
-              const InputDecorationTheme(iconColor: Colors.grey)),
-      onGenerateRoute: (settings) {
-        //Teste
-        // return MaterialPageRoute(
-        //     builder: (context) => HomeView(
-        //           funcionalities: FuncionalitiesView(),
-        //           page: AstecaDetailView(
-        //             id: 694273,
-        //           ),
-        //         ));
+        debugShowCheckedModeBanner: false,
+        title: 'GPP - Gerenciamento de Peças e Pedidos',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: 'Mada',
+            inputDecorationTheme:
+                const InputDecorationTheme(iconColor: Colors.grey)),
+        onGenerateRoute: (settings) {
+          // Handle '/'
+          //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
+          if (!isAuthenticated()) {
+            return obterRota(settings);
 
-        // return MaterialPageRoute(
-        //     builder: (context) => HomeView(
-        //           funcionalities: FuncionalitiesView(),
-        //           page: PedidoView(),
-        //         ));
+            if (settings.name == '/logout') {
+              return MaterialPageRoute(
+                  builder: (context) => AuthenticateView());
+            }
 
-        // Handle '/'
-        //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-        if (!isAuthenticated()) {
-          if (settings.name == '/') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                    funcionalities: FuncionalitiesView(),
-                    page: AstecaListView()));
+            if (settings.name == '/funcionalidades') {
+              return MaterialPageRoute(
+                  builder: (context) => HomeView(
+                        funcionalities: FuncionalitiesView(),
+                        page: FuncionalitiesListView(),
+                      ));
+            }
+
+            if (settings.name == '/funcionalities/register') {
+              return MaterialPageRoute(
+                  builder: (context) => HomeView(
+                        funcionalities: FuncionalitiesView(),
+                        page: FuncionalitiesFormView(),
+                      ));
+            }
+
+            if (settings.name == '/departamento/register') {
+              return MaterialPageRoute(
+                  builder: (context) => HomeView(
+                        funcionalities: FuncionalitiesView(),
+                        page: DepartamentFormView(),
+                      ));
+            }
+
+            // Handle '/departaments/:id'
+
+            //     if (uri.pathSegments.length == 2 &&
+            //         uri.pathSegments.first == 'departaments') {
+            //       var id = uri.pathSegments[1];
+            //       return MaterialPageRoute(
+            //           builder: (context) => HomeView(
+            //                 funcionalities: FuncionalitiesView(),
+            //                 page: DepartamentDetailView(
+            //                   id: id,
+            //                 ),
+            //               ));
+            //     }
+
+            //     if (uri.pathSegments.length == 2 &&
+            //         uri.pathSegments.first == 'funcionalities') {
+            //       var id = uri.pathSegments[1];
+            //       return MaterialPageRoute(
+            //           builder: (context) => HomeView(
+            //                 funcionalities: FuncionalitiesView(),
+            //                 page: FuncionalitiesDetailView(
+            //                   id: id,
+            //                 ),
+            //               ));
+            //     }
+
+            //     if (uri.pathSegments.length == 2 &&
+            //         uri.pathSegments.first == 'subfuncionalities') {
+            //       var id = uri.pathSegments[1];
+            //       return MaterialPageRoute(
+            //           builder: (context) => HomeView(
+            //                 funcionalities: FuncionalitiesView(),
+            //                 page: SubFuncionalitiesFormView(
+            //                   id: id,
+            //                 ),
+            //               ));
+            //     }
+
+            //     // Handle '/users/:id'
+
+            //     if (uri.pathSegments.length == 2 &&
+            //         uri.pathSegments.first == 'users') {
+            //       var id = uri.pathSegments[1];
+            //       return MaterialPageRoute(
+            //           builder: (context) => HomeView(
+            //                 funcionalities: FuncionalitiesView(),
+            //                 page: UserDetailView(
+            //                   id: id,
+            //                 ),
+            //               ));
+            //     }
+            //   } else {
+            //     return MaterialPageRoute(builder: (context) => AuthenticateView());
+            //   }
+
+            //   if (settings.name == '/astecas') {
+            //     return MaterialPageRoute(
+            //         builder: (context) => HomeView(
+            //               funcionalities: FuncionalitiesView(),
+            //               page: AstecaListView(),
+            //             ));
+            //   }
+
+            //   return MaterialPageRoute(builder: (context) => NotFoundView());
+            // },
           }
-
-          //Handle '/users
-          if (settings.name == '/pedidos') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: PedidoListView(),
-                    ));
-          }
-
-          if (settings.name == '/logout') {
-            return MaterialPageRoute(builder: (context) => AuthenticateView());
-          }
-
-          //Handle '/users
-          if (settings.name == '/usuarios') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: UserListView(),
-                    ));
-          }
-
-          //Handle '/departaments
-          if (settings.name == '/departamentos') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentListView(),
-                    ));
-          }
-
-          if (settings.name == '/funcionalidades') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesListView(),
-                    ));
-          }
-
-          if (settings.name == '/funcionalities/register') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesFormView(),
-                    ));
-          }
-
-          if (settings.name == '/departamento/register') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentFormView(),
-                    ));
-          }
-          if (settings.name == '/motivos-troca-pecas') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: ReasonPartsReplacementListView(),
-                    ));
-          }
-
-          // Handle '/departaments/:id'
-
-          var uri = Uri.parse(settings.name!);
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'asteca') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: AstecaDetailView(
-                        id: int.parse(id),
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'departaments') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'funcionalities') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'subfuncionalities') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: SubFuncionalitiesFormView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          // Handle '/users/:id'
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'users') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: UserDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-        } else {
-          return MaterialPageRoute(builder: (context) => AuthenticateView());
-        }
-
-        if (settings.name == '/astecas') {
-          return MaterialPageRoute(
-              builder: (context) => HomeView(
-                    funcionalities: FuncionalitiesView(),
-                    page: AstecaListView(),
-                  ));
-        }
-
-        return MaterialPageRoute(builder: (context) => NotFoundView());
-      },
-    );
+        });
   }
 }

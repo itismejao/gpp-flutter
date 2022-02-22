@@ -13,7 +13,7 @@ import 'package:gpp/src/shared/enumeration/user_enum.dart';
 
 // ignore: must_be_immutable
 class FuncionalitiesView extends StatefulWidget {
-  FuncionalitiesView({
+  const FuncionalitiesView({
     Key? key,
   }) : super(key: key);
 

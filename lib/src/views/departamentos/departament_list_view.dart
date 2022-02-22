@@ -14,14 +14,14 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/views/departamentos/departament_form_view.dart';
 
-class DepartamentListView extends StatefulWidget {
-  const DepartamentListView({Key? key}) : super(key: key);
+class DepartamentoListView extends StatefulWidget {
+  const DepartamentoListView({Key? key}) : super(key: key);
 
   @override
-  _DepartamentListViewState createState() => _DepartamentListViewState();
+  _DepartamentoListViewState createState() => _DepartamentoListViewState();
 }
 
-class _DepartamentListViewState extends State<DepartamentListView> {
+class _DepartamentoListViewState extends State<DepartamentoListView> {
   final ResponsiveController _responsive = ResponsiveController();
 
   late final DepartamentController _controller =

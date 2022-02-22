@@ -11,16 +11,15 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 
-class ReasonPartsReplacementListView extends StatefulWidget {
-  const ReasonPartsReplacementListView({Key? key}) : super(key: key);
+class MotivosTrocaPecasListView extends StatefulWidget {
+  const MotivosTrocaPecasListView({Key? key}) : super(key: key);
 
   @override
-  _ReasonPartsReplacementListViewState createState() =>
-      _ReasonPartsReplacementListViewState();
+  _MotivosTrocaPecasListViewState createState() =>
+      _MotivosTrocaPecasListViewState();
 }
 
-class _ReasonPartsReplacementListViewState
-    extends State<ReasonPartsReplacementListView> {
+class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   late MotivoTrocaPecaController controller;
 
   fetchAll() async {

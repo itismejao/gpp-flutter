@@ -144,7 +144,7 @@ class _AstecaListViewState extends State<AstecaListView> {
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
-                  context, '/asteca/' + asteca[index].idAsteca.toString());
+                  context, '/astecas/' + asteca[index].idAsteca.toString());
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -233,7 +233,7 @@ class _AstecaListViewState extends State<AstecaListView> {
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(
-                context, '/asteca/' + asteca[index].idAsteca.toString());
+                context, '/astecas/' + asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -327,7 +327,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('dd-MM-yyyy')
+                              DateFormat('dd/MM/yyyy')
                                   .format(asteca[index].dataEmissao!),
                             )),
                         Expanded(
