@@ -12,7 +12,7 @@ class PedidoRepository {
   Future<List> buscarTodos(int pagina,
       {int? idPedido,
       DateTime? dataInicio,
-      DateTime? dataFim, 
+      DateTime? dataFim,
       int? situacao}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),

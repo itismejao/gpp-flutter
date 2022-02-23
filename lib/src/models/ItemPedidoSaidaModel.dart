@@ -17,6 +17,7 @@ class ItemPedidoSaidaModel {
 
   factory ItemPedidoSaidaModel.fromJson(Map<String, dynamic> json) {
     return ItemPedidoSaidaModel(
+        idItemPedidoSaida: json['id_item_pedido_saida'],
         quantidade: json['quantidade'],
         valor: json['valor'],
         motivoTrocaPeca:

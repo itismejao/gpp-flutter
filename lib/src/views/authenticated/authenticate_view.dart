@@ -8,6 +8,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/shared/repositories/global.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
@@ -82,6 +83,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                 label: "Senha",
                 maxLines: 1,
                 obscureText: !controller.visiblePassword,
+                onFieldSubmitted: (value) {
+                  autenticar(context);
+                },
                 onChanged: (value) {
                   controller.autenticacao.senha = value;
                 },

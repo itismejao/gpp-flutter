@@ -240,7 +240,7 @@ class _PedidoListViewState extends State<PedidoListView> {
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(
-                context, '/astecas/' + pedido[index].idPedidoSaida.toString());
+                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

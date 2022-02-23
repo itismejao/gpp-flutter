@@ -74,6 +74,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
@@ -122,6 +123,8 @@ class _GppAppState extends State<GppApp> {
 
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos') {
+          pagina = PedidoDetalheView(id: id);
         }
       }
     } else {
