@@ -11,6 +11,7 @@ import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -46,8 +47,18 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   final txtIdFornecedor = TextEditingController();
   final txtNomeFornecedor = TextEditingController();
 
+  final txtIdLinha = TextEditingController();
+  final txtIdEspecie = TextEditingController();
+  final txtIdGrupo = TextEditingController();
+  final txtIdMaterial = TextEditingController();
+
   PecasLinhaModel _selectedLinha = PecasLinhaModel(id_peca_linha: 1, linha: '', situacao: 1);
   List<PecasEspecieModel> _pecasEspecieModel = [PecasEspecieModel(id_peca_especie: 1, especie: '', id_peca_linha: 1)];
+
+  PecasGrupoModel _selectedGrupo = PecasGrupoModel(id_peca_grupo_material: 1, grupo: '', situacao: 1);
+  List<PecasMaterialModel> _pecasMaterialModel = [
+    PecasMaterialModel(id_peca_material_fabricacao: 1, material: '', sigla: '', situacao: 1)
+  ];
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
@@ -413,11 +424,36 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
+                          // Flexible(
+                          //   flex: 2,
+                          //   child: InputComponent(
+                          //     hintText: 'ID',
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
                           Flexible(
                             flex: 2,
-                            child: InputComponent(
-                              hintText: 'ID',
-                              onChanged: (value) {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                controller: txtIdLinha,
+                                // enabled: false,
+                                onChanged: (value) {
+                                  // _pecasController.pecasModel.id_fornecedor = int.parse(value);
+                                },
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'ID',
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                ),
+                              ),
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
@@ -455,6 +491,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           itemAsString: (PecasLinhaModel? value) => value!.linha!,
                                           onChanged: (value) {
                                             _selectedLinha = value!;
+
+                                            txtIdLinha.text = value.id_peca_linha.toString();
 
                                             setState(() {
                                               _pecasEspecieModel = value.especie!;
@@ -607,11 +645,36 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
+                          // Flexible(
+                          //   flex: 2,
+                          //   child: InputComponent(
+                          //     hintText: 'ID',
+                          //     onChanged: (value) {},
+                          //   ),
+                          // ),
                           Flexible(
                             flex: 2,
-                            child: InputComponent(
-                              hintText: 'ID',
-                              onChanged: (value) {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                controller: txtIdGrupo,
+                                // enabled: false,
+                                onChanged: (value) {
+                                  // _pecasController.pecasModel.id_fornecedor = int.parse(value);
+                                },
+                                keyboardType: TextInputType.number,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'ID',
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                ),
+                              ),
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
@@ -642,8 +705,17 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           items: snapshot.data,
                                           itemAsString: (PecasGrupoModel? value) => value!.grupo!,
                                           onChanged: (value) {
-                                            _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
-                                                value!.id_peca_grupo_material;
+                                            // _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                            //     value!.id_peca_grupo_material;
+                                            _selectedGrupo = value!;
+
+                                            txtIdGrupo.text = value.id_peca_grupo_material.toString();
+
+                                            print(value.material?[0]);
+
+                                            setState(() {
+                                              _pecasMaterialModel = value.material!;
+                                            });
                                           },
                                           dropdownSearchDecoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -702,9 +774,31 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           Padding(padding: EdgeInsets.only(right: 10)),
                           Flexible(
                             flex: 5,
-                            child: InputComponent(
-                              hintText: 'Nome Material',
-                              onChanged: (value) {},
+                            child: Container(
+                              width: 600,
+                              height: 48,
+                              padding: EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PecasMaterialModel?>(
+                                mode: Mode.DIALOG,
+                                showSearchBox: true,
+                                items: _pecasMaterialModel,
+                                itemAsString: (PecasMaterialModel? value) => value!.material!,
+                                onChanged: (value) {
+                                  _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_grupo_material;
+                                },
+                                dropdownSearchDecoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                              ),
                             ),
                           ),
                         ],

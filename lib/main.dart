@@ -113,7 +113,7 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: MenuConsultarView(),
+                  page: MenuCadastrarView(),
                 ));
 
         // Handle '/'
