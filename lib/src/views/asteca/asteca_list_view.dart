@@ -47,7 +47,7 @@ class _AstecaListViewState extends State<AstecaListView> {
       controller.astecas = retorno[0];
       controller.pagina = retorno[1];
 
-      //limparFiltro();
+      limparFiltro();
 
       //Atualiza o status para carregado
       setState(() {
@@ -402,97 +402,102 @@ class _AstecaListViewState extends State<AstecaListView> {
             height: controller.isOpenFilter ? null : 0,
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Pendência:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.pendenciaFiltro = value;
-                            ;
-                          },
-                          hintText: 'Digite a pendência',
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: InputComponent(
-                          label: 'CPF ou CNPJ:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.filtroAsteca.documentoFiscal!.cpfCnpj = value;
-                            ;
-                          },
-                          hintText: 'Digite o CPF ou CNPJ',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Número da nota fiscal:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.filtroAsteca.documentoFiscal!.numDocFiscal = value;
-                          },
-                          hintText: 'Digite o número da nota fiscal',
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          inputFormatter: [maskFormatter.dataFormatter()],
-                          label: 'Período:',
-                          maxLines: 1,
-                          onSaved: (value) {
-                            if (value.length == 10) {
-                              controller.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
-                            }
-                          },
-                          hintText: 'Data inicial',
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: InputComponent(
-                          inputFormatter: [maskFormatter.dataFormatter()],
-                          label: '',
-                          maxLines: 1,
-                          onSaved: (value) {
-                            if (value.length == 10) {
-                              controller.dataFim = DateFormat("dd/MM/yyyy").parse(value);
-                            }
-                          },
-                          hintText: 'Data fim',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+              child: Form(
+                key: controller.filtroExpandidoFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        ButtonComponent(
-                            onPressed: () {
-                              buscarTodas();
+                        Expanded(
+                          child: InputComponent(
+                            label: 'Pendência:',
+                            maxLines: 1,
+                            onChanged: (value) {
+                              controller.pendenciaFiltro = value;
+                              ;
                             },
-                            text: 'Pesquisar')
+                            hintText: 'Digite a pendência',
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: InputComponent(
+                            label: 'CPF ou CNPJ:',
+                            maxLines: 1,
+                            onChanged: (value) {
+                              controller.filtroAsteca.documentoFiscal!.cpfCnpj = value;
+                              ;
+                            },
+                            hintText: 'Digite o CPF ou CNPJ',
+                          ),
+                        ),
                       ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                            label: 'Número da nota fiscal:',
+                            maxLines: 1,
+                            onChanged: (value) {
+                              controller.filtroAsteca.documentoFiscal!.numDocFiscal = value;
+                            },
+                            hintText: 'Digite o número da nota fiscal',
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: 'Período:',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                controller.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data inicial',
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: '',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                controller.dataFim = DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data fim',
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ButtonComponent(
+                              onPressed: () {
+                                controller.filtroExpandidoFormKey.currentState!.save();
+                                controller.filtroExpandidoFormKey.currentState!.reset();
+                                buscarTodas();
+                              },
+                              text: 'Pesquisar'),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -35,8 +35,8 @@ class AstecaRepository {
       'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
       'numeroNotaFiscalVenda': filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
       'pendencia': pendencia?.toString() ?? '',
-      'dataInicio': dataInicio.toString(),
-      'dataFim': dataFim.toString()
+      'dataInicio': dataInicio != null ? dataInicio.toString() : '',
+      'dataFim': dataFim != null ? dataFim.toString() : ''
     };
 
     Response response = await api.get(endpoint, queryParameters: queryParameters);
