@@ -17,8 +17,14 @@ class EnderecamentoController {
   late CorredorEnderecamentoModel corredorModel = CorredorEnderecamentoModel();
   late List<CorredorEnderecamentoModel> listaCorredor;
 
-   late EstanteEnderecamentoModel estanteModel = EstanteEnderecamentoModel();
+  late EstanteEnderecamentoModel estanteModel = EstanteEnderecamentoModel();
   late List<EstanteEnderecamentoModel> listaEstante;
+
+  late PrateleiraEnderecamentoModel prateleiraModel = PrateleiraEnderecamentoModel();
+  late List<PrateleiraEnderecamentoModel> listaPrateleira;
+
+  late BoxEnderecamentoModel boxModel = BoxEnderecamentoModel();
+  late List<BoxEnderecamentoModel> listaBox;
 
   Future<List<PisoEnderecamentoModel>> buscarTodos() async {
     return await repository.buscarTodos();

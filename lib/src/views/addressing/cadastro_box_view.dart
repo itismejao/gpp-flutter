@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/addressing_floor_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_box_controller.dart';
+import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/box_enderecamento_model.dart';
@@ -20,58 +21,68 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class CadastroBoxView extends StatefulWidget {
+//  String? idPrateleira;
+  //  CadastroCorredorView({this.idPrateleira});
+        
+ // int id;
+
+ //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+
   const CadastroBoxView({Key? key}) : super(key: key);
 
   @override
-  _CadastroBoxViewState createState() =>
-      _CadastroBoxViewState();
+  _CadastroBoxViewState createState() => _CadastroBoxViewState();
 }
 
 class _CadastroBoxViewState
     extends State<CadastroBoxView> {
-  late EnderecamentoBoxController controller;
+  //late EnderecamentoBoxController controller;
+  String? idPrateleira;
+  
+  late EnderecamentoController enderecamentoController;
 
-  fetchAll() async {
+
+  fetchAll(String idPrateleira) async {
     //Carrega lista de motivos de defeito de peças
-    controller.boxEnderecamentoReplacements =
-        await controller.repository.buscarTodos();
+    enderecamentoController.listaBox =
+        await enderecamentoController.repository.buscarBox(idPrateleira);
 
-    controller.isLoaded = true;
+    enderecamentoController.isLoaded = true;
 
     //Notifica a tela para atualizar os dados
     setState(() {
-      controller.isLoaded = true;
+      enderecamentoController.isLoaded = true;
     });
   }
 
-  handleCreate(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await controller.repository.create(boxEnderecamentoReplacement)) {
-        Navigator.pop(context);
-        fetchAll();
-        notify.sucess('Box adicionado com sucesso!');
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleCreate(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await controller.repository.create(boxEnderecamentoReplacement)) {
+  //       Navigator.pop(context);
+  //       fetchAll();
+  //       notify.sucess('Box adicionado com sucesso!');
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
-  handleDelete(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await notify
-          .alert("você deseja excluir o box?")) {
-        if (await controller.repository.excluir(boxEnderecamentoReplacement)) {
-          notify.sucess("Box excluído!");
-          //Atualiza a lista de motivos
-          fetchAll();
-        }
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleDelete(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await notify
+  //         .alert("você deseja excluir o box?")) {
+  //       if (await controller.repository.excluir(boxEnderecamentoReplacement)) {
+  //         notify.sucess("Box excluído!");
+  //         //Atualiza a lista de motivos
+  //         fetchAll();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
   openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
     showDialog(
@@ -122,8 +133,8 @@ class _CadastroBoxViewState
                                  ButtonComponent(
                                     onPressed: (
                                     ) {
-                                      handleCreate(
-                                          context, boxEnderecamentoReplacement);
+                                      // handleCreate(
+                                      //     context, boxEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
                                 // :ButtonComponent(
@@ -151,9 +162,10 @@ class _CadastroBoxViewState
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = EnderecamentoBoxController();
+    //controller = EnderecamentoBoxController();
+     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll();
+    fetchAll('107');
   }
 
   @override
@@ -172,7 +184,7 @@ class _CadastroBoxViewState
                   Flexible(child: TitleComponent('Box')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.boxEnderecamentoReplacement);
+                        openForm(context, enderecamentoController.boxModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -188,11 +200,11 @@ class _CadastroBoxViewState
               ],
             ),
             Divider(),
-            controller.isLoaded
+            enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: controller.boxEnderecamentoReplacements.length,
+                      itemCount: enderecamentoController.listaBox.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -203,14 +215,11 @@ class _CadastroBoxViewState
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: TextComponent(controller
-                                        .boxEnderecamentoReplacements[index].desc_box!)),
+                                    child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),
                                 Expanded(
-                                    child: TextComponent(controller
-                                        .boxEnderecamentoReplacements[index].desc_box!)),
+                                   child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),
                                  Expanded(
-                                    child: TextComponent(controller
-                                        .boxEnderecamentoReplacements[index].desc_box!)),                             
+                                    child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),                          
                                 Expanded(
                                   child: Row(
                                     children: [
@@ -220,11 +229,11 @@ class _CadastroBoxViewState
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                                handleDelete(
-                                                    context,
-                                                    controller
-                                                            .boxEnderecamentoReplacements[
-                                                        index]),
+                                                // handleDelete(
+                                                //     context,
+                                                //     controller
+                                                //             .boxEnderecamentoReplacements[
+                                                //         index]),
                                               }),
                                     ],
                                   ),

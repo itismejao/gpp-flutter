@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_prateleira_cotroller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
@@ -10,6 +11,13 @@ import 'package:gpp/src/shared/components/title_component.dart';
 
 
 class CadastroPrateleiraView extends StatefulWidget {
+
+    //  String? idEstante;
+  //  CadastroCorredorView({this.idEstante});
+        
+ // int id;
+
+ //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
   const CadastroPrateleiraView({ Key? key }) : super(key: key);
 
   @override
@@ -17,50 +25,53 @@ class CadastroPrateleiraView extends StatefulWidget {
 }
 
 class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
-  late EnderecamentoPrateleiraController controller;
+  //late EnderecamentoPrateleiraController controller;
+  String? idEstante;
+  
+  late EnderecamentoController enderecamentoController;
 
 
-  fetchAll() async {
+  fetchAll(idEstante) async {
     //Carrega lista de motivos de defeito de peças
-    controller.prateleiraEnderecamentoReplacements =
-        await controller.repository.buscarTodos();
+    enderecamentoController.listaPrateleira =
+        await enderecamentoController.repository.buscarPrateleira(idEstante);
 
-    controller.isLoaded = true;
+    enderecamentoController.isLoaded = true;
 
     //Notifica a tela para atualizar os dados
     setState(() {
-      controller.isLoaded = true;
+      enderecamentoController.isLoaded = true;
     });
   }
 
-  handleCreate(context,PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await controller.repository.create(prateleiraEnderecamentoReplacement)) {
-        Navigator.pop(context);
-        fetchAll();
-        notify.sucess('Prateleira adicionada com sucesso!');
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleCreate(context,PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await controller.repository.create(prateleiraEnderecamentoReplacement)) {
+  //       Navigator.pop(context);
+  //       fetchAll();
+  //       notify.sucess('Prateleira adicionada com sucesso!');
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
-  handleDelete(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await notify
-          .alert("você deseja excluir a prateleira?")) {
-        if (await controller.repository.excluir(prateleiraEnderecamentoReplacement)) {
-          notify.sucess("Prateleira excluída!");
-          //Atualiza a lista de motivos
-          fetchAll();
-        }
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleDelete(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await notify
+  //         .alert("você deseja excluir a prateleira?")) {
+  //       if (await controller.repository.excluir(prateleiraEnderecamentoReplacement)) {
+  //         notify.sucess("Prateleira excluída!");
+  //         //Atualiza a lista de motivos
+  //         fetchAll();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -110,14 +121,14 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                             prateleiraEnderecamentoReplacement.id_prateleira == null
                                 ? ButtonComponent(
                                     onPressed: () {
-                                      handleCreate(
-                                          context, prateleiraEnderecamentoReplacement);
+                                      // handleCreate(
+                                      //     context, prateleiraEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
                                 :ButtonComponent(
                                     color: Colors.red,
                                     onPressed: () {
-                                      handleCreate(context, prateleiraEnderecamentoReplacement);
+                                      // handleCreate(context, prateleiraEnderecamentoReplacement);
                                     },
                                     text: 'Cancelar')
                           ],
@@ -139,9 +150,10 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = EnderecamentoPrateleiraController();
+    // controller = EnderecamentoPrateleiraController();
+    enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll();
+    fetchAll('5');
   }
 
   @override
@@ -160,7 +172,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                   Flexible(child: TitleComponent('Prateleira')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.prateleiraEnderecamentoReplacement);
+                        openForm(context, enderecamentoController.prateleiraModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -174,11 +186,11 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
               ],
             ),
             Divider(),
-            controller.isLoaded
+            enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: controller.prateleiraEnderecamentoReplacements.length,
+                      itemCount: enderecamentoController.listaPrateleira.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -189,8 +201,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                             child: Row(
                               children: [
                                  Expanded(
-                                      child: TextComponent(controller
-                                        .prateleiraEnderecamentoReplacements[index].desc_prateleira!)),
+                                      child: TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),),
                                 Expanded(
                                   child: Row(
                                     children: [
@@ -205,11 +216,11 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                                handleDelete(
-                                                    context,
-                                                    controller
-                                                            .prateleiraEnderecamentoReplacements[
-                                                        index]),
+                                                // handleDelete(
+                                                //     context,
+                                                //     controller
+                                                //             .prateleiraEnderecamentoReplacements[
+                                                //         index]),
                                               }),
                                     ],
                                   ),

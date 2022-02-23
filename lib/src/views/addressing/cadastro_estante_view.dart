@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_estante_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_prateleira_cotroller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
@@ -11,6 +12,13 @@ import 'package:gpp/src/shared/components/title_component.dart';
 
 
 class CadastroEstanteView extends StatefulWidget {
+   //  String? idCorredor;
+  //  CadastroCorredorView({this.idCorredor});
+        
+ // int id;
+
+ //CadastroEstanteView({ Key? key, required this.id } ) : super(key: key);
+
   const CadastroEstanteView({ Key? key }) : super(key: key);
 
   @override
@@ -18,52 +26,55 @@ class CadastroEstanteView extends StatefulWidget {
 }
 
 class _CadastroEstanteViewState extends State<CadastroEstanteView> {
-  late EnderecamentoEstanteController controller;
+  //late EnderecamentoEstanteController controller;
+  String? idCorredor;
+
+   late EnderecamentoController enderecamentoController;
 
 
-  fetchAll() async {
+  fetchAll(String idCorredor) async {
     //Carrega lista de motivos de defeito de peças
-    controller.estanteEnderecamentoReplacements =
-        await controller.repository.buscarTodos();
+    enderecamentoController.listaEstante = 
+        await enderecamentoController.repository.buscarEstante(idCorredor);
 
         
 
-    controller.isLoaded = true;
+    enderecamentoController.isLoaded = true;
 
     //Notifica a tela para atualizar os dados
     setState(() {
-      controller.isLoaded = true;
+      enderecamentoController.isLoaded = true;
     });
   }
 
-  handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await controller.repository.create(estanteEnderecamentoReplacement)) {
-        Navigator.pop(context);
-        fetchAll();
-        notify.sucess('Estante adicionada com sucesso!');
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await controller.repository.create(estanteEnderecamentoReplacement)) {
+  //       Navigator.pop(context);
+  //       fetchAll();
+  //       notify.sucess('Estante adicionada com sucesso!');
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
-  handleDelete(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await notify
-          .alert("você deseja excluir a estante?")) {
-        if (await controller.repository.excluir(estanteEnderecamentoReplacement)) {
-          notify.sucess("Estante excluída!");
-          //Atualiza a lista de motivos
-          fetchAll();
-        }
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleDelete(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await notify
+  //         .alert("você deseja excluir a estante?")) {
+  //       if (await controller.repository.excluir(estanteEnderecamentoReplacement)) {
+  //         notify.sucess("Estante excluída!");
+  //         //Atualiza a lista de motivos
+  //         fetchAll();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -112,8 +123,8 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                           children: [
                                   ButtonComponent(
                                     onPressed: () {
-                                      handleCreate(
-                                          context, estanteEnderecamentoReplacement);
+                                      // handleCreate(
+                                      //     context, estanteEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar'
                                   )
@@ -136,9 +147,10 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = EnderecamentoEstanteController();
+    // controller = EnderecamentoEstanteController();
+    enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll();
+    fetchAll('31');
   }
 
   @override
@@ -157,7 +169,7 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                   Flexible(child: TitleComponent('Estante')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.estanteEnderecamentoReplacement);
+                        openForm(context, enderecamentoController.estanteModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -171,11 +183,11 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
               ],
             ),
             Divider(),
-            controller.isLoaded
+            enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: controller.estanteEnderecamentoReplacements.length,
+                      itemCount: enderecamentoController.listaEstante.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -186,8 +198,7 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                             child: Row(
                               children: [
                                  Expanded(
-                                      child: TextComponent(controller
-                                        .estanteEnderecamentoReplacements[index].desc_estante!)),
+                                      child: TextComponent(enderecamentoController.listaEstante[index].desc_estante.toString()),),
                                 Expanded(
                                   child: Row(
                                     children: [
@@ -202,11 +213,11 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                                handleDelete(
-                                                    context,
-                                                    controller
-                                                            .estanteEnderecamentoReplacements[
-                                                        index]),
+                                                // handleDelete(
+                                                //     context,
+                                                //     controller
+                                                //             .estanteEnderecamentoReplacements[
+                                                //         index]),
                                               }),
                                     ],
                                   ),
