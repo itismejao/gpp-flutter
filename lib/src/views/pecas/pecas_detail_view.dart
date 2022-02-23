@@ -8,6 +8,7 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
+import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
@@ -44,6 +45,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   final txtNomeProduto = TextEditingController();
   final txtIdFornecedor = TextEditingController();
   final txtNomeFornecedor = TextEditingController();
+
+  PecasLinhaModel _selectedLinha = PecasLinhaModel(id_peca_linha: 1, linha: '', situacao: 1);
+  List<PecasEspecieModel> _pecasEspecieModel = [PecasEspecieModel(id_peca_especie: 1, especie: '', id_peca_linha: 1)];
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
@@ -456,7 +460,12 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           items: snapshot.data,
                                           itemAsString: (PecasLinhaModel? value) => value!.linha!,
                                           onChanged: (value) {
-                                            _pecasLinhaController.pecasLinhaModel.id_peca_linha = value!.id_peca_linha;
+                                            _selectedLinha = value!;
+
+                                            setState(() {
+                                              _pecasEspecieModel = value.especie!;
+                                            });
+                                            // _pecasLinhaController.pecasLinhaModel.id_peca_linha = value!.id_peca_linha;
                                           },
                                           dropdownSearchDecoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -466,6 +475,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                             color: Colors.black,
                                           ),
                                           showAsSuffixIcons: true,
+                                          selectedItem: _selectedLinha,
                                         ),
                                       );
                                   }
@@ -504,49 +514,77 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           //     onChanged: (value) {},
                           //   ),
                           // ),
+                          // Flexible(
+                          //   child: Container(
+                          // width: 600,
+                          // height: 48,
+                          //     child: FutureBuilder(
+                          //       future: _pecasLinhaController.buscarEspecieVinculada('1'),
+                          //       builder: (context, AsyncSnapshot snapshot) {
+                          //         switch (snapshot.connectionState) {
+                          //           case ConnectionState.none:
+                          //             return Text("Sem conexão");
+                          //           case ConnectionState.active:
+                          //           case ConnectionState.waiting:
+                          //             return Center(child: new CircularProgressIndicator());
+                          //           case ConnectionState.done:
+                          //             return Container(
+                          //               padding: EdgeInsets.only(left: 12, right: 12),
+                          //               decoration: BoxDecoration(
+                          //                 color: Colors.grey.shade200,
+                          //                 borderRadius: BorderRadius.circular(5),
+                          //               ),
+                          //               child: DropdownSearch<PecasLinhaModel?>(
+                          //                 mode: Mode.DIALOG,
+                          //                 showSearchBox: true,
+                          //                 items: snapshot.data,
+                          //                 itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                          //                 onChanged: (value) {
+                          //                   _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                          //                 },
+                          //                 dropdownSearchDecoration: InputDecoration(
+                          //                   enabledBorder: InputBorder.none,
+                          //                 ),
+                          //                 dropDownButton: Icon(
+                          //                   Icons.arrow_drop_down_rounded,
+                          //                   color: Colors.black,
+                          //                 ),
+                          //                 showAsSuffixIcons: true,
+                          //               ),
+                          //             );
+                          //         }
+                          //       },
+                          //     ),
+                          //   ),
+                          // )
                           Flexible(
                             child: Container(
                               width: 600,
                               height: 48,
-                              child: FutureBuilder(
-                                future: _pecasLinhaController.buscarEspecieVinculada('1'),
-                                builder: (context, AsyncSnapshot snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return Text("Sem conexão");
-                                    case ConnectionState.active:
-                                    case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
-                                    case ConnectionState.done:
-                                      return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: DropdownSearch<PecasLinhaModel?>(
-                                          mode: Mode.DIALOG,
-                                          showSearchBox: true,
-                                          items: snapshot.data,
-                                          itemAsString: (PecasLinhaModel? value) => value!.linha!,
-                                          onChanged: (value) {
-                                            _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
-                                          },
-                                          dropdownSearchDecoration: InputDecoration(
-                                            enabledBorder: InputBorder.none,
-                                          ),
-                                          dropDownButton: Icon(
-                                            Icons.arrow_drop_down_rounded,
-                                            color: Colors.black,
-                                          ),
-                                          showAsSuffixIcons: true,
-                                        ),
-                                      );
-                                  }
+                              padding: EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PecasEspecieModel?>(
+                                mode: Mode.DIALOG,
+                                showSearchBox: true,
+                                items: _pecasEspecieModel,
+                                itemAsString: (PecasEspecieModel? value) => value!.especie!,
+                                onChanged: (value) {
+                                  _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
                                 },
+                                dropdownSearchDecoration: InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
