@@ -48,12 +48,6 @@ class _MaterialListViewState extends State<MaterialListView> {
                     TitleComponent(
                       'Material de Fabricação',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),

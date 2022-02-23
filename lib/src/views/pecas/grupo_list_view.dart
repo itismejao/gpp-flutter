@@ -48,12 +48,6 @@ class _GrupoListViewState extends State<GrupoListView> {
                     TitleComponent(
                       'Grupo de Fabricação',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),

@@ -43,12 +43,6 @@ class _CoresListViewState extends State<CoresListView> {
                     TitleComponent(
                       'Cores',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),

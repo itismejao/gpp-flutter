@@ -48,12 +48,6 @@ class _EspecieListViewState extends State<EspecieListView> {
                     TitleComponent(
                       'Espécie',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),

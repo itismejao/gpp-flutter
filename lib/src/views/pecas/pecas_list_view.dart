@@ -58,12 +58,6 @@ class _PecasListViewState extends State<PecasListView> {
                     TitleComponent(
                       'Peças',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),

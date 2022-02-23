@@ -47,12 +47,6 @@ class _LinhaListViewState extends State<LinhaListView> {
                     TitleComponent(
                       'Linha',
                     ),
-                    ButtonComponent(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/rota');
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        text: 'Adicionar')
                   ],
                 ),
               ),
