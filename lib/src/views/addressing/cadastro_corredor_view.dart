@@ -12,13 +12,13 @@ import 'package:gpp/src/shared/components/title_component.dart';
 
 class CadastroCorredorView extends StatefulWidget {
    
-   String? idPiso;
-   CadastroCorredorView({this.idPiso});
+  //  String? idPiso;
+  //  CadastroCorredorView({this.idPiso});
         
  // int id;
 
  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
- //const CadastroCorredorView({ Key? key }) : super(key: key);
+ const CadastroCorredorView({ Key? key }) : super(key: key);
 
   @override
   _CadastroCorredorViewState createState() => _CadastroCorredorViewState();
@@ -144,7 +144,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     enderecamentoController = EnderecamentoController();
    // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll(widget.idPiso.toString());
+    fetchAll('2');
   }
 
   @override
@@ -181,7 +181,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                 ? Container(
                     height: media.size.height * 0.3,
                     child: ListView.builder(
-                      itemCount: e
+                      itemCount: enderecamentoController.listaPiso.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -193,8 +193,8 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                               children: [
                                  Expanded(
                                       child: 
-                                      TextComponent(controller.
-                                      corredorEnderecamentoReplacements[index].desc_corredor!)),
+                                      TextComponent(enderecamentoController.listaCorredor[index].desc_corredor.toString()),),
+                                   
                                 Expanded(
                                   child: Row(
                                   //  mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -211,11 +211,11 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                                handleDelete(
-                                                    context,
-                                                    controller
-                                                            .corredorEnderecamentoReplacements[
-                                                        index]),
+                                                // handleDelete(
+                                                //     context,
+                                                //     controller
+                                                //             .corredorEnderecamentoReplacements[
+                                                //         index]),
                                               }),
                                     ],
                                   ),

@@ -116,7 +116,7 @@ class _GppAppState extends State<GppApp> {
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: AddressingListView(
+                  page: CadastroCorredorView(
                   ),
                 ));
 
