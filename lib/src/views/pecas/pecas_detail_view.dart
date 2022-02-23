@@ -26,6 +26,8 @@ import 'package:gpp/src/views/pecas/material_detail_view.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:dio/dio.dart';
+import 'package:gpp/src/views/pecas/und_medida.dart';
+import 'package:gpp/src/views/pecas/unidade.dart';
 
 class PecasDetailView extends StatefulWidget {
   const PecasDetailView({Key? key}) : super(key: key);
@@ -59,6 +61,9 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   List<PecasMaterialModel> _pecasMaterialModel = [
     PecasMaterialModel(id_peca_material_fabricacao: 1, material: '', sigla: '', situacao: 1)
   ];
+
+  UnidadeTipo? _selectedUnidadeTipo = UnidadeTipo.Unidade;
+  UnidadeMedida? _selectedUnidadeMedida = UnidadeMedida.Centimetros;
 
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
@@ -303,19 +308,20 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                     },
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(right: 30)),
-                Flexible(
-                  flex: 1,
-                  child: InputComponent(
-                    label: 'Quantidade',
-                  ),
-                ),
+                // Padding(padding: EdgeInsets.only(right: 30)),
+                // Flexible(
+                //   flex: 1,
+                //   child: InputComponent(
+                //     label: 'Quantidade',
+                //   ),
+                // ),
               ],
             ),
             Padding(padding: EdgeInsets.only(top: 10)),
             Row(
               children: [
                 Flexible(
+                  flex: 1,
                   child: InputComponent(
                     label: 'Número',
                     onChanged: (value) {
@@ -325,6 +331,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
+                  flex: 1,
                   child: InputComponent(
                     label: 'Código de Fabrica',
                     onChanged: (value) {
@@ -334,6 +341,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
                 Flexible(
+                  flex: 1,
                   child: InputComponent(
                     label: 'Custo R\$',
                     onChanged: (value) {
@@ -342,13 +350,45 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
-                Flexible(
-                  child: InputComponent(
-                    label: 'Unidade',
-                    onChanged: (value) {
-                      _pecasController.pecasModel.unidade = int.parse(value);
-                    },
-                  ),
+                // Flexible(
+                //   flex: 1,
+                //   child: InputComponent(
+                //     label: 'Unidade',
+                //     onChanged: (value) {
+                //       _pecasController.pecasModel.unidade = int.parse(value);
+                //     },
+                //   ),
+                // ),
+                // Padding(padding: EdgeInsets.only(right: 30)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextComponent('Unidade'),
+                    Padding(padding: EdgeInsets.only(top: 6)),
+                    Container(
+                      padding: EdgeInsets.only(left: 12, right: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<UnidadeTipo>(
+                          value: UnidadeTipo.values[_selectedUnidadeTipo!.index],
+                          onChanged: (UnidadeTipo? value) {
+                            setState(() {
+                              _selectedUnidadeTipo = value;
+
+                              _pecasController.pecasModel.unidade = value!.index;
+                            });
+                          },
+                          items: UnidadeTipo.values.map((UnidadeTipo? unidadeTipo) {
+                            return DropdownMenuItem<UnidadeTipo>(value: unidadeTipo, child: Text(unidadeTipo!.name));
+                          }).toList(),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
@@ -392,13 +432,35 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
-                Flexible(
-                  child: InputComponent(
-                    label: 'Und. Medida',
-                    onChanged: (value) {
-                      _pecasController.pecasModel.unidade_medida = int.parse(value);
-                    },
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextComponent('Und. Medida'),
+                    Padding(padding: EdgeInsets.only(top: 6)),
+                    Container(
+                      padding: EdgeInsets.only(left: 12, right: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<UnidadeMedida>(
+                          value: UnidadeMedida.values[_selectedUnidadeMedida!.index],
+                          onChanged: (UnidadeMedida? value) {
+                            setState(() {
+                              _selectedUnidadeMedida = value;
+
+                              _pecasController.pecasModel.unidade_medida = value!.index;
+                            });
+                          },
+                          items: UnidadeMedida.values.map((UnidadeMedida? unidadeMedida) {
+                            return DropdownMenuItem<UnidadeMedida>(value: unidadeMedida, child: Text(unidadeMedida!.name));
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -424,13 +486,6 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
-                          // Flexible(
-                          //   flex: 2,
-                          //   child: InputComponent(
-                          //     hintText: 'ID',
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
                           Flexible(
                             flex: 2,
                             child: Container(
@@ -491,7 +546,6 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           itemAsString: (PecasLinhaModel? value) => value!.linha!.toUpperCase(),
                                           onChanged: (value) {
                                             _selectedLinha = value!;
-
                                             txtIdLinha.text = value.id_peca_linha.toString();
 
                                             setState(() {
@@ -574,7 +628,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 onChanged: (value) {
                                   txtIdEspecie.text = value!.id_peca_especie.toString();
 
-                                  _pecasEspecieController.pecasEspecieModel.id_peca_linha = value.id_peca_linha;
+                                  _pecasController.pecasModel.id_peca_especie = value.id_peca_especie;
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,
@@ -676,10 +730,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                           items: snapshot.data,
                                           itemAsString: (PecasGrupoModel? value) => value!.grupo!.toUpperCase(),
                                           onChanged: (value) {
-                                            // _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
-                                            //     value!.id_peca_grupo_material;
                                             _selectedGrupo = value!;
-
                                             txtIdGrupo.text = value.id_peca_grupo_material.toString();
 
                                             setState(() {
@@ -778,7 +829,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 onChanged: (value) {
                                   txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
 
-                                  _pecasEspecieController.pecasEspecieModel.id_peca_linha = value.id_peca_grupo_material;
+                                  _pecasController.pecasModel.id_peca_material_fabricacao = value.id_peca_material_fabricacao;
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,

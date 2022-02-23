@@ -23,6 +23,7 @@ class PecasModel {
   double? custo;
   int? classificacao_custo;
   int? tipo_classificacao_custo;
+  int? id_peca_especie;
   int? id_peca_material_fabricacao;
   // DateTime? created_at;
   // DateTime? updated_at;
@@ -52,6 +53,7 @@ class PecasModel {
     this.custo,
     this.classificacao_custo,
     this.tipo_classificacao_custo,
+    this.id_peca_especie,
     this.id_peca_material_fabricacao,
     // this.created_at,
     // this.updated_at,
@@ -114,6 +116,7 @@ class PecasModel {
     data['custo'] = this.custo;
     data['classificacao_custo'] = this.classificacao_custo;
     data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
+    data['id_peca_especie'] = this.id_peca_especie;
     data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
     data['cor'] = this.pecasCorModel;
     // data['created_at'] = this.created_at;
