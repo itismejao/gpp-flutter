@@ -181,7 +181,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                 ? Container(
                     height: media.size.height * 0.3,
                     child: ListView.builder(
-                      itemCount: enderecamentoController.listaPiso.length,
+                      itemCount: enderecamentoController.listaCorredor.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
