@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
@@ -19,6 +20,17 @@ class MaterialListView extends StatefulWidget {
 
 class _MaterialListViewState extends State<MaterialListView> {
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
+
+  excluir(PecasMaterialModel pecasMaterialModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasMaterialController.excluir(pecasMaterialModel)) {
+        notify.sucess("Material excluído com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +161,10 @@ class _MaterialListViewState extends State<MaterialListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasMaterialController.excluir(_pecasMaterial[index]);
+                                      // _pecasMaterialController.excluir(_pecasMaterial[index]).then((value) => setState(() {}));
+                                      setState(() {
+                                        excluir(_pecasMaterial[index]);
+                                      });
                                     }),
                               ],
                             ),

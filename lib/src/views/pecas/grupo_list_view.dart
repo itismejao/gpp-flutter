@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
@@ -19,6 +20,17 @@ class GrupoListView extends StatefulWidget {
 
 class _GrupoListViewState extends State<GrupoListView> {
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
+
+  excluir(PecasGrupoModel pecasGrupoModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasGrupoController.excluir(pecasGrupoModel)) {
+        notify.sucess("Grupo excluído com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +150,10 @@ class _GrupoListViewState extends State<GrupoListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasGrupoController.excluir(_pecasGrupo[index]);
+                                      // _pecasGrupoController.excluir(_pecasGrupo[index]).then((value) => setState(() {}));
+                                      setState(() {
+                                        excluir(_pecasGrupo[index]);
+                                      });
                                     }),
                               ],
                             ),

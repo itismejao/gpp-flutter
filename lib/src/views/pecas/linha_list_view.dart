@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -18,6 +19,17 @@ class LinhaListView extends StatefulWidget {
 
 class _LinhaListViewState extends State<LinhaListView> {
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
+
+  excluir(PecasLinhaModel pecasLinhaModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasLinhaController.excluir(pecasLinhaModel)) {
+        notify.sucess("Linha excluída com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +149,10 @@ class _LinhaListViewState extends State<LinhaListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasLinhaController.excluir(_pecasLinha[index]);
+                                      // _pecasLinhaController.excluir(_pecasLinha[index]).then((value) => setState(() {}));
+                                      setState(() {
+                                        excluir(_pecasLinha[index]);
+                                      });
                                     }),
                               ],
                             ),

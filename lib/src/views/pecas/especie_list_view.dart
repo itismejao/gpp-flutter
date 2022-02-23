@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
@@ -19,6 +20,17 @@ class EspecieListView extends StatefulWidget {
 
 class _EspecieListViewState extends State<EspecieListView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
+
+  excluir(PecasEspecieModel pecasEspecieModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
+        notify.sucess("Espécie excluída com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +155,10 @@ class _EspecieListViewState extends State<EspecieListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasEspecieController.excluir(_pecasEspecie[index]);
+                                      // _pecasEspecieController.excluir(_pecasEspecie[index]).then((value) => setState(() {}));
+                                      setState(() {
+                                        excluir(_pecasEspecie[index]);
+                                      });
                                     }),
                               ],
                             ),

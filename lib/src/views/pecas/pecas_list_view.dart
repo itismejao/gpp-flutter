@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/shared/components/button_component.dart';
@@ -18,6 +19,28 @@ class PecasListView extends StatefulWidget {
 
 class _PecasListViewState extends State<PecasListView> {
   PecasController _pecasController = PecasController();
+
+  excluir(PecasModel pecasModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasController.excluir(pecasModel)) {
+        notify.sucess("Peça excluída com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editar() async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await true) {
+        notify.sucess("Peça alterada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,8 +192,10 @@ class _PecasListViewState extends State<PecasListView> {
                                           color: Colors.grey.shade400,
                                         ),
                                         onPressed: () {
-                                          _pecasController.excluir(snapshot.data![index]);
-                                          // Navigator.pop(context);
+                                          // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
+                                          setState(() {
+                                            excluir(snapshot.data![index]);
+                                          });
                                         }),
                                   ],
                                 ),

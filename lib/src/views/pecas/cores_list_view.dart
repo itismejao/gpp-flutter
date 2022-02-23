@@ -141,8 +141,8 @@ class _CoresListViewState extends State<CoresListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasCorController.excluir(_pecaCor[index]);
-                                      Navigator.pop(context);
+                                      _pecasCorController.excluir(_pecaCor[index]).then((value) => setState(() {}));
+                                      // Navigator.pop(context);
                                     }),
                               ],
                             ),
