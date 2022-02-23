@@ -118,35 +118,32 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
           children: [
             Row(
               children: [
-                // Produto
-                SizedBox(
-                  width: 120,
-                  child: Flexible(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(5),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      controller: txtIdProduto,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
                       ),
-                      child: TextFormField(
-                        controller: txtIdProduto,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'ID',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              await buscaProduto(txtIdProduto.text);
+                      decoration: InputDecoration(
+                        hintText: 'ID',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            await buscaProduto(txtIdProduto.text);
 
-                              txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
-                              txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
-                              txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
-                            },
-                            icon: Icon(Icons.search),
-                          ),
+                            txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
+                            txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
+                            txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+                          },
+                          icon: Icon(Icons.search),
                         ),
                       ),
                     ),
@@ -155,6 +152,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 Padding(padding: EdgeInsets.only(right: 10)),
                 // Fim Produto
                 Flexible(
+                  flex: 5,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
@@ -176,35 +174,34 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
                 // Fornecedor
-                SizedBox(
-                  width: 80,
-                  child: Flexible(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(5),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: TextFormField(
+                      controller: txtIdFornecedor,
+                      enabled: false,
+                      onChanged: (value) {
+                        // _pecasController.pecasModel.id_fornecedor = int.parse(value);
+                      },
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
                       ),
-                      child: TextFormField(
-                        controller: txtIdFornecedor,
-                        enabled: false,
-                        onChanged: (value) {
-                          // _pecasController.pecasModel.id_fornecedor = int.parse(value);
-                        },
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'ID',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                        ),
+                      decoration: InputDecoration(
+                        hintText: 'ID',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 10)),
                 Flexible(
+                  flex: 5,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
@@ -293,6 +290,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
             Row(
               children: [
                 Flexible(
+                  flex: 6,
                   child: InputComponent(
                     label: 'Descrição da Peça',
                     enable: widget.enabled,
@@ -309,13 +307,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(right: 30)),
-                SizedBox(
-                  width: 100,
-                  child: Flexible(
-                    child: InputComponent(
-                      label: 'Quantidade',
-                      enable: widget.enabled,
-                    ),
+                Flexible(
+                  flex: 1,
+                  child: InputComponent(
+                    label: 'Quantidade',
+                    enable: widget.enabled,
                   ),
                 ),
               ],
@@ -460,14 +456,12 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                enable: widget.enabled,
-                                onChanged: (value) {},
-                              ),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              hintText: 'ID',
+                              enable: widget.enabled,
+                              onChanged: (value) {},
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
@@ -478,6 +472,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                           //   ),
                           // ),
                           Flexible(
+                            flex: 5,
                             child: Container(
                               width: 600,
                               height: 48,
@@ -535,24 +530,17 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                enable: widget.enabled,
-                                onChanged: (value) {},
-                              ),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              hintText: 'ID',
+                              enable: widget.enabled,
+                              onChanged: (value) {},
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
-                          // Flexible(
-                          //   child: InputComponent(
-                          //     hintText: 'Nome Espécie',
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
                           Flexible(
+                            flex: 5,
                             child: Container(
                               width: 600,
                               height: 48,
@@ -614,23 +602,16 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                onChanged: (value) {},
-                              ),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              hintText: 'ID',
+                              onChanged: (value) {},
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
-                          // Flexible(
-                          //   child: InputComponent(
-                          //     hintText: 'Nome Grupo',
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
                           Flexible(
+                            flex: 5,
                             child: Container(
                               width: 600,
                               height: 48,
@@ -706,17 +687,16 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       Padding(padding: EdgeInsets.only(top: 6)),
                       Row(
                         children: [
-                          SizedBox(
-                            width: 80,
-                            child: Flexible(
-                              child: InputComponent(
-                                hintText: 'ID',
-                                onChanged: (value) {},
-                              ),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              hintText: 'ID',
+                              onChanged: (value) {},
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
                           Flexible(
+                            flex: 5,
                             child: InputComponent(
                               hintText: 'Nome Material',
                               onChanged: (value) {},

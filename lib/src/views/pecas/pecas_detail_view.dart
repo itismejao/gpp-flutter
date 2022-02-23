@@ -615,12 +615,6 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                             ),
                           ),
                           Padding(padding: EdgeInsets.only(right: 10)),
-                          // Flexible(
-                          //   child: InputComponent(
-                          //     hintText: 'Nome Grupo',
-                          //     onChanged: (value) {},
-                          //   ),
-                          // ),
                           Flexible(
                             flex: 5,
                             child: Container(
