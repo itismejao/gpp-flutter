@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/shared/utils/Usuario.dart';
 
 // ignore: must_be_immutable
 class AppBarView extends StatelessWidget {

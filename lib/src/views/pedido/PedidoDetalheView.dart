@@ -10,7 +10,7 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/mask_formatter.dart';
 
 class PedidoDetalheView extends StatefulWidget {
-  int id;
+  final int id;
 
   PedidoDetalheView({
     Key? key,
@@ -39,7 +39,6 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //Inicializa pedido controller
     pedidoController = PedidoController();

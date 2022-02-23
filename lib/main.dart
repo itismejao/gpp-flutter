@@ -60,8 +60,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
-import 'package:gpp/src/views/asteca/asteca_list_view.dart';
+import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
+import 'package:gpp/src/views/asteca/AstecaListView.dart';
 
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 

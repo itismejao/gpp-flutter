@@ -30,7 +30,7 @@ class AstecaController {
   String? pendenciaFiltro;
 
   int step = 4;
-  bool isOpenFilter = false;
+  bool abrirFiltro = false;
 
   bool carregado = false;
   PaginaModel pagina = PaginaModel(total: 0, atual: 1);

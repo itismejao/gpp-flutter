@@ -11,7 +11,6 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
-import 'package:gpp/src/shared/utils/Usuario.dart';
 
 class FuncionalitiesListView extends StatefulWidget {
   const FuncionalitiesListView({Key? key}) : super(key: key);

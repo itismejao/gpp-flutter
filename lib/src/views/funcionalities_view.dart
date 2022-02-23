@@ -238,31 +238,35 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
       child: Column(
         children: [
           Expanded(flex: 3, child: stateManagement(mediaQuery, context)),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextComponent(
-                  'Olá, ' +
-                      usuario.nome!.split(" ").first +
-                      ' ' +
-                      usuario.nome!.split(" ").last,
-                  color: Colors.black,
-                ),
-                const SizedBox(
-                  width: 24,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    handleLogout(context);
-                  },
-                  child: const Icon(
-                    Icons.logout,
-                    //The color which you want set.
+          Container(
+            color: Colors.grey.shade50,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextComponent(
+                    'Olá, ' +
+                        usuario.nome!.split(" ").first +
+                        ' ' +
+                        usuario.nome!.split(" ").last,
+                    color: Colors.black,
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      handleLogout(context);
+                    },
+                    child: const Icon(
+                      Icons.logout,
+                      //The color which you want set.
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

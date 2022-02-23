@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DropdownButtonFormFieldComponent extends StatelessWidget {
-  List<DropdownMenuItem> items;
-  Widget hint;
-  Function onChanged;
+  final List<DropdownMenuItem> items;
+  final Widget hint;
+  final Function onChanged;
   DropdownButtonFormFieldComponent({
     Key? key,
     required this.items,
