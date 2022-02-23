@@ -41,6 +41,7 @@ class AstecaController {
     documentoFiscal: DocumentoFiscalModel(),
   );
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
   AstecaModel filtroAsteca = AstecaModel(
     documentoFiscal: DocumentoFiscalModel(),
