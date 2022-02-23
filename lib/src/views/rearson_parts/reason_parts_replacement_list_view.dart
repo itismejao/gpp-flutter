@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 
-class ReasonPartsReplacementListView extends StatefulWidget {
-  const ReasonPartsReplacementListView({Key? key}) : super(key: key);
+class MotivosTrocaPecasListView extends StatefulWidget {
+  const MotivosTrocaPecasListView({Key? key}) : super(key: key);
 
   @override
-  _ReasonPartsReplacementListViewState createState() =>
-      _ReasonPartsReplacementListViewState();
+  _MotivosTrocaPecasListViewState createState() =>
+      _MotivosTrocaPecasListViewState();
 }
 
-class _ReasonPartsReplacementListViewState
-    extends State<ReasonPartsReplacementListView> {
+class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   late MotivoTrocaPecaController controller;
 
   fetchAll() async {

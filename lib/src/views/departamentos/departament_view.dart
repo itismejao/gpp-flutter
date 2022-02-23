@@ -19,7 +19,7 @@ class _DepartamentViewState extends State<DepartamentView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: DepartamentListView(),
+      child: DepartamentoListView(),
       //Expanded(child: DepartamentFormView()),
     );
   }

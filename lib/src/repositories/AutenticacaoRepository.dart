@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/AutenticacaoModel.dart';
+import 'package:gpp/src/models/user_model.dart';
 
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
+import 'package:gpp/src/shared/utils/Usuario.dart';
 import 'package:http/http.dart';
 
 class AutenticacaoRepository {
@@ -16,11 +18,10 @@ class AutenticacaoRepository {
     Response response = await api.post(path, autenticacao.toJson());
 
     if (response.statusCode == StatusCode.OK) {
-      AutenticacaoModel authenticate =
-          AutenticacaoModel.fromJson(jsonDecode(response.body));
+      usuario = UsuarioModel.fromJson(jsonDecode(response.body));
 
       //Seta token
-      setToken(authenticate.tokenAcesso!);
+      setToken(usuario.accessToken!);
       // authenticateUser = authenticate;
 
       return true;

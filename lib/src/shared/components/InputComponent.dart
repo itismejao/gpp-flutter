@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:gpp/src/shared/components/text_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 
 class InputComponent extends StatelessWidget {
   final String? label;
@@ -19,7 +19,9 @@ class InputComponent extends StatelessWidget {
   final TextInputType? keyboardType;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatter;
-  const InputComponent({
+  final TextEditingController? controller;
+
+  InputComponent({
     Key? key,
     this.label,
     this.initialValue,
@@ -36,6 +38,7 @@ class InputComponent extends StatelessWidget {
     this.keyboardType,
     this.maxLines,
     this.inputFormatter,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -88,6 +91,7 @@ class InputComponent extends StatelessWidget {
                 decoration: InputDecoration(
                     prefixIcon: prefixIcon,
                     hintText: hintText,
+                    suffixIcon: suffixIcon,
                     contentPadding:
                         EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     border: InputBorder.none)),
@@ -100,6 +104,7 @@ class InputComponent extends StatelessWidget {
             color: Colors.grey.shade200,
             borderRadius: BorderRadius.circular(5)),
         child: TextFormField(
+            controller: controller,
             inputFormatters: inputFormatter,
             maxLines: maxLines,
             initialValue: initialValue,

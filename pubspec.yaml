@@ -45,6 +45,8 @@ dependencies:
   basic_utils: ^3.9.4
   intl: ^0.17.0
   mask_text_input_formatter: ^2.1.0
+  pdf: ^3.7.1
+  printing: ^5.7.2
 
 dev_dependencies:
   flutter_test:

@@ -10,7 +10,6 @@ ENV HTTPS_PROXY proxydc.novomundo.com.br:3128
 ENV HTTP_PROXY proxydc.novomundo.com.br:3128
 ENV NO_PROXY localhost,127.0.0.1
 
-
 # download Flutter SDK from Flutter Github repo
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 

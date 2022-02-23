@@ -9,7 +9,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/AstecaModel.dart';
 
 import 'package:gpp/src/repositories/AstecaRepository.dart';
 

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/asteca_controller.dart';
+import 'package:gpp/src/controllers/AstecaController.dart';
 
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/asteca_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/utils/mask_formatter.dart';
 
 import 'package:intl/intl.dart';
 
@@ -28,32 +31,46 @@ class _AstecaListViewState extends State<AstecaListView> {
   final ResponsiveController _responsive = ResponsiveController();
   ScrollController scrollController = ScrollController();
 
-  late final AstecaController controller;
+  late final AstecaController astecaController;
+  late MaskFormatter maskFormatter;
 
   buscarTodas() async {
     NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
-        controller.carregado = false;
+        astecaController.carregado = false;
       });
-      var retorno = await controller.repository.buscarTodas(
-          controller.pagina.atual!,
-          filtroAsteca: controller.filtroAsteca,
-          pendencia: controller.pendenciaFiltro);
+      var retorno = await astecaController.repository.buscarTodas(
+          astecaController.pagina.atual,
+          filtroAsteca: astecaController.filtroAsteca,
+          pendencia: astecaController.pendenciaFiltro,
+          dataInicio: astecaController.dataInicio,
+          dataFim: astecaController.dataFim);
 
-      controller.astecas = retorno[0];
-      controller.pagina = retorno[1];
+      astecaController.astecas = retorno[0];
+      astecaController.pagina = retorno[1];
 
-      controller.filtroAsteca.idAsteca = '';
-      controller.filtroAsteca.documentoFiscal!.cpfCnpj = '';
-      controller.filtroAsteca.documentoFiscal!.numDocFiscal = '';
+      limparFiltro();
+
       //Atualiza o status para carregado
       setState(() {
-        controller.carregado = true;
+        astecaController.carregado = true;
       });
     } catch (e) {
+      setState(() {
+        astecaController.astecas = [];
+        astecaController.carregado = true;
+      });
       notify.error(e.toString());
     }
+  }
+
+  limparFiltro() {
+    astecaController.filtroAsteca.idAsteca = '';
+    astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = '';
+    astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = '';
+    astecaController.dataInicio = null;
+    astecaController.dataFim = null;
   }
 
   proximaPagina() async {
@@ -61,9 +78,22 @@ class _AstecaListViewState extends State<AstecaListView> {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         //proxima página
-        controller.pagina.atual = controller.pagina.atual! + 1;
+        astecaController.pagina.atual = astecaController.pagina.atual + 1;
         await buscarTodas();
       }
+    });
+  }
+
+  buscarTipoPendencias() async {
+    setState(() {
+      astecaController.carregado = false;
+    });
+
+    astecaController.astecaTipoPendencias =
+        await astecaController.repository.pendencia.buscarPendencias();
+
+    setState(() {
+      astecaController.carregado = true;
     });
   }
 
@@ -74,10 +104,17 @@ class _AstecaListViewState extends State<AstecaListView> {
     super.initState();
 
     //Iniciliza o controlador de asteca
-    controller = AstecaController();
+    astecaController = AstecaController();
+
+    //Inicializa mask formatter
+    maskFormatter = MaskFormatter();
 
     //Função responsável por buscar a lista de astecas
     buscarTodas();
+
+    //Buscar pendências
+
+    buscarTipoPendencias();
 
     //ScrollController
     proximaPagina();
@@ -119,16 +156,16 @@ class _AstecaListViewState extends State<AstecaListView> {
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return ListView.builder(
-              itemCount: controller.astecas.length,
+              itemCount: astecaController.astecas.length,
               itemBuilder: (context, index) {
-                return _buildListItem(controller.astecas, index, context);
+                return _buildListItem(astecaController.astecas, index, context);
               });
         }
 
         return ListView.builder(
-            itemCount: controller.astecas.length,
+            itemCount: astecaController.astecas.length,
             itemBuilder: (context, index) {
-              return _buildListItem(controller.astecas, index, context);
+              return _buildListItem(astecaController.astecas, index, context);
             });
       },
     );
@@ -144,7 +181,7 @@ class _AstecaListViewState extends State<AstecaListView> {
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(
-                  context, '/asteca/' + asteca[index].idAsteca.toString());
+                  context, '/astecas/' + asteca[index].idAsteca.toString());
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -178,14 +215,14 @@ class _AstecaListViewState extends State<AstecaListView> {
                     children: [
                       Expanded(
                         child: TextComponent('Nota Fiscal: ' +
-                            controller
+                            astecaController
                                 .astecas[index].documentoFiscal!.numDocFiscal
                                 .toString()),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent('Serie: ' +
-                            controller.astecas[index].documentoFiscal!
+                            astecaController.astecas[index].documentoFiscal!
                                 .serieDocFiscal!),
                       ),
                     ],
@@ -196,7 +233,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                       Expanded(
                         child: TextComponent(
                           'Filial de Venda: ' +
-                              controller
+                              astecaController
                                   .astecas[index].documentoFiscal!.idFilialVenda
                                   .toString(),
                         ),
@@ -205,8 +242,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
                           'Data de Abertura: ' +
-                              DateFormat('yyyy-MM-dd').format(
-                                  controller.astecas[index].dataEmissao!),
+                              DateFormat('dd/MM/yyyy').format(
+                                  astecaController.astecas[index].dataEmissao!),
                         ),
                       ),
                     ],
@@ -233,7 +270,7 @@ class _AstecaListViewState extends State<AstecaListView> {
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(
-                context, '/asteca/' + asteca[index].idAsteca.toString());
+                context, '/astecas/' + asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -250,7 +287,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                 ],
                 border: Border(
                   left: BorderSide(
-                    color: situacao(controller.astecas[index].dataEmissao!),
+                    color:
+                        situacao(astecaController.astecas[index].dataEmissao!),
                     width: 7.0,
                   ),
                 ),
@@ -327,7 +365,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('yyyy-MM-dd')
+                              DateFormat('dd/MM/yyyy')
                                   .format(asteca[index].dataEmissao!),
                             )),
                         Expanded(
@@ -376,13 +414,13 @@ class _AstecaListViewState extends State<AstecaListView> {
                 Expanded(child: TitleComponent('Astecas')),
                 Expanded(
                   child: Form(
-                    key: controller.filtroFormKey,
+                    key: astecaController.filtroFormKey,
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        controller.filtroAsteca.idAsteca = value;
+                        astecaController.filtroAsteca.idAsteca = value;
                         //Limpa o formúlario
-                        controller.filtroFormKey.currentState!.reset();
+                        astecaController.filtroFormKey.currentState!.reset();
                         buscarTodas();
                       },
                       prefixIcon: Icon(
@@ -400,7 +438,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        controller.isOpenFilter = !(controller.isOpenFilter);
+                        astecaController.abrirFiltro =
+                            !(astecaController.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -409,78 +448,145 @@ class _AstecaListViewState extends State<AstecaListView> {
           ),
           Container(
             color: Colors.grey.shade50,
-            height: controller.isOpenFilter ? null : 0,
+            height: astecaController.abrirFiltro ? null : 0,
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Pendência:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.pendenciaFiltro = value;
-                            ;
-                          },
-                          hintText: 'Digite a pendência',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'CPF ou CNPJ:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.filtroAsteca.documentoFiscal!.cpfCnpj =
-                                value;
-                            ;
-                          },
-                          hintText: 'Digite o CPF ou CNPJ',
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Número da nota fiscal:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            controller.filtroAsteca.documentoFiscal!
-                                .numDocFiscal = value;
-                          },
-                          hintText: 'Digite o número da nota fiscal',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+              child: Form(
+                key: astecaController.filtroExpandidoFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        ButtonComponent(
-                            onPressed: () {
-                              buscarTodas();
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextComponent('Pendência'),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              DropdownButtonFormFieldComponent(
+                                hintText: "651 - PEÇA SOLICITADA AO FORNECEDOR",
+                                onChanged: (AstecaTipoPendenciaModel value) {
+                                  astecaController.pendenciaFiltro =
+                                      value.idTipoPendencia.toString();
+                                },
+                                items: astecaController.astecaTipoPendencias
+                                    .map<
+                                        DropdownMenuItem<
+                                            AstecaTipoPendenciaModel>>((value) {
+                                  return DropdownMenuItem<
+                                      AstecaTipoPendenciaModel>(
+                                    value: value,
+                                    child: TextComponent(
+                                        value.idTipoPendencia.toString() +
+                                            ' - ' +
+                                            value.descricao!),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: InputComponent(
+                            label: 'CPF ou CNPJ:',
+                            maxLines: 1,
+                            onChanged: (value) {
+                              astecaController.filtroAsteca.documentoFiscal!
+                                  .cpfCnpj = value;
+                              ;
                             },
-                            text: 'Pesquisar')
+                            hintText: 'Digite o CPF ou CNPJ',
+                          ),
+                        ),
                       ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                            label: 'Número da nota fiscal:',
+                            maxLines: 1,
+                            onChanged: (value) {
+                              astecaController.filtroAsteca.documentoFiscal!
+                                  .numDocFiscal = value;
+                            },
+                            hintText: 'Digite o número da nota fiscal',
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: 'Período:',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                astecaController.dataInicio =
+                                    DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data inicial',
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: '',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                astecaController.dataFim =
+                                    DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data fim',
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ButtonComponent(
+                              onPressed: () {
+                                astecaController
+                                    .filtroExpandidoFormKey.currentState!
+                                    .save();
+                                astecaController
+                                    .filtroExpandidoFormKey.currentState!
+                                    .reset();
+                                buscarTodas();
+
+                                setState(() {
+                                  astecaController.abrirFiltro = false;
+                                });
+                              },
+                              text: 'Pesquisar'),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
           Container(
             height: media.height * 0.7,
-            child: controller.carregado ? _buildList() : LoadingComponent(),
+            child:
+                astecaController.carregado ? _buildList() : LoadingComponent(),
           ),
           Container(
             height: media.height * 0.10,
@@ -488,16 +594,14 @@ class _AstecaListViewState extends State<AstecaListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                controller.pagina.total != null
-                    ? TextComponent('Total de páginas: ' +
-                        controller.pagina.total.toString())
-                    : TextComponent('Total de páginas: 0'),
+                TextComponent('Total de páginas: ' +
+                    astecaController.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(
                         icon: Icon(Icons.first_page),
                         onPressed: () {
-                          controller.pagina.atual = 1;
+                          astecaController.pagina.atual = 1;
                           buscarTodas();
                         }),
                     IconButton(
@@ -506,20 +610,20 @@ class _AstecaListViewState extends State<AstecaListView> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          if (controller.pagina.atual! > 0) {
-                            controller.pagina.atual =
-                                controller.pagina.atual! - 1;
+                          if (astecaController.pagina.atual > 0) {
+                            astecaController.pagina.atual =
+                                astecaController.pagina.atual - 1;
                             buscarTodas();
                           }
                         }),
-                    TextComponent(controller.pagina.atual.toString()),
+                    TextComponent(astecaController.pagina.atual.toString()),
                     IconButton(
                         icon: Icon(Icons.navigate_next_rounded),
                         onPressed: () {
-                          if (controller.pagina.atual !=
-                              controller.pagina.total) {
-                            controller.pagina.atual =
-                                controller.pagina.atual! + 1;
+                          if (astecaController.pagina.atual !=
+                              astecaController.pagina.total) {
+                            astecaController.pagina.atual =
+                                astecaController.pagina.atual + 1;
                           }
 
                           buscarTodas();
@@ -527,7 +631,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                     IconButton(
                         icon: Icon(Icons.last_page),
                         onPressed: () {
-                          controller.pagina.atual = controller.pagina.total;
+                          astecaController.pagina.atual =
+                              astecaController.pagina.total;
                           buscarTodas();
                         }),
                   ],

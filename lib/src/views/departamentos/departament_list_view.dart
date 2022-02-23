@@ -4,24 +4,24 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/repositories/DepartamentoRepository.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/views/departamentos/departament_form_view.dart';
 
-class DepartamentListView extends StatefulWidget {
-  const DepartamentListView({Key? key}) : super(key: key);
+class DepartamentoListView extends StatefulWidget {
+  const DepartamentoListView({Key? key}) : super(key: key);
 
   @override
-  _DepartamentListViewState createState() => _DepartamentListViewState();
+  _DepartamentoListViewState createState() => _DepartamentoListViewState();
 }
 
-class _DepartamentListViewState extends State<DepartamentListView> {
+class _DepartamentoListViewState extends State<DepartamentoListView> {
   final ResponsiveController _responsive = ResponsiveController();
 
   late final DepartamentController _controller =

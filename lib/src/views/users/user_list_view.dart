@@ -4,25 +4,25 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 
-class UserListView extends StatefulWidget {
-  const UserListView({
+class UsuarioListView extends StatefulWidget {
+  const UsuarioListView({
     Key? key,
   }) : super(key: key);
 
   @override
-  _UserListViewState createState() => _UserListViewState();
+  _UsuarioListViewState createState() => _UsuarioListViewState();
 }
 
-class _UserListViewState extends State<UserListView> {
+class _UsuarioListViewState extends State<UsuarioListView> {
   late final UsuarioController _controller;
   final ResponsiveController _responsive = ResponsiveController();
   void changeUsers() async {
@@ -233,7 +233,7 @@ class _UserListViewState extends State<UserListView> {
                     Row(
                       children: [
                         Text(
-                          users[index].name ?? '',
+                          users[index].nome ?? '',
                           style: textStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -284,7 +284,7 @@ class _UserListViewState extends State<UserListView> {
                 )),
                 Expanded(
                     child: TextComponent(
-                  users[index].name!,
+                  users[index].nome!,
                 )),
                 Expanded(
                     child: TextComponent(
