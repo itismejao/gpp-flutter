@@ -65,11 +65,8 @@ import 'package:gpp/src/views/asteca/AstecaListView.dart';
 
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 
-import 'package:gpp/src/views/departamentos/departament_form_view.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 
-import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
-import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
@@ -80,8 +77,6 @@ import 'package:gpp/src/views/pedido/PedidoListView.dart';
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
 import 'package:gpp/src/views/users/user_list_view.dart';
-
-import 'src/views/funcionalities/funcionalities_form_view.dart';
 
 void main() async {
   await dotenv.load(fileName: "env");
@@ -94,7 +89,6 @@ class GppApp extends StatefulWidget {
 }
 
 class _GppAppState extends State<GppApp> {
-  @override
   obterRota(settings) {
     Widget pagina = NotFoundView();
     if (isAuthenticated()) {
