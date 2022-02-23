@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/box_enderecamento_model.dart';
+import 'package:gpp/src/models/corredor_enderecamento_model.dart';
+import 'package:gpp/src/models/estante_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
+import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/exceptions/funcionalities_exception.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
@@ -34,6 +38,81 @@ class EnderecamentoRepository {
     }
   }
  
+  Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {
+    Response response = await api.get('/piso/'+idPiso+'/corredor');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+      print(data);
+
+      List<CorredorEnderecamentoModel> enderecamentoCorredor = data
+          .map<CorredorEnderecamentoModel>(
+              (data) => CorredorEnderecamentoModel.fromJson(data))
+          .toList();
+
+      return enderecamentoCorredor;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+
+  Future<List<EstanteEnderecamentoModel>> buscarEstante(String idCorredor) async {
+    Response response = await api.get('/piso/10/corredor/'+idCorredor+'/estante');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+      print(data);
+
+      List<EstanteEnderecamentoModel> enderecamentoEstante = data
+          .map<EstanteEnderecamentoModel>(
+              (data) => EstanteEnderecamentoModel.fromJson(data))
+          .toList();
+
+      return enderecamentoEstante;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+
+    Future<List<PrateleiraEnderecamentoModel>> buscarPrateleira(String idEstante) async {
+    Response response = await api.get('/piso/10/corredor/10/estante/'+idEstante+'/prateleira');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+      print(data);
+
+      List<PrateleiraEnderecamentoModel> enderecamentoPrateleira = data
+          .map<PrateleiraEnderecamentoModel>(
+              (data) => PrateleiraEnderecamentoModel.fromJson(data))
+          .toList();
+
+      return enderecamentoPrateleira;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+ 
+  Future<List<BoxEnderecamentoModel>> buscarBox(String idPrateleira) async {
+    Response response = await api.get('/piso/10/corredor/10/estante/10/prateleira/'+idPrateleira+'/box');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+      print(data);
+
+      List<BoxEnderecamentoModel> enderecamentoBox = data
+          .map<BoxEnderecamentoModel>(
+              (data) => BoxEnderecamentoModel.fromJson(data))
+          .toList();
+
+      return enderecamentoBox;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 
 
 

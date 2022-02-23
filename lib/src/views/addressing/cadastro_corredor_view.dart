@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/corredor_enderecamento_model.dart';
@@ -11,8 +12,8 @@ import 'package:gpp/src/shared/components/title_component.dart';
 
 class CadastroCorredorView extends StatefulWidget {
    
-   int? corredorEnderecamentoModel;
-   CadastroCorredorView({this.corredorEnderecamentoModel});
+   String? idPiso;
+   CadastroCorredorView({this.idPiso});
         
  // int id;
 
@@ -24,51 +25,54 @@ class CadastroCorredorView extends StatefulWidget {
 }
 
 class _CadastroCorredorViewState extends State<CadastroCorredorView> {
-  late EnderecamentoCorredorController controller;
-  int? corredorEnderecamentoModel;
+  //late EnderecamentoCorredorController controller;
+  String? idPiso;
+  late EnderecamentoController enderecamentoController;
 
 
-  fetchAll() async {
+
+  fetchAll(String idPiso) async {
     //Carrega lista de motivos de defeito de peças
-    controller.corredorEnderecamentoReplacements =
-        await controller.repository.buscarTodos();
+    enderecamentoController.listaCorredor =
+    await enderecamentoController.buscarCorredor(idPiso);
 
-    controller.isLoaded = true;
+
+    enderecamentoController.isLoaded = true;
 
     //Notifica a tela para atualizar os dados
     setState(() {
-      controller.isLoaded = true;
+      enderecamentoController.isLoaded = true;
     });
   }
 
-  handleCreate(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await controller.repository.create(corredorEnderecamentoReplacement)) {
-        Navigator.pop(context);
-        fetchAll();
-        notify.sucess('Motivo de peça adicionado com sucesso!');
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleCreate(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await controller.repository.create(corredorEnderecamentoReplacement)) {
+  //       Navigator.pop(context);
+  //       fetchAll();
+  //       notify.sucess('Motivo de peça adicionado com sucesso!');
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
-  handleDelete(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await notify
-          .alert("você deseja excluir o corredor?")) {
-        if (await controller.repository.excluir(corredorEnderecamentoReplacement)) {
-          notify.sucess("Corredor excluído!");
-          //Atualiza a lista de motivos
-          fetchAll();
-        }
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // handleDelete(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await notify
+  //         .alert("você deseja excluir o corredor?")) {
+  //       if (await controller.repository.excluir(corredorEnderecamentoReplacement)) {
+  //         notify.sucess("Corredor excluído!");
+  //         //Atualiza a lista de motivos
+  //         fetchAll();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -114,8 +118,8 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                           children: [
                                  ButtonComponent(
                                     onPressed: () {
-                                      handleCreate(
-                                          context, corredorEnderecamentoReplacement);
+                                      // handleCreate(
+                                      //     context, corredorEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
                           ],
@@ -137,10 +141,10 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
   void initState() {
     super.initState();
     //Iniciliza controlador
-    controller = EnderecamentoCorredorController();
-    corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
+    enderecamentoController = EnderecamentoController();
+   // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll();
+    fetchAll(widget.idPiso.toString());
   }
 
   @override
@@ -159,7 +163,7 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                   Flexible(child: TitleComponent('Corredor')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, controller.corredorEnderecamentoReplacement);
+                        openForm(context, enderecamentoController.corredorModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -173,11 +177,11 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
               ],
             ),
             Divider(),
-            controller.isLoaded
+            enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.3,
                     child: ListView.builder(
-                      itemCount: controller.corredorEnderecamentoReplacements.length,
+                      itemCount: e
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
