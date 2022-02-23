@@ -15,8 +15,6 @@ class AutenticacaoRepository {
   ApiService api = gppApi;
 
   Future<bool> criar(AutenticacaoModel autenticacao) async {
-    print(jsonEncode(autenticacao.toJson()));
-
     Response response = await api.post(path, autenticacao.toJson());
 
     if (response.statusCode == StatusCode.OK) {

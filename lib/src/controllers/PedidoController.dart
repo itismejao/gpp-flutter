@@ -11,6 +11,7 @@ class PedidoController {
   PedidoRepository pedidoRepository = PedidoRepository();
   bool carregado = false;
   List<PedidoSaidaModel> pedidos = [];
+  PedidoSaidaModel pedido = PedidoSaidaModel();
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   bool abrirFiltro = false; // false

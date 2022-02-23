@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/PedidoController.dart';
@@ -60,6 +61,10 @@ class _PedidoListViewState extends State<PedidoListView> {
         pedidoController.carregado = true;
       });
     } catch (e) {
+      setState(() {
+        pedidoController.pedidos = [];
+        pedidoController.carregado = true;
+      });
       notify.error(e.toString());
     }
   }
@@ -240,7 +245,7 @@ class _PedidoListViewState extends State<PedidoListView> {
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(
-                context, '/astecas/' + pedido[index].idPedidoSaida.toString());
+                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -437,32 +442,23 @@ class _PedidoListViewState extends State<PedidoListView> {
                               SizedBox(
                                 height: 8,
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: DropdownButtonFormField(
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          top: 15, bottom: 10, left: 10),
-                                      border: InputBorder.none),
-                                  hint: TextComponent('Em aberto'),
-                                  items: <Situacao>[
-                                    Situacao(id: 1, descricao: 'Em aberto'),
-                                    Situacao(id: 2, descricao: 'Pendente'),
-                                    Situacao(id: 3, descricao: 'Em separação'),
-                                    Situacao(id: 4, descricao: 'Fechado')
-                                  ].map<DropdownMenuItem<Situacao>>(
-                                      (Situacao value) {
-                                    return DropdownMenuItem<Situacao>(
-                                      value: value,
-                                      child: TextComponent(value.descricao!),
-                                    );
-                                  }).toList(),
-                                  onChanged: (Situacao? value) {
-                                    pedidoController.situacao = value!.id;
-                                  },
-                                ),
+                              DropdownButtonFormFieldComponent(
+                                onChanged: (value) {
+                                  pedidoController.situacao = value.id;
+                                },
+                                hint: TextComponent('Em aberto'),
+                                items: <Situacao>[
+                                  Situacao(id: 1, descricao: 'Em aberto'),
+                                  Situacao(id: 2, descricao: 'Pendente'),
+                                  Situacao(id: 3, descricao: 'Em separação'),
+                                  Situacao(id: 4, descricao: 'Fechado')
+                                ].map<DropdownMenuItem<Situacao>>(
+                                    (Situacao value) {
+                                  return DropdownMenuItem<Situacao>(
+                                    value: value,
+                                    child: TextComponent(value.descricao!),
+                                  );
+                                }).toList(),
                               ),
                             ],
                           ),
@@ -516,6 +512,10 @@ class _PedidoListViewState extends State<PedidoListView> {
                                   .filtroExpandidoFormKey.currentState!
                                   .reset();
                               buscarTodas();
+
+                              setState(() {
+                                pedidoController.abrirFiltro = false;
+                              });
                             },
                             text: 'Pesquisar')
                       ],

@@ -42,7 +42,7 @@ class PedidoSaidaModel {
       situacao: json['situacao'],
       valorTotal: json['valor_total'],
       funcionario: json['funcionario'] != null
-          ? FuncionarioModel.fromJson(json['funcionario'].first)
+          ? FuncionarioModel.fromJson((json['funcionario'] as List).first)
           : null,
       cliente: json['cliente'] != null
           ? ClienteModel.fromJson(json['cliente'])
