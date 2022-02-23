@@ -31,7 +31,7 @@ class UsuarioController {
     print(value);
     usersSearch = users
         .where((user) =>
-            (user.name!.toLowerCase().contains(value.toLowerCase()) ||
+            (user.nome!.toLowerCase().contains(value.toLowerCase()) ||
                 user.uid!.toString().contains(value.toLowerCase())))
         .toList();
   }

@@ -182,7 +182,7 @@ class _UserDetailViewState extends State<UserDetailView> {
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: InputComponent(
                   label: "Nome",
-                  initialValue: _controller.user.name,
+                  initialValue: _controller.user.nome,
                 ),
               ),
               Padding(

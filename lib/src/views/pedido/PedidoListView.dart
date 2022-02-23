@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/AstecaController.dart';
 import 'package:gpp/src/controllers/PedidoController.dart';
 
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/AstecaModel.dart';
+
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 
@@ -484,10 +483,8 @@ class _PedidoListViewState extends State<PedidoListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                pedidoController.pagina.total != null
-                    ? TextComponent('Total de páginas: ' +
-                        pedidoController.pagina.total.toString())
-                    : TextComponent('Total de páginas: 0'),
+                TextComponent('Total de páginas: ' +
+                    pedidoController.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(

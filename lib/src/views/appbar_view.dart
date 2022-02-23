@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/shared/repositories/global.dart';
+
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/shared/utils/Usuario.dart';
 
 // ignore: must_be_immutable
 class AppBarView extends StatelessWidget {
@@ -11,11 +12,6 @@ class AppBarView extends StatelessWidget {
   AppBarView({
     Key? key,
   }) : super(key: key);
-
-  handleLogout(context) {
-    logout();
-    Navigator.pushReplacementNamed(context, '/logout');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +47,7 @@ class AppBarView extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    handleLogout(context);
+                    //   handleLogout(context);
                   },
                   child: const Icon(
                     Icons.logout,
@@ -79,51 +75,6 @@ class AppBarView extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.notifications,
-                    color: Colors.white, //The color which you want set.
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  const Icon(
-                    Icons.settings,
-                    color: Colors.white, //The color which you want set.
-                  ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  const SizedBox(
-                    width: 48,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Olá, ' + authenticateUser!.name.toString(),
-                        style: textStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      handleLogout(context);
-                    },
-                    child: const Icon(
-                      Icons.logout,
-                      color: Colors.white, //The color which you want set.
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),

@@ -233,7 +233,7 @@ class _UsuarioListViewState extends State<UsuarioListView> {
                     Row(
                       children: [
                         Text(
-                          users[index].name ?? '',
+                          users[index].nome ?? '',
                           style: textStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -284,7 +284,7 @@ class _UsuarioListViewState extends State<UsuarioListView> {
                 )),
                 Expanded(
                     child: TextComponent(
-                  users[index].name!,
+                  users[index].nome!,
                 )),
                 Expanded(
                     child: TextComponent(

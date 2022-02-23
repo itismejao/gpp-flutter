@@ -488,10 +488,8 @@ class _AstecaListViewState extends State<AstecaListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                controller.pagina.total != null
-                    ? TextComponent('Total de páginas: ' +
-                        controller.pagina.total.toString())
-                    : TextComponent('Total de páginas: 0'),
+                TextComponent(
+                    'Total de páginas: ' + controller.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(

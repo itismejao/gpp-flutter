@@ -3,6 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/shared/utils/Usuario.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:gpp/src/controllers/user_controller.dart';
@@ -221,13 +224,49 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     }
   }
 
+  handleLogout(context) {
+    logout();
+    Navigator.pushReplacementNamed(context, '/logout');
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
 
     return Container(
       color: Colors.white,
-      child: stateManagement(mediaQuery, context),
+      child: Column(
+        children: [
+          Expanded(flex: 3, child: stateManagement(mediaQuery, context)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextComponent(
+                  'Olá, ' +
+                      usuario.nome!.split(" ").first +
+                      ' ' +
+                      usuario.nome!.split(" ").last,
+                  color: Colors.black,
+                ),
+                const SizedBox(
+                  width: 24,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    handleLogout(context);
+                  },
+                  child: const Icon(
+                    Icons.logout,
+                    //The color which you want set.
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
