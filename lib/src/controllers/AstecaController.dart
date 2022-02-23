@@ -17,6 +17,9 @@ class AstecaController {
   late PecaRepository pecaRepository = PecaRepository();
   late List<ProdutoPecaModel> produtoPecas;
 
+  DateTime? dataInicio;
+  DateTime? dataFim;
+
   PedidoSaidaModel pedidoSaida = PedidoSaidaModel(
     itemsPedidoSaida: [],
     valorTotal: 0.0,

@@ -19,8 +19,7 @@ class ItemPedidoSaidaModel {
     return ItemPedidoSaidaModel(
         quantidade: json['quantidade'],
         valor: json['valor'],
-        motivoTrocaPeca:
-            MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca']),
+        motivoTrocaPeca: MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca']),
         peca: PecaModel.fromJson(json['peca']));
   }
 
