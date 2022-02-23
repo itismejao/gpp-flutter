@@ -9,9 +9,17 @@ import 'package:http/http.dart';
 class PedidoRepository {
   ApiService api = gppApi;
 
-  Future<List> buscarTodos(int pagina) async {
+  Future<List> buscarTodos(int pagina,
+      {int? idPedido,
+      DateTime? dataInicio,
+      DateTime? dataFim, 
+      int? situacao}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
+      'idPedido': idPedido != null ? idPedido.toString() : '',
+      'dataInicio': dataInicio != null ? dataInicio.toString() : '',
+      'dataFim': dataFim != null ? dataFim.toString() : '',
+      'situacao': situacao != null ? situacao.toString() : ''
     };
 
     Response response =

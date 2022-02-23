@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/PedidoController.dart';
-
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
-
 import 'package:gpp/src/shared/components/InputComponent.dart';
-
-import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-
+import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/mask_formatter.dart';
 
-import 'package:intl/intl.dart';
+class Situacao {
+  int? id;
+  String? descricao;
+  Situacao({
+    this.id,
+    this.descricao,
+  });
+}
 
 class PedidoListView extends StatefulWidget {
   const PedidoListView({Key? key}) : super(key: key);
@@ -40,12 +43,18 @@ class _PedidoListViewState extends State<PedidoListView> {
         pedidoController.carregado = false;
       });
       //parei aqui
-      List retorno = await pedidoController.pedidoRepository
-          .buscarTodos(pedidoController.pagina.atual);
+      List retorno = await pedidoController.pedidoRepository.buscarTodos(
+          pedidoController.pagina.atual,
+          idPedido: pedidoController.idPedido,
+          dataInicio: pedidoController.dataInicio,
+          dataFim: pedidoController.dataFim,
+          situacao: pedidoController.situacao);
 
       pedidoController.pedidos = retorno[0];
       pedidoController.pagina = retorno[1];
 
+      //Limpa filtros;
+      limparFiltro();
       //Atualiza o status para carregado
       setState(() {
         pedidoController.carregado = true;
@@ -53,6 +62,13 @@ class _PedidoListViewState extends State<PedidoListView> {
     } catch (e) {
       notify.error(e.toString());
     }
+  }
+
+  limparFiltro() {
+    pedidoController.idPedido = null;
+    pedidoController.dataInicio = null;
+    pedidoController.dataFim = null;
+    pedidoController.situacao = null;
   }
 
   _buildSituacaoPedido(value) {
@@ -373,15 +389,15 @@ class _PedidoListViewState extends State<PedidoListView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        //controller.filtroAsteca.idAsteca = value;
+                        pedidoController.idPedido = int.parse(value);
                         //Limpa o formúlario
-                        // controller.filtroFormKey.currentState!.reset();
-                        //buscarTodas();
+                        pedidoController.filtroFormKey.currentState!.reset();
+                        buscarTodas();
                       },
                       prefixIcon: Icon(
                         Icons.search,
                       ),
-                      hintText: 'Digite o número de identificação da asteca',
+                      hintText: 'Digite o número de identificação do pedido',
                     ),
                   ),
                 ),
@@ -393,7 +409,8 @@ class _PedidoListViewState extends State<PedidoListView> {
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        //controller.isOpenFilter = !(controller.isOpenFilter);
+                        pedidoController.abrirFiltro =
+                            !(pedidoController.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -408,52 +425,82 @@ class _PedidoListViewState extends State<PedidoListView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Pendência:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            //controller.pendenciaFiltro = value;
-                            ;
-                          },
-                          hintText: 'Digite a pendência',
+                  Form(
+                    key: pedidoController.filtroExpandidoFormKey,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextComponent('Situação'),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          top: 15, bottom: 10, left: 10),
+                                      border: InputBorder.none),
+                                  hint: TextComponent('Em aberto'),
+                                  items: <Situacao>[
+                                    Situacao(id: 1, descricao: 'Em aberto'),
+                                    Situacao(id: 2, descricao: 'Pendente'),
+                                    Situacao(id: 3, descricao: 'Em separação'),
+                                    Situacao(id: 4, descricao: 'Fechado')
+                                  ].map<DropdownMenuItem<Situacao>>(
+                                      (Situacao value) {
+                                    return DropdownMenuItem<Situacao>(
+                                      value: value,
+                                      child: TextComponent(value.descricao!),
+                                    );
+                                  }).toList(),
+                                  onChanged: (Situacao? value) {
+                                    pedidoController.situacao = value!.id;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          label: 'CPF ou CNPJ:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            //controller.filtroAsteca.documentoFiscal!.cpfCnpj =
-                            value;
-                            ;
-                          },
-                          hintText: 'Digite o CPF ou CNPJ',
+                        SizedBox(
+                          width: 8,
                         ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Número da nota fiscal:',
-                          maxLines: 1,
-                          onChanged: (value) {
-                            //   controller.filtroAsteca.documentoFiscal!
-                            //       .numDocFiscal = value;
-                            //
-                          },
-                          hintText: 'Digite o número da nota fiscal',
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: 'Período:',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                pedidoController.dataInicio =
+                                    DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data inicial',
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 8),
+                        Expanded(
+                          child: InputComponent(
+                            inputFormatter: [maskFormatter.dataFormatter()],
+                            label: '',
+                            maxLines: 1,
+                            onSaved: (value) {
+                              if (value.length == 10) {
+                                pedidoController.dataFim =
+                                    DateFormat("dd/MM/yyyy").parse(value);
+                              }
+                            },
+                            hintText: 'Data fim',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -462,6 +509,12 @@ class _PedidoListViewState extends State<PedidoListView> {
                       children: [
                         ButtonComponent(
                             onPressed: () {
+                              pedidoController
+                                  .filtroExpandidoFormKey.currentState!
+                                  .save();
+                              pedidoController
+                                  .filtroExpandidoFormKey.currentState!
+                                  .reset();
                               buscarTodas();
                             },
                             text: 'Pesquisar')

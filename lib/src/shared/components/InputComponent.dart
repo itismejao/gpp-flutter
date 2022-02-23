@@ -20,6 +20,7 @@ class InputComponent extends StatelessWidget {
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatter;
   final TextEditingController? controller;
+
   InputComponent({
     Key? key,
     this.label,

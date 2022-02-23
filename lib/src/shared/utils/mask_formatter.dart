@@ -18,6 +18,14 @@ class MaskFormatter {
     );
   }
 
+  MaskTextInputFormatter dataFormatter({String? value}) {
+    return MaskTextInputFormatter(
+      initialText: value.toString(),
+      mask: '##/##/####',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
+  }
+
   cnpjFormatter(String? value) {
     return MaskTextInputFormatter(
       initialText: value,
