@@ -27,6 +27,7 @@ class CadastroCorredorView extends StatefulWidget {
 class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   //late EnderecamentoCorredorController controller;
   String? idPiso;
+  
   late EnderecamentoController enderecamentoController;
 
 
