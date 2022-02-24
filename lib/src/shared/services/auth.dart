@@ -1,19 +1,22 @@
+import 'package:gpp/src/models/user_model.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:universal_html/html.dart';
 
-final storage = LocalStorage('auth');
+final storage = window.localStorage;
 
 void setToken(String token) {
-  storage.setItem('token', token);
+  storage['token'] = token;
 }
 
 void logout() {
-  storage.deleteItem('token');
+  storage.remove('token');
 }
 
-String getToken() {
-  return storage.getItem('token');
+String? getToken() {
+  return storage['token'];
 }
 
 bool isAuthenticated() {
-  return storage.getItem('token') != null;
+  print(storage['token']);
+  return storage['token'] != null;
 }

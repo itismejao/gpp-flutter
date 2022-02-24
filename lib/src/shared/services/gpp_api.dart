@@ -19,8 +19,10 @@ class ApiService {
 
   Map<String, String> getHeader() {
     if (isAuthenticated()) {
-      String token = getToken();
-      headers['Authorization'] = 'Bearer ' + token;
+      String? token = getToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer ' + token;
+      }
     } else {
       logout();
     }

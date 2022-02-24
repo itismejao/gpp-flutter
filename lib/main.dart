@@ -58,6 +58,8 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
+import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
@@ -92,6 +94,8 @@ class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
     if (isAuthenticated()) {
+      //Autenticação
+
       Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
@@ -127,6 +131,13 @@ class _GppAppState extends State<GppApp> {
     return MaterialPageRoute(
         builder: (context) =>
             HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+  }
+
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
   }
 
   Widget build(BuildContext context) {
