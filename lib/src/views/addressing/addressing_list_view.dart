@@ -16,28 +16,26 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
 import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
-
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/home/home_view.dart';
+
+import '../funcionalities_view.dart';
 
 class AddressingListView extends StatefulWidget {
   const AddressingListView({Key? key}) : super(key: key);
 
   @override
-  _AddressingListViewState createState() =>
-      _AddressingListViewState();
+  _AddressingListViewState createState() => _AddressingListViewState();
 }
 
-class _AddressingListViewState
-    extends State<AddressingListView> {
+class _AddressingListViewState extends State<AddressingListView> {
 //  late AddressingFloorController controller;
   late EnderecamentoController enderecamentoController;
 
-
   fetchAll() async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPiso  = await enderecamentoController.buscarTodos();
-        
+    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
 
     enderecamentoController.isLoaded = true;
 
@@ -84,9 +82,9 @@ class _AddressingListViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title:  Text("Cadastro do Piso"),
-            // pisoEnderecamentoReplacement.id_piso == null
-                   
+              title: Text("Cadastro do Piso"),
+              // pisoEnderecamentoReplacement.id_piso == null
+
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -114,27 +112,25 @@ class _AddressingListViewState
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                        ),
+                        child: Row(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                          //  pisoEnderecamentoReplacement.id_piso == null
-                                 ButtonComponent(
-                                    onPressed: (
-                                    ) {
-                                      // handleCreate(
-                                      //     context, pisoEnderecamentoReplacement);
-                                    },
-                                    text: 'Adicionar')
-                                // :ButtonComponent(
-                                //     color: Colors.red,
-                                //     onPressed: () {
-                                //       handleCreate(context, pisoEnderecamentoReplacement);
-                                //     },
-                                //     text: 'Cancelar')
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                  // handleCreate(
+                                  //     context, pisoEnderecamentoReplacement);
+                                },
+                                text: 'Adicionar')
+                            // :ButtonComponent(
+                            //     color: Colors.red,
+                            //     onPressed: () {
+                            //       handleCreate(context, pisoEnderecamentoReplacement);
+                            //     },
+                            //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -148,7 +144,6 @@ class _AddressingListViewState
       },
     );
   }
-
 
   @override
   void initState() {
@@ -199,23 +194,29 @@ class _AddressingListViewState
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),),
+                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
+                                ),
                                 Expanded(
                                   child: Row(
                                     children: [
                                       ButtonComponent(
-                                        onPressed: () {
-                                            Navigator.pushNamed(context, '/piso/${enderecamentoController.listaPiso[index].id_piso}/corredores');                                       // openForm(context, controller.pisoEnderecamentoReplacement);
-                                        // Navigator.push(context, MaterialPageRoute(builder: (context) => 
-                                        // CadastroCorredorView(corredorEnderecamentoModel: controller.pisoEnderecamentoReplacements[index].id_piso,),));
-                                        },
-                                        text: 'Corredor'),
+                                          onPressed: () {
+                                            // Navigator.pushNamed(context, '/piso/${enderecamentoController.listaPiso[index].id_piso}/corredor'); // openForm(context, controller.pisoEnderecamentoReplacement);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => HomeView(
+                                                    funcionalities: FuncionalitiesView(),
+                                                    page: CadastroCorredorView(
+                                                        idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
+                                                  ),
+                                                ));
+                                          },
+                                          text: 'Corredor'),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
@@ -244,5 +245,4 @@ class _AddressingListViewState
       ),
     );
   }
-}  
-
+}

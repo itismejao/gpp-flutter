@@ -10,13 +10,13 @@ import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
 class CadastroCorredorView extends StatefulWidget {
-  //  String? idPiso;
-  //  CadastroCorredorView({this.idPiso});
+  String? idPiso;
+  CadastroCorredorView({this.idPiso});
 
   // int id;
 
   //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
-  const CadastroCorredorView({Key? key}) : super(key: key);
+  // const CadastroCorredorView({Key? key}) : super(key: key);
 
   @override
   _CadastroCorredorViewState createState() => _CadastroCorredorViewState();
@@ -24,7 +24,7 @@ class CadastroCorredorView extends StatefulWidget {
 
 class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   //late EnderecamentoCorredorController controller;
-  String? idPiso;
+  // String? idPiso;
 
   late EnderecamentoController enderecamentoController;
 
@@ -137,7 +137,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
     enderecamentoController = EnderecamentoController();
     // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('2');
+    fetchAll(widget.idPiso.toString());
   }
 
   @override
@@ -156,6 +156,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                   Flexible(child: TitleComponent('Corredor')),
                   ButtonComponent(
                       onPressed: () {
+                        enderecamentoController.corredorModel.id_piso = int.parse(widget.idPiso.toString());
                         openForm(context, enderecamentoController.corredorModel);
                       },
                       text: 'Adicionar')

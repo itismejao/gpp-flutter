@@ -61,7 +61,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/views/addressing/addressing_list._view.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
 import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
@@ -112,11 +112,11 @@ class _GppAppState extends State<GppApp> {
           inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
         // Teste
-        return MaterialPageRoute(
-            builder: (context) => HomeView(
-                  funcionalities: FuncionalitiesView(),
-                  page: CadastroCorredorView(),
-                ));
+        // return MaterialPageRoute(
+        //     builder: (context) => HomeView(
+        //           funcionalities: FuncionalitiesView(),
+        //           page: AddressingListView(),
+        //         ));
 
         // // Handle '/'
         //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
@@ -181,6 +181,14 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
+          if (settings.name == '/enderecamentos') {
+            return MaterialPageRoute(
+                builder: (context) => HomeView(
+                      funcionalities: FuncionalitiesView(),
+                      page: AddressingListView(),
+                    ));
+          }
+
           // Handle '/departaments/:id'
 
           var uri = Uri.parse(settings.name!);
@@ -193,17 +201,6 @@ class _GppAppState extends State<GppApp> {
                       page: AstecaDetailView(
                         id: 252,
                       ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 3 && uri.pathSegments.first == 'piso' && uri.pathSegments[2] == 'corredores') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: CadastroCorredorView(
-                          //   id: int.parse(id), // conversao ded id
-                          ),
                     ));
           }
 
