@@ -95,7 +95,7 @@ class GppApp extends StatefulWidget {
 class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
-    if (isAuthenticated()) {
+    if (!isAuthenticated()) {
       Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
@@ -114,6 +114,12 @@ class _GppAppState extends State<GppApp> {
           pagina = MotivosTrocaPecasListView();
         } else if (uri.pathSegments.first == 'logout') {
           pagina = AuthenticateView();
+        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
+          pagina = MenuCadastrarView();
+        } else if (uri.pathSegments.first == 'pecas-consultar') {
+          pagina = MenuConsultarView();
+        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
+          pagina = Container();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
