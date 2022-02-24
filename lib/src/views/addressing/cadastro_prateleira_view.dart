@@ -8,15 +8,19 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
+import 'package:gpp/src/views/home/home_view.dart';
+
+import '../funcionalities_view.dart';
 
 class CadastroPrateleiraView extends StatefulWidget {
-  //  String? idEstante;
-  //  CadastroCorredorView({this.idEstante});
+    String? idEstante;
+    CadastroPrateleiraView({this.idEstante});
 
   // int id;
 
   //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
-  const CadastroPrateleiraView({Key? key}) : super(key: key);
+  //const CadastroPrateleiraView({Key? key}) : super(key: key);
 
   @override
   _CadastroPrateleiraViewState createState() => _CadastroPrateleiraViewState();
@@ -146,7 +150,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     // controller = EnderecamentoPrateleiraController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('121');
+    fetchAll(widget.idEstante.toString());
   }
 
   @override
@@ -199,7 +203,15 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
-                                            // openForm(context, controller.corredorEnderecamentoReplacement);
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => HomeView(
+                                                    funcionalities: FuncionalitiesView(),
+                                                    page: CadastroBoxView(idPrateleira: enderecamentoController.listaPrateleira[index].id_prateleira.toString(),)
+                                                      ),
+                                                ));
+                                                    
                                           },
                                           text: 'Box'),
                                       IconButton(

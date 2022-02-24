@@ -8,6 +8,10 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/home/home_view.dart';
+
+import '../funcionalities_view.dart';
 
 class CadastroCorredorView extends StatefulWidget {
   String? idPiso;
@@ -192,7 +196,14 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
-                                            // openForm(context, controller.corredorEnderecamentoReplacement);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => HomeView(
+                                                    funcionalities: FuncionalitiesView(),
+                                                    page: CadastroEstanteView(idCorredor: enderecamentoController.listaCorredor[index].id_corredor.toString(),)
+                                                  ),
+                                                ));
                                           },
                                           text: 'Estante'),
                                       IconButton(

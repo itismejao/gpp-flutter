@@ -9,16 +9,20 @@ import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/home/home_view.dart';
+
+import '../funcionalities_view.dart';
 
 class CadastroEstanteView extends StatefulWidget {
-  //  String? idCorredor;
-  //  CadastroCorredorView({this.idCorredor});
+    String? idCorredor;
+    CadastroEstanteView({this.idCorredor});
 
   // int id;
 
   //CadastroEstanteView({ Key? key, required this.id } ) : super(key: key);
 
-  const CadastroEstanteView({Key? key}) : super(key: key);
+  //const CadastroEstanteView({Key? key}) : super(key: key);
 
   @override
   _CadastroEstanteViewState createState() => _CadastroEstanteViewState();
@@ -98,6 +102,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                         label: 'Corredor',
                         initialValue: estanteEnderecamentoReplacement.id_corredor.toString(),
                         hintText: 'Digite a prateleira',
+                        enable: false,
                         onChanged: (value) {
                           setState(() {
                             estanteEnderecamentoReplacement.id_corredor = 9;
@@ -139,7 +144,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     // controller = EnderecamentoEstanteController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('16');
+    fetchAll(widget.idCorredor.toString());
   }
 
   @override
@@ -158,7 +163,8 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                   Flexible(child: TitleComponent('Estante')),
                   ButtonComponent(
                       onPressed: () {
-                        openForm(context, enderecamentoController.estanteModel);
+                        enderecamentoController.estanteModel.id_corredor = int.parse(widget.idCorredor.toString());
+                         openForm(context, enderecamentoController.estanteModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -192,7 +198,14 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
-                                            // openForm(context, controller.corredorEnderecamentoReplacement);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => HomeView(
+                                                    funcionalities: FuncionalitiesView(),
+                                                    page:CadastroPrateleiraView(idEstante: enderecamentoController.listaEstante[index].id_estante.toString(),),
+                                                  ),
+                                                ));
                                           },
                                           text: 'Prateleira'),
                                       IconButton(

@@ -103,6 +103,17 @@ class EnderecamentoRepository {
     }
   }
 
+  Future<bool> criar(PisoEnderecamentoModel pisos) async {
+    print(jsonEncode(pisos.toJson()));
+    Response response = await api.post('/pisos', pisos.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu erro ao criar piso';
+    }
+  }
+
   // Future<FuncionalidadeModel> fetch(String id) async {
   //   Response response = await api.get('/funcionalidades/' + id);
 

@@ -20,14 +20,14 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class CadastroBoxView extends StatefulWidget {
-//  String? idPrateleira;
-  //  CadastroCorredorView({this.idPrateleira});
+  String? idPrateleira;
+    CadastroBoxView({this.idPrateleira});
 
   // int id;
 
   //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
 
-  const CadastroBoxView({Key? key}) : super(key: key);
+  //const CadastroBoxView({Key? key}) : super(key: key);
 
   @override
   _CadastroBoxViewState createState() => _CadastroBoxViewState();
@@ -158,7 +158,7 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     //controller = EnderecamentoBoxController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('267');
+    fetchAll(widget.idPrateleira.toString());
   }
 
   @override
@@ -209,10 +209,10 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                                   child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                  child: TextComponent(enderecamentoController.listaBox[index].medida.toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                  child: TextComponent(enderecamentoController.listaBox[index].created_at.toString()),
                                 ),
                                 Expanded(
                                   child: Row(
