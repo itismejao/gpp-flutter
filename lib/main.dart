@@ -73,6 +73,10 @@ import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
+import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
+import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
@@ -124,9 +128,7 @@ class _GppAppState extends State<GppApp> {
     } else {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
-    return MaterialPageRoute(
-        builder: (context) =>
-            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
   }
 
   Widget build(BuildContext context) {
@@ -136,8 +138,7 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme:
-                const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
