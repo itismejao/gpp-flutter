@@ -20,7 +20,7 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/utils/mask_formatter.dart';
+import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 
 class ItemPeca {
