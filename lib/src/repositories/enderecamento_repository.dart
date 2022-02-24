@@ -14,22 +14,19 @@ import 'package:http/http.dart';
 class EnderecamentoRepository {
   ApiService api;
 
-
   EnderecamentoRepository({
     required this.api,
   });
 
-    Future<List<PisoEnderecamentoModel>> buscarTodos() async {
+  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get('/piso');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
       print(data);
 
-      List<PisoEnderecamentoModel> enderecamentoPiso = data
-          .map<PisoEnderecamentoModel>(
-              (data) => PisoEnderecamentoModel.fromJson(data))
-          .toList();
+      List<PisoEnderecamentoModel> enderecamentoPiso =
+          data.map<PisoEnderecamentoModel>((data) => PisoEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoPiso;
     } else {
@@ -37,18 +34,16 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
- 
+
   Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {
-    Response response = await api.get('/piso/'+idPiso+'/corredor');
+    Response response = await api.get('/piso/' + idPiso + '/corredor');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
       print(data);
 
-      List<CorredorEnderecamentoModel> enderecamentoCorredor = data
-          .map<CorredorEnderecamentoModel>(
-              (data) => CorredorEnderecamentoModel.fromJson(data))
-          .toList();
+      List<CorredorEnderecamentoModel> enderecamentoCorredor =
+          data.map<CorredorEnderecamentoModel>((data) => CorredorEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoCorredor;
     } else {
@@ -58,16 +53,14 @@ class EnderecamentoRepository {
   }
 
   Future<List<EstanteEnderecamentoModel>> buscarEstante(String idCorredor) async {
-    Response response = await api.get('/piso/10/corredor/'+idCorredor+'/estante');
+    Response response = await api.get('/piso/10/corredor/' + idCorredor + '/estante');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
       print(data);
 
-      List<EstanteEnderecamentoModel> enderecamentoEstante = data
-          .map<EstanteEnderecamentoModel>(
-              (data) => EstanteEnderecamentoModel.fromJson(data))
-          .toList();
+      List<EstanteEnderecamentoModel> enderecamentoEstante =
+          data.map<EstanteEnderecamentoModel>((data) => EstanteEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoEstante;
     } else {
@@ -76,17 +69,15 @@ class EnderecamentoRepository {
     }
   }
 
-    Future<List<PrateleiraEnderecamentoModel>> buscarPrateleira(String idEstante) async {
-    Response response = await api.get('/piso/10/corredor/10/estante/'+idEstante+'/prateleira');
+  Future<List<PrateleiraEnderecamentoModel>> buscarPrateleira(String idEstante) async {
+    Response response = await api.get('/piso/10/corredor/10/estante/' + idEstante + '/prateleira');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
       print(data);
 
-      List<PrateleiraEnderecamentoModel> enderecamentoPrateleira = data
-          .map<PrateleiraEnderecamentoModel>(
-              (data) => PrateleiraEnderecamentoModel.fromJson(data))
-          .toList();
+      List<PrateleiraEnderecamentoModel> enderecamentoPrateleira =
+          data.map<PrateleiraEnderecamentoModel>((data) => PrateleiraEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoPrateleira;
     } else {
@@ -94,18 +85,16 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
- 
+
   Future<List<BoxEnderecamentoModel>> buscarBox(String idPrateleira) async {
-    Response response = await api.get('/piso/10/corredor/10/estante/10/prateleira/'+idPrateleira+'/box');
+    Response response = await api.get('/piso/10/corredor/10/estante/10/prateleira/' + idPrateleira + '/box');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
       print(data);
 
-      List<BoxEnderecamentoModel> enderecamentoBox = data
-          .map<BoxEnderecamentoModel>(
-              (data) => BoxEnderecamentoModel.fromJson(data))
-          .toList();
+      List<BoxEnderecamentoModel> enderecamentoBox =
+          data.map<BoxEnderecamentoModel>((data) => BoxEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoBox;
     } else {
@@ -113,9 +102,6 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
-
-
-
 
   // Future<FuncionalidadeModel> fetch(String id) async {
   //   Response response = await api.get('/funcionalidades/' + id);

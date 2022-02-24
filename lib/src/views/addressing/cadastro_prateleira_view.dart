@@ -9,16 +9,14 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
-
 class CadastroPrateleiraView extends StatefulWidget {
-
-    //  String? idEstante;
+  //  String? idEstante;
   //  CadastroCorredorView({this.idEstante});
-        
- // int id;
 
- //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
-  const CadastroPrateleiraView({ Key? key }) : super(key: key);
+  // int id;
+
+  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+  const CadastroPrateleiraView({Key? key}) : super(key: key);
 
   @override
   _CadastroPrateleiraViewState createState() => _CadastroPrateleiraViewState();
@@ -27,14 +25,12 @@ class CadastroPrateleiraView extends StatefulWidget {
 class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
   //late EnderecamentoPrateleiraController controller;
   String? idEstante;
-  
-  late EnderecamentoController enderecamentoController;
 
+  late EnderecamentoController enderecamentoController;
 
   fetchAll(idEstante) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPrateleira =
-        await enderecamentoController.repository.buscarPrateleira(idEstante);
+    enderecamentoController.listaPrateleira = await enderecamentoController.repository.buscarPrateleira(idEstante);
 
     enderecamentoController.isLoaded = true;
 
@@ -72,7 +68,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
   //     notify.error(e.toString());
   //   }
   // }
-openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -98,8 +94,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                           });
                         },
                       ),
-                 
-                       InputComponent(
+                      InputComponent(
                         label: 'Corredor',
                         initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
                         hintText: 'Digite o corredor',
@@ -111,8 +106,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                        ),
+                        child: Row(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
@@ -125,7 +119,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                                       //     context, prateleiraEnderecamentoReplacement);
                                     },
                                     text: 'Adicionar')
-                                :ButtonComponent(
+                                : ButtonComponent(
                                     color: Colors.red,
                                     onPressed: () {
                                       // handleCreate(context, prateleiraEnderecamentoReplacement);
@@ -145,7 +139,6 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
     );
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -153,7 +146,7 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
     // controller = EnderecamentoPrateleiraController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('5');
+    fetchAll('121');
   }
 
   @override
@@ -195,19 +188,18 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
-                                 Expanded(
-                                      child: TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),),
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),
+                                ),
                                 Expanded(
                                   child: Row(
                                     children: [
-                                        ButtonComponent(
+                                      ButtonComponent(
                                           onPressed: () {
-                                           // openForm(context, controller.corredorEnderecamentoReplacement);
+                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
                                           text: 'Box'),
                                       IconButton(
@@ -238,4 +230,4 @@ openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacemen
       ),
     );
   }
- }
+}

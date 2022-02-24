@@ -10,16 +10,15 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
-
 class CadastroEstanteView extends StatefulWidget {
-   //  String? idCorredor;
+  //  String? idCorredor;
   //  CadastroCorredorView({this.idCorredor});
-        
- // int id;
 
- //CadastroEstanteView({ Key? key, required this.id } ) : super(key: key);
+  // int id;
 
-  const CadastroEstanteView({ Key? key }) : super(key: key);
+  //CadastroEstanteView({ Key? key, required this.id } ) : super(key: key);
+
+  const CadastroEstanteView({Key? key}) : super(key: key);
 
   @override
   _CadastroEstanteViewState createState() => _CadastroEstanteViewState();
@@ -29,15 +28,11 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
   //late EnderecamentoEstanteController controller;
   String? idCorredor;
 
-   late EnderecamentoController enderecamentoController;
-
+  late EnderecamentoController enderecamentoController;
 
   fetchAll(String idCorredor) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaEstante = 
-        await enderecamentoController.repository.buscarEstante(idCorredor);
-
-        
+    enderecamentoController.listaEstante = await enderecamentoController.repository.buscarEstante(idCorredor);
 
     enderecamentoController.isLoaded = true;
 
@@ -75,7 +70,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
   //     notify.error(e.toString());
   //   }
   // }
-openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
+  openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -83,8 +78,7 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: 
-                  Text("Cadastro da Estante"),
+              title: Text("Cadastro da Estante"),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -100,8 +94,7 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                           });
                         },
                       ),
-                      
-                       InputComponent(
+                      InputComponent(
                         label: 'Corredor',
                         initialValue: estanteEnderecamentoReplacement.id_corredor.toString(),
                         hintText: 'Digite a prateleira',
@@ -111,23 +104,20 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                           });
                         },
                       ),
-                   
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                        ),
+                        child: Row(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                                  ButtonComponent(
-                                    onPressed: () {
-                                      // handleCreate(
-                                      //     context, estanteEnderecamentoReplacement);
-                                    },
-                                    text: 'Adicionar'
-                                  )
+                            ButtonComponent(
+                                onPressed: () {
+                                  // handleCreate(
+                                  //     context, estanteEnderecamentoReplacement);
+                                },
+                                text: 'Adicionar')
                           ],
                         ),
                       )
@@ -142,7 +132,6 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     );
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -150,7 +139,7 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     // controller = EnderecamentoEstanteController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('31');
+    fetchAll('16');
   }
 
   @override
@@ -192,19 +181,18 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
-                                 Expanded(
-                                      child: TextComponent(enderecamentoController.listaEstante[index].desc_estante.toString()),),
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaEstante[index].desc_estante.toString()),
+                                ),
                                 Expanded(
                                   child: Row(
                                     children: [
-                                        ButtonComponent(
+                                      ButtonComponent(
                                           onPressed: () {
-                                           // openForm(context, controller.corredorEnderecamentoReplacement);
+                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
                                           text: 'Prateleira'),
                                       IconButton(
@@ -235,4 +223,4 @@ openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
       ),
     );
   }
- }
+}

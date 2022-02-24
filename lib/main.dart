@@ -109,15 +109,13 @@ class _GppAppState extends State<GppApp> {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: 'Mada',
-          inputDecorationTheme:
-              const InputDecorationTheme(iconColor: Colors.grey)),
+          inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
       onGenerateRoute: (settings) {
-       // Teste
+        // Teste
         return MaterialPageRoute(
             builder: (context) => HomeView(
                   funcionalities: FuncionalitiesView(),
-                  page: CadastroCorredorView(
-                  ),
+                  page: CadastroCorredorView(),
                 ));
 
         // // Handle '/'
@@ -187,8 +185,7 @@ class _GppAppState extends State<GppApp> {
 
           var uri = Uri.parse(settings.name!);
 
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'asteca') {
+          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'asteca') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -199,20 +196,18 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
-            if (uri.pathSegments.length == 3 &&
-              uri.pathSegments.first == 'piso' && uri.pathSegments[2] == 'corredores') {
+          if (uri.pathSegments.length == 3 && uri.pathSegments.first == 'piso' && uri.pathSegments[2] == 'corredores') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
                       funcionalities: FuncionalitiesView(),
                       page: CadastroCorredorView(
-                     //   id: int.parse(id), // conversao ded id
-                      ),
+                          //   id: int.parse(id), // conversao ded id
+                          ),
                     ));
           }
 
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'departaments') {
+          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'departaments') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -223,10 +218,7 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
-
-
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'funcionalities') {
+          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'funcionalities') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -237,8 +229,7 @@ class _GppAppState extends State<GppApp> {
                     ));
           }
 
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'subfuncionalities') {
+          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'subfuncionalities') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -251,8 +242,7 @@ class _GppAppState extends State<GppApp> {
 
           // Handle '/users/:id'
 
-          if (uri.pathSegments.length == 2 &&
-              uri.pathSegments.first == 'users') {
+          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'users') {
             var id = uri.pathSegments[1];
             return MaterialPageRoute(
                 builder: (context) => HomeView(
@@ -279,4 +269,3 @@ class _GppAppState extends State<GppApp> {
     );
   }
 }
-

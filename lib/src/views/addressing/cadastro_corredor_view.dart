@@ -9,16 +9,14 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/text_component.dart';
 import 'package:gpp/src/shared/components/title_component.dart';
 
-
 class CadastroCorredorView extends StatefulWidget {
-   
   //  String? idPiso;
   //  CadastroCorredorView({this.idPiso});
-        
- // int id;
 
- //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
- const CadastroCorredorView({ Key? key }) : super(key: key);
+  // int id;
+
+  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+  const CadastroCorredorView({Key? key}) : super(key: key);
 
   @override
   _CadastroCorredorViewState createState() => _CadastroCorredorViewState();
@@ -27,16 +25,12 @@ class CadastroCorredorView extends StatefulWidget {
 class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   //late EnderecamentoCorredorController controller;
   String? idPiso;
-  
+
   late EnderecamentoController enderecamentoController;
-
-
 
   fetchAll(String idPiso) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaCorredor =
-    await enderecamentoController.buscarCorredor(idPiso);
-
+    enderecamentoController.listaCorredor = await enderecamentoController.buscarCorredor(idPiso);
 
     enderecamentoController.isLoaded = true;
 
@@ -74,7 +68,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   //     notify.error(e.toString());
   //   }
   // }
-openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
+  openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -98,31 +92,30 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
                           });
                         },
                       ),
-                       InputComponent(
+                      InputComponent(
                         label: 'Piso',
                         initialValue: corredorEnderecamentoReplacement.id_piso.toString(),
                         hintText: 'Digite o piso',
                         onChanged: (value) {
                           setState(() {
-                          //  corredorEnderecamentoReplacement.id_piso = corredorEnderecamentoModel;
+                            //  corredorEnderecamentoReplacement.id_piso = corredorEnderecamentoModel;
                           });
                         },
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                        ),
+                        child: Row(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                                 ButtonComponent(
-                                    onPressed: () {
-                                      // handleCreate(
-                                      //     context, corredorEnderecamentoReplacement);
-                                    },
-                                    text: 'Adicionar')
+                            ButtonComponent(
+                                onPressed: () {
+                                  // handleCreate(
+                                  //     context, corredorEnderecamentoReplacement);
+                                },
+                                text: 'Adicionar')
                           ],
                         ),
                       )
@@ -137,13 +130,12 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     );
   }
 
-
   @override
   void initState() {
     super.initState();
     //Iniciliza controlador
     enderecamentoController = EnderecamentoController();
-   // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
+    // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
     fetchAll('2');
   }
@@ -180,30 +172,26 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
             Divider(),
             enderecamentoController.isLoaded
                 ? Container(
-                    height: media.size.height * 0.3,
+                    height: media.size.height * 0.5,
                     child: ListView.builder(
                       itemCount: enderecamentoController.listaCorredor.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
-                                 Expanded(
-                                      child: 
-                                      TextComponent(enderecamentoController.listaCorredor[index].desc_corredor.toString()),),
-                                   
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaCorredor[index].desc_corredor.toString()),
+                                ),
                                 Expanded(
                                   child: Row(
-                                  //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                        ButtonComponent(
+                                      ButtonComponent(
                                           onPressed: () {
-                                            
-                                           // openForm(context, controller.corredorEnderecamentoReplacement);
+                                            // openForm(context, controller.corredorEnderecamentoReplacement);
                                           },
                                           text: 'Estante'),
                                       IconButton(
@@ -234,4 +222,4 @@ openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
       ),
     );
   }
- }
+}

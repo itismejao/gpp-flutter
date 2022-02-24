@@ -16,17 +16,16 @@ import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
 import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
-
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class CadastroBoxView extends StatefulWidget {
 //  String? idPrateleira;
   //  CadastroCorredorView({this.idPrateleira});
-        
- // int id;
 
- //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+  // int id;
+
+  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
 
   const CadastroBoxView({Key? key}) : super(key: key);
 
@@ -34,18 +33,15 @@ class CadastroBoxView extends StatefulWidget {
   _CadastroBoxViewState createState() => _CadastroBoxViewState();
 }
 
-class _CadastroBoxViewState
-    extends State<CadastroBoxView> {
+class _CadastroBoxViewState extends State<CadastroBoxView> {
   //late EnderecamentoBoxController controller;
   String? idPrateleira;
-  
-  late EnderecamentoController enderecamentoController;
 
+  late EnderecamentoController enderecamentoController;
 
   fetchAll(String idPrateleira) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaBox =
-        await enderecamentoController.repository.buscarBox(idPrateleira);
+    enderecamentoController.listaBox = await enderecamentoController.repository.buscarBox(idPrateleira);
 
     enderecamentoController.isLoaded = true;
 
@@ -92,9 +88,9 @@ class _CadastroBoxViewState
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title:  Text("Cadastro do Box"),
-            // pisoEnderecamentoReplacement.id_piso == null
-                   
+              title: Text("Cadastro do Box"),
+              // pisoEnderecamentoReplacement.id_piso == null
+
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
@@ -122,27 +118,25 @@ class _CadastroBoxViewState
                       // ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                        ),
+                        child: Row(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                          //  pisoEnderecamentoReplacement.id_piso == null
-                                 ButtonComponent(
-                                    onPressed: (
-                                    ) {
-                                      // handleCreate(
-                                      //     context, boxEnderecamentoReplacement);
-                                    },
-                                    text: 'Adicionar')
-                                // :ButtonComponent(
-                                //     color: Colors.red,
-                                //     onPressed: () {
-                                //       handleCreate(context, pisoEnderecamentoReplacement);
-                                //     },
-                                //     text: 'Cancelar')
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                  // handleCreate(
+                                  //     context, boxEnderecamentoReplacement);
+                                },
+                                text: 'Adicionar')
+                            // :ButtonComponent(
+                            //     color: Colors.red,
+                            //     onPressed: () {
+                            //       handleCreate(context, pisoEnderecamentoReplacement);
+                            //     },
+                            //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -157,15 +151,14 @@ class _CadastroBoxViewState
     );
   }
 
-
   @override
   void initState() {
     super.initState();
     //Iniciliza controlador
     //controller = EnderecamentoBoxController();
-     enderecamentoController = EnderecamentoController();
+    enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll('107');
+    fetchAll('267');
   }
 
   @override
@@ -209,17 +202,18 @@ class _CadastroBoxViewState
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),
+                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                ),
                                 Expanded(
-                                   child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),
-                                 Expanded(
-                                    child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),),                          
+                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                ),
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                ),
                                 Expanded(
                                   child: Row(
                                     children: [
@@ -251,5 +245,4 @@ class _CadastroBoxViewState
       ),
     );
   }
-}  
-
+}
