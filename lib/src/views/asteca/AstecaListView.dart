@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:gpp/src/controllers/AstecaController.dart';
 
@@ -16,7 +18,8 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/utils/mask_formatter.dart';
+import 'package:gpp/src/shared/utils/MaskFormatter.dart';
+import 'package:gpp/src/shared/utils/Validator.dart';
 
 import 'package:intl/intl.dart';
 
@@ -33,6 +36,7 @@ class _AstecaListViewState extends State<AstecaListView> {
 
   late final AstecaController astecaController;
   late MaskFormatter maskFormatter;
+  late Validator validator;
 
   buscarTodas() async {
     NotifyController notify = NotifyController(context: context);
@@ -108,6 +112,8 @@ class _AstecaListViewState extends State<AstecaListView> {
 
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
+    //Inicializa validator
+    validator = Validator();
 
     //Função responsável por buscar a lista de astecas
     buscarTodas();
@@ -493,12 +499,20 @@ class _AstecaListViewState extends State<AstecaListView> {
                         SizedBox(width: 8),
                         Expanded(
                           child: InputComponent(
+                            inputFormatter: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              CpfOuCnpjFormatter(),
+                            ],
                             label: 'CPF ou CNPJ:',
                             maxLines: 1,
-                            onChanged: (value) {
-                              astecaController.filtroAsteca.documentoFiscal!
-                                  .cpfCnpj = value;
-                              ;
+                            validator: (value) {
+                              validator.cpfOuCnpj(
+                                  UtilBrasilFields.removeCaracteres(value));
+                            },
+                            onSaved: (value) {
+                              astecaController
+                                      .filtroAsteca.documentoFiscal!.cpfCnpj =
+                                  UtilBrasilFields.removeCaracteres(value);
                             },
                             hintText: 'Digite o CPF ou CNPJ',
                           ),
@@ -535,7 +549,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data inicial',
+                            hintText: '24/02/2022',
                           ),
                         ),
                         SizedBox(width: 8),
@@ -550,7 +564,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data fim',
+                            hintText: '25/02/2022',
                           ),
                         ),
                       ],
@@ -562,17 +576,21 @@ class _AstecaListViewState extends State<AstecaListView> {
                         children: [
                           ButtonComponent(
                               onPressed: () {
-                                astecaController
+                                if (astecaController
                                     .filtroExpandidoFormKey.currentState!
-                                    .save();
-                                astecaController
-                                    .filtroExpandidoFormKey.currentState!
-                                    .reset();
-                                buscarTodas();
+                                    .validate()) {
+                                  astecaController
+                                      .filtroExpandidoFormKey.currentState!
+                                      .save();
+                                  astecaController
+                                      .filtroExpandidoFormKey.currentState!
+                                      .reset();
+                                  buscarTodas();
 
-                                setState(() {
-                                  astecaController.abrirFiltro = false;
-                                });
+                                  setState(() {
+                                    astecaController.abrirFiltro = false;
+                                  });
+                                }
                               },
                               text: 'Pesquisar'),
                         ],

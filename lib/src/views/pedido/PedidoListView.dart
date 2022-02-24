@@ -12,7 +12,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/utils/mask_formatter.dart';
+import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
 class Situacao {
   int? id;
@@ -349,7 +349,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                             child: TextComponent(
                               maskFormatter
                                   .cpfCnpjFormatter(
-                                      pedido[index].cpfCnpj.toString())!
+                                      value: pedido[index].cpfCnpj.toString())!
                                   .getMaskedText(),
                             )),
                         Expanded(
@@ -446,7 +446,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                                 onChanged: (value) {
                                   pedidoController.situacao = value.id;
                                 },
-                                hint: TextComponent('Em aberto'),
+                                hintText: 'Em aberto',
                                 items: <Situacao>[
                                   Situacao(id: 1, descricao: 'Em aberto'),
                                   Situacao(id: 2, descricao: 'Pendente'),
@@ -477,7 +477,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data inicial',
+                            hintText: '24/02/2022',
                           ),
                         ),
                         SizedBox(width: 8),
@@ -492,7 +492,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data fim',
+                            hintText: '25/02/2022',
                           ),
                         ),
                       ],

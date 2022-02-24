@@ -1277,9 +1277,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   initialValue: maskFormatter
-                      .cpfCnpjFormatter(astecaController
-                          .asteca.documentoFiscal!.cpfCnpj
-                          .toString())!
+                      .cpfCnpjFormatter(
+                          value: astecaController
+                              .asteca.documentoFiscal!.cpfCnpj
+                              .toString())!
                       .getMaskedText(),
                   label: 'CPF/CNPJ',
                 ),
