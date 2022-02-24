@@ -1,6 +1,7 @@
 import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 
@@ -26,6 +27,7 @@ class FuncionalitiesView extends StatefulWidget {
 
 class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   late final UsuarioController controller;
+  late AutenticacaoController autenticacaoController;
 
   handleSearchFuncionalities(value) {
     setState(() {
@@ -61,6 +63,16 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     }
   }
 
+  buscaUsuarioAutenticado() async {
+    setState(() {
+      autenticacaoController.carregado = false;
+    });
+    await autenticacaoController.repository.buscar();
+    setState(() {
+      autenticacaoController.carregado = true;
+    });
+  }
+
   @override
   void initState() {
     // ignore: todo
@@ -71,6 +83,12 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     controller = UsuarioController();
 
     buscarFuncionalidades();
+
+    //Inicializa o controller
+    autenticacaoController = AutenticacaoController();
+
+    //buscar o usuário
+    buscaUsuarioAutenticado();
   }
 
   funcionalities(MediaQueryData mediaQuery, context) {
@@ -243,30 +261,32 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextComponent(
-                    'Olá, ' +
-                        usuario.nome!.split(" ").first +
-                        ' ' +
-                        usuario.nome!.split(" ").last,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      handleLogout(context);
-                    },
-                    child: const Icon(
-                      Icons.logout,
-                      //The color which you want set.
-                    ),
-                  ),
-                ],
-              ),
+              child: autenticacaoController.carregado
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextComponent(
+                          'Olá, ' +
+                              usuario.nome!.split(" ").first +
+                              ' ' +
+                              usuario.nome!.split(" ").last,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 24,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            handleLogout(context);
+                          },
+                          child: const Icon(
+                            Icons.logout,
+                            //The color which you want set.
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
             ),
           )
         ],

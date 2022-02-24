@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:gpp/src/shared/utils/mask_formatter.dart';
+import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
