@@ -101,12 +101,12 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                         },
                       ),
                       InputComponent(
-                        label: 'Corredor',
-                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
-                        hintText: 'Digite o corredor',
+                        label: 'Estante',
+                        initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
+                        hintText: 'Digite a Estante',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.id_estante.toString();
                           });
                         },
                       ),
@@ -118,18 +118,11 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                         padding: const EdgeInsets.symmetric(vertical: 24.0),
                         child: Row(
                           children: [
-                            prateleiraEnderecamentoReplacement.id_prateleira == null
-                                ? ButtonComponent(
-                                    onPressed: () {
-                                      handleCreate(context, enderecamentoController.prateleiraModel, widget.idEstante.toString());
-                                    },
-                                    text: 'Adicionar')
-                                : ButtonComponent(
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      // handleCreate(context, prateleiraEnderecamentoReplacement);
-                                    },
-                                    text: 'Cancelar')
+                            ButtonComponent(
+                                onPressed: () {
+                                  handleCreate(context, enderecamentoController.prateleiraModel, widget.idEstante.toString());
+                                },
+                                text: 'Adicionar')
                           ],
                         ),
                       )

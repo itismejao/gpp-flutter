@@ -100,23 +100,23 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                       InputComponent(
                         label: 'Box',
                         initialValue: boxEnderecamentoReplacement.desc_box,
-                        hintText: 'Digite o nome do Piso',
+                        hintText: 'Digite o nome do Box',
                         onChanged: (value) {
                           setState(() {
                             boxEnderecamentoReplacement.desc_box = value!;
                           });
                         },
                       ),
-                      // InputComponent(
-                      //   label: 'Filial',
-                      //   initialValue: boxEnderecamentoReplacement.id_filial.toString(),
-                      //   hintText: 'Digite a filial',
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       pisoEnderecamentoReplacement.id_filial = 500;
-                      //     });
-                      //   },
-                      // ),
+                      InputComponent(
+                        label: 'Prateleira',
+                        initialValue: boxEnderecamentoReplacement.id_prateleira.toString(),
+                        hintText: 'Digite a Prateleira',
+                        onChanged: (value) {
+                          setState(() {
+                            boxEnderecamentoReplacement.id_prateleira.toString();
+                          });
+                        },
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(),
