@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/models/asteca_model.dart';
+import 'package:gpp/src/models/PaginaModel.dart';
+
+import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/ProdutoPecaModel.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
-import 'package:gpp/src/repositories/asteca_repository.dart';
+import 'package:gpp/src/repositories/AstecaRepository.dart';
+import 'package:gpp/src/repositories/PecaRepository.dart';
+import 'package:gpp/src/repositories/PedidoRepository.dart';
 
 class AstecaController {
+  late PedidoRepository pedidoRepository = PedidoRepository();
+  bool carregaProdutoPeca = false;
+  late PecaRepository pecaRepository = PecaRepository();
+  late List<ProdutoPecaModel> produtoPecas;
+
+  DateTime? dataInicio;
+  DateTime? dataFim;
+
+  PedidoSaidaModel pedidoSaida = PedidoSaidaModel(
+    itemsPedidoSaida: [],
+    valorTotal: 0.0,
+  );
+
   bool abrirDropDownButton = false;
 
-  int step = 4;
-  bool isOpenFilter = false;
-  int pagina = 1;
-  bool carregado = false;
-  List<AstecaTipoPendenciaModel> astecaTipoPendencia = [
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 881, descricao: 'PEÇA SEPARADA NO BOX'),
-    AstecaTipoPendenciaModel(
-        idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR')
-  ];
+  String? pendenciaFiltro;
 
+  int step = 4;
+  bool abrirFiltro = false;
+
+  bool carregado = false;
+  PaginaModel pagina = PaginaModel(total: 0, atual: 1);
+  late AstecaTipoPendenciaModel astecaTipoPendencia;
+  List<AstecaTipoPendenciaModel> astecaTipoPendencias = [];
+  List<AstecaTipoPendenciaModel> astecaTipoPendenciasBuscar = [];
   AstecaModel asteca = AstecaModel(
-      documentoFiscal: DocumentoFiscalModel(),
-      astecaTipoPendencia: AstecaTipoPendenciaModel(
-          idTipoPendencia: 651, descricao: 'PECA SOLICITADA AO FORNECEDOR'));
+    documentoFiscal: DocumentoFiscalModel(),
+  );
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
   AstecaModel filtroAsteca = AstecaModel(
     documentoFiscal: DocumentoFiscalModel(),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
-import 'package:gpp/src/repositories/departament_repository.dart';
+import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 
 class DepartamentController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  DepartamentRepository repository;
+  DepartamentoRepository repository;
   DepartamentoModel departament = DepartamentoModel();
   List<DepartamentoModel> departaments = [];
   List<SubFuncionalidadeModel> subFuncionalities = [];

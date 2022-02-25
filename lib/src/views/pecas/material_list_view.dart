@@ -3,10 +3,10 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/checkbox_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -59,7 +59,7 @@ class _MaterialListViewState extends State<MaterialListView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CheckboxComponent(),
+            // CheckboxComponent(),
             Expanded(
               child: TextComponent(
                 'ID',
@@ -105,7 +105,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Padding(padding: EdgeInsets.only(left: 10)),
-                          CheckboxComponent(),
+                          // CheckboxComponent(),
                           Expanded(
                             child: Text(
                               _pecasMaterial[index].id_peca_material_fabricacao.toString(),

@@ -133,7 +133,7 @@ class HomeView extends StatelessWidget {
             preferredSize: Size.fromHeight(mediaQuery.size.height * 0.10),
             child: AppBarView(),
           ),
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: Colors.grey.shade50,
           body: Container(
             child: Row(
               children: [

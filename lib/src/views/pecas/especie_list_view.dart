@@ -3,10 +3,8 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/checkbox_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -59,7 +57,7 @@ class _EspecieListViewState extends State<EspecieListView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CheckboxComponent(),
+            // CheckboxComponent(),
             Expanded(
               child: TextComponent(
                 'ID',
@@ -102,7 +100,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Padding(padding: EdgeInsets.only(left: 10)),
-                          CheckboxComponent(),
+                          // CheckboxComponent(),
                           Expanded(
                             child: Text(
                               _pecasEspecie[index].id_peca_especie.toString(),

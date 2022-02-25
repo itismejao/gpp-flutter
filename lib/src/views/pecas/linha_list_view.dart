@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/checkbox_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -58,7 +58,7 @@ class _LinhaListViewState extends State<LinhaListView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CheckboxComponent(),
+            // CheckboxComponent(),
             Expanded(
               child: TextComponent(
                 'ID',
@@ -98,7 +98,7 @@ class _LinhaListViewState extends State<LinhaListView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Padding(padding: EdgeInsets.only(left: 10)),
-                          CheckboxComponent(),
+                          // CheckboxComponent(),
                           Expanded(
                             child: Text(
                               _pecasLinha[index].id_peca_linha.toString(),

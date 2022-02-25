@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/cliente_model.dart';
 import 'package:gpp/src/models/item_doc_fiscal_model.dart';
 
 class DocumentoFiscalModel {
@@ -6,21 +7,23 @@ class DocumentoFiscalModel {
   int? idFilialVenda;
   String? nome;
   dynamic cpfCnpj;
-  int? numDocFiscal;
+  dynamic numDocFiscal;
   String? serieDocFiscal;
   DateTime? dataEmissao;
   ItemDocFiscalModel? itemDocFiscal;
-
-  DocumentoFiscalModel(
-      {this.idDocumentoFiscal,
-      this.idFilialSaida,
-      this.idFilialVenda,
-      this.nome,
-      this.cpfCnpj,
-      this.numDocFiscal,
-      this.serieDocFiscal,
-      this.dataEmissao,
-      this.itemDocFiscal});
+  ClienteModel? cliente;
+  DocumentoFiscalModel({
+    this.idDocumentoFiscal,
+    this.idFilialSaida,
+    this.idFilialVenda,
+    this.nome,
+    this.cpfCnpj,
+    this.numDocFiscal,
+    this.serieDocFiscal,
+    this.dataEmissao,
+    this.itemDocFiscal,
+    this.cliente,
+  });
 
   factory DocumentoFiscalModel.fromJson(Map<String, dynamic> json) {
     return DocumentoFiscalModel(
@@ -34,6 +37,9 @@ class DocumentoFiscalModel {
         dataEmissao: DateTime.parse(json['data_emissao']),
         itemDocFiscal: json['item_doc_fiscal'] != null
             ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal'])
+            : null,
+        cliente: json['cliente'] != null
+            ? ClienteModel.fromJson(json['cliente'])
             : null);
   }
 

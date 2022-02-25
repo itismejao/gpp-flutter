@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
+import 'package:gpp/src/shared/components/titleComponent.dart';
+import 'package:gpp/src/shared/components/inputComponent.dart';
+import 'package:gpp/src/shared/components/buttonComponent.dart';
 
 class PecaEnderecamentoDetailView extends StatefulWidget {
   const PecaEnderecamentoDetailView({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/titleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 import 'peca_enderecamento_detail_view.dart';

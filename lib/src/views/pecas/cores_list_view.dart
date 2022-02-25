@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/checkbox_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/CheckboxComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 import 'pop_up_editar.dart';
@@ -54,7 +53,7 @@ class _CoresListViewState extends State<CoresListView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CheckboxComponent(),
+            // CheckboxComponent(),
             Expanded(
               child: TextComponent(
                 'ID',
@@ -97,7 +96,7 @@ class _CoresListViewState extends State<CoresListView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Padding(padding: EdgeInsets.only(left: 10)),
-                          CheckboxComponent(),
+                          // CheckboxComponent(),
                           Expanded(
                             child: Text(
                               _pecaCor[index].id_peca_cor.toString(),

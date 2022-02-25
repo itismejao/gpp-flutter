@@ -9,4 +9,5 @@ class AutenticacaoController {
   AutenticacaoRepository repository = AutenticacaoRepository();
   AutenticacaoModel autenticacao = AutenticacaoModel();
   bool autenticado = false;
+  bool carregado = false;
 }

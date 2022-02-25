@@ -6,10 +6,10 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/repositories/pecas_repository/pecas_linha_repository.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 

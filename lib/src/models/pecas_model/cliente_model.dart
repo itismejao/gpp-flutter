@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ClienteModel {
+class PecasClienteModel {
   int? id_cliente;
   String? nome;
 
-  ClienteModel({
+  PecasClienteModel({
     this.id_cliente,
     this.nome,
   });
 
-  factory ClienteModel.fromJson(Map<String, dynamic> json) {
-    return ClienteModel(
+  factory PecasClienteModel.fromJson(Map<String, dynamic> json) {
+    return PecasClienteModel(
       id_cliente: json['id_cliente'],
       nome: json['nome'],
     );

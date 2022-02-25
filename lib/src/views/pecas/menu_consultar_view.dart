@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 import 'package:gpp/src/views/pecas/cores_list_view.dart';

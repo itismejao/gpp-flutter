@@ -11,7 +11,7 @@ class ProdutoModel {
   String? data_cadastro;
   String? id_fornecedor;
 
-  List<FornecedorPecasModel>? fornecedor;
+  List<PecasFornecedorModel>? fornecedor;
 
   ProdutoModel({
     this.id_produto,
@@ -35,8 +35,8 @@ class ProdutoModel {
       id_fornecedor: json['id_fornecedor'],
       // fornecedor: json['fornecedor'] == null ? null : FornecedorPecasModel.fromJson(json['fornecedor']),
       fornecedor: json['fornecedor'] != null
-          ? json['fornecedor'].map<FornecedorPecasModel>((data) {
-              return FornecedorPecasModel.fromJson(data);
+          ? json['fornecedor'].map<PecasFornecedorModel>((data) {
+              return PecasFornecedorModel.fromJson(data);
             }).toList()
           : null,
     );

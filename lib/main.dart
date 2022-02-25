@@ -58,23 +58,24 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
+import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/views/asteca/asteca_detail_view.dart';
-import 'package:gpp/src/views/asteca/asteca_list_view.dart';
+import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
+import 'package:gpp/src/views/asteca/AstecaListView.dart';
 
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
-import 'package:gpp/src/views/departamentos/departament_detail_view.dart';
-import 'package:gpp/src/views/departamentos/departament_form_view.dart';
+
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 
-import 'package:gpp/src/views/funcionalities/funcionalities_detail_view.dart';
-import 'package:gpp/src/views/funcionalities/funcionalities_form_view.dart';
-import 'package:gpp/src/views/funcionalities/funcionalities_list_view.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
+import 'package:gpp/src/views/pedido/PedidoListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
 import 'package:gpp/src/views/pecas/menu_enderecamento_peca_view.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
@@ -83,11 +84,7 @@ import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
-import 'package:gpp/src/views/subfuncionalities/subfuncionalities_form_view.dart';
-import 'package:gpp/src/views/users/user_detail.view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
-
-import 'src/views/funcionalities/funcionalities_form_view.dart';
 
 void main() async {
   await dotenv.load(fileName: "env");
@@ -100,176 +97,73 @@ class GppApp extends StatefulWidget {
 }
 
 class _GppAppState extends State<GppApp> {
+  obterRota(settings) {
+    Widget pagina = NotFoundView();
+    if (isAuthenticated()) {
+      //Autenticação
+
+      Uri uri = Uri.parse(settings.name);
+
+//Se existe 1 parâmetros da url
+      if (uri.pathSegments.length == 0) {
+        pagina = PedidoListView();
+      } else if (uri.pathSegments.length == 1) {
+        if (uri.pathSegments.first == 'astecas') {
+          pagina = AstecaListView();
+        } else if (uri.pathSegments.first == 'pedidos') {
+          pagina = PedidoListView();
+        } else if (uri.pathSegments.first == 'departamentos') {
+          pagina = DepartamentoListView();
+        } else if (uri.pathSegments.first == 'usuarios') {
+          pagina = UsuarioListView();
+        } else if (uri.pathSegments.first == 'motivos-defeitos') {
+          pagina = MotivosTrocaPecasListView();
+        } else if (uri.pathSegments.first == 'logout') {
+          pagina = AuthenticateView();
+        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
+          pagina = MenuCadastrarView();
+        } else if (uri.pathSegments.first == 'pecas-consultar') {
+          pagina = MenuConsultarView();
+        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
+          pagina = PecaEnderecamentoDetailView();
+        }
+        //Se existe 2 parâmetros da url
+      } else if (uri.pathSegments.length == 2) {
+        var id = int.parse(uri.pathSegments[1]);
+
+        if (uri.pathSegments.first == 'astecas') {
+          pagina = AstecaDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos') {
+          pagina = PedidoDetalheView(id: id);
+        }
+      }
+    } else {
+      return MaterialPageRoute(builder: (context) => AuthenticateView());
+    }
+    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+  }
+
   @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'GPP - Gerenciamento de Peças e Pedidos',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Mada',
-          inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
-      onGenerateRoute: (settings) {
-        //Teste
-        return MaterialPageRoute(
-            builder: (context) => HomeView(
-                  funcionalities: FuncionalitiesView(),
-                  page: MenuEnderecamentoPecaView(),
-                ));
 
-        // Handle '/'
-        //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-        if (!isAuthenticated()) {
-          if (settings.name == '/') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                    ));
-          }
+        debugShowCheckedModeBanner: false,
+        title: 'GPP - Gerenciamento de Peças e Pedidos',
+        theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: 'Mada',
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
+        onGenerateRoute: (settings) {
+          // Handle '/'
+          //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
 
-          if (settings.name == '/logout') {
-            return MaterialPageRoute(builder: (context) => AuthenticateView());
-          }
-
-          //Handle '/users
-          if (settings.name == '/usuarios') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: UserListView(),
-                    ));
-          }
-
-          //Handle '/departaments
-          if (settings.name == '/departamentos') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentListView(),
-                    ));
-          }
-
-          if (settings.name == '/funcionalidades') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesListView(),
-                    ));
-          }
-
-          if (settings.name == '/funcionalities/register') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesFormView(),
-                    ));
-          }
-
-          if (settings.name == '/departamento/register') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentFormView(),
-                    ));
-          }
-          if (settings.name == '/motivos-troca-pecas') {
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: ReasonPartsReplacementListView(),
-                    ));
-          }
-
-          // Handle '/departaments/:id'
-
-          var uri = Uri.parse(settings.name!);
-
-          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'asteca') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: AstecaDetailView(
-                        id: 252,
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'departaments') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: DepartamentDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'funcionalities') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: FuncionalitiesDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'subfuncionalities') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: SubFuncionalitiesFormView(
-                        id: id,
-                      ),
-                    ));
-          }
-
-          // Handle '/users/:id'
-
-          if (uri.pathSegments.length == 2 && uri.pathSegments.first == 'users') {
-            var id = uri.pathSegments[1];
-            return MaterialPageRoute(
-                builder: (context) => HomeView(
-                      funcionalities: FuncionalitiesView(),
-                      page: UserDetailView(
-                        id: id,
-                      ),
-                    ));
-          }
-        } else {
-          return MaterialPageRoute(builder: (context) => AuthenticateView());
-        }
-
-        if (settings.name == '/astecas') {
-          return MaterialPageRoute(
-              builder: (context) => HomeView(
-                    funcionalities: FuncionalitiesView(),
-                    page: AstecaListView(),
-                  ));
-        }
-
-        if (settings.name == '/pecas/consultar') {
-          return MaterialPageRoute(
-              builder: (context) => HomeView(
-                    funcionalities: FuncionalitiesView(),
-                    page: MenuConsultarView(),
-                  ));
-        }
-
-        if (settings.name == '/pecas/cadastrar') {
-          return MaterialPageRoute(
-              builder: (context) => HomeView(
-                    funcionalities: FuncionalitiesView(),
-                    page: MenuCadastrarView(),
-                  ));
-        }
-
-        return MaterialPageRoute(builder: (context) => NotFoundView());
-      },
-    );
+          return obterRota(settings);
+        });
   }
 }
