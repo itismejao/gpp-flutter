@@ -148,13 +148,13 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                         contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
-                            await buscaProduto('560');
+                            await buscaProduto(txtIdProduto.text);
 
                             txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
                             txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
                             txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
 
-                            // _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
+                            _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
                           },
                           icon: Icon(Icons.search),
                         ),
@@ -873,7 +873,6 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                 ButtonComponent(
                   onPressed: () async {
                     await criarPeca();
-                    _pecasController.produtoPecaModel.id_produto = 560;
                     await criarProdutoPeca(context);
 
                     print('idPeca depois de inserido');
