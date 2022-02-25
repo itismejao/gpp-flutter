@@ -61,8 +61,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify
-          .alert("você deseja excluir o piso?")) {
+      if (await notify.alert("você deseja excluir o piso?")) {
         if (await enderecamentoController.repository.excluir(excluiPiso)) {
           notify.sucess("Piso excluído!");
           //Atualiza a lista de motivos
@@ -217,15 +216,16 @@ class _AddressingListViewState extends State<AddressingListView> {
                                           },
                                           text: 'Corredor'),
                                       IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
-                                             handleDelete(
-                                                    context,
-                                                    enderecamentoController.listaPiso[index],);
-                                          },
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        onPressed: () {
+                                          handleDelete(
+                                            context,
+                                            enderecamentoController.listaPiso[index],
+                                          );
+                                        },
                                       )
                                     ],
                                   ),

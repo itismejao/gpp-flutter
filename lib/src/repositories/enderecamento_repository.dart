@@ -87,10 +87,11 @@ class EnderecamentoRepository {
   }
 
   Future<List<BoxEnderecamentoModel>> buscarBox(String idPrateleira) async {
-    Response response = await api.get('/piso/10/corredor/10/estante/10/prateleira/' + idPrateleira + '/box');
+    Response response = await api.get('/piso/00/corredor/00/estante/00/prateleira/' + idPrateleira + '/box');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
+
       print(data);
 
       List<BoxEnderecamentoModel> enderecamentoBox =

@@ -191,6 +191,9 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                             child: Row(
                               children: [
                                 Expanded(
+                                  child: TextComponent(enderecamentoController.listaPrateleira[index].id_prateleira.toString()),
+                                ),
+                                Expanded(
                                   child: TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),
                                 ),
                                 Expanded(
@@ -202,11 +205,12 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => HomeView(
-                                                      funcionalities: FuncionalitiesView(),
-                                                      page: CadastroBoxView(
-                                                        idPrateleira: enderecamentoController.listaPrateleira[index].id_prateleira
-                                                            .toString(),
-                                                      )),
+                                                    funcionalities: FuncionalitiesView(),
+                                                    page: CadastroBoxView(
+                                                      idPrateleira:
+                                                          enderecamentoController.listaPrateleira[index].id_prateleira.toString(),
+                                                    ),
+                                                  ),
                                                 ));
                                           },
                                           text: 'Box'),
