@@ -178,6 +178,7 @@ class _AddressingListViewState extends State<AddressingListView> {
             Divider(),
             Row(
               children: [
+                Expanded(child: TextComponent('Id')),
                 Expanded(child: TextComponent('Nome')),
                 Expanded(child: TextComponent('Opções')),
               ],
@@ -195,6 +196,9 @@ class _AddressingListViewState extends State<AddressingListView> {
                             color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
+                                ),
                                 Expanded(
                                   child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
                                 ),

@@ -174,6 +174,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
             Divider(),
             Row(
               children: [
+                Expanded(child: TextComponent('Id')),
                 Expanded(child: TextComponent('Nome')),
                 Expanded(child: TextComponent('Opções')),
               ],
@@ -191,6 +192,9 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                             color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
+                                Expanded(
+                                  child: TextComponent(enderecamentoController.listaEstante[index].id_estante.toString()),
+                                ),
                                 Expanded(
                                   child: TextComponent(enderecamentoController.listaEstante[index].desc_estante.toString()),
                                 ),

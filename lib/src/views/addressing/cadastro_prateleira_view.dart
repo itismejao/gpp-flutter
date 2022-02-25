@@ -104,6 +104,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                         label: 'Estante',
                         initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
                         hintText: 'Digite a Estante',
+                        enable: false,
                         onChanged: (value) {
                           setState(() {
                             prateleiraEnderecamentoReplacement.id_estante.toString();
@@ -173,6 +174,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
             Divider(),
             Row(
               children: [
+                Expanded(child: TextComponent('Id')),
                 Expanded(child: TextComponent('Nome')),
                 Expanded(child: TextComponent('Opções')),
               ],

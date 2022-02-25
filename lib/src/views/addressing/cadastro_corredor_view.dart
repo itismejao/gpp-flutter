@@ -44,7 +44,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
     });
   }
 
-   handleCreate(context, CorredorEnderecamentoModel corredor,  String idPiso) async {
+  handleCreate(context, CorredorEnderecamentoModel corredor, String idPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.criarCorredor(corredor, idPiso)) {
@@ -60,12 +60,11 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
   handleDelete(context, CorredorEnderecamentoModel excluiCorredor) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify
-          .alert("você deseja excluir o corredor?")) {
+      if (await notify.alert("você deseja excluir o corredor?")) {
         if (await enderecamentoController.repository.excluirCorredor(excluiCorredor)) {
-         // Navigator.pop(context); //volta para tela anterior
-         
-         fetchAll(widget.idPiso.toString());
+          // Navigator.pop(context); //volta para tela anterior
+
+          fetchAll(widget.idPiso.toString());
           notify.sucess("Corredor excluído!");
           //Atualiza a lista de motivos
         }
@@ -103,9 +102,10 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                         label: 'Piso',
                         initialValue: corredorEnderecamentoReplacement.id_piso.toString(),
                         hintText: 'Digite o piso',
+                        enable: false,
                         onChanged: (value) {
                           setState(() {
-                            //  corredorEnderecamentoReplacement.id_piso = corredorEnderecamentoModel;
+                            corredorEnderecamentoReplacement.id_piso.toString();
                           });
                         },
                       ),
@@ -172,6 +172,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
             Divider(),
             Row(
               children: [
+                Expanded(child: TextComponent('Id')),
                 Expanded(child: TextComponent('Nome')),
                 Expanded(child: TextComponent('Opções')),
               ],
@@ -190,6 +191,9 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                             child: Row(
                               children: [
                                 Expanded(
+                                  child: TextComponent(enderecamentoController.listaCorredor[index].id_corredor.toString()),
+                                ),
+                                Expanded(
                                   child: TextComponent(enderecamentoController.listaCorredor[index].desc_corredor.toString()),
                                 ),
                                 Expanded(
@@ -198,13 +202,15 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
-                                              Navigator.push(
+                                            Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => HomeView(
-                                                    funcionalities: FuncionalitiesView(),
-                                                    page: CadastroEstanteView(idCorredor: enderecamentoController.listaCorredor[index].id_corredor.toString(),)
-                                                  ),
+                                                      funcionalities: FuncionalitiesView(),
+                                                      page: CadastroEstanteView(
+                                                        idCorredor:
+                                                            enderecamentoController.listaCorredor[index].id_corredor.toString(),
+                                                      )),
                                                 ));
                                           },
                                           text: 'Estante'),
@@ -214,11 +220,11 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                               handleDelete(
-                                                    context,
-                                                    enderecamentoController.listaCorredor[index],)
-                                              }
-                                      )
+                                                handleDelete(
+                                                  context,
+                                                  enderecamentoController.listaCorredor[index],
+                                                )
+                                              })
                                     ],
                                   ),
                                 )
