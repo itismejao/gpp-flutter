@@ -48,12 +48,21 @@ class EnderecamentoController {
     return await repository.buscarBox(idPrateleira);
   }
 
-  // excluir
+  // criar e excluir Piso 
   Future<bool> excluir( PisoEnderecamentoModel pecasModel) async {
     return await repository.excluir(pecasModel);
   }
 
    Future<bool> criar() async {
     return await repository.criar(pisoModel);
+  }
+
+   // Criar e excluir Corredor
+   Future<bool> excluirCorredor( CorredorEnderecamentoModel corredorModel) async {
+    return await repository.excluirCorredor(corredorModel);
+  }
+
+   Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
+    return await repository.criarCorredor(corredor,idPiso);
   }
 }

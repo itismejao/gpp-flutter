@@ -46,34 +46,37 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     });
   }
 
-  // handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await controller.repository.create(estanteEnderecamentoReplacement)) {
-  //       Navigator.pop(context);
-  //       fetchAll();
-  //       notify.sucess('Estante adicionada com sucesso!');
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+   handleCreate(context, EnderecamentoController corredor,  String idPiso) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.criarCorredor(corredor, idPiso)) {
+        Navigator.pop(context);
+        fetchAll(widget.idPiso.toString());
+        notify.sucess('Corredor adicionado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
-  // handleDelete(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await notify
-  //         .alert("você deseja excluir a estante?")) {
-  //       if (await controller.repository.excluir(estanteEnderecamentoReplacement)) {
-  //         notify.sucess("Estante excluída!");
-  //         //Atualiza a lista de motivos
-  //         fetchAll();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleDelete(context, EnderecamentoController excluiCorredor) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify
+          .alert("você deseja excluir o corredor?")) {
+        if (await enderecamentoController.repository.excluirCorredor(excluiCorredor)) {
+         // Navigator.pop(context); //volta para tela anterior
+         
+         fetchAll(widget.idPiso.toString());
+          notify.sucess("Corredor excluído!");
+          //Atualiza a lista de motivos
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     showDialog(
       context: context,

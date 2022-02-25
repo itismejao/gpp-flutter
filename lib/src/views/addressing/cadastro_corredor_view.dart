@@ -44,34 +44,37 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
     });
   }
 
-  // handleCreate(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await controller.repository.create(corredorEnderecamentoReplacement)) {
-  //       Navigator.pop(context);
-  //       fetchAll();
-  //       notify.sucess('Motivo de peça adicionado com sucesso!');
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+   handleCreate(context, CorredorEnderecamentoModel corredor,  String idPiso) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.criarCorredor(corredor, idPiso)) {
+        Navigator.pop(context);
+        fetchAll(widget.idPiso.toString());
+        notify.sucess('Corredor adicionado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
-  // handleDelete(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await notify
-  //         .alert("você deseja excluir o corredor?")) {
-  //       if (await controller.repository.excluir(corredorEnderecamentoReplacement)) {
-  //         notify.sucess("Corredor excluído!");
-  //         //Atualiza a lista de motivos
-  //         fetchAll();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleDelete(context, CorredorEnderecamentoModel excluiCorredor) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify
+          .alert("você deseja excluir o corredor?")) {
+        if (await enderecamentoController.repository.excluirCorredor(excluiCorredor)) {
+         // Navigator.pop(context); //volta para tela anterior
+         
+         fetchAll(widget.idPiso.toString());
+          notify.sucess("Corredor excluído!");
+          //Atualiza a lista de motivos
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -116,8 +119,7 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
-                                  // handleCreate(
-                                  //     context, corredorEnderecamentoReplacement);
+                                  handleCreate(context, enderecamentoController.corredorModel, widget.idPiso.toString());
                                 },
                                 text: 'Adicionar')
                           ],
@@ -212,12 +214,11 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                                             color: Colors.grey.shade400,
                                           ),
                                           onPressed: () => {
-                                                // handleDelete(
-                                                //     context,
-                                                //     controller
-                                                //             .corredorEnderecamentoReplacements[
-                                                //         index]),
-                                              }),
+                                               handleDelete(
+                                                    context,
+                                                    enderecamentoController.listaCorredor[index],)
+                                              }
+                                      )
                                     ],
                                   ),
                                 )

@@ -105,7 +105,7 @@ class EnderecamentoRepository {
     }
   }
 
-// excluir 
+  // excluir e criar Piso
 
   Future<bool> excluir(PisoEnderecamentoModel pisoModelo) async {
     Response response = await api.delete('/piso/' + pisoModelo.id_piso.toString());
@@ -129,7 +129,57 @@ class EnderecamentoRepository {
     }
   }
 
- 
+  // excluir e criar Corredor
+
+  Future<bool> excluirCorredor(CorredorEnderecamentoModel corredorModelo) async {
+    Response response = await api.delete('/piso/00/corredor/' + corredorModelo.id_corredor.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+    
+   Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
+    print(jsonEncode(corredor.toJson()));
+    Response response = await api.post('/piso/'+ idPiso +'/corredor', corredor.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao criar um coredor';
+    }
+   }
+
+   // excluir e criar Estante
+
+  Future<bool> excluirEstate(EstanteEnderecamentoModel estanteModelo) async {
+    Response response = await api.delete('/piso/00/corredor/' + estanteModelo.id_corredor.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+    
+   Future<bool> criarEstante(EstanteEnderecamentoModel estanteModelo, String idCorredor) async {
+    print(jsonEncode(estanteModelo.toJson()));
+    Response response = await api.post('/piso/00/corredor/'+ idCorredor +'/estante', estanteModelo.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao criar um coredor';
+    }
+   }
+
+
 
   // Future<FuncionalidadeModel> fetch(String id) async {
   //   Response response = await api.get('/funcionalidades/' + id);
