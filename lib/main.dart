@@ -132,6 +132,8 @@ class _GppAppState extends State<GppApp> {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
           pagina = Container();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {

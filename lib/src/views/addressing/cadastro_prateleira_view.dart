@@ -3,11 +3,11 @@ import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_prateleira_cotroller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 

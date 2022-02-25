@@ -7,12 +7,12 @@ import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
 import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
 import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
