@@ -149,7 +149,7 @@ class EnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar um coredor';
+      throw 'Ocorreu um erro ao criar um corredor';
     }
   }
 
@@ -174,7 +174,7 @@ class EnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar um corredor';
+      throw 'Ocorreu um erro ao criar uma Estante';
     }
   }
 
@@ -196,12 +196,12 @@ class EnderecamentoRepository {
   Future<bool> criarPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
     print(jsonEncode(prateleiraEnderecamentoModel.toJson()));
     Response response =
-        await api.post('/piso/00/corredor/estante/' + idEstante + '/prateleira', prateleiraEnderecamentoModel.toJson());
+        await api.post('/piso/00/corredor/00/estante/' + idEstante + '/prateleira', prateleiraEnderecamentoModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar um corredor';
+      throw 'Ocorreu um erro ao criar uma Prateleira';
     }
   }
 
@@ -228,7 +228,7 @@ class EnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar um corredor';
+      throw 'Ocorreu um erro ao criar um Box';
     }
   }
 }
