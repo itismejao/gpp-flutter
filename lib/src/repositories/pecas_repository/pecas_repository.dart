@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
@@ -13,14 +14,43 @@ class PecasRepository {
     required this.api,
   });
 
-  Future<bool> criar(PecasModel pecas) async {
+  // Future<bool> criar(PecasModel pecas) async {
+  //   print(jsonEncode(pecas.toJson()));
+  //   Response response = await api.post('/pecas', pecas.toJson());
+
+  //   print(jsonDecode(response.body));
+
+  //   if (response.statusCode == StatusCode.OK) {
+  //     return true;
+  //   } else {
+  //     throw 'Ocorreu um erro ao criar uma peça';
+  //   }
+  // }
+
+  Future<PecasModel> criarPeca(PecasModel pecas) async {
     print(jsonEncode(pecas.toJson()));
     Response response = await api.post('/pecas', pecas.toJson());
+
+    var data = jsonDecode(response.body);
+
+    if (response.statusCode == StatusCode.OK) {
+      PecasModel pecas = PecasModel.fromJson(data);
+
+      return pecas;
+    } else {
+      throw 'Ocorreu um erro ao criar uma peça';
+    }
+  }
+
+  Future<bool> criarProdutoPeca(ProdutoPecaModel produtoPecaModel) async {
+    print(jsonEncode(produtoPecaModel.toJson()));
+
+    Response response = await api.post('/pecas/00/produto-peca', produtoPecaModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar uma peça';
+      throw 'Ocorreu um erro ao criar um produto peça';
     }
   }
 

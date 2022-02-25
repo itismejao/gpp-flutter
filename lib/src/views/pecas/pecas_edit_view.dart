@@ -63,16 +63,16 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
     // print(await _pecasLinhaController.buscarEspecieVinculada(codigo));
   }
 
-  criar(context) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await _pecasController.criar()) {
-        notify.sucess("Peça cadastrada com sucesso!");
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // criar(context) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await _pecasController.criar()) {
+  //       notify.sucess("Peça cadastrada com sucesso!");
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
   editar(context) async {
     NotifyController notify = NotifyController(context: context);
