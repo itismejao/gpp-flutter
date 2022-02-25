@@ -1,10 +1,10 @@
-class Cliente {
+class ClienteModel {
   int? idCliente;
   String? nome;
 
-  Cliente({this.idCliente, this.nome});
+  ClienteModel({this.idCliente, this.nome});
 
-  Cliente.fromJson(Map<String, dynamic> json) {
+  ClienteModel.fromJson(Map<String, dynamic> json) {
     idCliente = json['id_cliente'];
     nome = json['nome'];
   }

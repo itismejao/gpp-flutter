@@ -2,14 +2,15 @@ import 'package:gpp/src/models/cliente_model.dart';
 
 class FornecedorModel {
   int? idFornecedor;
-  Cliente? cliente;
+  ClienteModel? cliente;
 
   FornecedorModel({this.idFornecedor, this.cliente});
 
   FornecedorModel.fromJson(Map<String, dynamic> json) {
     idFornecedor = json['id_fornecedor'];
-    cliente =
-        json['cliente'] != null ? new Cliente.fromJson(json['cliente']) : null;
+    cliente = json['cliente'] != null
+        ? new ClienteModel.fromJson(json['cliente'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

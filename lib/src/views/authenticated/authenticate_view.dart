@@ -4,10 +4,10 @@ import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 
-import 'package:gpp/src/shared/components/button_component.dart';
-import 'package:gpp/src/shared/components/input_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
@@ -69,6 +69,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
               InputComponent(
                 label: "RE",
                 keyboardType: TextInputType.number,
+                onFieldSubmitted: (value) {
+                  autenticar(context);
+                },
                 onChanged: (value) {
                   controller.autenticacao.id = value;
                 },
@@ -82,6 +85,9 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                 label: "Senha",
                 maxLines: 1,
                 obscureText: !controller.visiblePassword,
+                onFieldSubmitted: (value) {
+                  autenticar(context);
+                },
                 onChanged: (value) {
                   controller.autenticacao.senha = value;
                 },

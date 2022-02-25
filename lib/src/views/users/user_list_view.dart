@@ -4,25 +4,25 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/user_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 
-import 'package:gpp/src/shared/components/input_component.dart';
+import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/shared/components/text_component.dart';
-import 'package:gpp/src/shared/components/title_component.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
+import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
 
-class UserListView extends StatefulWidget {
-  const UserListView({
+class UsuarioListView extends StatefulWidget {
+  const UsuarioListView({
     Key? key,
   }) : super(key: key);
 
   @override
-  _UserListViewState createState() => _UserListViewState();
+  _UsuarioListViewState createState() => _UsuarioListViewState();
 }
 
-class _UserListViewState extends State<UserListView> {
+class _UsuarioListViewState extends State<UsuarioListView> {
   late final UsuarioController _controller;
   final ResponsiveController _responsive = ResponsiveController();
   void changeUsers() async {
@@ -31,15 +31,16 @@ class _UserListViewState extends State<UserListView> {
         _controller.state = UserEnum.loading;
       });
 
-      _controller.changeUser();
+      await _controller.changeUser();
 
       setState(() {
         _controller.state = UserEnum.changeUser;
       });
     } catch (e) {
-      setState(() {
-        _controller.state = UserEnum.changeUser;
-      });
+      print(e);
+      // setState(() {
+      //   _controller.state = UserEnum.changeUser;
+      // });
     }
   }
 
@@ -175,12 +176,7 @@ class _UserListViewState extends State<UserListView> {
                 children: [
                   Expanded(child: TextComponent('RE')),
                   Expanded(child: TextComponent('Nome')),
-                  Expanded(child: TextComponent('Departamento')),
-                  Expanded(child: TextComponent('Cargo')),
-                  Expanded(child: TextComponent('Telefone')),
-                  Expanded(child: TextComponent('E-mail')),
-                  Expanded(child: TextComponent('Status')),
-                  Expanded(child: TextComponent('Opções')),
+                  Expanded(flex: 2, child: TextComponent('E-mail')),
                 ],
               ),
             ),
@@ -232,7 +228,7 @@ class _UserListViewState extends State<UserListView> {
                     Row(
                       children: [
                         Text(
-                          users[index].name ?? '',
+                          users[index].nome ?? '',
                           style: textStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -283,50 +279,13 @@ class _UserListViewState extends State<UserListView> {
                 )),
                 Expanded(
                     child: TextComponent(
-                  users[index].name!,
+                  users[index].nome!,
                 )),
                 Expanded(
+                    flex: 2,
                     child: TextComponent(
-                  users[index].departament!.nome ?? '',
-                )),
-                Expanded(
-                    child: TextComponent(
-                  "Auxiliar Administrativo",
-                )),
-                Expanded(
-                    child: TextComponent(
-                  "(62) 9999-9999",
-                )),
-                Expanded(
-                    child: TextComponent(
-                  users[index].email!,
-                )),
-                Expanded(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: StatusComponent(status: users[index].active!),
-                    )
-                  ],
-                )),
-                Expanded(
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey.shade400,
-                        ),
-                        onPressed: () => {
-                          Navigator.pushNamed(
-                              context, '/users/' + users[index].id.toString())
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                      users[index].email!,
+                    )),
               ],
             ),
           ),
