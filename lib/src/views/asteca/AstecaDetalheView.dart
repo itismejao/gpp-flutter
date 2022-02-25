@@ -59,8 +59,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.carregado = false;
     });
-    astecaController.asteca =
-        await astecaController.repository.buscar(widget.id);
+    astecaController.asteca = await astecaController.repository.buscar(widget.id);
 
     setState(() {
       astecaController.carregado = true;
@@ -72,8 +71,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       astecaController.carregado = false;
     });
 
-    astecaController.astecaTipoPendencias =
-        await astecaController.repository.pendencia.buscarPendencias();
+    astecaController.astecaTipoPendencias = await astecaController.repository.pendencia.buscarPendencias();
 
     setState(() {
       astecaController.carregado = true;
@@ -85,26 +83,22 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       astecaController.carregado = false;
     });
 
-    motivoTrocaPecaController.motivoTrocaPecas =
-        await motivoTrocaPecaController.repository.buscarTodos();
+    motivoTrocaPecaController.motivoTrocaPecas = await motivoTrocaPecaController.repository.buscarTodos();
 
     setState(() {
       astecaController.carregado = true;
     });
   }
 
-  handlePendencia(
-      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+  handlePendencia(AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
     await astecaController.repository.pendencia.criar(asteca, pendencia);
     //Atualiza asteca
     await buscar();
   }
 
   gerarItemPeca() {
-    itemsPeca = astecaController.produtoPecas
-        .map<ItemPeca>(
-            (produtoPeca) => ItemPeca(marcado: false, produtoPeca: produtoPeca))
-        .toList();
+    itemsPeca =
+        astecaController.produtoPecas.map<ItemPeca>((produtoPeca) => ItemPeca(marcado: false, produtoPeca: produtoPeca)).toList();
   }
 
   /**
@@ -141,21 +135,16 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
           //Verifica se já existe item com o mesmo id adicionado na lista
-          int index = astecaController.pedidoSaida.itemsPedidoSaida!.indexWhere(
-              (element) =>
-                  element.peca!.idPeca == itemPeca.produtoPeca.peca.idPeca);
+          int index = astecaController.pedidoSaida.itemsPedidoSaida!
+              .indexWhere((element) => element.peca!.idPeca == itemPeca.produtoPeca.peca.idPeca);
           //Se não existe item adiciona na lista
           if (index < 0) {
             astecaController.pedidoSaida.itemsPedidoSaida!.add(
-                ItemPedidoSaidaModel(
-                    peca: itemPeca.produtoPeca.peca,
-                    valor: itemPeca.produtoPeca.peca.custo,
-                    quantidade: 1));
+                ItemPedidoSaidaModel(peca: itemPeca.produtoPeca.peca, valor: itemPeca.produtoPeca.peca.custo, quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
             astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
-            astecaController.pedidoSaida.itemsPedidoSaida![index].valor +=
-                itemPeca.produtoPeca.peca.custo;
+            astecaController.pedidoSaida.itemsPedidoSaida![index].valor += itemPeca.produtoPeca.peca.custo;
             //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
           }
           //Soma o total
@@ -183,17 +172,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.pedidoSaida.valorTotal = 0.0;
       for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-        astecaController.pedidoSaida.valorTotal =
-            astecaController.pedidoSaida.valorTotal! +
-                item.quantidade * item.valor;
+        astecaController.pedidoSaida.valorTotal = astecaController.pedidoSaida.valorTotal! + item.quantidade * item.valor;
       }
     });
   }
 
   selecionarMotivoTrocaPeca(index, value) {
     setState(() {
-      astecaController.pedidoSaida.itemsPedidoSaida![index].motivoTrocaPeca =
-          value;
+      astecaController.pedidoSaida.itemsPedidoSaida![index].motivoTrocaPeca = value;
     });
   }
 
@@ -242,6 +228,52 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     return verificaSelecaoMotivoTrocaPeca;
   }
 
+  myShowDialog(String text) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Padding(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.warning_amber, color: Colors.amber, size: 45.0),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        TextComponent(
+                          text,
+                          fontSize: 20.0,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ButtonComponent(
+                            color: primaryColor,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            text: 'Ok'),
+                        SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
+          ]);
+        });
+  }
+
   /**
    * Função destinada a finalizar o pedido
    */
@@ -249,55 +281,24 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   finalizarPedido() async {
     try {
       if (!verificarSelecaoMotivoTrocaPeca()) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(actions: <Widget>[
-                Row(
-                  children: [
-                    TextComponent('Selecione o motivo de troca da peça')
-                  ],
-                ),
-                Row(
-                  children: [
-                    ButtonComponent(
-                        color: primaryColor,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        text: 'Ok'),
-                    SizedBox(
-                      width: 8,
-                    ),
-                  ],
-                )
-              ]);
-            });
+        myShowDialog('Selecione o motivo de troca da peça');
       }
 
       if (verificaEstoque()) {
         print('as');
 
         //Criar o pedido
-        astecaController.pedidoSaida.cpfCnpj =
-            astecaController.asteca.documentoFiscal!.cpfCnpj.toString();
-        astecaController.pedidoSaida.filialVenda =
-            astecaController.asteca.documentoFiscal!.idFilialVenda;
-        astecaController.pedidoSaida.numDocFiscal =
-            astecaController.asteca.documentoFiscal!.numDocFiscal;
-        astecaController.pedidoSaida.serieDocFiscal =
-            astecaController.asteca.documentoFiscal!.serieDocFiscal;
+        astecaController.pedidoSaida.cpfCnpj = astecaController.asteca.documentoFiscal!.cpfCnpj.toString();
+        astecaController.pedidoSaida.filialVenda = astecaController.asteca.documentoFiscal!.idFilialVenda;
+        astecaController.pedidoSaida.numDocFiscal = astecaController.asteca.documentoFiscal!.numDocFiscal;
+        astecaController.pedidoSaida.serieDocFiscal = astecaController.asteca.documentoFiscal!.serieDocFiscal;
 
         astecaController.pedidoSaida.situacao = 1;
         astecaController.pedidoSaida.asteca = astecaController.asteca;
-        astecaController.pedidoSaida.funcionario =
-            astecaController.asteca.funcionario;
-        astecaController.pedidoSaida.cliente =
-            astecaController.asteca.documentoFiscal!.cliente;
+        astecaController.pedidoSaida.funcionario = astecaController.asteca.funcionario;
+        astecaController.pedidoSaida.cliente = astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
-        PedidoSaidaModel pedidoResposta = await astecaController
-            .pedidoRepository
-            .criar(astecaController.pedidoSaida);
+        PedidoSaidaModel pedidoResposta = await astecaController.pedidoRepository.criar(astecaController.pedidoSaida);
 
         //Notificação
         showDialog(
@@ -306,29 +307,29 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               return AlertDialog(actions: <Widget>[
                 Row(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: TextComponent(
-                            'Nº Pedido: #${pedidoResposta.idPedidoSaida}',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                          ),
+                    Padding(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: TextComponent(
+                                'Nº Pedido: #${pedidoResposta.idPedidoSaida}',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              child: TextComponent('Nome do cliente: ${pedidoResposta.cliente!.nome}'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              child: TextComponent('Filial venda: ${pedidoResposta.filialVenda}'),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: TextComponent(
-                              'Nome do cliente: ${pedidoResposta.cliente!.nome}'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: TextComponent(
-                              'Filial venda: ${pedidoResposta.filialVenda}'),
-                        )
-                      ],
-                    )
+                        padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
                   ],
                 ),
                 SizedBox(
@@ -340,6 +341,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                         color: primaryColor,
                         onPressed: () {
                           Navigator.pop(context);
+                          Navigator.pushReplacementNamed(context, '/pedidos');
                         },
                         text: 'Ok'),
                     SizedBox(
@@ -359,7 +361,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ]);
             });
       } else {
-        print('Estoque inválido');
+        myShowDialog('Não é possível finalizar o pedido, existe peças adicionadas sem estoque');
       }
     } catch (e) {
       print(e);
@@ -369,21 +371,16 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   pesquisarPecas(value) {
     itemsPecaBusca = itemsPeca
         .where((element) =>
-            element.produtoPeca.peca.descricao
-                .toLowerCase()
-                .contains(value.toString().toLowerCase()) ||
+            element.produtoPeca.peca.descricao.toLowerCase().contains(value.toString().toLowerCase()) ||
             element.produtoPeca.peca.idPeca.toString().contains(value))
         .toList();
   }
 
   pesquisarPendencia(value) {
     setState(() {
-      astecaController.astecaTipoPendenciasBuscar = astecaController
-          .astecaTipoPendencias
+      astecaController.astecaTipoPendenciasBuscar = astecaController.astecaTipoPendencias
           .where((element) =>
-              element.descricao!
-                  .toLowerCase()
-                  .contains(value.toString().toLowerCase()) ||
+              element.descricao!.toLowerCase().contains(value.toString().toLowerCase()) ||
               element.idTipoPendencia.toString().contains(value))
           .toList();
     });
@@ -393,8 +390,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.carregaProdutoPeca = false;
     });
-    astecaController.produtoPecas = await astecaController.pecaRepository
-        .buscarTodos(astecaController.asteca.produto!.first.idProduto!);
+    astecaController.produtoPecas =
+        await astecaController.pecaRepository.buscarTodos(astecaController.asteca.produto!.first.idProduto!);
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });
@@ -433,20 +430,17 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       removerPeca(index);
     } else if (quantidade > 0) {
       setState(() {
-        astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade =
-            quantidade;
+        astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade = quantidade;
       });
       calcularValorTotal();
     }
   }
 
   _buildSituacaoEstoque(index) {
-    if (astecaController
-        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque.isEmpty) {
+    if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque.isEmpty) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque
-              .first.saldoDisponivel <
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque.first.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
       } else {
@@ -477,8 +471,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   children: [
                     _buildAstecaNavigator(media),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -588,38 +581,20 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      astecaController.abrirDropDownButton =
-                                          !astecaController.abrirDropDownButton;
+                                      astecaController.abrirDropDownButton = !astecaController.abrirDropDownButton;
                                     });
                                   },
                                   child: Container(
-                                    decoration: BoxDecoration(
-                                        color: secundaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
+                                    decoration: BoxDecoration(color: secundaryColor, borderRadius: BorderRadius.circular(5)),
                                     child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, top: 12, bottom: 12),
-                                        child: astecaController
-                                                .asteca
-                                                .astecaTipoPendencias!
-                                                .isNotEmpty
+                                        padding: const EdgeInsets.only(left: 12, top: 12, bottom: 12),
+                                        child: astecaController.asteca.astecaTipoPendencias!.isNotEmpty
                                             ? TextComponent(
-                                                astecaController
-                                                        .asteca
-                                                        .astecaTipoPendencias!
-                                                        .last
-                                                        .idTipoPendencia
-                                                        .toString() +
+                                                astecaController.asteca.astecaTipoPendencias!.last.idTipoPendencia.toString() +
                                                     ' - ' +
-                                                    astecaController
-                                                        .asteca
-                                                        .astecaTipoPendencias!
-                                                        .last
-                                                        .descricao!,
+                                                    astecaController.asteca.astecaTipoPendencias!.last.descricao!,
                                                 color: Colors.white)
-                                            : const TextComponent(
-                                                'Aguardando Pendência',
-                                                color: Colors.white)),
+                                            : const TextComponent('Aguardando Pendência', color: Colors.white)),
                                   ),
                                 ),
                               ),
@@ -638,11 +613,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                   children: [
                                     _buildAstecaNavigator(media),
                                     Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 10),
+                                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: [],
                                         )),
                                   ],
@@ -689,9 +662,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               child: Container(
                                 height: 240,
                                 width: 700,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade50,
-                                    borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(5)),
                                 child: Column(
                                   children: [
                                     Row(
@@ -707,61 +678,37 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: astecaController
-                                              .astecaTipoPendenciasBuscar
-                                              .isEmpty
+                                      child: astecaController.astecaTipoPendenciasBuscar.isEmpty
                                           ? ListView.builder(
-                                              itemCount: astecaController
-                                                  .astecaTipoPendencias.length,
+                                              itemCount: astecaController.astecaTipoPendencias.length,
                                               itemBuilder: (context, index) {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
                                                       handlePendencia(
-                                                          astecaController
-                                                              .asteca,
-                                                          astecaController
-                                                                  .astecaTipoPendencias[
-                                                              index]);
+                                                          astecaController.asteca, astecaController.astecaTipoPendencias[index]);
 
-                                                      astecaController
-                                                              .abrirDropDownButton =
-                                                          false;
+                                                      astecaController.abrirDropDownButton = false;
                                                     });
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 16),
+                                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                                                     child: Row(
                                                       children: [
                                                         Container(
                                                           width: 16,
                                                           height: 16,
                                                           decoration: BoxDecoration(
-                                                              color:
-                                                                  secundaryColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2)),
+                                                              color: secundaryColor, borderRadius: BorderRadius.circular(2)),
                                                         ),
                                                         SizedBox(
                                                           width: 8,
                                                         ),
                                                         TextComponent(
-                                                          astecaController
-                                                                  .astecaTipoPendencias[
-                                                                      index]
-                                                                  .idTipoPendencia
+                                                          astecaController.astecaTipoPendencias[index].idTipoPendencia
                                                                   .toString() +
                                                               ' - ' +
-                                                              astecaController
-                                                                  .astecaTipoPendencias[
-                                                                      index]
-                                                                  .descricao
-                                                                  .toString(),
+                                                              astecaController.astecaTipoPendencias[index].descricao.toString(),
                                                         ),
                                                       ],
                                                     ),
@@ -770,57 +717,35 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                               },
                                             )
                                           : ListView.builder(
-                                              itemCount: astecaController
-                                                  .astecaTipoPendenciasBuscar
-                                                  .length,
+                                              itemCount: astecaController.astecaTipoPendenciasBuscar.length,
                                               itemBuilder: (context, index) {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      handlePendencia(
-                                                          astecaController
-                                                              .asteca,
-                                                          astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                              index]);
+                                                      handlePendencia(astecaController.asteca,
+                                                          astecaController.astecaTipoPendenciasBuscar[index]);
 
-                                                      astecaController
-                                                              .abrirDropDownButton =
-                                                          false;
+                                                      astecaController.abrirDropDownButton = false;
                                                     });
                                                   },
                                                   child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 16),
+                                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                                                     child: Row(
                                                       children: [
                                                         Container(
                                                           width: 16,
                                                           height: 16,
                                                           decoration: BoxDecoration(
-                                                              color:
-                                                                  secundaryColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2)),
+                                                              color: secundaryColor, borderRadius: BorderRadius.circular(2)),
                                                         ),
                                                         SizedBox(
                                                           width: 8,
                                                         ),
                                                         TextComponent(
-                                                          astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                                      index]
-                                                                  .idTipoPendencia
+                                                          astecaController.astecaTipoPendenciasBuscar[index].idTipoPendencia
                                                                   .toString() +
                                                               ' - ' +
-                                                              astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                                      index]
-                                                                  .descricao
+                                                              astecaController.astecaTipoPendenciasBuscar[index].descricao
                                                                   .toString(),
                                                         ),
                                                       ],
@@ -862,9 +787,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextComponent('Informações',
-                          color: astecaController.step == 1
-                              ? Colors.black
-                              : Colors.white,
+                          color: astecaController.step == 1 ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.20),
                     ),
@@ -888,9 +811,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextComponent('Endereço',
-                          color: astecaController.step == 2
-                              ? Colors.black
-                              : Colors.white,
+                          color: astecaController.step == 2 ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.20),
                     ),
@@ -914,9 +835,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextComponent('Produto',
-                          color: astecaController.step == 3
-                              ? Colors.black
-                              : Colors.white,
+                          color: astecaController.step == 3 ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.20),
                     ),
@@ -940,9 +859,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextComponent('Peças',
-                          color: astecaController.step == 4
-                              ? Colors.black
-                              : Colors.white,
+                          color: astecaController.step == 4 ? Colors.black : Colors.white,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.20),
                     ),
@@ -970,12 +887,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 },
                 child: ItemMenu(
                   data: 'Informações',
-                  color: astecaController.step == 1
-                      ? Colors.grey.shade50
-                      : Colors.transparent,
-                  borderColor: astecaController.step == 1
-                      ? secundaryColor
-                      : Colors.transparent,
+                  color: astecaController.step == 1 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: astecaController.step == 1 ? secundaryColor : Colors.transparent,
                 ),
               ),
             ),
@@ -993,12 +906,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 },
                 child: ItemMenu(
                   data: 'Endereço',
-                  color: astecaController.step == 2
-                      ? Colors.grey.shade50
-                      : Colors.transparent,
-                  borderColor: astecaController.step == 2
-                      ? secundaryColor
-                      : Colors.transparent,
+                  color: astecaController.step == 2 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: astecaController.step == 2 ? secundaryColor : Colors.transparent,
                 ),
               ),
             ),
@@ -1016,12 +925,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 },
                 child: ItemMenu(
                   data: 'Produto',
-                  color: astecaController.step == 3
-                      ? Colors.grey.shade50
-                      : Colors.transparent,
-                  borderColor: astecaController.step == 3
-                      ? secundaryColor
-                      : Colors.transparent,
+                  color: astecaController.step == 3 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: astecaController.step == 3 ? secundaryColor : Colors.transparent,
                 ),
               ),
             ),
@@ -1039,12 +944,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 },
                 child: ItemMenu(
                   data: 'Peças',
-                  color: astecaController.step == 4
-                      ? Colors.grey.shade50
-                      : Colors.transparent,
-                  borderColor: astecaController.step == 4
-                      ? secundaryColor
-                      : Colors.transparent,
+                  color: astecaController.step == 4 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor: astecaController.step == 4 ? secundaryColor : Colors.transparent,
                 ),
               ),
             ),
@@ -1231,8 +1132,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               child: InputComponent(
                 label: 'Observação',
-                initialValue:
-                    'Solicitado pelo técnico, enviar 30 unidades de adesivos/ tapa furos.',
+                initialValue: 'Solicitado pelo técnico, enviar 30 unidades de adesivos/ tapa furos.',
               ),
             ),
           ],
@@ -1276,12 +1176,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 flex: 2,
                 child: InputComponent(
                   key: UniqueKey(),
-                  initialValue: maskFormatter
-                      .cpfCnpjFormatter(
-                          value: astecaController
-                              .asteca.documentoFiscal!.cpfCnpj
-                              .toString())!
-                      .getMaskedText(),
+                  initialValue: astecaController.asteca.documentoFiscal!.cpfCnpj == null
+                      ? ''
+                      : maskFormatter
+                          .cpfCnpjFormatter(value: astecaController.asteca.documentoFiscal!.cpfCnpj.toString())!
+                          .getMaskedText(),
                   label: 'CPF/CNPJ',
                 ),
               ),
@@ -1293,7 +1192,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.asteca.documentoFiscal!.nome,
+                  initialValue:
+                      astecaController.asteca.documentoFiscal!.nome == null ? '' : astecaController.asteca.documentoFiscal!.nome,
                 ),
               ),
             ],
@@ -1307,9 +1207,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Nº Fiscal',
-                  initialValue: astecaController
-                      .asteca.documentoFiscal!.numDocFiscal
-                      .toString(),
+                  initialValue: astecaController.asteca.documentoFiscal!.numDocFiscal == null
+                      ? ''
+                      : astecaController.asteca.documentoFiscal!.numDocFiscal.toString(),
                 ),
               ),
               SizedBox(
@@ -1319,8 +1219,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Série',
-                  initialValue:
-                      astecaController.asteca.documentoFiscal!.serieDocFiscal,
+                  initialValue: astecaController.asteca.documentoFiscal!.serieDocFiscal == null
+                      ? ''
+                      : astecaController.asteca.documentoFiscal!.serieDocFiscal,
                 ),
               ),
               SizedBox(
@@ -1330,9 +1231,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Filial de saída',
-                  initialValue: astecaController
-                      .asteca.documentoFiscal!.idFilialSaida
-                      .toString(),
+                  initialValue: astecaController.asteca.documentoFiscal!.idFilialSaida == null
+                      ? ''
+                      : astecaController.asteca.documentoFiscal!.idFilialSaida.toString(),
                 ),
               ),
               SizedBox(
@@ -1342,9 +1243,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Filial venda',
-                  initialValue: astecaController
-                      .asteca.documentoFiscal!.idFilialVenda
-                      .toString(),
+                  initialValue: astecaController.asteca.documentoFiscal!.idFilialVenda == null
+                      ? ''
+                      : astecaController.asteca.documentoFiscal!.idFilialVenda.toString(),
                 ),
               )
             ],
@@ -1368,8 +1269,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Data de abertura',
-                  initialValue: DateFormat('yyyy/MM/dd')
-                      .format(astecaController.asteca.dataEmissao!),
+                  initialValue: astecaController.asteca.dataEmissao == null
+                      ? ''
+                      : DateFormat('yyyy/MM/dd').format(astecaController.asteca.dataEmissao!),
                 ),
               ),
               SizedBox(
@@ -1379,8 +1281,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Data de compra',
-                  initialValue: DateFormat('yyyy/MM/dd').format(
-                      astecaController.asteca.documentoFiscal!.dataEmissao!),
+                  initialValue: astecaController.asteca.documentoFiscal!.dataEmissao == null
+                      ? ''
+                      : DateFormat('yyyy/MM/dd').format(astecaController.asteca.documentoFiscal!.dataEmissao!),
                 ),
               ),
               SizedBox(
@@ -1391,7 +1294,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Filial Asteca',
                   initialValue:
-                      astecaController.asteca.idFilialRegistro.toString(),
+                      astecaController.asteca.idFilialRegistro == null ? '' : astecaController.asteca.idFilialRegistro.toString(),
                 ),
               )
             ],
@@ -1419,9 +1322,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'RE',
-                  initialValue: astecaController
-                      .asteca.funcionario!.idFuncionario
-                      .toString(),
+                  initialValue: astecaController.asteca.funcionario!.idFuncionario == null
+                      ? ''
+                      : astecaController.asteca.funcionario!.idFuncionario.toString(),
                 ),
               ),
               SizedBox(
@@ -1432,7 +1335,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.asteca.funcionario!.nome,
+                  initialValue:
+                      astecaController.asteca.funcionario!.nome == null ? '' : astecaController.asteca.funcionario!.nome,
                 ),
               ),
             ],
@@ -1460,7 +1364,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Defeito',
-                  initialValue: astecaController.asteca.defeitoEstadoProd!,
+                  initialValue:
+                      astecaController.asteca.defeitoEstadoProd == null ? '' : astecaController.asteca.defeitoEstadoProd!,
                 ),
               ),
             ],
@@ -1475,7 +1380,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   maxLines: 5,
                   label: 'Observação',
-                  initialValue: astecaController.asteca.observacao,
+                  initialValue: astecaController.asteca.observacao == null ? '' : astecaController.asteca.observacao,
                 ),
               ),
             ],
@@ -1506,10 +1411,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     ),
                     Text(
                       'Endereço',
-                      style: TextStyle(
-                          letterSpacing: 0.15,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(letterSpacing: 0.15, fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -1518,8 +1420,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
                   label: 'Logradouro',
-                  initialValue:
-                      'Avenida Perimental Norte NR 1 AP 1903  Torre Itaparica',
+                  initialValue: 'Avenida Perimental Norte NR 1 AP 1903  Torre Itaparica',
                 ),
               ),
               Container(
@@ -1576,10 +1477,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     ),
                     Text(
                       'Telefone para contato',
-                      style: TextStyle(
-                          letterSpacing: 0.15,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(letterSpacing: 0.15, fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -1617,10 +1515,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Text(
                 'Endereço',
-                style: TextStyle(
-                    letterSpacing: 0.15,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(letterSpacing: 0.15, fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -1634,9 +1529,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Logradouro',
-                  initialValue: astecaController
-                      .asteca.astecaEndCliente?.logradouro
-                      .toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.logradouro == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.logradouro.toString(),
                 ),
               ),
               SizedBox(
@@ -1647,9 +1542,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Complemento',
-                  initialValue: astecaController
-                      .asteca.astecaEndCliente?.complemento
-                      .toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.complemento == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.complemento.toString(),
                 ),
               ),
               SizedBox(
@@ -1659,8 +1554,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Número',
-                  initialValue: astecaController.asteca.astecaEndCliente?.numero
-                      .toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.numero == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.numero.toString(),
                 ),
               ),
             ],
@@ -1674,8 +1570,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Bairro',
-                  initialValue: astecaController.asteca.astecaEndCliente?.bairro
-                      .toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.bairro == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.bairro.toString(),
                 ),
               ),
               SizedBox(
@@ -1685,11 +1582,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Cidade',
-                  initialValue: maskFormatter
-                      .cepInputFormmater(astecaController
-                          .asteca.astecaEndCliente?.cep
-                          .toString())
-                      .getMaskedText(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.cep == null
+                      ? ''
+                      : maskFormatter.cepInputFormmater(astecaController.asteca.astecaEndCliente?.cep.toString()).getMaskedText(),
                 ),
               ),
               SizedBox(
@@ -1699,9 +1594,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Cidade',
-                  initialValue: astecaController
-                      .asteca.astecaEndCliente?.localidade
-                      .toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.localidade == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.localidade.toString(),
                 ),
               ),
               SizedBox(
@@ -1711,8 +1606,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Estado',
-                  initialValue:
-                      astecaController.asteca.astecaEndCliente?.uf.toString(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.uf == null
+                      ? ''
+                      : astecaController.asteca.astecaEndCliente?.uf.toString(),
                 ),
               ),
             ],
@@ -1726,9 +1622,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Referência',
-                  initialValue: astecaController
-                          .asteca.astecaEndCliente!.pontoReferencia1 ??
-                      '',
+                  initialValue: astecaController.asteca.astecaEndCliente!.pontoReferencia1 ?? '',
                 ),
               ),
             ],
@@ -1746,10 +1640,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Text(
                 'Telefone para contato',
-                style: TextStyle(
-                    letterSpacing: 0.15,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(letterSpacing: 0.15, fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -1762,10 +1653,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Telefone',
-                  initialValue: maskFormatter
-                      .telefoneInputFormmater(
-                          '${astecaController.asteca.astecaEndCliente?.ddd.toString()} ${astecaController.asteca.astecaEndCliente?.telefone.toString()}')
-                      .getMaskedText(),
+                  initialValue: astecaController.asteca.astecaEndCliente?.ddd == null ||
+                          astecaController.asteca.astecaEndCliente?.telefone == null
+                      ? ''
+                      : maskFormatter
+                          .telefoneInputFormmater(
+                              '${astecaController.asteca.astecaEndCliente?.ddd.toString()} ${astecaController.asteca.astecaEndCliente?.telefone.toString()}')
+                          .getMaskedText(),
                 ),
               ),
             ],
@@ -1796,10 +1690,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     ),
                     Text(
                       'Produto',
-                      style: TextStyle(
-                          letterSpacing: 0.15,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(letterSpacing: 0.15, fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -1833,10 +1724,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   'Fornecedor',
-                  style: TextStyle(
-                      letterSpacing: 0.15,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(letterSpacing: 0.15, fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -1889,8 +1777,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'ID',
-                  initialValue:
-                      astecaController.asteca.produto?[0].idProduto.toString(),
+                  initialValue: astecaController.asteca.produto?[0].idProduto == null
+                      ? ''
+                      : astecaController.asteca.produto?[0].idProduto.toString(),
                 ),
               ),
               SizedBox(
@@ -1901,7 +1790,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.asteca.produto?[0].resumida,
+                  initialValue:
+                      astecaController.asteca.produto?[0].resumida == null ? '' : astecaController.asteca.produto?[0].resumida,
                 ),
               ),
               SizedBox(
@@ -1911,9 +1801,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'LD',
-                  initialValue: astecaController
-                      .asteca.documentoFiscal?.itemDocFiscal?.idLd
-                      .toString(),
+                  initialValue: astecaController.asteca.documentoFiscal?.itemDocFiscal?.idLd == null
+                      ? ''
+                      : astecaController.asteca.documentoFiscal?.itemDocFiscal?.idLd.toString(),
                 ),
               ),
             ],
@@ -1941,9 +1831,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'ID',
-                  initialValue: astecaController
-                      .asteca.produto?[0].fornecedor?.idFornecedor
-                      .toString(),
+                  initialValue: astecaController.asteca.produto?[0].fornecedor?.idFornecedor == null
+                      ? ''
+                      : astecaController.asteca.produto?[0].fornecedor?.idFornecedor.toString(),
                 ),
               ),
               SizedBox(
@@ -1954,8 +1844,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController
-                      .asteca.produto?[0].fornecedor?.cliente?.nome,
+                  initialValue: astecaController.asteca.produto?[0].fornecedor?.cliente?.nome == null
+                      ? ''
+                      : astecaController.asteca.produto?[0].fornecedor?.cliente?.nome,
                 ),
               ),
               SizedBox(
@@ -2057,13 +1948,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextComponent(astecaController
-                              .pedidoSaida.itemsPedidoSaida![index].peca!.idPeca
-                              .toString()),
+                          child: TextComponent(astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.idPeca.toString()),
                         ),
                         Expanded(
-                          child: TextComponent(astecaController.pedidoSaida
-                              .itemsPedidoSaida![index].peca!.descricao),
+                          child: TextComponent(astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.descricao),
                         ),
                         Expanded(
                           flex: 2,
@@ -2083,9 +1971,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 child: InputComponent(
                                   key: UniqueKey(),
                                   maxLines: 1,
-                                  initialValue: astecaController.pedidoSaida
-                                      .itemsPedidoSaida![index].quantidade
-                                      .toString(),
+                                  initialValue: astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade.toString(),
                                   onFieldSubmitted: (value) {
                                     inserirQuantidade(index, value);
                                   },
@@ -2104,19 +1990,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           ),
                         ),
                         Expanded(
-                          child: TextComponent(astecaController
-                              .pedidoSaida.itemsPedidoSaida![index].valor
-                              .toString()),
+                          child: TextComponent(astecaController.pedidoSaida.itemsPedidoSaida![index].valor.toString()),
                         ),
                         Expanded(
                           child: TextComponent('R\$: ' +
                               maskFormatter
-                                  .realInputFormmater((astecaController
-                                              .pedidoSaida
-                                              .itemsPedidoSaida![index]
-                                              .quantidade *
-                                          astecaController.pedidoSaida
-                                              .itemsPedidoSaida![index].valor)
+                                  .realInputFormmater((astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade *
+                                          astecaController.pedidoSaida.itemsPedidoSaida![index].valor)
                                       .toString())
                                   .getMaskedText()),
                         ),
@@ -2125,18 +2005,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(5)),
+                                decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(5)),
                                 child: DropDownComponent(
                                   onChanged: (value) {
                                     selecionarMotivoTrocaPeca(index, value);
                                   },
-                                  items: motivoTrocaPecaController
-                                      .motivoTrocaPecas
-                                      .map((value) {
-                                    return DropdownMenuItem<
-                                        MotivoTrocaPecaModel>(
+                                  items: motivoTrocaPecaController.motivoTrocaPecas.map((value) {
+                                    return DropdownMenuItem<MotivoTrocaPecaModel>(
                                       value: value,
                                       child: Text(value.nome.toString()),
                                     );
@@ -2180,10 +2055,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             ),
             Text(
               'Valor total R\$: ' +
-                  maskFormatter
-                      .realInputFormmater(
-                          astecaController.pedidoSaida.valorTotal.toString())
-                      .getMaskedText(),
+                  maskFormatter.realInputFormmater(astecaController.pedidoSaida.valorTotal.toString()).getMaskedText(),
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
@@ -2248,8 +2120,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               prefixIcon: const Icon(
                                 Icons.search,
                               ),
-                              hintText:
-                                  'Digite o número de identificação da peça ou o nome',
+                              hintText: 'Digite o número de identificação da peça ou o nome',
                             ),
                           ),
                           const SizedBox(
@@ -2279,10 +2150,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 icon: const Icon(
                                   Icons.swap_vert,
                                 ),
-                                items: <String>[
-                                  'Ordem crescente',
-                                  'Ordem decrescente'
-                                ].map((String value) {
+                                items: <String>['Ordem crescente', 'Ordem decrescente'].map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -2300,10 +2168,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 icon: const Icon(
                                   Icons.swap_vert,
                                 ),
-                                items: <String>[
-                                  'Ordem crescente',
-                                  'Ordem decrescente'
-                                ].map((String value) {
+                                items: <String>['Ordem crescente', 'Ordem decrescente'].map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -2321,13 +2186,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 icon: const Icon(
                                   Icons.swap_vert,
                                 ),
-                                items: <String>[
-                                  'Último dia',
-                                  'Último 15 dias',
-                                  'Último 30 dias',
-                                  'Último semestre',
-                                  'Último ano'
-                                ].map((String value) {
+                                items: <String>['Último dia', 'Último 15 dias', 'Último 30 dias', 'Último semestre', 'Último ano']
+                                    .map((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -2385,10 +2245,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           child: const TextComponent('Nome'),
                         ),
                         Expanded(
-                          child: const TextComponent('Valor R\$',
-                              letterSpacing: 0.15,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
+                          child: const TextComponent('Valor R\$', letterSpacing: 0.15, fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         Expanded(
                           child: const TextComponent('Estoque disponível'),
@@ -2405,9 +2262,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               itemCount: itemsPeca.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  color: (index % 2) == 0
-                                      ? Colors.white
-                                      : Colors.grey.shade50,
+                                  color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                                   child: Row(
                                     children: [
                                       CheckboxComponent(
@@ -2418,33 +2273,16 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                 })
                                               }),
                                       Expanded(
-                                        child: TextComponent(astecaController
-                                            .produtoPecas[index].peca.idPeca
-                                            .toString()),
+                                        child: TextComponent(astecaController.produtoPecas[index].peca.idPeca.toString()),
                                       ),
                                       Expanded(
-                                        child: TextComponent(astecaController
-                                            .produtoPecas[index]
-                                            .peca
-                                            .descricao),
+                                        child: TextComponent(astecaController.produtoPecas[index].peca.descricao),
                                       ),
+                                      Expanded(child: TextComponent(astecaController.produtoPecas[index].peca.custo.toString())),
                                       Expanded(
-                                          child: TextComponent(astecaController
-                                              .produtoPecas[index].peca.custo
-                                              .toString())),
-                                      Expanded(
-                                        child: astecaController
-                                                    .produtoPecas[index]
-                                                    .peca
-                                                    .estoque
-                                                    .length !=
-                                                0
+                                        child: astecaController.produtoPecas[index].peca.estoque.length != 0
                                             ? TextComponent(astecaController
-                                                .produtoPecas[index]
-                                                .peca
-                                                .estoque
-                                                .first
-                                                .saldoDisponivel
+                                                .produtoPecas[index].peca.estoque.first.saldoDisponivel
                                                 .toString())
                                             : TextComponent('0'),
                                       ),
@@ -2456,9 +2294,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               itemCount: itemsPecaBusca.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  color: (index % 2) == 0
-                                      ? Colors.white
-                                      : Colors.grey.shade50,
+                                  color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                                   child: Row(
                                     children: [
                                       CheckboxComponent(
@@ -2469,41 +2305,18 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                 })
                                               }),
                                       Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .idPeca
-                                                .toString()),
+                                        child: TextComponent(itemsPecaBusca[index].produtoPeca.peca.idPeca.toString()),
                                       ),
                                       Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .descricao),
+                                        child: TextComponent(itemsPecaBusca[index].produtoPeca.peca.descricao),
                                       ),
                                       Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .custo
-                                                .toString()),
+                                        child: TextComponent(itemsPecaBusca[index].produtoPeca.peca.custo.toString()),
                                       ),
                                       Expanded(
-                                        child: astecaController
-                                                    .produtoPecas[index]
-                                                    .peca
-                                                    .estoque
-                                                    .length !=
-                                                0
+                                        child: astecaController.produtoPecas[index].peca.estoque.length != 0
                                             ? TextComponent(astecaController
-                                                .produtoPecas[index]
-                                                .peca
-                                                .estoque
-                                                .first
-                                                .saldoDisponivel
+                                                .produtoPecas[index].peca.estoque.first.saldoDisponivel
                                                 .toString())
                                             : TextComponent('0'),
                                       ),
@@ -2520,8 +2333,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextComponent(
-                              'Total de peças selecionadas: ${marcados}'),
+                          TextComponent('Total de peças selecionadas: ${marcados}'),
                           Row(
                             children: [
                               ButtonComponent(
