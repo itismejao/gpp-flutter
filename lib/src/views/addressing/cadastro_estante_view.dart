@@ -15,8 +15,8 @@ import 'package:gpp/src/views/home/home_view.dart';
 import '../funcionalities_view.dart';
 
 class CadastroEstanteView extends StatefulWidget {
-    String? idCorredor;
-    CadastroEstanteView({this.idCorredor});
+  String? idCorredor;
+  CadastroEstanteView({this.idCorredor});
 
   // int id;
 
@@ -46,29 +46,28 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     });
   }
 
-   handleCreate(context, EnderecamentoController corredor,  String idPiso) async {
+  handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoModel, String idCorredor) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await enderecamentoController.criarCorredor(corredor, idPiso)) {
+      if (await enderecamentoController.criarEstante(estanteEnderecamentoModel, idCorredor)) {
         Navigator.pop(context);
-        fetchAll(widget.idPiso.toString());
-        notify.sucess('Corredor adicionado com sucesso!');
+        fetchAll(widget.idCorredor.toString());
+        notify.sucess('Estante adicionada com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  handleDelete(context, EnderecamentoController excluiCorredor) async {
+  handleDelete(context, EstanteEnderecamentoModel estanteEnderecamentoModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify
-          .alert("você deseja excluir o corredor?")) {
-        if (await enderecamentoController.repository.excluirCorredor(excluiCorredor)) {
-         // Navigator.pop(context); //volta para tela anterior
-         
-         fetchAll(widget.idPiso.toString());
-          notify.sucess("Corredor excluído!");
+      if (await notify.alert("você deseja excluir a estante?")) {
+        if (await enderecamentoController.excluirEstante(estanteEnderecamentoModel)) {
+          // Navigator.pop(context); //volta para tela anterior
+
+          fetchAll(widget.idCorredor.toString());
+          notify.sucess("Estante excluída!");
           //Atualiza a lista de motivos
         }
       }
@@ -108,7 +107,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                           estanteEnderecamentoReplacement.id_corredor.toString();
+                            estanteEnderecamentoReplacement.id_corredor.toString();
                           });
                         },
                       ),
@@ -122,8 +121,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
-                                  // handleCreate(
-                                  //     context, estanteEnderecamentoReplacement);
+                                  handleCreate(context, enderecamentoController.estanteModel, widget.idCorredor.toString());
                                 },
                                 text: 'Adicionar')
                           ],
@@ -167,7 +165,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                   ButtonComponent(
                       onPressed: () {
                         enderecamentoController.estanteModel.id_corredor = int.parse(widget.idCorredor.toString());
-                         openForm(context, enderecamentoController.estanteModel);
+                        openForm(context, enderecamentoController.estanteModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -201,12 +199,15 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
-                                              Navigator.push(
+                                            Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) => HomeView(
                                                     funcionalities: FuncionalitiesView(),
-                                                    page:CadastroPrateleiraView(idEstante: enderecamentoController.listaEstante[index].id_estante.toString(),),
+                                                    page: CadastroPrateleiraView(
+                                                      idEstante:
+                                                          enderecamentoController.listaEstante[index].id_estante.toString(),
+                                                    ),
                                                   ),
                                                 ));
                                           },
@@ -216,13 +217,9 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                             Icons.delete,
                                             color: Colors.grey.shade400,
                                           ),
-                                          onPressed: () => {
-                                                // handleDelete(
-                                                //     context,
-                                                //     controller
-                                                //             .estanteEnderecamentoReplacements[
-                                                //         index]),
-                                              }),
+                                          onPressed: () {
+                                            handleDelete(context, enderecamentoController.listaEstante[index]);
+                                          }),
                                     ],
                                   ),
                                 )

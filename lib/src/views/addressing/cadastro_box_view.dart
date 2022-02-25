@@ -21,7 +21,7 @@ import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 
 class CadastroBoxView extends StatefulWidget {
   String? idPrateleira;
-    CadastroBoxView({this.idPrateleira});
+  CadastroBoxView({this.idPrateleira});
 
   // int id;
 
@@ -51,34 +51,35 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     });
   }
 
-  // handleCreate(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await controller.repository.create(boxEnderecamentoReplacement)) {
-  //       Navigator.pop(context);
-  //       fetchAll();
-  //       notify.sucess('Box adicionado com sucesso!');
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleCreate(context, BoxEnderecamentoModel boxEnderecamentoModel, String idPrateleira) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.criarBox(boxEnderecamentoModel, idPrateleira)) {
+        Navigator.pop(context);
+        fetchAll(widget.idPrateleira.toString());
+        notify.sucess('Box adicionado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
-  // handleDelete(context, BoxEnderecamentoModel boxEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await notify
-  //         .alert("você deseja excluir o box?")) {
-  //       if (await controller.repository.excluir(boxEnderecamentoReplacement)) {
-  //         notify.sucess("Box excluído!");
-  //         //Atualiza a lista de motivos
-  //         fetchAll();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleDelete(context, BoxEnderecamentoModel boxEnderecamentoModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify.alert("você deseja excluir o box?")) {
+        if (await enderecamentoController.excluirBox(boxEnderecamentoModel)) {
+          // Navigator.pop(context); //volta para tela anterior
+
+          fetchAll(widget.idPrateleira.toString());
+          notify.sucess("Box excluído!");
+          //Atualiza a lista de motivos
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   openForm(context, BoxEnderecamentoModel boxEnderecamentoReplacement) {
     showDialog(
@@ -127,8 +128,7 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  // handleCreate(
-                                  //     context, boxEnderecamentoReplacement);
+                                  handleCreate(context, enderecamentoController.boxModel, widget.idPrateleira.toString());
                                 },
                                 text: 'Adicionar')
                             // :ButtonComponent(
@@ -177,6 +177,7 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                   Flexible(child: TitleComponent('Box')),
                   ButtonComponent(
                       onPressed: () {
+                        enderecamentoController.boxModel.id_prateleira = int.parse(widget.idPrateleira.toString());
                         openForm(context, enderecamentoController.boxModel);
                       },
                       text: 'Adicionar')
@@ -222,13 +223,9 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                                             Icons.delete,
                                             color: Colors.grey.shade400,
                                           ),
-                                          onPressed: () => {
-                                                // handleDelete(
-                                                //     context,
-                                                //     controller
-                                                //             .boxEnderecamentoReplacements[
-                                                //         index]),
-                                              }),
+                                          onPressed: () {
+                                            handleDelete(context, enderecamentoController.listaBox[index]);
+                                          }),
                                     ],
                                   ),
                                 )

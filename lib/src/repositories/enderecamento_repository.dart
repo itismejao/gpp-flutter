@@ -33,8 +33,6 @@ class EnderecamentoRepository {
       var error = json.decode(response.body)['error'];
       throw Exception(error);
     }
-
-    
   }
 
   Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {
@@ -118,7 +116,8 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
-    Future<bool> criar(PisoEnderecamentoModel pisos) async {
+
+  Future<bool> criar(PisoEnderecamentoModel pisos) async {
     print(jsonEncode(pisos.toJson()));
     Response response = await api.post('/piso', pisos.toJson());
 
@@ -142,22 +141,22 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
-    
-   Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
+
+  Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
     print(jsonEncode(corredor.toJson()));
-    Response response = await api.post('/piso/'+ idPiso +'/corredor', corredor.toJson());
+    Response response = await api.post('/piso/' + idPiso + '/corredor', corredor.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
       throw 'Ocorreu um erro ao criar um coredor';
     }
-   }
+  }
 
-   // excluir e criar Estante
+  // excluir e criar Estante
 
-  Future<bool> excluirEstate(EstanteEnderecamentoModel estanteModelo) async {
-    Response response = await api.delete('/piso/00/corredor/' + estanteModelo.id_corredor.toString());
+  Future<bool> excluirEstate(EstanteEnderecamentoModel estanteEnderecamentoModel) async {
+    Response response = await api.delete('/piso/00/corredor/00/estante/' + estanteEnderecamentoModel.id_estante.toString());
 
     if (response.statusCode == StatusCode.OK) {
       print(response.body);
@@ -167,83 +166,69 @@ class EnderecamentoRepository {
       throw Exception(error);
     }
   }
-    
-   Future<bool> criarEstante(EstanteEnderecamentoModel estanteModelo, String idCorredor) async {
-    print(jsonEncode(estanteModelo.toJson()));
-    Response response = await api.post('/piso/00/corredor/'+ idCorredor +'/estante', estanteModelo.toJson());
+
+  Future<bool> criarEstante(EstanteEnderecamentoModel estanteEnderecamentoModel, String idCorredor) async {
+    print(jsonEncode(estanteEnderecamentoModel.toJson()));
+    Response response = await api.post('/piso/00/corredor/' + idCorredor + '/estante', estanteEnderecamentoModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao criar um coredor';
+      throw 'Ocorreu um erro ao criar um corredor';
     }
-   }
+  }
 
+  // Prateleira
 
+  Future<bool> excluirPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
+    Response response =
+        await api.delete('/piso/00/corredor/00/estante/00/prateleira/' + prateleiraEnderecamentoModel.id_prateleira.toString());
 
-  // Future<FuncionalidadeModel> fetch(String id) async {
-  //   Response response = await api.get('/funcionalidades/' + id);
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 
-  //   if (response.statusCode == StatusCode.OK) {
-  //     var data = jsonDecode(response.body);
+  Future<bool> criarPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
+    print(jsonEncode(prateleiraEnderecamentoModel.toJson()));
+    Response response =
+        await api.post('/piso/00/corredor/estante/' + idEstante + '/prateleira', prateleiraEnderecamentoModel.toJson());
 
-  //     return FuncionalidadeModel.fromJson(data);
-  //   } else {
-  //     throw FuncionalitiesException("Funcionalidades não encontrada !");
-  //   }
-  // }
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao criar um corredor';
+    }
+  }
 
-  // Future<List<FuncionalidadeModel>> fetchAll() async {
-  //   Response response = await api.get('/funcionalidades');
+  // Box
 
-  //   if (response.statusCode == StatusCode.OK) {
-  //     var data = jsonDecode(response.body);
+  Future<bool> excluirBox(BoxEnderecamentoModel boxEnderecamentoModel) async {
+    Response response =
+        await api.delete('/piso/00/corredor/00/estante/00/prateleira/00/box/' + boxEnderecamentoModel.id_box.toString());
 
-  //     List<FuncionalidadeModel> funcionalidades = data
-  //         .map<FuncionalidadeModel>(
-  //             (data) => FuncionalidadeModel.fromJson(data))
-  //         .toList();
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
 
-  //     return funcionalidades;
-  //   } else {
-  //     throw FuncionalitiesException("Funcionalidades não encontrada !");
-  //   }
-  // }
+  Future<bool> criarBox(BoxEnderecamentoModel boxEnderecamentoModel, String idPrateleira) async {
+    print(jsonEncode(boxEnderecamentoModel.toJson()));
+    Response response =
+        await api.post('/piso/00/corredor/00/estante/00/prateleira/' + idPrateleira + '/box', boxEnderecamentoModel.toJson());
 
-  // // Future<bool> create(FuncionalidadeModel funcionalitie) async {
-  // //   print(jsonEncode(funcionalitie.toJson()));
-  // //   Response response =
-  // //       await api.post('/funcionalidades', funcionalitie.toJson()); // alteração
-
-  // //   if (response.statusCode == StatusCode.OK) {
-  // //     return true;
-  // //   } else {
-  // //     throw FuncionalitiesException("Funcionalidade não foi cadastrada !");
-  // //   }
-  // // }
-
-  // // Future<bool> update(FuncionalidadeModel funcionalitie) async {
-  // //   Response response = await api.put(
-  // //       '/funcionalidades/' + funcionalitie.idFuncionalidade.toString(),
-  // //       funcionalitie.toJson());
-
-  // //   if (response.statusCode == StatusCode.OK) {
-  // //     return true;
-  // //   } else {
-  // //     throw FuncionalitiesException("Funcionalidade não foi atualizada !");
-  // //   }
-  // // }
-
-  // // Future<bool> delete(FuncionalidadeModel funcionalitie) async {
-  // //   Response response = await api.delete(
-  // //     '/funcionalidades/' + funcionalitie.idFuncionalidade.toString(),
-  // //   );
-
-  //   if (response.statusCode == StatusCode.OK) {
-  //     return true;
-  //   } else {
-  //     throw FuncionalitiesException("Funcionalidade não foi deletada !");
-  //   }
-  // }
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao criar um corredor';
+    }
+  }
 }
-
