@@ -58,6 +58,14 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
@@ -124,6 +132,8 @@ class _GppAppState extends State<GppApp> {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
           pagina = Container();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
