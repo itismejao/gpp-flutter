@@ -18,6 +18,7 @@ import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/und_medida_box.dart';
 import 'package:gpp/src/views/funcionalities_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 
@@ -40,6 +41,8 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
   String? idEstante;
 
   late EnderecamentoController enderecamentoController;
+
+  UnidadeMedidaBox? _selectedUnidadeMedidaBox = UnidadeMedidaBox.Centimetros;
 
   fetchAll(String idPrateleira) async {
     //Carrega lista de motivos de defeito de peças
@@ -92,58 +95,115 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
           builder: (context, setState) {
             return AlertDialog(
               title: Text("Cadastro de Box"),
+              insetPadding: EdgeInsets.symmetric(horizontal: 1, vertical: 1),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
-                      InputComponent(
-                        label: 'Box',
-                        initialValue: boxEnderecamentoModel.desc_box,
-                        hintText: 'Digite o nome do Box',
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoModel.desc_box = value;
-                          });
-                        },
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 6,
+                            child: InputComponent(
+                              label: 'Box',
+                              initialValue: boxEnderecamentoModel.desc_box,
+                              hintText: 'Digite o nome do Box',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.desc_box = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              label: 'Prateleira',
+                              initialValue: boxEnderecamentoModel.id_prateleira.toString(),
+                              hintText: 'Digite a Prateleira',
+                              enable: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.id_prateleira.toString();
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      InputComponent(
-                        label: 'Altura',
-                        hintText: 'Digite a altura',
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoModel.altura = double.parse(value);
-                          });
-                        },
-                      ),
-                      InputComponent(
-                        label: 'Largura',
-                        hintText: 'Digite a largura',
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoModel.largura = double.parse(value);
-                          });
-                        },
-                      ),
-                      InputComponent(
-                        label: 'Profundidade',
-                        hintText: 'Digite a Profundidade',
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoModel.profundidade = double.parse(value);
-                          });
-                        },
-                      ),
-                      InputComponent(
-                        label: 'Prateleira',
-                        initialValue: boxEnderecamentoModel.id_prateleira.toString(),
-                        hintText: 'Digite a Prateleira',
-                        enable: false,
-                        onChanged: (value) {
-                          setState(() {
-                            boxEnderecamentoModel.id_prateleira.toString();
-                          });
-                        },
+                      Padding(padding: EdgeInsets.only(top: 20)),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Altura',
+                              hintText: 'Digite a altura',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.altura = double.parse(value);
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Largura',
+                              hintText: 'Digite a largura',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.largura = double.parse(value);
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Profundidade',
+                              hintText: 'Digite a profundidade',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.profundidade = double.parse(value);
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextComponent('Und. Medida'),
+                              Padding(padding: EdgeInsets.only(top: 6)),
+                              Container(
+                                padding: EdgeInsets.only(left: 12, right: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<UnidadeMedidaBox>(
+                                    value: UnidadeMedidaBox.values[_selectedUnidadeMedidaBox!.index],
+                                    onChanged: (UnidadeMedidaBox? value) {
+                                      setState(() {
+                                        _selectedUnidadeMedidaBox = value;
+
+                                        boxEnderecamentoModel.unidade_medida = value!.index;
+                                      });
+                                    },
+                                    items: UnidadeMedidaBox.values.map((UnidadeMedidaBox? unidadeMedidaBox) {
+                                      return DropdownMenuItem<UnidadeMedidaBox>(
+                                          value: unidadeMedidaBox, child: Text(unidadeMedidaBox!.name));
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -155,6 +215,9 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
+                                  if (boxEnderecamentoModel.unidade_medida == null) {
+                                    boxEnderecamentoModel.unidade_medida = _selectedUnidadeMedidaBox!.index;
+                                  }
                                   handleCreate(context, enderecamentoController.boxModel, widget.idPrateleira.toString());
                                 },
                                 text: 'Adicionar')
@@ -254,7 +317,15 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                                 Expanded(
                                   child: TextComponent(enderecamentoController.listaBox[index].unidade_medida == null
                                       ? ''
-                                      : enderecamentoController.listaBox[index].unidade_medida.toString()),
+                                      : enderecamentoController.listaBox[index].unidade_medida == 0
+                                          ? UnidadeMedidaBox.Milimetros.name
+                                          : enderecamentoController.listaBox[index].unidade_medida == 1
+                                              ? UnidadeMedidaBox.Centimetros.name
+                                              : enderecamentoController.listaBox[index].unidade_medida == 2
+                                                  ? UnidadeMedidaBox.Metros.name
+                                                  : enderecamentoController.listaBox[index].unidade_medida == 3
+                                                      ? UnidadeMedidaBox.Polegadas.name
+                                                      : ''),
                                 ),
                                 Expanded(
                                   child: Row(
