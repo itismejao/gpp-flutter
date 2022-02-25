@@ -105,7 +105,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.id_corredor = 9;
+                           estanteEnderecamentoReplacement.id_corredor.toString();
                           });
                         },
                       ),

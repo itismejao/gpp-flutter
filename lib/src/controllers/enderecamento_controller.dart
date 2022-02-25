@@ -11,8 +11,10 @@ class EnderecamentoController {
   EnderecamentoRepository repository = EnderecamentoRepository(api: gppApi);
   bool isLoaded = false;
 
+ //pisos
   late PisoEnderecamentoModel pisoModel = PisoEnderecamentoModel();
   late List<PisoEnderecamentoModel> listaPiso;
+ 
 
   late CorredorEnderecamentoModel corredorModel = CorredorEnderecamentoModel();
   late List<CorredorEnderecamentoModel> listaCorredor;
@@ -44,5 +46,14 @@ class EnderecamentoController {
 
    Future<List<BoxEnderecamentoModel>> buscarBox(String idPrateleira) async {
     return await repository.buscarBox(idPrateleira);
+  }
+
+  // excluir
+  Future<bool> excluir( PisoEnderecamentoModel pecasModel) async {
+    return await repository.excluir(pecasModel);
+  }
+
+   Future<bool> criar() async {
+    return await repository.criar(pisoModel);
   }
 }

@@ -33,6 +33,8 @@ class EnderecamentoRepository {
       var error = json.decode(response.body)['error'];
       throw Exception(error);
     }
+
+    
   }
 
   Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {
@@ -103,16 +105,31 @@ class EnderecamentoRepository {
     }
   }
 
-  Future<bool> criar(PisoEnderecamentoModel pisos) async {
+// excluir 
+
+  Future<bool> excluir(PisoEnderecamentoModel pisoModelo) async {
+    Response response = await api.delete('/piso/' + pisoModelo.id_piso.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      print(response.body);
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+    Future<bool> criar(PisoEnderecamentoModel pisos) async {
     print(jsonEncode(pisos.toJson()));
-    Response response = await api.post('/pisos', pisos.toJson());
+    Response response = await api.post('/piso', pisos.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu erro ao criar piso';
+      throw 'Ocorreu um erro ao criar um piso';
     }
   }
+
+ 
 
   // Future<FuncionalidadeModel> fetch(String id) async {
   //   Response response = await api.get('/funcionalidades/' + id);
@@ -179,3 +196,4 @@ class EnderecamentoRepository {
   //   }
   // }
 }
+

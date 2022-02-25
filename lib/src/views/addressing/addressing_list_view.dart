@@ -45,34 +45,34 @@ class _AddressingListViewState extends State<AddressingListView> {
     });
   }
 
-  // handleCreate(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await controller.repository.create(pisoEnderecamentoReplacement)) {
-  //       Navigator.pop(context);
-  //       fetchAll();
-  //       notify.sucess('Motivo de peça adicionado com sucesso!');
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleCreate(context, PisoEnderecamentoModel piso) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.repository.criar(piso)) {
+        Navigator.pop(context);
+        fetchAll();
+        notify.sucess('Motivo de piso adicionado com sucesso!');
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
-  // handleDelete(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) async {
-  //   NotifyController notify = NotifyController(context: context);
-  //   try {
-  //     if (await notify
-  //         .alert("você deseja excluir o piso?")) {
-  //       if (await controller.repository.excluir(pisoEnderecamentoReplacement)) {
-  //         notify.sucess("Piso excluído!");
-  //         //Atualiza a lista de motivos
-  //         fetchAll();
-  //       }
-  //     }
-  //   } catch (e) {
-  //     notify.error(e.toString());
-  //   }
-  // }
+  handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify
+          .alert("você deseja excluir o piso?")) {
+        if (await enderecamentoController.repository.excluir(excluiPiso)) {
+          notify.sucess("Piso excluído!");
+          //Atualiza a lista de motivos
+          fetchAll();
+        }
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   openForm(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
     showDialog(
@@ -121,8 +121,7 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  // handleCreate(
-                                  //     context, pisoEnderecamentoReplacement);
+                                  handleCreate(context, enderecamentoController.pisoModel);
                                 },
                                 text: 'Adicionar')
                             // :ButtonComponent(
@@ -222,13 +221,12 @@ class _AddressingListViewState extends State<AddressingListView> {
                                             Icons.delete,
                                             color: Colors.grey.shade400,
                                           ),
-                                          onPressed: () => {
-                                                // handleDelete(
-                                                //     context,
-                                                //     controller
-                                                //             .pisoEnderecamentoReplacements[
-                                                //         index]),
-                                              }),
+                                          onPressed: () {
+                                             handleDelete(
+                                                    context,
+                                                    enderecamentoController.listaPiso[index],);
+                                          },
+                                      )
                                     ],
                                   ),
                                 )
