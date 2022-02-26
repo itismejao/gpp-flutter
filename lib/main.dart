@@ -105,7 +105,7 @@ class GppApp extends StatefulWidget {
 class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
-    if (isAuthenticated()) {
+    if (!isAuthenticated()) {
       //Autenticação
 
       Uri uri = Uri.parse(settings.name);
@@ -149,7 +149,7 @@ class _GppAppState extends State<GppApp> {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
     return MaterialPageRoute(
-        builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: MenuCadastrarView()));
+        builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: MenuConsultarView()));
   }
 
   @override

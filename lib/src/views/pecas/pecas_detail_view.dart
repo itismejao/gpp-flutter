@@ -846,7 +846,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 onChanged: (value) {
                                   txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
 
-                                  _pecasController.pecasModel.id_peca_material_fabricacao = value.id_peca_material_fabricacao;
+                                  _pecasController.pecasModel.id_peca_material_fabricacao =
+                                      value.id_peca_material_fabricacao.toString();
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,
