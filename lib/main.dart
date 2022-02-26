@@ -58,6 +58,16 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
+import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
@@ -95,7 +105,9 @@ class GppApp extends StatefulWidget {
 class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
-    if (!isAuthenticated()) {
+    if (isAuthenticated()) {
+      //Autenticação
+
       Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
@@ -120,6 +132,8 @@ class _GppAppState extends State<GppApp> {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
           pagina = Container();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
@@ -136,6 +150,13 @@ class _GppAppState extends State<GppApp> {
     }
     return MaterialPageRoute(
         builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: MenuCadastrarView()));
+  }
+
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
   }
 
   Widget build(BuildContext context) {

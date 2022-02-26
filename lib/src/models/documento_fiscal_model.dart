@@ -6,8 +6,8 @@ class DocumentoFiscalModel {
   int? idFilialSaida;
   int? idFilialVenda;
   String? nome;
-  dynamic cpfCnpj;
-  dynamic numDocFiscal;
+  String? cpfCnpj;
+  int? numDocFiscal;
   String? serieDocFiscal;
   DateTime? dataEmissao;
   ItemDocFiscalModel? itemDocFiscal;
@@ -35,12 +35,8 @@ class DocumentoFiscalModel {
         numDocFiscal: json['num_doc_fiscal'],
         serieDocFiscal: json['serie_doc_fiscal'],
         dataEmissao: DateTime.parse(json['data_emissao']),
-        itemDocFiscal: json['item_doc_fiscal'] != null
-            ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal'])
-            : null,
-        cliente: json['cliente'] != null
-            ? ClienteModel.fromJson(json['cliente'])
-            : null);
+        itemDocFiscal: json['item_doc_fiscal'] != null ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal']) : null,
+        cliente: json['cliente'] != null ? ClienteModel.fromJson(json['cliente']) : null);
   }
 
   Map<String, dynamic> toJson() {

@@ -176,12 +176,7 @@ class _UsuarioListViewState extends State<UsuarioListView> {
                 children: [
                   Expanded(child: TextComponent('RE')),
                   Expanded(child: TextComponent('Nome')),
-                  Expanded(child: TextComponent('Departamento')),
-                  Expanded(child: TextComponent('Cargo')),
-                  Expanded(child: TextComponent('Telefone')),
-                  Expanded(child: TextComponent('E-mail')),
-                  Expanded(child: TextComponent('Status')),
-                  Expanded(child: TextComponent('Opções')),
+                  Expanded(flex: 2, child: TextComponent('E-mail')),
                 ],
               ),
             ),
@@ -287,47 +282,10 @@ class _UsuarioListViewState extends State<UsuarioListView> {
                   users[index].nome!,
                 )),
                 Expanded(
+                    flex: 2,
                     child: TextComponent(
-                  users[index].departament!.nome ?? '',
-                )),
-                Expanded(
-                    child: TextComponent(
-                  "Auxiliar Administrativo",
-                )),
-                Expanded(
-                    child: TextComponent(
-                  "(62) 9999-9999",
-                )),
-                Expanded(
-                    child: TextComponent(
-                  users[index].email!,
-                )),
-                Expanded(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: StatusComponent(status: users[index].active!),
-                    )
-                  ],
-                )),
-                Expanded(
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.grey.shade400,
-                        ),
-                        onPressed: () => {
-                          Navigator.pushNamed(
-                              context, '/users/' + users[index].id.toString())
-                        },
-                      ),
-                    ],
-                  ),
-                ),
+                      users[index].email!,
+                    )),
               ],
             ),
           ),

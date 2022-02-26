@@ -4,7 +4,7 @@ class DropdownButtonFormFieldComponent extends StatelessWidget {
   final List<DropdownMenuItem> items;
   final Widget? hint;
   final Function onChanged;
-  String? hintText;
+  final String? hintText;
   DropdownButtonFormFieldComponent({
     Key? key,
     required this.items,
