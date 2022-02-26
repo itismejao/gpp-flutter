@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/CheckboxComponent.dart';
@@ -24,6 +25,22 @@ class _CoresListViewState extends State<CoresListView> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+  }
+
+  Future<bool> excluir(context, PecasCorModel pecasCorModel) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await notify.alert('Deseja excluir a cor (${pecasCorModel.id_peca_cor} - ${pecasCorModel.cor})?')) {
+        if (await _pecasCorController.excluir(pecasCorModel)) {
+          notify.sucess("Cor excluída com sucesso!");
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      notify.error(e.toString());
+      return false;
+    }
   }
 
   @override
@@ -134,8 +151,9 @@ class _CoresListViewState extends State<CoresListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      _pecasCorController.excluir(_pecaCor[index]).then((value) => setState(() {}));
+                                      // _pecasCorController.excluir(_pecaCor[index]).then((value) => setState(() {}));
                                       // Navigator.pop(context);
+                                      excluir(context, _pecaCor[index]).then((value) => setState(() {}));
                                     }),
                               ],
                             ),

@@ -19,14 +19,19 @@ class EspecieListView extends StatefulWidget {
 class _EspecieListViewState extends State<EspecieListView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
-  excluir(PecasEspecieModel pecasEspecieModel) async {
+  Future<bool> excluir(context, PecasEspecieModel pecasEspecieModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
-        notify.sucess("Espécie excluída com sucesso!");
+      if (await notify.alert('Deseja excluir a espécie (${pecasEspecieModel.id_peca_especie} - ${pecasEspecieModel.especie})?')) {
+        if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
+          notify.sucess("Espécie excluída com sucesso!");
+          return true;
+        }
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -148,9 +153,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                                     ),
                                     onPressed: () {
                                       // _pecasEspecieController.excluir(_pecasEspecie[index]).then((value) => setState(() {}));
-                                      setState(() {
-                                        excluir(_pecasEspecie[index]);
-                                      });
+                                      excluir(context, _pecasEspecie[index]).then((value) => setState(() {}));
                                     }),
                               ],
                             ),

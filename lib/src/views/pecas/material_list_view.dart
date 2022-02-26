@@ -21,14 +21,20 @@ class MaterialListView extends StatefulWidget {
 class _MaterialListViewState extends State<MaterialListView> {
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
-  excluir(PecasMaterialModel pecasMaterialModel) async {
+  Future<bool> excluir(context, PecasMaterialModel pecasMaterialModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasMaterialController.excluir(pecasMaterialModel)) {
-        notify.sucess("Material excluído com sucesso!");
+      if (await notify.alert(
+          'Deseja excluir o Material (${pecasMaterialModel.id_peca_material_fabricacao} - ${pecasMaterialModel.material})?')) {
+        if (await _pecasMaterialController.excluir(pecasMaterialModel)) {
+          notify.sucess("Material excluído com sucesso!");
+          return true;
+        }
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -156,9 +162,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     ),
                                     onPressed: () {
                                       // _pecasMaterialController.excluir(_pecasMaterial[index]).then((value) => setState(() {}));
-                                      setState(() {
-                                        excluir(_pecasMaterial[index]);
-                                      });
+                                      excluir(context, _pecasMaterial[index]).then((value) => setState(() {}));
                                     }),
                               ],
                             ),
