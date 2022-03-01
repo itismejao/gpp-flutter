@@ -18,6 +18,7 @@ class EnderecamentoRepository {
     required this.api,
   });
 
+ 
   Future<List<PisoEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get('/piso');
 
@@ -120,7 +121,7 @@ class EnderecamentoRepository {
 
   Future<bool> criar(PisoEnderecamentoModel pisos) async {
     print(jsonEncode(pisos.toJson()));
-    Response response = await api.post('/piso', pisos.toJson());
+    Response response = await api.post('/piso/' + pisos.id_piso.toString(), pisos.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -128,6 +129,21 @@ class EnderecamentoRepository {
       throw 'Ocorreu um erro ao criar um piso';
     }
   }
+
+
+
+   Future<bool> editar(PisoEnderecamentoModel pisos) async {
+    //print(jsonEncode(pisos.toJson()));
+
+    Response response = await api.put('/piso/'+ pisos.id_piso.toString(), pisos.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro o piso';
+    }
+  }
+
 
   // excluir e criar Corredor
 
@@ -153,6 +169,8 @@ class EnderecamentoRepository {
       throw 'Ocorreu um erro ao criar um corredor';
     }
   }
+
+  
 
   // excluir e criar Estante
 

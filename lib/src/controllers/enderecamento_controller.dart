@@ -56,6 +56,10 @@ class EnderecamentoController {
     return await repository.criar(pisoModel);
   }
 
+   Future<bool> editar() async {
+    return await repository.editar(pisoModel);
+  }
+
   // Criar e excluir Corredor
   Future<bool> excluirCorredor(CorredorEnderecamentoModel corredorModel) async {
     return await repository.excluirCorredor(corredorModel);
