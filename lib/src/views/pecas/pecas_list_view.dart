@@ -167,17 +167,10 @@ class _PecasListViewState extends State<PecasListView> {
                                         Icons.edit,
                                         color: Colors.grey.shade400,
                                       ),
-                                      onPressed: () => {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return PopUpEditar.popUpPeca(
-                                                  context,
-                                                  PecasEditAndView(
-                                                    pecasEditPopup: snapshot.data![index],
-                                                    enabled: true,
-                                                  ));
-                                            }).then((value) => setState(() {}))
+                                      onPressed: () {
+                                        PopUpEditar.popUpPeca(
+                                                context, PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: true))
+                                            .then((value) => setState(() {}));
                                       },
                                     ),
                                     IconButton(

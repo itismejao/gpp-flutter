@@ -127,13 +127,9 @@ class _GrupoListViewState extends State<GrupoListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(
@@ -142,7 +138,6 @@ class _GrupoListViewState extends State<GrupoListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      // _pecasGrupoController.excluir(_pecasGrupo[index]).then((value) => setState(() {}));
                                       setState(() {
                                         excluir(_pecasGrupo[index]);
                                       });

@@ -146,13 +146,9 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(

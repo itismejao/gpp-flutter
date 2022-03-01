@@ -137,13 +137,9 @@ class _EspecieListViewState extends State<EspecieListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(

@@ -128,13 +128,9 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, EspecieDetailView(pecasLinhaModel: _pecasLinha[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, EspecieDetailView(pecasLinhaModel: _pecasLinha[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(

@@ -74,6 +74,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
     try {
       if (await _pecasGrupoController.editar()) {
         notify.sucess("Material cadastrado com sucesso!");
+        Navigator.pop(context);
       }
     } catch (e) {
       notify.error(e.toString());
@@ -85,6 +86,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
     try {
       if (await _pecasMaterialController.editar()) {
         notify.sucess("Material cadastrado com sucesso!");
+        Navigator.pop(context);
       }
     } catch (e) {
       notify.error(e.toString());
@@ -192,7 +194,6 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                       ButtonComponent(
                         onPressed: () {
                           editarGrupo(context);
-                          Navigator.pop(context);
                         },
                         text: 'Editar',
                       ),
@@ -425,7 +426,6 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                           ButtonComponent(
                             onPressed: () {
                               editarMaterial(context);
-                              Navigator.pop(context);
                             },
                             text: 'Editar',
                           ),
