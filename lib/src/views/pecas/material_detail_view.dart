@@ -73,7 +73,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasGrupoController.editar()) {
-        notify.sucess("Material cadastrado com sucesso!");
+        notify.sucess("Grupo alterado com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
@@ -85,7 +85,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasMaterialController.editar()) {
-        notify.sucess("Material cadastrado com sucesso!");
+        notify.sucess("Material alterado com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
@@ -295,9 +295,9 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                                 child: DropdownSearch<PecasGrupoModel?>(
                                   mode: Mode.DIALOG,
                                   showSearchBox: true,
+                                  items: snapshot.data,
                                   selectedItem:
                                       pecasMaterialModel == null ? snapshot.data[0] : pecasMaterialModel!.grupo_material,
-                                  items: snapshot.data,
                                   itemAsString: (PecasGrupoModel? value) => value!.grupo!,
                                   onChanged: (value) {
                                     _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
