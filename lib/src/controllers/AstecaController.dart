@@ -10,6 +10,7 @@ import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/repositories/AstecaRepository.dart';
 import 'package:gpp/src/repositories/PecaRepository.dart';
 import 'package:gpp/src/repositories/PedidoRepository.dart';
+import 'package:intl/intl.dart';
 
 class AstecaController {
   late PedidoRepository pedidoRepository = PedidoRepository();
@@ -47,6 +48,8 @@ class AstecaController {
     documentoFiscal: DocumentoFiscalModel(),
   );
   List<AstecaModel> astecas = [];
+
+  NumberFormat formatter = NumberFormat.simpleCurrency(locale: 'pt_BR');
 
   // GlobalKey<FormState> formKey = GlobalKey<FormState>();
 

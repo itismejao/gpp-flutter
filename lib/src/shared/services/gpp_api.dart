@@ -30,15 +30,11 @@ class ApiService {
     return headers;
   }
 
-  Future<Response> get(String endpoint,
-      {Map<String, String>? queryParameters}) async {
+  Future<Response> get(String endpoint, {Map<String, String>? queryParameters}) async {
     try {
-      var uri = Uri.parse(baseUrl! + endpoint)
-          .replace(queryParameters: queryParameters);
+      var uri = Uri.parse(baseUrl! + endpoint).replace(queryParameters: queryParameters);
 
-      Response response = await http
-          .get(uri, headers: getHeader())
-          .timeout(const Duration(seconds: 30));
+      Response response = await http.get(uri, headers: getHeader()).timeout(const Duration(seconds: 30));
 
       return response;
     } on TimeoutException {
@@ -49,6 +45,29 @@ class ApiService {
   Future<dynamic> post(String path, body) async {
     try {
       var uri = Uri.parse(baseUrl! + path);
+      var response = await http.post(uri, headers: getHeader(), body: jsonEncode(body)).timeout(const Duration(seconds: 10));
+
+      return response;
+    } on TimeoutException {
+      throw TimeoutException("Tempo de conexão excedido");
+    }
+  }
+
+  Future<dynamic> postTeste(String endpoint, body) async {
+    try {
+      var uri = Uri.parse('https://6205560a161670001741b91a.mockapi.io/api/pecas/' + endpoint);
+      var response = await http.post(uri, headers: getHeader(), body: jsonEncode(body)).timeout(const Duration(seconds: 10));
+
+      return response;
+    } on TimeoutException {
+      throw TimeoutException("Tempo de conexão excedido");
+    }
+  }
+
+// Pegando a Api fake
+   Future<dynamic> endereco(String endpoint, body) async {
+    try {
+      var uri = Uri.parse('https://62055045161670001741b8e1.mockapi.io/api/enderecamento/' + endpoint);
       var response = await http
           .post(uri, headers: getHeader(), body: jsonEncode(body))
           .timeout(const Duration(seconds: 10));
@@ -59,10 +78,10 @@ class ApiService {
     }
   }
 
+
   Future<dynamic> put(String endpoint, body) async {
     var uri = Uri.parse(baseUrl! + endpoint);
-    var response =
-        await http.put(uri, headers: getHeader(), body: jsonEncode(body));
+    var response = await http.put(uri, headers: getHeader(), body: jsonEncode(body));
 
     return response;
   }

@@ -58,6 +58,14 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
@@ -75,6 +83,10 @@ import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
+import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
+import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
@@ -93,7 +105,7 @@ class GppApp extends StatefulWidget {
 class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
-    if (isAuthenticated()) {
+    if (!isAuthenticated()) {
       //Autenticação
 
       Uri uri = Uri.parse(settings.name);
@@ -114,6 +126,14 @@ class _GppAppState extends State<GppApp> {
           pagina = MotivosTrocaPecasListView();
         } else if (uri.pathSegments.first == 'logout') {
           pagina = AuthenticateView();
+        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
+          pagina = MenuCadastrarView();
+        } else if (uri.pathSegments.first == 'pecas-consultar') {
+          pagina = MenuConsultarView();
+        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
+          pagina = Container();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
@@ -128,9 +148,7 @@ class _GppAppState extends State<GppApp> {
     } else {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
-    return MaterialPageRoute(
-        builder: (context) =>
-            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
   }
 
   @override
@@ -147,8 +165,7 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme:
-                const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
