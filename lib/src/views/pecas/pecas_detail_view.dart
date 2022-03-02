@@ -65,6 +65,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   UnidadeTipo? _selectedUnidadeTipo = UnidadeTipo.Unidade;
   UnidadeMedida? _selectedUnidadeMedida = UnidadeMedida.Centimetros;
 
+  PecasModel? _pecasModelInserido = PecasModel();
+
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
   }
@@ -78,10 +80,20 @@ class _PecasDetailViewState extends State<PecasDetailView> {
     // print(await _pecasLinhaController.buscarEspecieVinculada(codigo));
   }
 
-  criar(context) async {
+  criarPeca() async {
+    try {
+      _pecasModelInserido = await _pecasController.criarPeca();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  criarProdutoPeca(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasController.criar()) {
+      _pecasController.produtoPecaModel.id_peca = _pecasModelInserido!.id_peca;
+
+      if (await _pecasController.criarProdutoPeca()) {
         notify.sucess("Peça cadastrada com sucesso!");
       }
     } catch (e) {
@@ -141,6 +153,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                             txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
                             txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
                             txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+
+                            _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
                           },
                           icon: Icon(Icons.search),
                         ),
@@ -308,13 +322,16 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                     },
                   ),
                 ),
-                // Padding(padding: EdgeInsets.only(right: 30)),
-                // Flexible(
-                //   flex: 1,
-                //   child: InputComponent(
-                //     label: 'Quantidade',
-                //   ),
-                // ),
+                Padding(padding: EdgeInsets.only(right: 30)),
+                Flexible(
+                  flex: 1,
+                  child: InputComponent(
+                    label: 'Quantidade',
+                    onChanged: (value) {
+                      _pecasController.produtoPecaModel.quantidade_por_produto = int.parse(value);
+                    },
+                  ),
+                ),
               ],
             ),
             Padding(padding: EdgeInsets.only(top: 10)),
@@ -495,7 +512,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                               ),
                               child: TextFormField(
                                 controller: txtIdLinha,
-                                // enabled: false,
+                                enabled: false,
                                 onChanged: (value) {
                                   // _pecasController.pecasModel.id_fornecedor = int.parse(value);
                                 },
@@ -593,7 +610,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                               ),
                               child: TextFormField(
                                 controller: txtIdEspecie,
-                                // enabled: false,
+                                enabled: false,
                                 onChanged: (value) {
                                   // _pecasController.pecasModel.id_fornecedor = int.parse(value);
                                 },
@@ -686,7 +703,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                               ),
                               child: TextFormField(
                                 controller: txtIdGrupo,
-                                // enabled: false,
+                                enabled: false,
                                 onChanged: (value) {
                                   // _pecasController.pecasModel.id_fornecedor = int.parse(value);
                                 },
@@ -794,7 +811,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                               ),
                               child: TextFormField(
                                 controller: txtIdMaterial,
-                                // enabled: false,
+                                enabled: false,
                                 onChanged: (value) {
                                   // _pecasController.pecasModel.id_fornecedor = int.parse(value);
                                 },
@@ -829,7 +846,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 onChanged: (value) {
                                   txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
 
-                                  _pecasController.pecasModel.id_peca_material_fabricacao = value.id_peca_material_fabricacao;
+                                  _pecasController.pecasModel.id_peca_material_fabricacao =
+                                      value.id_peca_material_fabricacao.toString();
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,
@@ -854,8 +872,12 @@ class _PecasDetailViewState extends State<PecasDetailView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ButtonComponent(
-                  onPressed: () {
-                    criar(context);
+                  onPressed: () async {
+                    await criarPeca();
+                    await criarProdutoPeca(context);
+
+                    print('idPeca depois de inserido');
+                    print(_pecasModelInserido!.id_peca.toString());
                   },
                   text: 'Salvar',
                 ),

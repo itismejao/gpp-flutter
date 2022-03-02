@@ -20,14 +20,19 @@ class LinhaListView extends StatefulWidget {
 class _LinhaListViewState extends State<LinhaListView> {
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
 
-  excluir(PecasLinhaModel pecasLinhaModel) async {
+  Future<bool> excluir(context, PecasLinhaModel pecasLinhaModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasLinhaController.excluir(pecasLinhaModel)) {
-        notify.sucess("Linha excluída com sucesso!");
+      if (await notify.alert('Deseja excluir a linha (${pecasLinhaModel.id_peca_linha} - ${pecasLinhaModel.linha})?')) {
+        if (await _pecasLinhaController.excluir(pecasLinhaModel)) {
+          notify.sucess("Linha excluída com sucesso!");
+          return true;
+        }
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -128,13 +133,9 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, EspecieDetailView(pecasLinhaModel: _pecasLinha[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, EspecieDetailView(pecasLinhaModel: _pecasLinha[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(
@@ -145,7 +146,7 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     onPressed: () {
                                       // _pecasLinhaController.excluir(_pecasLinha[index]).then((value) => setState(() {}));
                                       setState(() {
-                                        excluir(_pecasLinha[index]);
+                                        excluir(context, _pecasLinha[index]).then((value) => setState(() {}));
                                       });
                                     }),
                               ],

@@ -63,22 +63,23 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
     // print(await _pecasLinhaController.buscarEspecieVinculada(codigo));
   }
 
-  criar(context) async {
-    NotifyController notify = NotifyController(context: context);
-    try {
-      if (await _pecasController.criar()) {
-        notify.sucess("Peça cadastrada com sucesso!");
-      }
-    } catch (e) {
-      notify.error(e.toString());
-    }
-  }
+  // criar(context) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await _pecasController.criar()) {
+  //       notify.sucess("Peça cadastrada com sucesso!");
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
 
   editar(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasController.editar()) {
         notify.sucess("Peça editada com sucesso!");
+        Navigator.pop(context);
       }
     } catch (e) {
       notify.error(e.toString());
@@ -716,15 +717,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                     children: [
                       ButtonComponent(
                         onPressed: () {
-                          // _pecasCorController.editar();
                           editar(context);
-                          Navigator.pop(context);
-
-                          /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MenuConsultarView(selected: 2),
-                        ));*/
                         },
                         text: 'Editar',
                       ),
