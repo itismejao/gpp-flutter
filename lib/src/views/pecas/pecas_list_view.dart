@@ -166,17 +166,18 @@ class _PecasListViewState extends State<PecasListView> {
                                             .then((value) => setState(() {}));
                                       },
                                     ),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        onPressed: () {
-                                          // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
-                                          setState(() {
-                                            excluir(snapshot.data![index]);
-                                          });
-                                        }),
+                                    // IconButton(
+                                    //   icon: Icon(
+                                    //     Icons.delete,
+                                    //     color: Colors.grey.shade400,
+                                    //   ),
+                                    //   onPressed: () {
+                                    //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
+                                    //     setState(() {
+                                    //       excluir(snapshot.data![index]);
+                                    //     });
+                                    //   },
+                                    // ),
                                   ],
                                 ),
                               ),
