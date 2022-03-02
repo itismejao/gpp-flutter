@@ -76,6 +76,16 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     }
   }
 
+    handleEdit(context, EstanteEnderecamentoModel editaEstante) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.editar()) {
+        notify.sucess("Estante editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
   openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -124,6 +134,80 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                   handleCreate(context, enderecamentoController.estanteModel, widget.idCorredor.toString());
                                 },
                                 text: 'Adicionar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+   openFormEdit(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Cadastro do Piso"),
+              // pisoEnderecamentoReplacement.id_piso == null
+
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      InputComponent(
+                        label: 'Piso',
+                        initialValue: estanteEnderecamentoReplacement.desc_estante,
+                        hintText: 'Digite o nome do Piso',
+                        onChanged: (value) {
+                          setState(() {
+                            estanteEnderecamentoReplacement.desc_estante.toString();
+                          });
+                        },
+                      ),
+                      InputComponent(
+                        label: 'Filial',
+                        initialValue: estanteEnderecamentoReplacement.id_estante.toString(),
+                        hintText: 'Digite a estante',
+                        onChanged: (value) {
+                          setState(() {
+                            estanteEnderecamentoReplacement.id_estante.toString();
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                   handleEdit(context, estanteEnderecamentoReplacement);
+                                  // handleEdit(context);
+                                  // Navigator.pop(context);
+                                  // context,
+                                  //           enderecamentoController.listaPiso[index],
+                                },
+                                text: 'Alterar')
+                            // :ButtonComponent(
+                            //     color: Colors.red,
+                            //     onPressed: () {
+                            //       handleCreate(context, pisoEnderecamentoReplacement);
+                            //     },
+                            //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -216,6 +300,15 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                                 ));
                                           },
                                           text: 'Prateleira'),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.edit,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                            onPressed: () {                                            
+                                            openFormEdit(context,  enderecamentoController.listaEstante[index]);
+                                          },
+                                        ),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
