@@ -683,155 +683,148 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                         ? Positioned(
                             top: 60,
                             right: 14,
-                            child: AnimatedOpacity(
-                              opacity: 1,
-                              duration: const Duration(seconds: 1),
-                              child: Container(
-                                height: 240,
-                                width: 700,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade50,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: InputComponent(
-                                            onChanged: (value) {
-                                              pesquisarPendencia(value);
+                            child: Container(
+                              height: 240,
+                              width: 700,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: InputComponent(
+                                          onChanged: (value) {
+                                            pesquisarPendencia(value);
+                                          },
+                                          hintText: 'Buscar',
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: astecaController
+                                            .astecaTipoPendenciasBuscar.isEmpty
+                                        ? ListView.builder(
+                                            itemCount: astecaController
+                                                .astecaTipoPendencias.length,
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    handlePendencia(
+                                                        astecaController.asteca,
+                                                        astecaController
+                                                                .astecaTipoPendencias[
+                                                            index]);
+
+                                                    astecaController
+                                                            .abrirDropDownButton =
+                                                        false;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 16,
+                                                        height: 16,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                secundaryColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2)),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      TextComponent(
+                                                        astecaController
+                                                                .astecaTipoPendencias[
+                                                                    index]
+                                                                .idTipoPendencia
+                                                                .toString() +
+                                                            ' - ' +
+                                                            astecaController
+                                                                .astecaTipoPendencias[
+                                                                    index]
+                                                                .descricao
+                                                                .toString(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
                                             },
-                                            hintText: 'Buscar',
+                                          )
+                                        : ListView.builder(
+                                            itemCount: astecaController
+                                                .astecaTipoPendenciasBuscar
+                                                .length,
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    handlePendencia(
+                                                        astecaController.asteca,
+                                                        astecaController
+                                                                .astecaTipoPendenciasBuscar[
+                                                            index]);
+
+                                                    astecaController
+                                                            .abrirDropDownButton =
+                                                        false;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 16),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 16,
+                                                        height: 16,
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                secundaryColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        2)),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      TextComponent(
+                                                        astecaController
+                                                                .astecaTipoPendenciasBuscar[
+                                                                    index]
+                                                                .idTipoPendencia
+                                                                .toString() +
+                                                            ' - ' +
+                                                            astecaController
+                                                                .astecaTipoPendenciasBuscar[
+                                                                    index]
+                                                                .descricao
+                                                                .toString(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    Expanded(
-                                      child: astecaController
-                                              .astecaTipoPendenciasBuscar
-                                              .isEmpty
-                                          ? ListView.builder(
-                                              itemCount: astecaController
-                                                  .astecaTipoPendencias.length,
-                                              itemBuilder: (context, index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      handlePendencia(
-                                                          astecaController
-                                                              .asteca,
-                                                          astecaController
-                                                                  .astecaTipoPendencias[
-                                                              index]);
-
-                                                      astecaController
-                                                              .abrirDropDownButton =
-                                                          false;
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 16),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: 16,
-                                                          height: 16,
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  secundaryColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2)),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        TextComponent(
-                                                          astecaController
-                                                                  .astecaTipoPendencias[
-                                                                      index]
-                                                                  .idTipoPendencia
-                                                                  .toString() +
-                                                              ' - ' +
-                                                              astecaController
-                                                                  .astecaTipoPendencias[
-                                                                      index]
-                                                                  .descricao
-                                                                  .toString(),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                          : ListView.builder(
-                                              itemCount: astecaController
-                                                  .astecaTipoPendenciasBuscar
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      handlePendencia(
-                                                          astecaController
-                                                              .asteca,
-                                                          astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                              index]);
-
-                                                      astecaController
-                                                              .abrirDropDownButton =
-                                                          false;
-                                                    });
-                                                  },
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 8,
-                                                        horizontal: 16),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: 16,
-                                                          height: 16,
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  secundaryColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          2)),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        TextComponent(
-                                                          astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                                      index]
-                                                                  .idTipoPendencia
-                                                                  .toString() +
-                                                              ' - ' +
-                                                              astecaController
-                                                                  .astecaTipoPendenciasBuscar[
-                                                                      index]
-                                                                  .descricao
-                                                                  .toString(),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ))
                         : Container()
