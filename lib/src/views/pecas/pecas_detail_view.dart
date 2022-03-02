@@ -18,14 +18,8 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/views/asteca/components/item_menu.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/views/pecas/cores_detail_view.dart';
-import 'package:gpp/src/views/pecas/linha_detail_view.dart';
-import 'package:gpp/src/views/pecas/material_detail_view.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:dio/dio.dart';
 import 'package:gpp/src/views/pecas/und_medida.dart';
 import 'package:gpp/src/views/pecas/unidade.dart';
 
@@ -54,12 +48,17 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   final txtIdGrupo = TextEditingController();
   final txtIdMaterial = TextEditingController();
 
-  PecasLinhaModel _selectedLinha = PecasLinhaModel(id_peca_linha: 1, linha: '', situacao: 1);
-  List<PecasEspecieModel> _pecasEspecieModel = [PecasEspecieModel(id_peca_especie: 1, especie: '', id_peca_linha: 1)];
+  PecasLinhaModel _selectedLinha =
+      PecasLinhaModel(id_peca_linha: 1, linha: '', situacao: 1);
+  List<PecasEspecieModel> _pecasEspecieModel = [
+    PecasEspecieModel(id_peca_especie: 1, especie: '', id_peca_linha: 1)
+  ];
 
-  PecasGrupoModel _selectedGrupo = PecasGrupoModel(id_peca_grupo_material: 1, grupo: '', situacao: 1);
+  PecasGrupoModel _selectedGrupo =
+      PecasGrupoModel(id_peca_grupo_material: 1, grupo: '', situacao: 1);
   List<PecasMaterialModel> _pecasMaterialModel = [
-    PecasMaterialModel(id_peca_material_fabricacao: 1, material: '', sigla: '', situacao: 1)
+    PecasMaterialModel(
+        id_peca_material_fabricacao: 1, material: '', sigla: '', situacao: 1)
   ];
 
   UnidadeTipo? _selectedUnidadeTipo = UnidadeTipo.Unidade;
@@ -145,16 +144,24 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       decoration: InputDecoration(
                         hintText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             await buscaProduto(txtIdProduto.text);
 
-                            txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
-                            txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
-                            txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+                            txtNomeProduto.text = _produtoController
+                                .produtoModel.resumida
+                                .toString();
+                            txtIdFornecedor.text = _produtoController
+                                .produtoModel.id_fornecedor
+                                .toString();
+                            txtNomeFornecedor.text = _produtoController
+                                .produtoModel.fornecedor![0].cliente!.nome
+                                .toString();
 
-                            _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
+                            _pecasController.produtoPecaModel.id_produto =
+                                int.parse(txtIdProduto.text);
                           },
                           icon: Icon(Icons.search),
                         ),
@@ -180,7 +187,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       decoration: InputDecoration(
                         hintText: 'Nome Produto',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -206,7 +214,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       decoration: InputDecoration(
                         hintText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -228,7 +237,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       decoration: InputDecoration(
                         hintText: 'Nome Fornecedor',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -328,7 +338,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                   child: InputComponent(
                     label: 'Quantidade',
                     onChanged: (value) {
-                      _pecasController.produtoPecaModel.quantidade_por_produto = int.parse(value);
+                      _pecasController.produtoPecaModel.quantidade_por_produto =
+                          int.parse(value);
                     },
                   ),
                 ),
@@ -391,16 +402,21 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<UnidadeTipo>(
-                          value: UnidadeTipo.values[_selectedUnidadeTipo!.index],
+                          value:
+                              UnidadeTipo.values[_selectedUnidadeTipo!.index],
                           onChanged: (UnidadeTipo? value) {
                             setState(() {
                               _selectedUnidadeTipo = value;
 
-                              _pecasController.pecasModel.unidade = value!.index;
+                              _pecasController.pecasModel.unidade =
+                                  value!.index;
                             });
                           },
-                          items: UnidadeTipo.values.map((UnidadeTipo? unidadeTipo) {
-                            return DropdownMenuItem<UnidadeTipo>(value: unidadeTipo, child: Text(unidadeTipo!.name));
+                          items: UnidadeTipo.values
+                              .map((UnidadeTipo? unidadeTipo) {
+                            return DropdownMenuItem<UnidadeTipo>(
+                                value: unidadeTipo,
+                                child: Text(unidadeTipo!.name));
                           }).toList(),
                         ),
                       ),
@@ -444,7 +460,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                   child: InputComponent(
                     label: 'Profundidade',
                     onChanged: (value) {
-                      _pecasController.pecasModel.profundidade = double.parse(value);
+                      _pecasController.pecasModel.profundidade =
+                          double.parse(value);
                     },
                   ),
                 ),
@@ -463,16 +480,21 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<UnidadeMedida>(
-                          value: UnidadeMedida.values[_selectedUnidadeMedida!.index],
+                          value: UnidadeMedida
+                              .values[_selectedUnidadeMedida!.index],
                           onChanged: (UnidadeMedida? value) {
                             setState(() {
                               _selectedUnidadeMedida = value;
 
-                              _pecasController.pecasModel.unidade_medida = value!.index;
+                              _pecasController.pecasModel.unidade_medida =
+                                  value!.index;
                             });
                           },
-                          items: UnidadeMedida.values.map((UnidadeMedida? unidadeMedida) {
-                            return DropdownMenuItem<UnidadeMedida>(value: unidadeMedida, child: Text(unidadeMedida!.name));
+                          items: UnidadeMedida.values
+                              .map((UnidadeMedida? unidadeMedida) {
+                            return DropdownMenuItem<UnidadeMedida>(
+                                value: unidadeMedida,
+                                child: Text(unidadeMedida!.name));
                           }).toList(),
                         ),
                       ),
@@ -523,7 +545,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 decoration: InputDecoration(
                                   hintText: 'ID',
                                   border: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 15, bottom: 10, left: 10),
                                 ),
                               ),
                             ),
@@ -548,29 +571,38 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                       return Text("Sem Conexão");
                                     case ConnectionState.active:
                                     case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
+                                      return Center(
+                                          child:
+                                              new CircularProgressIndicator());
                                     case ConnectionState.done:
                                       return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        padding: EdgeInsets.only(
+                                            left: 12, right: 12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: DropdownSearch<PecasLinhaModel?>(
                                           mode: Mode.DIALOG,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString: (PecasLinhaModel? value) => value!.linha!.toUpperCase(),
+                                          itemAsString:
+                                              (PecasLinhaModel? value) =>
+                                                  value!.linha!.toUpperCase(),
                                           onChanged: (value) {
                                             _selectedLinha = value!;
-                                            txtIdLinha.text = value.id_peca_linha.toString();
+                                            txtIdLinha.text =
+                                                value.id_peca_linha.toString();
 
                                             setState(() {
-                                              _pecasEspecieModel = value.especie!;
+                                              _pecasEspecieModel =
+                                                  value.especie!;
                                             });
                                             // _pecasLinhaController.pecasLinhaModel.id_peca_linha = value!.id_peca_linha;
                                           },
-                                          dropdownSearchDecoration: InputDecoration(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                             enabledBorder: InputBorder.none,
                                           ),
                                           dropDownButton: Icon(
@@ -621,7 +653,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 decoration: InputDecoration(
                                   hintText: 'ID',
                                   border: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 15, bottom: 10, left: 10),
                                 ),
                               ),
                             ),
@@ -641,11 +674,14 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 mode: Mode.DIALOG,
                                 showSearchBox: true,
                                 items: _pecasEspecieModel,
-                                itemAsString: (PecasEspecieModel? value) => value!.especie!.toUpperCase(),
+                                itemAsString: (PecasEspecieModel? value) =>
+                                    value!.especie!.toUpperCase(),
                                 onChanged: (value) {
-                                  txtIdEspecie.text = value!.id_peca_especie.toString();
+                                  txtIdEspecie.text =
+                                      value!.id_peca_especie.toString();
 
-                                  _pecasController.pecasModel.id_peca_especie = value.id_peca_especie;
+                                  _pecasController.pecasModel.id_peca_especie =
+                                      value.id_peca_especie;
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,
@@ -714,7 +750,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 decoration: InputDecoration(
                                   hintText: 'ID',
                                   border: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 15, bottom: 10, left: 10),
                                 ),
                               ),
                             ),
@@ -733,28 +770,38 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                       return Text("there is no connection");
                                     case ConnectionState.active:
                                     case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
+                                      return Center(
+                                          child:
+                                              new CircularProgressIndicator());
                                     case ConnectionState.done:
                                       return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        padding: EdgeInsets.only(
+                                            left: 12, right: 12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: DropdownSearch<PecasGrupoModel?>(
                                           mode: Mode.DIALOG,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString: (PecasGrupoModel? value) => value!.grupo!.toUpperCase(),
+                                          itemAsString:
+                                              (PecasGrupoModel? value) =>
+                                                  value!.grupo!.toUpperCase(),
                                           onChanged: (value) {
                                             _selectedGrupo = value!;
-                                            txtIdGrupo.text = value.id_peca_grupo_material.toString();
+                                            txtIdGrupo.text = value
+                                                .id_peca_grupo_material
+                                                .toString();
 
                                             setState(() {
-                                              _pecasMaterialModel = value.material_fabricacao!;
+                                              _pecasMaterialModel =
+                                                  value.material_fabricacao!;
                                             });
                                           },
-                                          dropdownSearchDecoration: InputDecoration(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                             enabledBorder: InputBorder.none,
                                           ),
                                           dropDownButton: Icon(
@@ -822,7 +869,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 decoration: InputDecoration(
                                   hintText: 'ID',
                                   border: InputBorder.none,
-                                  contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                  contentPadding: EdgeInsets.only(
+                                      top: 15, bottom: 10, left: 10),
                                 ),
                               ),
                             ),
@@ -842,12 +890,17 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                                 mode: Mode.DIALOG,
                                 showSearchBox: true,
                                 items: _pecasMaterialModel,
-                                itemAsString: (PecasMaterialModel? value) => value!.material!.toUpperCase(),
+                                itemAsString: (PecasMaterialModel? value) =>
+                                    value!.material!.toUpperCase(),
                                 onChanged: (value) {
-                                  txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
+                                  txtIdMaterial.text = value!
+                                      .id_peca_material_fabricacao
+                                      .toString();
 
-                                  _pecasController.pecasModel.id_peca_material_fabricacao =
-                                      value.id_peca_material_fabricacao.toString();
+                                  _pecasController.pecasModel
+                                          .id_peca_material_fabricacao =
+                                      value.id_peca_material_fabricacao
+                                          .toString();
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   enabledBorder: InputBorder.none,

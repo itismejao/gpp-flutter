@@ -111,7 +111,8 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
             Padding(padding: EdgeInsets.only(left: 20)),
             Icon(widget.enabled == true ? Icons.edit : Icons.visibility),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent(widget.enabled == true ? 'Editar Peças' : 'Visualizar Peças'),
+            TitleComponent(
+                widget.enabled == true ? 'Editar Peças' : 'Visualizar Peças'),
           ],
         ),
         Divider(),
@@ -135,14 +136,21 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       decoration: InputDecoration(
                         hintText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             await buscaProduto(txtIdProduto.text);
 
-                            txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
-                            txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
-                            txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+                            txtNomeProduto.text = _produtoController
+                                .produtoModel.resumida
+                                .toString();
+                            txtIdFornecedor.text = _produtoController
+                                .produtoModel.id_fornecedor
+                                .toString();
+                            txtNomeFornecedor.text = _produtoController
+                                .produtoModel.fornecedor![0].cliente!.nome
+                                .toString();
                           },
                           icon: Icon(Icons.search),
                         ),
@@ -168,7 +176,8 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       decoration: InputDecoration(
                         hintText: 'Nome Produto',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -195,7 +204,8 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       decoration: InputDecoration(
                         hintText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -217,7 +227,8 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       decoration: InputDecoration(
                         hintText: 'Nome Fornecedor',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -343,7 +354,8 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                         ? ''
                         : _pecasController.pecasModel.codigo_fabrica == null
                             ? ''
-                            : _pecasController.pecasModel.codigo_fabrica.toString(),
+                            : _pecasController.pecasModel.codigo_fabrica
+                                .toString(),
                     onChanged: (value) {
                       _pecasController.pecasModel.codigo_fabrica = value;
                     },
@@ -422,9 +434,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                         ? ''
                         : _pecasController.pecasModel.profundidade == null
                             ? ''
-                            : _pecasController.pecasModel.profundidade.toString(),
+                            : _pecasController.pecasModel.profundidade
+                                .toString(),
                     onChanged: (value) {
-                      _pecasController.pecasModel.profundidade = double.parse(value);
+                      _pecasController.pecasModel.profundidade =
+                          double.parse(value);
                     },
                   ),
                 ),
@@ -437,9 +451,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                         ? ''
                         : _pecasController.pecasModel.unidade_medida == null
                             ? ''
-                            : _pecasController.pecasModel.unidade_medida.toString(),
+                            : _pecasController.pecasModel.unidade_medida
+                                .toString(),
                     onChanged: (value) {
-                      _pecasController.pecasModel.unidade_medida = int.parse(value);
+                      _pecasController.pecasModel.unidade_medida =
+                          int.parse(value);
                     },
                   ),
                 ),
@@ -485,23 +501,33 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                                       return Text("Sem Conexão");
                                     case ConnectionState.active:
                                     case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
+                                      return Center(
+                                          child:
+                                              new CircularProgressIndicator());
                                     case ConnectionState.done:
                                       return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        padding: EdgeInsets.only(
+                                            left: 12, right: 12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: DropdownSearch<PecasLinhaModel?>(
                                           mode: Mode.DIALOG,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                                          itemAsString:
+                                              (PecasLinhaModel? value) =>
+                                                  value!.linha!,
                                           onChanged: (value) {
-                                            _pecasLinhaController.pecasLinhaModel.id_peca_linha = value!.id_peca_linha;
+                                            _pecasLinhaController
+                                                    .pecasLinhaModel
+                                                    .id_peca_linha =
+                                                value!.id_peca_linha;
                                           },
-                                          dropdownSearchDecoration: InputDecoration(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                             enabledBorder: InputBorder.none,
                                           ),
                                           dropDownButton: Icon(
@@ -546,30 +572,41 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                               width: 600,
                               height: 48,
                               child: FutureBuilder(
-                                future: _pecasLinhaController.buscarEspecieVinculada('1'),
+                                future: _pecasLinhaController
+                                    .buscarEspecieVinculada('1'),
                                 builder: (context, AsyncSnapshot snapshot) {
                                   switch (snapshot.connectionState) {
                                     case ConnectionState.none:
                                       return Text("Sem conexão");
                                     case ConnectionState.active:
                                     case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
+                                      return Center(
+                                          child:
+                                              new CircularProgressIndicator());
                                     case ConnectionState.done:
                                       return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        padding: EdgeInsets.only(
+                                            left: 12, right: 12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: DropdownSearch<PecasLinhaModel?>(
                                           mode: Mode.DIALOG,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                                          itemAsString:
+                                              (PecasLinhaModel? value) =>
+                                                  value!.linha!,
                                           onChanged: (value) {
-                                            _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                                            _pecasEspecieController
+                                                    .pecasEspecieModel
+                                                    .id_peca_linha =
+                                                value!.id_peca_linha;
                                           },
-                                          dropdownSearchDecoration: InputDecoration(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                             enabledBorder: InputBorder.none,
                                           ),
                                           dropDownButton: Icon(
@@ -624,24 +661,33 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                                       return Text("there is no connection");
                                     case ConnectionState.active:
                                     case ConnectionState.waiting:
-                                      return Center(child: new CircularProgressIndicator());
+                                      return Center(
+                                          child:
+                                              new CircularProgressIndicator());
                                     case ConnectionState.done:
                                       return Container(
-                                        padding: EdgeInsets.only(left: 12, right: 12),
+                                        padding: EdgeInsets.only(
+                                            left: 12, right: 12),
                                         decoration: BoxDecoration(
                                           color: Colors.grey.shade200,
-                                          borderRadius: BorderRadius.circular(5),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
                                         ),
                                         child: DropdownSearch<PecasGrupoModel?>(
                                           mode: Mode.DIALOG,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString: (PecasGrupoModel? value) => value!.grupo!,
+                                          itemAsString:
+                                              (PecasGrupoModel? value) =>
+                                                  value!.grupo!,
                                           onChanged: (value) {
-                                            _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                            _pecasMaterialController
+                                                    .pecasMaterialModel
+                                                    .id_peca_grupo_material =
                                                 value!.id_peca_grupo_material;
                                           },
-                                          dropdownSearchDecoration: InputDecoration(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                             enabledBorder: InputBorder.none,
                                           ),
                                           dropDownButton: Icon(
