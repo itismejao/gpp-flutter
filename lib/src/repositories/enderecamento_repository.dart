@@ -171,6 +171,17 @@ class EnderecamentoRepository {
   }
 
   
+   Future<bool> editarCorredor(CorredorEnderecamentoModel corredorModelo) async {
+    //print(jsonEncode(pisos.toJson()));
+
+    Response response = await api.put('/piso/00/corredor/' + corredorModelo.id_corredor.toString(), corredorModelo.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar o corredor';
+    }
+  }
 
   // excluir e criar Estante
 
@@ -194,6 +205,18 @@ class EnderecamentoRepository {
       return true;
     } else {
       throw 'Ocorreu um erro ao criar uma Estante';
+    }
+  }
+
+   Future<bool> editarEstante(EstanteEnderecamentoModel estanteModelo) async {
+    //print(jsonEncode(pisos.toJson()));
+
+    Response response = await api.put('/piso/00/corredor/00/estante/' + estanteModelo.id_estante.toString(), estanteModelo.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar a estante';
     }
   }
 
@@ -224,6 +247,18 @@ class EnderecamentoRepository {
     }
   }
 
+   Future<bool> editarPrateleira(PrateleiraEnderecamentoModel prateleiraModelo) async {
+    //print(jsonEncode(pisos.toJson()));
+
+    Response response = await api.put('/piso/00/corredor/00/estante/' + prateleiraModelo.id_prateleira.toString(), prateleiraModelo.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar a prateleira';
+    }
+  }
+
   // Box
 
   Future<bool> excluirBox(BoxEnderecamentoModel boxEnderecamentoModel) async {
@@ -248,6 +283,18 @@ class EnderecamentoRepository {
       return true;
     } else {
       throw 'Ocorreu um erro ao criar um Box';
+    }
+  }
+
+    Future<bool> editarBox(BoxEnderecamentoModel BoxModelo) async {
+    //print(jsonEncode(pisos.toJson()));
+
+    Response response = await api.put('/piso/00/corredor/00/estante/00/prateleira/00/box/' + BoxModelo.id_box.toString(),  BoxModelo.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar o Box';
     }
   }
 }

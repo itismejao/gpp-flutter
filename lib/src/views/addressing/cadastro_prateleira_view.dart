@@ -74,6 +74,17 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     }
   }
 
+  handleEdit(context, PrateleiraEnderecamentoModel editaEstante) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.editar()) {
+        notify.sucess("Prateleira editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -102,12 +113,12 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                       ),
                       InputComponent(
                         label: 'Estante',
-                        initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
                         hintText: 'Digite a Estante',
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_estante.toString();
+                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
                           });
                         },
                       ),
@@ -124,6 +135,80 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                   handleCreate(context, enderecamentoController.prateleiraModel, widget.idEstante.toString());
                                 },
                                 text: 'Adicionar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+   openFormEdit(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Cadastro do Piso"),
+              // pisoEnderecamentoReplacement.id_piso == null
+
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      InputComponent(
+                        label: 'Piso',
+                        initialValue: prateleiraEnderecamentoReplacement.desc_prateleira,
+                        hintText: 'Digite o nome do Piso',
+                        onChanged: (value) {
+                          setState(() {
+                            prateleiraEnderecamentoReplacement.desc_prateleira.toString();
+                          });
+                        },
+                      ),
+                      InputComponent(
+                        label: 'Filial',
+                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
+                        hintText: 'Digite a estante',
+                        onChanged: (value) {
+                          setState(() {
+                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                   handleEdit(context, prateleiraEnderecamentoReplacement);
+                                  // handleEdit(context);
+                                  // Navigator.pop(context);
+                                  // context,
+                                  //           enderecamentoController.listaPiso[index],
+                                },
+                                text: 'Alterar')
+                            // :ButtonComponent(
+                            //     color: Colors.red,
+                            //     onPressed: () {
+                            //       handleCreate(context, pisoEnderecamentoReplacement);
+                            //     },
+                            //     text: 'Cancelar')
                           ],
                         ),
                       )
@@ -216,6 +301,15 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                                 ));
                                           },
                                           text: 'Box'),
+                                       IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () {                                            
+                                          openFormEdit(context,  enderecamentoController.listaPrateleira[index]);
+                                         },
+                                      ),
                                       IconButton(
                                           icon: Icon(
                                             Icons.delete,
