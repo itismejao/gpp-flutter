@@ -1990,15 +1990,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           ),
                         ),
                         Expanded(
-                          child: TextComponent(astecaController.pedidoSaida.itemsPedidoSaida![index].valor.toString()),
+                          child: TextComponent(
+                              astecaController.formatter.format(astecaController.pedidoSaida.itemsPedidoSaida![index].valor)),
                         ),
                         Expanded(
                           child: TextComponent('R\$: ' +
-                              maskFormatter
-                                  .realInputFormmater((astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade *
-                                          astecaController.pedidoSaida.itemsPedidoSaida![index].valor)
-                                      .toString())
-                                  .getMaskedText()),
+                              astecaController.formatter.format(
+                                  (astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade *
+                                      astecaController.pedidoSaida.itemsPedidoSaida![index].valor))),
                         ),
                         Expanded(
                             flex: 3,
@@ -2054,8 +2053,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Valor total R\$: ' +
-                  maskFormatter.realInputFormmater(astecaController.pedidoSaida.valorTotal.toString()).getMaskedText(),
+              'Valor total R\$: ' + astecaController.formatter.format(astecaController.pedidoSaida.valorTotal),
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
@@ -2278,7 +2276,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                       Expanded(
                                         child: TextComponent(astecaController.produtoPecas[index].peca.descricao),
                                       ),
-                                      Expanded(child: TextComponent(astecaController.produtoPecas[index].peca.custo.toString())),
+                                      Expanded(
+                                          child: TextComponent(astecaController.formatter
+                                              .format(astecaController.produtoPecas[index].peca.custo))),
                                       Expanded(
                                         child: astecaController.produtoPecas[index].peca.estoque.length != 0
                                             ? TextComponent(astecaController
