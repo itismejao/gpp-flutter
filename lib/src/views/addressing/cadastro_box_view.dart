@@ -86,6 +86,17 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     }
   }
 
+  handleEdit(context, BoxEnderecamentoModel editaBox) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.editar()) {
+        notify.sucess("Box editada com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   openForm(context, BoxEnderecamentoModel boxEnderecamentoModel) {
     showDialog(
       context: context,
@@ -235,6 +246,152 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
     );
   }
 
+ openFormEdit(context, BoxEnderecamentoModel boxEnderecamentoModel) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Cadastro de Box"),
+              insetPadding: EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 6,
+                            child: InputComponent(
+                              label: 'Box',
+                              initialValue: boxEnderecamentoModel.desc_box,
+                              hintText: 'Digite o nome do Box',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.desc_box.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            flex: 2,
+                            child: InputComponent(
+                              label: 'Prateleira',
+                              initialValue: boxEnderecamentoModel.id_prateleira.toString(),
+                              hintText: 'Digite a Prateleira',
+                              enable: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.id_prateleira.toString();
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 20)),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Altura',
+                              hintText: 'Digite a altura',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.altura.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Largura',
+                              hintText: 'Digite a largura',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.largura.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Flexible(
+                            child: InputComponent(
+                              label: 'Profundidade',
+                              hintText: 'Digite a profundidade',
+                              onChanged: (value) {
+                                setState(() {
+                                  boxEnderecamentoModel.profundidade.toString();
+                                });
+                              },
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(right: 30)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextComponent('Und. Medida'),
+                              Padding(padding: EdgeInsets.only(top: 6)),
+                              Container(
+                                padding: EdgeInsets.only(left: 12, right: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<UnidadeMedidaBox>(
+                                    value: UnidadeMedidaBox.values[_selectedUnidadeMedidaBox!.index],
+                                    onChanged: (UnidadeMedidaBox? value) {
+                                      setState(() {
+                                        _selectedUnidadeMedidaBox = value;
+
+                                        boxEnderecamentoModel.unidade_medida = value!.index;
+                                      });
+                                    },
+                                    items: UnidadeMedidaBox.values.map((UnidadeMedidaBox? unidadeMedidaBox) {
+                                      return DropdownMenuItem<UnidadeMedidaBox>(
+                                          value: unidadeMedidaBox, child: Text(unidadeMedidaBox!.name));
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            ButtonComponent(
+                                  onPressed: () {
+                                   handleEdit(context, boxEnderecamentoModel);
+                                },
+                                text: 'Alterar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -327,6 +484,15 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                                                       ? UnidadeMedidaBox.Polegadas.name
                                                       : ''),
                                 ),
+                                   IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () {                                            
+                                          openFormEdit(context,  enderecamentoController.listaBox[index]);
+                                         },
+                                      ),
                                 Expanded(
                                   child: Row(
                                     children: [

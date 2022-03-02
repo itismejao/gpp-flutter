@@ -74,6 +74,18 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
     }
   }
 
+  
+   handleEdit(context, CorredorEnderecamentoModel editaCorredor) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await enderecamentoController.editar()) {
+        notify.sucess("Corredor editado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
@@ -135,7 +147,81 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
       },
     );
   }
+ 
+   openFormEdit(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Cadastro do Piso"),
+              // pisoEnderecamentoReplacement.id_piso == null
 
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      InputComponent(
+                        label: 'Piso',
+                        initialValue: corredorEnderecamentoReplacement.desc_corredor,
+                        hintText: 'Digite o nome do Piso',
+                        onChanged: (value) {
+                          setState(() {
+                            corredorEnderecamentoReplacement.desc_corredor.toString();
+                          });
+                        },
+                      ),
+                      InputComponent(
+                        label: 'Filial',
+                        initialValue: corredorEnderecamentoReplacement.id_corredor.toString(),
+                        hintText: 'Digite a filial',
+                        onChanged: (value) {
+                          setState(() {
+                            corredorEnderecamentoReplacement.id_corredor.toString();
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                   handleEdit(context, corredorEnderecamentoReplacement);
+                                  // handleEdit(context);
+                                  // Navigator.pop(context);
+                                  // context,
+                                  //           enderecamentoController.listaPiso[index],
+                                },
+                                text: 'Alterar')
+                            // :ButtonComponent(
+                            //     color: Colors.red,
+                            //     onPressed: () {
+                            //       handleCreate(context, pisoEnderecamentoReplacement);
+                            //     },
+                            //     text: 'Cancelar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+ 
   @override
   void initState() {
     super.initState();
@@ -224,7 +310,16 @@ class _CadastroCorredorViewState extends State<CadastroCorredorView> {
                                                   context,
                                                   enderecamentoController.listaCorredor[index],
                                                 )
-                                              })
+                                              }),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () {                                            
+                                          openFormEdit(context,  enderecamentoController.listaCorredor[index]);
+                                         },
+                                        ),
                                     ],
                                   ),
                                 )

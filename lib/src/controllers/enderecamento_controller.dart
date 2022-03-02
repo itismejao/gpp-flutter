@@ -56,6 +56,10 @@ class EnderecamentoController {
     return await repository.criar(pisoModel);
   }
 
+   Future<bool> editar() async {
+    return await repository.editar(pisoModel);
+  }
+
   // Criar e excluir Corredor
   Future<bool> excluirCorredor(CorredorEnderecamentoModel corredorModel) async {
     return await repository.excluirCorredor(corredorModel);
@@ -63,6 +67,10 @@ class EnderecamentoController {
 
   Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
     return await repository.criarCorredor(corredor, idPiso);
+  }
+
+   Future<bool> editarCorredor() async {
+    return await repository.editarCorredor(corredorModel);
   }
 
   // Estante
@@ -74,6 +82,10 @@ class EnderecamentoController {
     return await repository.criarEstante(estanteEnderecamentoModel, IdCorredor);
   }
 
+    Future<bool> editarEstante() async {
+    return await repository.editarEstante(estanteModel);
+  }
+
   //Prateleira
   Future<bool> excluirPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
     return await repository.excluirPrateleira(prateleiraEnderecamentoModel);
@@ -83,6 +95,10 @@ class EnderecamentoController {
     return await repository.criarPrateleira(prateleiraEnderecamentoModel, idEstante);
   }
 
+  Future<bool> editarPrateleira() async {
+    return await repository.editarPrateleira(prateleiraModel);
+  }
+
   // Box
   Future<bool> excluirBox(BoxEnderecamentoModel boxEnderecamentoModel) async {
     return await repository.excluirBox(boxEnderecamentoModel);
@@ -90,5 +106,9 @@ class EnderecamentoController {
 
   Future<bool> criarBox(BoxEnderecamentoModel boxEnderecamentoModel, String idPrateleira) async {
     return await repository.criarBox(boxEnderecamentoModel, idPrateleira);
+  }
+
+  Future<bool> editarBox() async {
+    return await repository.editarBox(boxModel);
   }
 }
