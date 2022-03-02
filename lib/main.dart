@@ -60,6 +60,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
+import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
@@ -73,7 +74,9 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+
 import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+
 import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
@@ -158,7 +161,7 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey,floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),)),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

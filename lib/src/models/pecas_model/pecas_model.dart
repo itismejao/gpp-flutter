@@ -95,7 +95,7 @@ class PecasModel {
       //         return ProdutoPecaModel.fromJson(data);
       //       }).toList()
       //     : null,
-      // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
+       produto_peca: json["produto_peca"] == null ? null : List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
 

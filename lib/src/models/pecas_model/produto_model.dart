@@ -9,7 +9,7 @@ class ProdutoModel {
   String? resumida;
   String? marca;
   String? data_cadastro;
-  String? id_fornecedor;
+  int? id_fornecedor;
 
   List<PecasFornecedorModel>? fornecedor;
 

@@ -64,13 +64,7 @@ class PecasRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      print('buscou peca');
-      print(data);
-
       PecasModel pecas = PecasModel.fromJson(data);
-
-      print('buscou peca 2');
-      print(pecas.id_peca);
 
       return pecas;
     } else {

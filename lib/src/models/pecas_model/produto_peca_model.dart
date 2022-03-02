@@ -25,7 +25,7 @@ class ProdutoPecaModel {
   factory ProdutoPecaModel.fromJson(Map<String, dynamic> json) {
     return ProdutoPecaModel(
       id_produto_peca: json['id_produto_peca'],
-      id_produto_sku: json['id_produto_sku'],
+      id_produto_sku: json['id_produto'],
       id_peca: json['id_peca'],
       id_material_fabricacao: json['id_material_fabricacao'],
       id_cor: json['id_cor'],
@@ -43,7 +43,7 @@ class ProdutoPecaModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     data['id_produto_peca'] = this.id_produto_peca;
-    data['id_produto_sku'] = this.id_produto_sku;
+    data['id_produto'] = this.id_produto_sku;
     data['id_peca'] = this.id_peca;
     data['id_material_fabricacao'] = this.id_material_fabricacao;
     data['id_cor'] = this.id_cor;
