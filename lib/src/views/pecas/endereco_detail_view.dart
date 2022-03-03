@@ -1,8 +1,12 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/models/pecas_model/peca_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+
+import '../../models/box_enderecamento_model.dart';
 
 class EnderecoDetailView extends StatefulWidget {
   PecaEnderacamentoModel? pecaEnderecamento;
@@ -19,10 +23,12 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
 
   PecaEnderacamentoModel? pecaEnderecamento;
 
+  late EnderecamentoController enderecamentoController;
+
   @override
   void initState() {
     pecaEnderecamento = widget.pecaEnderecamento;
-
+    enderecamentoController = EnderecamentoController();
     // TODO: implement initState
     super.initState();
   }
@@ -116,10 +122,67 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
           Row(
             children: [
               Flexible(
-                child: InputComponent(
-                  initialValue: pecaEnderecamento?.descPiso ?? '',
-                  label: 'Box',
-                ),
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarBox(pecaEnderecamento!.box!.id_prateleira.toString()),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<BoxEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (BoxEnderecamentoModel? value) =>
+                                    value!.desc_box!.toUpperCase(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    pecaEnderecamento!.box = value!;
+                                  });
+
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Box:",
+                                    labelText: "Box"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: pecaEnderecamento!.box,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  //limparBox();
+
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(
+                                    child:
+                                    //_prateleiraSelected == null ?
+                                    //Text('Selecione uma Prateleira!') :
+                                    Text('Box não encontrado!')
+
+                                ),
+                              ),
+                            );}})
               ),
             ],
           ),

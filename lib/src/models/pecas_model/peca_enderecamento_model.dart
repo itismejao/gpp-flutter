@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_estoque_model.dart';
 
 class PecaEnderacamentoModel{
@@ -8,6 +9,7 @@ class PecaEnderacamentoModel{
   String endereco;
   String? nomeFornecedor;
   String? descPiso;
+  BoxEnderecamentoModel? box;
 
   PecaEnderacamentoModel({
     required this.id_peca_enderecamento,
@@ -16,7 +18,8 @@ class PecaEnderacamentoModel{
     this.peca_estoque,
     required this.endereco,
     this.nomeFornecedor,
-    this.descPiso
+    this.descPiso,
+    required this.box
   });
 
   factory PecaEnderacamentoModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +31,7 @@ class PecaEnderacamentoModel{
       endereco: json['endereco'],
       nomeFornecedor: json['fornecedor'],
       descPiso: json['piso'],
+      box: BoxEnderecamentoModel.fromJson(json['box'])
     );
   }
 

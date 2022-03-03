@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class BoxEnderecamentoModel {
   int? id_box;
   String? desc_box;
@@ -16,7 +18,10 @@ class BoxEnderecamentoModel {
       this.largura,
       this.profundidade,
       this.unidade_medida,
-      this.created_at});
+      this.created_at,
+      }
+
+      );
 
   factory BoxEnderecamentoModel.fromJson(Map<String, dynamic> json) {
     return BoxEnderecamentoModel(
@@ -27,7 +32,8 @@ class BoxEnderecamentoModel {
         largura: json['largura'],
         profundidade: json['profundidade'],
         unidade_medida: json['unidade_medida'],
-        created_at: json['created_at']);
+        created_at: json['created_at'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -43,5 +49,21 @@ class BoxEnderecamentoModel {
     data['created_at'] = this.created_at;
 
     return data;
+  }
+
+  String calcularMedida(){
+    String? medida = '-';
+    print('Teste Medida\n');
+    print(this.altura);
+    if (this.altura != null){
+      medida = altura.toString();
+      if(this.largura != null) {
+        medida = medida + 'x' + largura.toString();
+        if(this.profundidade != null){
+          medida = medida + 'x' + profundidade.toString();
+        }
+      }
+    }
+    return medida;
   }
 }

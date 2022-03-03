@@ -17,9 +17,6 @@ class PecaEnderecamentoRepository{
 
   Future<List> buscarTodos(int pagina_atual, int? id_filial, int? id_fornecedor, int? id_produto, int? id_peca, int? id_piso,int? id_corredor,int? id_estante,int? id_prateleira,int? id_box) async{
 
-    print('Piso');
-    print(id_piso);
-
     Map<String, String> queryParameters = {
       'page': pagina_atual.toString(),
       'id_filial': id_filial != null ? id_filial.toString() : '',

@@ -44,7 +44,6 @@ class _PecaEnderecamentoDetailViewState
   late ProdutoController _produtoController;
   PecasModel? peca;
 
-
   TextEditingController _controllerIdFilial = new TextEditingController();
   TextEditingController _controllerNomeFilial = new TextEditingController();
 
@@ -59,11 +58,11 @@ class _PecaEnderecamentoDetailViewState
 
   int? id_filial, id_fornecedor, id_produto, id_peca;
 
-  PisoEnderecamentoModel _pisoSelected = PisoEnderecamentoModel(desc_piso: 'Selecione o Piso:');
-  CorredorEnderecamentoModel _corredorSelected = CorredorEnderecamentoModel(desc_corredor: 'Selecione o Corredor:');
-  PrateleiraEnderecamentoModel _prateleiraSelected = PrateleiraEnderecamentoModel(desc_prateleira: 'Selecione a Prateleira:');
-  EstanteEnderecamentoModel _estanteSelected = EstanteEnderecamentoModel(desc_estante: 'Selecione a Estante:');
-  BoxEnderecamentoModel _boxSelected = BoxEnderecamentoModel(desc_box: 'Selecione o Box:');
+  PisoEnderecamentoModel? _pisoSelected;
+  CorredorEnderecamentoModel? _corredorSelected;
+  PrateleiraEnderecamentoModel? _prateleiraSelected;
+  EstanteEnderecamentoModel? _estanteSelected;
+  BoxEnderecamentoModel? _boxSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -73,19 +72,20 @@ class _PecaEnderecamentoDetailViewState
         padding: EdgeInsets.only(top: 16, bottom: 16),
         child: Row(
           children: [
-            Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(Icons.add_box),
-            Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent('Endereçar Peças'),
+            const Padding(padding: EdgeInsets.only(left: 20)),
+            const Icon(Icons.add_box),
+            const Padding(padding: EdgeInsets.only(right: 12)),
+            const TitleComponent('Endereçar Peças'),
           ],
         ),
       ),
-      Divider(),
-      Padding(padding: EdgeInsets.only(bottom: 30)),
+      const Divider(),
+      const Padding(padding: EdgeInsets.only(bottom: 30)),
       Column(
           children: [
         Row(
           children: [
+            const Padding(padding: EdgeInsets.only(left: 5)),
             Flexible(
               flex: 2,
               child: Container(
@@ -120,7 +120,7 @@ class _PecaEnderecamentoDetailViewState
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             // Fim Produto
             Flexible(
               flex: 5,
@@ -144,7 +144,7 @@ class _PecaEnderecamentoDetailViewState
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 30)),
+            const Padding(padding: EdgeInsets.only(right: 30)),
             Flexible(
               flex: 2,
               child: Container(
@@ -173,7 +173,7 @@ class _PecaEnderecamentoDetailViewState
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
               flex: 5,
               child: Container(
@@ -197,11 +197,14 @@ class _PecaEnderecamentoDetailViewState
               ),
             ),
             // Fim Fornecedor
+            const  Padding(padding: EdgeInsets.only(right: 5)),
           ],
+
         ),
-        Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(padding: EdgeInsets.only(top: 30)),
         Row(
           children: [
+            const Padding(padding: EdgeInsets.only(left: 5)),
             Flexible(
               flex: 2,
               child: Container(
@@ -220,7 +223,7 @@ class _PecaEnderecamentoDetailViewState
                     hintText: 'ID',
                     border: InputBorder.none,
                     contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     suffixIcon: IconButton(
                       onPressed: () async {
                         if (_controllerIdProduto.text == '') {
@@ -229,13 +232,13 @@ class _PecaEnderecamentoDetailViewState
                           buscarProduto(_controllerIdProduto.text);
                         }
                       },
-                      icon: Icon(Icons.search),
+                      icon: const Icon(Icons.search),
                     ),
                   ),
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const  Padding(padding: EdgeInsets.only(right: 10)),
             // Fim Produto
             Flexible(
               flex: 5,
@@ -254,12 +257,12 @@ class _PecaEnderecamentoDetailViewState
                     hintText: 'Nome Produto',
                     border: InputBorder.none,
                     contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   ),
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 30)),
+            const Padding(padding: EdgeInsets.only(right: 30)),
             Flexible(
               flex: 2,
               child: Container(
@@ -278,7 +281,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'ID',
                       border: InputBorder.none,
                       contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      const  EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       suffixIcon: IconButton(
                         onPressed: () async {
                           if (_controllerIdPeca.text == '') {
@@ -287,12 +290,12 @@ class _PecaEnderecamentoDetailViewState
                             buscarPeca(_controllerIdPeca.text);
                           }
                         },
-                        icon: Icon(Icons.search),
+                        icon: const  Icon(Icons.search),
                       )),
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
               flex: 5,
               child: Container(
@@ -310,17 +313,19 @@ class _PecaEnderecamentoDetailViewState
                     hintText: 'Nome Peça',
                     border: InputBorder.none,
                     contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    const  EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   ),
                 ),
               ),
             ),
             // Fim Fornecedor
+            const  Padding(padding: EdgeInsets.only(right: 5)),
           ],
         ),
-        Padding(padding: EdgeInsets.only(top: 30)),
+            const  Padding(padding: EdgeInsets.only(top: 30)),
         Row(
           children: [
+            const Padding(padding: EdgeInsets.only(left: 5)),
             Flexible(
               flex: 1,
               child: FutureBuilder(
@@ -336,7 +341,7 @@ class _PecaEnderecamentoDetailViewState
                 new CircularProgressIndicator());
                 case ConnectionState.done:
                     return Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 12, right: 12),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
@@ -361,6 +366,8 @@ class _PecaEnderecamentoDetailViewState
                         dropdownSearchDecoration:
                         InputDecoration(
                           enabledBorder: InputBorder.none,
+                            hintText: "Selecione o Piso:",
+                            labelText: "Piso"
                         ),
                         dropDownButton: Icon(
                           Icons.arrow_drop_down_rounded,
@@ -368,15 +375,20 @@ class _PecaEnderecamentoDetailViewState
                         ),
                         showAsSuffixIcons: true,
                         selectedItem: _pisoSelected,
+                        showClearButton: true,
+                        clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+                           limparFieldsLoc();
+                        },),
+                        emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
                   ),
                     );}})
               ),
 
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
                 flex: 1,
                 child: FutureBuilder(
-                    future: enderecamentoController.buscarCorredor(_pisoSelected.id_piso.toString()),
+                    future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
                     builder: (context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -412,6 +424,8 @@ class _PecaEnderecamentoDetailViewState
                               dropdownSearchDecoration:
                               InputDecoration(
                                 enabledBorder: InputBorder.none,
+                                  hintText: "Selecione o Corredor:",
+                                  labelText: "Corredor"
                               ),
                               dropDownButton: Icon(
                                 Icons.arrow_drop_down_rounded,
@@ -419,14 +433,28 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               showAsSuffixIcons: true,
                               selectedItem: _corredorSelected,
+                              showClearButton: true,
+                              clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  limparCorredor();
+
+                              },),
+                              emptyBuilder: (context, searchEntry) => Center(
+                                  child:
+                                  _pisoSelected == null ?
+                                  Text('Selecione um Piso!') :
+                                  Text('Corredor não encontrado!')
+
+                              ),
                             ),
                           );}})
+
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
                 flex: 1,
                 child: FutureBuilder(
-                    future: enderecamentoController.buscarEstante(_corredorSelected.id_corredor.toString()),
+                    future: enderecamentoController.buscarEstante(_corredorSelected?.id_corredor.toString() ?? ''),
                     builder: (context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -462,6 +490,8 @@ class _PecaEnderecamentoDetailViewState
                               dropdownSearchDecoration:
                               InputDecoration(
                                 enabledBorder: InputBorder.none,
+                                  hintText: "Selecione a Estante:",
+                                  labelText: "Estante"
                               ),
                               dropDownButton: Icon(
                                 Icons.arrow_drop_down_rounded,
@@ -469,14 +499,27 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               showAsSuffixIcons: true,
                               selectedItem: _estanteSelected,
+                              showClearButton: true,
+                              clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  limparEstante();
+
+                              },),
+                              emptyBuilder: (context, searchEntry) => Center(
+                                  child:
+                                  _corredorSelected == null ?
+                                  Text('Selecione um Corredor!') :
+                                  Text('Estante não encontrado!')
+
+                              ),
                             ),
                           );}})
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
                 flex: 1,
                 child: FutureBuilder(
-                    future: enderecamentoController.buscarPrateleira(_estanteSelected.id_estante.toString()),
+                    future: enderecamentoController.buscarPrateleira(_estanteSelected?.id_estante.toString() ?? ''),
                     builder: (context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -512,6 +555,8 @@ class _PecaEnderecamentoDetailViewState
                               dropdownSearchDecoration:
                               InputDecoration(
                                 enabledBorder: InputBorder.none,
+                                  hintText: "Selecione a Prateleira:",
+                                  labelText: "Prateleira"
                               ),
                               dropDownButton: Icon(
                                 Icons.arrow_drop_down_rounded,
@@ -519,14 +564,27 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               showAsSuffixIcons: true,
                               selectedItem: _prateleiraSelected,
+                              showClearButton: true,
+                              clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  limparPrateleira();
+
+                              },),
+                              emptyBuilder: (context, searchEntry) => Center(
+                                  child:
+                                  _estanteSelected == null ?
+                                  Text('Selecione uma Estante!') :
+                                  Text('Prateleira não encontrado!')
+
+                              ),
                             ),
                           );}})
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 10)),
             Flexible(
                 flex: 1,
                 child: FutureBuilder(
-                    future: enderecamentoController.buscarBox(_prateleiraSelected.id_prateleira.toString()),
+                    future: enderecamentoController.buscarBox(_prateleiraSelected?.id_prateleira.toString() ?? ''),
                     builder: (context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
@@ -561,6 +619,8 @@ class _PecaEnderecamentoDetailViewState
                               dropdownSearchDecoration:
                               InputDecoration(
                                 enabledBorder: InputBorder.none,
+                                  hintText: "Selecione o Box:",
+                                  labelText: "Box"
                               ),
                               dropDownButton: Icon(
                                 Icons.arrow_drop_down_rounded,
@@ -568,13 +628,26 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               showAsSuffixIcons: true,
                               selectedItem: _boxSelected,
+                              showClearButton: true,
+                              clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  limparBox();
+
+                              },),
+                              emptyBuilder: (context, searchEntry) => Center(
+                                  child:
+                                  _prateleiraSelected == null ?
+                                  Text('Selecione uma Prateleira!') :
+                                  Text('Box não encontrado!')
+
+                              ),
                             ),
                           );}})
             ),
-            Padding(padding: EdgeInsets.only(right: 10)),
+            const Padding(padding: EdgeInsets.only(right: 5)),
           ],
         ),
-        Padding(padding: EdgeInsets.only(top: 30)),
+            const Padding(padding: EdgeInsets.only(top: 30)),
         ButtonComponent(onPressed: () {
           setState(() {
             id_filial = _controllerIdFilial.text != '' ? int.parse(_controllerIdFilial.text) : null;
@@ -584,7 +657,7 @@ class _PecaEnderecamentoDetailViewState
           });
         }, text: 'Pesquisar')
       ]),
-      Padding(padding: EdgeInsets.only(top: 30)),
+      const Padding(padding: EdgeInsets.only(top: 30)),
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -593,14 +666,14 @@ class _PecaEnderecamentoDetailViewState
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.location_on_outlined,
                     size: 32,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
-                  TitleComponent('Endereços'),
+                  const TitleComponent('Endereços'),
                 ],
               ),
               Row(
@@ -609,7 +682,7 @@ class _PecaEnderecamentoDetailViewState
                       color: primaryColor,
                       onPressed: () {},
                       text: 'Salvar'),
-                  SizedBox(
+                  const SizedBox(
                     width: 12,
                   ),
                   ButtonComponent(
@@ -683,7 +756,7 @@ class _PecaEnderecamentoDetailViewState
         ),
         const Divider(),
         FutureBuilder(
-          future: pecaEnderecamentoController.buscarTodos(pecaEnderecamentoController.pagina.atual,id_filial,id_fornecedor,id_produto,id_peca,_pisoSelected.id_piso, _corredorSelected.id_corredor, _estanteSelected.id_estante,_prateleiraSelected.id_prateleira, _boxSelected.id_box),
+          future: pecaEnderecamentoController.buscarTodos(pecaEnderecamentoController.pagina.atual,id_filial,id_fornecedor,id_produto,id_peca,_pisoSelected?.id_piso, _corredorSelected?.id_corredor, _estanteSelected?.id_estante,_prateleiraSelected?.id_prateleira, _boxSelected?.id_box),
           builder: (context, AsyncSnapshot<List<PecaEnderacamentoModel>> snapshot) {
 
             switch (snapshot.connectionState) {
@@ -697,7 +770,7 @@ class _PecaEnderecamentoDetailViewState
                 if (snapshot.hasError) {
                   return Text(
                     '${snapshot.error}',
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   );
                 } else {
                   return Container(
@@ -729,7 +802,7 @@ class _PecaEnderecamentoDetailViewState
                                 ),
                               ),
                               Expanded(
-                                child: Text('?'+'x'+'?'+'x'+'?',
+                                child: Text(snapshot.data![index].box!.calcularMedida(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -766,11 +839,8 @@ class _PecaEnderecamentoDetailViewState
                                         color: Colors.grey.shade400,
                                       ),
                                       onPressed: () => {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]));
-                                            }).then((value) => setState(() {}))
+                                              PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
+
                                       },
                                     ),
                                     IconButton(
@@ -872,28 +942,40 @@ class _PecaEnderecamentoDetailViewState
     super.initState();
   }
 
+
   limparFieldsLoc(){
-    _pisoSelected = PisoEnderecamentoModel(desc_piso: 'Selecione o Piso:');
+    setState(() {
+      _pisoSelected = null;
+    });
     limparCorredor();
   }
 
   limparCorredor(){
-    _corredorSelected = CorredorEnderecamentoModel(desc_corredor: 'Selecione o Corredor:');
+    setState(() {
+      _corredorSelected = null;
+    });
     limparEstante();
   }
 
   limparEstante(){
-    _estanteSelected = EstanteEnderecamentoModel(desc_estante: 'Selecione a Estante:');
+    setState(() {
+      _estanteSelected = null;
+    });
+
     limparPrateleira();
   }
 
   limparPrateleira(){
-    _prateleiraSelected = PrateleiraEnderecamentoModel(desc_prateleira: 'Selecione a Prateleira:');
+    setState(() {
+      _prateleiraSelected = null;
+    });
     limparBox();
   }
 
   limparBox(){
-    _boxSelected = BoxEnderecamentoModel(desc_box: 'Selecione o Box:');
+    setState(() {
+      _boxSelected = null;
+    });
   }
 
 
