@@ -327,6 +327,16 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
   //   }
   // }
 
+  exibirFormDepartamento() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(title: DepartamentFormView());
+          });
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -341,7 +351,7 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
                 TitleComponent('Departamentos'),
                 ButtonComponent(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/departamento/register');
+                      exibirFormDepartamento();
                     },
                     text: 'Adicionar')
               ],

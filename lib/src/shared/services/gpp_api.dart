@@ -19,8 +19,10 @@ class ApiService {
 
   Map<String, String> getHeader() {
     if (isAuthenticated()) {
-      String token = getToken();
-      headers['Authorization'] = 'Bearer ' + token;
+      String? token = getToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer ' + token;
+      }
     } else {
       logout();
     }
@@ -47,6 +49,36 @@ class ApiService {
   Future<dynamic> post(String path, body) async {
     try {
       var uri = Uri.parse(baseUrl! + path);
+      var response = await http
+          .post(uri, headers: getHeader(), body: jsonEncode(body))
+          .timeout(const Duration(seconds: 10));
+
+      return response;
+    } on TimeoutException {
+      throw TimeoutException("Tempo de conexão excedido");
+    }
+  }
+
+  Future<dynamic> postTeste(String endpoint, body) async {
+    try {
+      var uri = Uri.parse(
+          'https://6205560a161670001741b91a.mockapi.io/api/pecas/' + endpoint);
+      var response = await http
+          .post(uri, headers: getHeader(), body: jsonEncode(body))
+          .timeout(const Duration(seconds: 10));
+
+      return response;
+    } on TimeoutException {
+      throw TimeoutException("Tempo de conexão excedido");
+    }
+  }
+
+// Pegando a Api fake
+  Future<dynamic> endereco(String endpoint, body) async {
+    try {
+      var uri = Uri.parse(
+          'https://62055045161670001741b8e1.mockapi.io/api/enderecamento/' +
+              endpoint);
       var response = await http
           .post(uri, headers: getHeader(), body: jsonEncode(body))
           .timeout(const Duration(seconds: 10));

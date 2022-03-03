@@ -30,4 +30,15 @@ class AutenticacaoRepository {
       throw error;
     }
   }
+
+  Future<void> buscar() async {
+    Response response = await api.get(path);
+
+    if (response.statusCode == StatusCode.OK) {
+      usuario = UsuarioModel.fromJson(jsonDecode(response.body));
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
 }

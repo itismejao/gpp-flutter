@@ -13,14 +13,12 @@ class AppBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget page = LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
+    Widget page = LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       if (_responsive.isMobile(constraints.maxWidth)) {
         return Container(
           color: primaryColor,
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -33,14 +31,19 @@ class AppBarView extends StatelessWidget {
                       ),
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
-                    Text(
-                      'gpp',
-                      style: textStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      child: Text(
+                        'gpp',
+                        style: textStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/');
+                      },
+                    )
                   ],
                 ),
                 GestureDetector(
@@ -65,14 +68,19 @@ class AppBarView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'gpp',
-                style: textStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
+              GestureDetector(
+                child: Text(
+                  'gpp',
+                  style: textStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/');
+                },
+              )
             ],
           ),
         ),

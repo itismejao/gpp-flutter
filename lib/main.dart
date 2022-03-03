@@ -58,6 +58,16 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
+import 'package:gpp/src/controllers/AutenticacaoController.dart';
+import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
@@ -73,6 +83,10 @@ import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
+import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
+import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
@@ -92,6 +106,8 @@ class _GppAppState extends State<GppApp> {
   obterRota(settings) {
     Widget pagina = NotFoundView();
     if (isAuthenticated()) {
+      //Autenticação
+
       Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
@@ -110,6 +126,14 @@ class _GppAppState extends State<GppApp> {
           pagina = MotivosTrocaPecasListView();
         } else if (uri.pathSegments.first == 'logout') {
           pagina = AuthenticateView();
+        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
+          pagina = MenuCadastrarView();
+        } else if (uri.pathSegments.first == 'pecas-consultar') {
+          pagina = MenuConsultarView();
+        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
+          pagina = Container();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
@@ -127,6 +151,13 @@ class _GppAppState extends State<GppApp> {
     return MaterialPageRoute(
         builder: (context) =>
             HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+  }
+
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
   }
 
   Widget build(BuildContext context) {

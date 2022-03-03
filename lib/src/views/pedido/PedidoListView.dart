@@ -12,7 +12,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
-import 'package:gpp/src/shared/utils/mask_formatter.dart';
+import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
 class Situacao {
   int? id;
@@ -44,8 +44,7 @@ class _PedidoListViewState extends State<PedidoListView> {
         pedidoController.carregado = false;
       });
       //parei aqui
-      List retorno = await pedidoController.pedidoRepository.buscarTodos(
-          pedidoController.pagina.atual,
+      List retorno = await pedidoController.pedidoRepository.buscarTodos(pedidoController.pagina.atual,
           idPedido: pedidoController.idPedido,
           dataInicio: pedidoController.dataInicio,
           dataFim: pedidoController.dataFim,
@@ -148,8 +147,7 @@ class _PedidoListViewState extends State<PedidoListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(
-      List<PedidoSaidaModel> pedido, int index, BuildContext context) {
+  Widget _buildListItem(List<PedidoSaidaModel> pedido, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -244,8 +242,7 @@ class _PedidoListViewState extends State<PedidoListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
+            Navigator.pushNamed(context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -262,8 +259,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                 ],
                 border: Border(
                   left: BorderSide(
-                    color:
-                        situacao(pedidoController.pedidos[index].dataEmissao!),
+                    color: situacao(pedidoController.pedidos[index].dataEmissao!),
                     width: 7.0,
                   ),
                 ),
@@ -341,29 +337,19 @@ class _PedidoListViewState extends State<PedidoListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(pedido[index].dataEmissao!),
+                              DateFormat('dd/MM/yyyy').format(pedido[index].dataEmissao!),
                             )),
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              maskFormatter
-                                  .cpfCnpjFormatter(
-                                      pedido[index].cpfCnpj.toString())!
-                                  .getMaskedText(),
+                              maskFormatter.cpfCnpjFormatter(value: pedido[index].cpfCnpj.toString())!.getMaskedText(),
                             )),
-                        Expanded(
-                            flex: 2,
-                            child:
-                                _buildSituacaoPedido(pedido[index].situacao)),
+                        Expanded(flex: 2, child: _buildSituacaoPedido(pedido[index].situacao)),
                         Expanded(
                             flex: 3,
-                            child: TextComponent(
-                              maskFormatter
-                                  .realInputFormmater(
-                                      pedido[index].valorTotal.toString())
-                                  .getMaskedText(),
-                            ))
+                            child: TextComponent(pedidoController.formatter.format(pedido[index].valorTotal)
+                                // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
+                                ))
                       ],
                     ),
                   ],
@@ -414,8 +400,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        pedidoController.abrirFiltro =
-                            !(pedidoController.abrirFiltro);
+                        pedidoController.abrirFiltro = !(pedidoController.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -446,14 +431,13 @@ class _PedidoListViewState extends State<PedidoListView> {
                                 onChanged: (value) {
                                   pedidoController.situacao = value.id;
                                 },
-                                hint: TextComponent('Em aberto'),
+                                hintText: 'Em aberto',
                                 items: <Situacao>[
                                   Situacao(id: 1, descricao: 'Em aberto'),
                                   Situacao(id: 2, descricao: 'Pendente'),
                                   Situacao(id: 3, descricao: 'Em separação'),
                                   Situacao(id: 4, descricao: 'Fechado')
-                                ].map<DropdownMenuItem<Situacao>>(
-                                    (Situacao value) {
+                                ].map<DropdownMenuItem<Situacao>>((Situacao value) {
                                   return DropdownMenuItem<Situacao>(
                                     value: value,
                                     child: TextComponent(value.descricao!),
@@ -473,11 +457,10 @@ class _PedidoListViewState extends State<PedidoListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                pedidoController.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                pedidoController.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data inicial',
+                            hintText: '24/02/2022',
                           ),
                         ),
                         SizedBox(width: 8),
@@ -488,11 +471,10 @@ class _PedidoListViewState extends State<PedidoListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                pedidoController.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                pedidoController.dataFim = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
-                            hintText: 'Data fim',
+                            hintText: '25/02/2022',
                           ),
                         ),
                       ],
@@ -505,12 +487,8 @@ class _PedidoListViewState extends State<PedidoListView> {
                       children: [
                         ButtonComponent(
                             onPressed: () {
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
-                                  .save();
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
-                                  .reset();
+                              pedidoController.filtroExpandidoFormKey.currentState!.save();
+                              pedidoController.filtroExpandidoFormKey.currentState!.reset();
                               buscarTodas();
 
                               setState(() {
@@ -527,8 +505,7 @@ class _PedidoListViewState extends State<PedidoListView> {
           ),
           Container(
             height: media.height * 0.7,
-            child:
-                pedidoController.carregado ? _buildList() : LoadingComponent(),
+            child: pedidoController.carregado ? _buildList() : LoadingComponent(),
           ),
           Container(
             height: media.height * 0.10,
@@ -536,8 +513,7 @@ class _PedidoListViewState extends State<PedidoListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextComponent('Total de páginas: ' +
-                    pedidoController.pagina.total.toString()),
+                TextComponent('Total de páginas: ' + pedidoController.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(
@@ -553,8 +529,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                         ),
                         onPressed: () {
                           if (pedidoController.pagina.atual > 0) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual - 1;
+                            pedidoController.pagina.atual = pedidoController.pagina.atual - 1;
                             buscarTodas();
                           }
                         }),
@@ -562,10 +537,8 @@ class _PedidoListViewState extends State<PedidoListView> {
                     IconButton(
                         icon: Icon(Icons.navigate_next_rounded),
                         onPressed: () {
-                          if (pedidoController.pagina.atual !=
-                              pedidoController.pagina.total) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual + 1;
+                          if (pedidoController.pagina.atual != pedidoController.pagina.total) {
+                            pedidoController.pagina.atual = pedidoController.pagina.atual + 1;
                           }
 
                           buscarTodas();
@@ -573,8 +546,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                     IconButton(
                         icon: Icon(Icons.last_page),
                         onPressed: () {
-                          pedidoController.pagina.atual =
-                              pedidoController.pagina.total;
+                          pedidoController.pagina.atual = pedidoController.pagina.total;
                           buscarTodas();
                         }),
                   ],
