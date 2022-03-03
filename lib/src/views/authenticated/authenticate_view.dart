@@ -50,7 +50,7 @@ class _AuthenticateViewState extends State<AuthenticateView> {
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
-      nofity.error(e.toString());
+      nofity.error2(e.toString());
     }
   }
 

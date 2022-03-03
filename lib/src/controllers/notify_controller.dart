@@ -8,12 +8,22 @@ class NotifyController {
     required this.context,
   });
 
-  void error(String message) {
+  void error2(String message) {
     final snackBar = SnackBar(
         duration: const Duration(seconds: 5),
         backgroundColor: Colors.red,
         content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void error(String? message) {
+    // if (message != null) {
+    //   final snackBar = SnackBar(
+    //       duration: const Duration(seconds: 5),
+    //       backgroundColor: Colors.red,
+    //       content: Text(message));
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // }
   }
 
   void sucess(String message) {

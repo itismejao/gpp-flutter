@@ -16,12 +16,13 @@ class DropdownButtonFormFieldComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 42,
       decoration: BoxDecoration(
-          color: Colors.grey.shade200, borderRadius: BorderRadius.circular(5)),
+          color: Colors.grey.shade50, borderRadius: BorderRadius.circular(5)),
       child: DropdownButtonFormField<dynamic>(
         decoration: InputDecoration(
             hintText: hintText,
-            contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+            contentPadding: EdgeInsets.only(bottom: 5, left: 10),
             border: InputBorder.none),
         hint: hint,
         items: items,
