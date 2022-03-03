@@ -2436,7 +2436,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             width: 8,
                           ),
                           ButtonComponent(
-                              icon: Icon(Icons.add, color: Colors.white),
+                              icon:
+                                  Icon(Icons.tune_rounded, color: Colors.white),
                               color: secundaryColor,
                               onPressed: () {
                                 setState(() {
