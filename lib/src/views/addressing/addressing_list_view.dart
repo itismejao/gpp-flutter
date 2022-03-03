@@ -34,7 +34,6 @@ class _AddressingListViewState extends State<AddressingListView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    //Carrega lista de motivos de defeito de peças
     enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
 
     enderecamentoController.isLoaded = true;
@@ -51,7 +50,7 @@ class _AddressingListViewState extends State<AddressingListView> {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Motivo de piso adicionado com sucesso!');
+        notify.sucess('Piso adicionado com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -73,8 +72,6 @@ class _AddressingListViewState extends State<AddressingListView> {
     }
   }
 
-
-
   //  handleEdit(context) async {
   //   NotifyController notify = NotifyController(context: context);
   //   try {
@@ -86,7 +83,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   //   }
   // }
 
-   handleEdit(context, PisoEnderecamentoModel editaPiso) async {
+  handleEdit(context, PisoEnderecamentoModel editaPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
@@ -125,11 +122,10 @@ class _AddressingListViewState extends State<AddressingListView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = 500;
+                            pisoEnderecamentoReplacement.id_filial = int.parse(value);
                           });
                         },
                       ),
@@ -144,7 +140,7 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate (context, pisoEnderecamentoReplacement);
+                                  handleCreate(context, pisoEnderecamentoReplacement);
                                 },
                                 text: 'Adicionar')
                           ],
@@ -161,7 +157,7 @@ class _AddressingListViewState extends State<AddressingListView> {
     );
   }
 
-    openFormEdit(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
+  openFormEdit(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -208,7 +204,7 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                   handleEdit(context, pisoEnderecamentoReplacement);
+                                  handleEdit(context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -311,15 +307,15 @@ class _AddressingListViewState extends State<AddressingListView> {
                                                 ));
                                           },
                                           text: 'Corredor'),
-                                          IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {                                            
-                                          openFormEdit(context,  enderecamentoController.listaPiso[index]);
-                                        },
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey.shade400,
                                         ),
+                                        onPressed: () {
+                                          openFormEdit(context, enderecamentoController.listaPiso[index]);
+                                        },
+                                      ),
                                       IconButton(
                                         icon: Icon(
                                           Icons.delete,

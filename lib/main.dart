@@ -148,9 +148,7 @@ class _GppAppState extends State<GppApp> {
     } else {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
-    return MaterialPageRoute(
-        builder: (context) =>
-            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
   }
 
   @override
@@ -167,8 +165,7 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme:
-                const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
