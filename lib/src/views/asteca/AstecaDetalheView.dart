@@ -1073,6 +1073,25 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             ),
           ],
         ),
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    Navigator.pushNamed(context, '/pedidos');
+                  });
+                },
+                child: ItemMenu(
+                  data: 'Pedido',
+                  color: Colors.transparent,
+                  borderColor: Colors.transparent,
+                ),
+              ),
+            ),
+          ],
+        ),
+
       ],
     );
   }
@@ -1120,6 +1139,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Nº Asteca',
                 initialValue: astecaController.asteca.idAsteca,
               ),
@@ -1127,6 +1147,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'CPF/CNPJ',
                 initialValue: '001.463.861-40',
               ),
@@ -1134,6 +1155,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Nº Fiscal',
                 initialValue: astecaController.asteca.idAsteca.toString(),
               ),
@@ -1141,6 +1163,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Filial de saída',
                 initialValue: '10',
               ),
@@ -1148,6 +1171,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Tipo',
                 initialValue: 'Cliente',
               ),
@@ -1155,6 +1179,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Nome',
                 initialValue: 'Maria Angela Rocha da Fonseca',
               ),
@@ -1162,6 +1187,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Série',
                 initialValue: '10',
               ),
@@ -1169,6 +1195,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Filial venda',
                 initialValue: '10',
               ),
@@ -1176,6 +1203,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Data de abertura',
                 initialValue: '30/06/2021',
               ),
@@ -1183,6 +1211,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Data de compra',
                 initialValue: '30/06/2021',
               ),
@@ -1190,6 +1219,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Filial Asteca',
                 initialValue: '500',
               ),
@@ -1215,6 +1245,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'RE',
                 initialValue: '1032445',
               ),
@@ -1222,6 +1253,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Nome',
                 initialValue: 'Kesley Alves de Oliveira',
               ),
@@ -1247,12 +1279,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             Container(
               margin: EdgeInsets.only(bottom: 10),
               child: InputComponent(
+                enable: false,
                 label: 'Defeito',
                 initialValue: 'Defeito de fabricação',
               ),
             ),
             Container(
               child: InputComponent(
+                enable: false,
                 label: 'Observação',
                 initialValue:
                     'Solicitado pelo técnico, enviar 30 unidades de adesivos/ tapa furos.',
@@ -1287,6 +1321,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nº Asteca',
                   initialValue: astecaController.asteca.idAsteca.toString(),
@@ -1298,6 +1333,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   initialValue:
                       astecaController.asteca.documentoFiscal!.cpfCnpj == null
@@ -1317,6 +1353,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
@@ -1334,6 +1371,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nº Fiscal',
                   initialValue: astecaController
@@ -1349,6 +1387,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Série',
                   initialValue: astecaController
@@ -1363,6 +1402,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Filial de saída',
                   initialValue: astecaController
@@ -1378,6 +1418,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Filial venda',
                   initialValue: astecaController
@@ -1397,6 +1438,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Tipo',
                   initialValue: 'Cliente',
@@ -1407,6 +1449,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Data de abertura',
                   initialValue: astecaController.asteca.dataEmissao == null
@@ -1420,6 +1463,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Data de compra',
                   initialValue:
@@ -1435,6 +1479,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Filial Asteca',
                   initialValue: astecaController.asteca.idFilialRegistro == null
@@ -1465,6 +1510,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'RE',
                   initialValue:
@@ -1480,6 +1526,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
@@ -1511,6 +1558,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Defeito',
                   initialValue:
@@ -1528,6 +1576,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   maxLines: 5,
                   label: 'Observação',
@@ -1575,6 +1624,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Logradouro',
                   initialValue:
                       'Avenida Perimental Norte NR 1 AP 1903  Torre Itaparica',
@@ -1583,6 +1633,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Complemento',
                   initialValue: 'AP 1903 Torre Itaparica',
                 ),
@@ -1590,6 +1641,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Bairro',
                   initialValue: 'Setor Candida de Morais',
                 ),
@@ -1597,6 +1649,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Referência',
                   initialValue: 'Cond. Borges Landeiro',
                 ),
@@ -1604,6 +1657,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Número',
                   initialValue: '01',
                 ),
@@ -1611,6 +1665,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Cidade',
                   initialValue: ' Goiânia',
                 ),
@@ -1618,6 +1673,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Estado',
                   initialValue: 'GO',
                 ),
@@ -1649,6 +1705,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Telefone',
                   initialValue: '(62) 99999-9999',
                 ),
@@ -1690,6 +1747,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 4,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Logradouro',
                   initialValue:
@@ -1706,6 +1764,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 3,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Complemento',
                   initialValue: astecaController
@@ -1721,6 +1780,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Número',
                   initialValue:
@@ -1739,6 +1799,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Bairro',
                   initialValue:
@@ -1753,6 +1814,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Cidade',
                   initialValue:
@@ -1770,6 +1832,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Cidade',
                   initialValue:
@@ -1785,6 +1848,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Estado',
                   initialValue: astecaController.asteca.astecaEndCliente?.uf ==
@@ -1802,6 +1866,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Referência',
                   initialValue: astecaController
@@ -1838,6 +1903,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Telefone',
                   initialValue: astecaController.asteca.astecaEndCliente?.ddd ==
@@ -1894,6 +1960,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'ID',
                   initialValue: '121245',
                 ),
@@ -1901,6 +1968,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Nome',
                   initialValue: 'Coz Jazz 3 Pçs IPLDA IP2 IPH1G BEGE',
                 ),
@@ -1908,6 +1976,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'LD',
                   initialValue: '02',
                 ),
@@ -1929,6 +1998,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'ID',
                   initialValue: '4545',
                 ),
@@ -1936,6 +2006,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Container(
                 margin: EdgeInsets.only(bottom: 10),
                 child: InputComponent(
+                  enable: false,
                   label: 'Nome',
                   initialValue: 'Itatiaia',
                 ),
@@ -1970,6 +2041,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'ID',
                   initialValue:
@@ -1985,6 +2057,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
@@ -1998,6 +2071,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'LD',
                   initialValue: astecaController
@@ -2032,6 +2106,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             children: [
               Expanded(
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'ID',
                   initialValue: astecaController
@@ -2049,6 +2124,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 flex: 2,
                 child: InputComponent(
+                  enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue: astecaController

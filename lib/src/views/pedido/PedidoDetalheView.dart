@@ -183,6 +183,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                     children: [
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'ID',
                           initialValue: pedidoController.pedido.idPedidoSaida.toString(),
                         ),
@@ -192,6 +193,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'CPF/CNPJ',
                           initialValue: pedidoController.pedido.cpfCnpj.toString(),
                         ),
@@ -201,6 +203,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'Filial de venda',
                           initialValue: pedidoController.pedido.filialVenda.toString(),
                         ),
@@ -214,6 +217,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                     children: [
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'Nº Documento Fiscal',
                           initialValue: pedidoController.pedido.numDocFiscal.toString(),
                         ),
@@ -223,6 +227,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'Série Documento Fiscal',
                           initialValue: pedidoController.pedido.serieDocFiscal,
                         ),
@@ -232,6 +237,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'Data de emissão',
                           initialValue:
                               maskFormatter.dataFormatter(value: pedidoController.pedido.dataEmissao.toString()).getMaskedText(),
@@ -246,8 +252,66 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                     children: [
                       Expanded(
                         child: InputComponent(
+                            enable: false,
                             label: 'Valor total R\$',
                             initialValue: pedidoController.formatter.format(pedidoController.pedido.valorTotal)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [TitleComponent('Asteca')],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                            enable: false,
+                            label: 'ID',
+                            initialValue: pedidoController.pedido.asteca!.idAsteca == null ?  '' : pedidoController.pedido.asteca!.idAsteca.toString()),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                            enable: false,
+                            label: 'Cliente',
+                            initialValue: pedidoController.pedido.cliente!.nome == null ?  '' : pedidoController.pedido.cliente!.nome.toString()),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                            enable: false,
+                            label: 'Produto',
+                            initialValue: pedidoController.pedido.asteca!.produto?[0].resumida == null ?  '' : pedidoController.pedido.asteca!.produto?[0].resumida.toString()),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonComponent(
+                        color: secundaryColor,
+                        onPressed: () {
+                          Navigator.pushNamed(context, 
+                          "/astecas/${pedidoController.pedido.asteca!.idAsteca}");
+                        },
+                        text: 'Detalhes Asteca',
                       ),
                     ],
                   ),
