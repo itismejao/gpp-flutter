@@ -150,16 +150,9 @@ class _PecasListViewState extends State<PecasListView> {
                                       icon: Icon(Icons.visibility),
                                       color: Colors.grey.shade400,
                                       onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return PopUpEditar.popUpPeca(
-                                                  context,
-                                                  PecasEditAndView(
-                                                    pecasEditPopup: snapshot.data![index],
-                                                    enabled: false,
-                                                  ));
-                                            }).then((value) => setState(() {}));
+                                        PopUpEditar.popUpPeca(
+                                                context, PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: false))
+                                            .then((value) => setState(() {}));
                                       },
                                     ),
                                     IconButton(
@@ -167,30 +160,24 @@ class _PecasListViewState extends State<PecasListView> {
                                         Icons.edit,
                                         color: Colors.grey.shade400,
                                       ),
-                                      onPressed: () => {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return PopUpEditar.popUpPeca(
-                                                  context,
-                                                  PecasEditAndView(
-                                                    pecasEditPopup: snapshot.data![index],
-                                                    enabled: true,
-                                                  ));
-                                            }).then((value) => setState(() {}))
+                                      onPressed: () {
+                                        PopUpEditar.popUpPeca(
+                                                context, PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: true))
+                                            .then((value) => setState(() {}));
                                       },
                                     ),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        onPressed: () {
-                                          // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
-                                          setState(() {
-                                            excluir(snapshot.data![index]);
-                                          });
-                                        }),
+                                    // IconButton(
+                                    //   icon: Icon(
+                                    //     Icons.delete,
+                                    //     color: Colors.grey.shade400,
+                                    //   ),
+                                    //   onPressed: () {
+                                    //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
+                                    //     setState(() {
+                                    //       excluir(snapshot.data![index]);
+                                    //     });
+                                    //   },
+                                    // ),
                                   ],
                                 ),
                               ),

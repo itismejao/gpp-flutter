@@ -48,6 +48,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
     try {
       if (await _pecasCorController.editar()) {
         notify.sucess("Cor editada com sucesso!");
+        Navigator.pop(context);
       }
     } catch (e) {
       notify.error(e.toString());
@@ -141,15 +142,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                       children: [
                         ButtonComponent(
                           onPressed: () {
-                            // _pecasCorController.editar();
                             editar(context);
-                            Navigator.pop(context);
-
-                            /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MenuConsultarView(selected: 2),
-                        ));*/
                           },
                           text: 'Editar',
                         ),

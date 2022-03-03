@@ -24,7 +24,7 @@ class PecasModel {
   int? classificacao_custo;
   int? tipo_classificacao_custo;
   int? id_peca_especie;
-  int? id_peca_material_fabricacao;
+  String? id_peca_material_fabricacao;
   // DateTime? created_at;
   // DateTime? updated_at;
   List<PecasCorModel>? cor;

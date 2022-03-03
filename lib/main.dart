@@ -58,6 +58,14 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
+
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/addressing/addressing_list_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
@@ -128,7 +136,11 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'pecas-consultar') {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
+
           pagina = PecaEnderecamentoDetailView();
+        } else if (uri.pathSegments.first == 'enderecamentos') {
+          pagina = AddressingListView();
+
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
@@ -143,7 +155,9 @@ class _GppAppState extends State<GppApp> {
     } else {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
-    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(
+        builder: (context) =>
+            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
   }
 
   @override
@@ -162,6 +176,7 @@ class _GppAppState extends State<GppApp> {
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
             inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey,floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),)),
+
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

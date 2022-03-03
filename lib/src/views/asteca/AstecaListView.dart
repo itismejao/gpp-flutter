@@ -44,8 +44,7 @@ class _AstecaListViewState extends State<AstecaListView> {
       setState(() {
         astecaController.carregado = false;
       });
-      var retorno = await astecaController.repository.buscarTodas(
-          astecaController.pagina.atual,
+      var retorno = await astecaController.repository.buscarTodas(astecaController.pagina.atual,
           filtroAsteca: astecaController.filtroAsteca,
           pendencia: astecaController.pendenciaFiltro,
           dataInicio: astecaController.dataInicio,
@@ -72,15 +71,14 @@ class _AstecaListViewState extends State<AstecaListView> {
   limparFiltro() {
     astecaController.filtroAsteca.idAsteca = '';
     astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = '';
-    astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = '';
+    astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = null;
     astecaController.dataInicio = null;
     astecaController.dataFim = null;
   }
 
   proximaPagina() async {
     scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         //proxima página
         astecaController.pagina.atual = astecaController.pagina.atual + 1;
         await buscarTodas();
@@ -93,8 +91,7 @@ class _AstecaListViewState extends State<AstecaListView> {
       astecaController.carregado = false;
     });
 
-    astecaController.astecaTipoPendencias =
-        await astecaController.repository.pendencia.buscarPendencias();
+    astecaController.astecaTipoPendencias = await astecaController.repository.pendencia.buscarPendencias();
 
     setState(() {
       astecaController.carregado = true;
@@ -179,15 +176,13 @@ class _AstecaListViewState extends State<AstecaListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(
-      List<AstecaModel> asteca, int index, BuildContext context) {
+  Widget _buildListItem(List<AstecaModel> asteca, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(
-                  context, '/astecas/' + asteca[index].idAsteca.toString());
+              Navigator.pushNamed(context, '/astecas/' + asteca[index].idAsteca.toString());
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -199,18 +194,14 @@ class _AstecaListViewState extends State<AstecaListView> {
                       Expanded(
                         child: Text(
                           asteca[index].idAsteca.toString(),
-                          style: textStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18.0),
+                          style: textStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 18.0),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'ID: ' + asteca[index].idAsteca.toString(),
-                          style: textStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
+                          style: textStyle(color: Colors.black, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],
@@ -220,16 +211,12 @@ class _AstecaListViewState extends State<AstecaListView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: TextComponent('Nota Fiscal: ' +
-                            astecaController
-                                .astecas[index].documentoFiscal!.numDocFiscal
-                                .toString()),
+                        child: TextComponent(
+                            'Nota Fiscal: ' + astecaController.astecas[index].documentoFiscal!.numDocFiscal.toString()),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: TextComponent('Serie: ' +
-                            astecaController.astecas[index].documentoFiscal!
-                                .serieDocFiscal!),
+                        child: TextComponent('Serie: ' + astecaController.astecas[index].documentoFiscal!.serieDocFiscal!),
                       ),
                     ],
                   ),
@@ -238,18 +225,13 @@ class _AstecaListViewState extends State<AstecaListView> {
                     children: [
                       Expanded(
                         child: TextComponent(
-                          'Filial de Venda: ' +
-                              astecaController
-                                  .astecas[index].documentoFiscal!.idFilialVenda
-                                  .toString(),
+                          'Filial de Venda: ' + astecaController.astecas[index].documentoFiscal!.idFilialVenda.toString(),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextComponent(
-                          'Data de Abertura: ' +
-                              DateFormat('dd/MM/yyyy').format(
-                                  astecaController.astecas[index].dataEmissao!),
+                          'Data de Abertura: ' + DateFormat('dd/MM/yyyy').format(astecaController.astecas[index].dataEmissao!),
                         ),
                       ),
                     ],
@@ -260,8 +242,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                     children: [
                       Expanded(
                         child: TextComponent(
-                          'Defeito: ' +
-                              asteca[index].defeitoEstadoProd.toString(),
+                          'Defeito: ' + asteca[index].defeitoEstadoProd.toString(),
                         ),
                       ),
                     ],
@@ -275,8 +256,7 @@ class _AstecaListViewState extends State<AstecaListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/astecas/' + asteca[index].idAsteca.toString());
+            Navigator.pushNamed(context, '/astecas/' + asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -293,8 +273,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                 ],
                 border: Border(
                   left: BorderSide(
-                    color:
-                        situacao(astecaController.astecas[index].dataEmissao!),
+                    color: situacao(astecaController.astecas[index].dataEmissao!),
                     width: 7.0,
                   ),
                 ),
@@ -371,8 +350,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(asteca[index].dataEmissao!),
+                              DateFormat('dd/MM/yyyy').format(asteca[index].dataEmissao!),
                             )),
                         Expanded(
                             child: TextComponent(
@@ -380,15 +358,11 @@ class _AstecaListViewState extends State<AstecaListView> {
                         )),
                         Expanded(
                             flex: 2,
-                            child:
-                                asteca[index].astecaTipoPendencias!.isNotEmpty
-                                    ? TextComponent(
-                                        asteca[index]
-                                            .astecaTipoPendencias!
-                                            .last
-                                            .descricao!,
-                                      )
-                                    : TextComponent('Aguardando pendência')),
+                            child: asteca[index].astecaTipoPendencias!.isNotEmpty
+                                ? TextComponent(
+                                    asteca[index].astecaTipoPendencias!.last.descricao!,
+                                  )
+                                : TextComponent('Aguardando pendência')),
                         Expanded(
                             flex: 3,
                             child: TextComponent(
@@ -444,8 +418,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        astecaController.abrirFiltro =
-                            !(astecaController.abrirFiltro);
+                        astecaController.abrirFiltro = !(astecaController.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -476,20 +449,13 @@ class _AstecaListViewState extends State<AstecaListView> {
                               DropdownButtonFormFieldComponent(
                                 hintText: "651 - PEÇA SOLICITADA AO FORNECEDOR",
                                 onChanged: (AstecaTipoPendenciaModel value) {
-                                  astecaController.pendenciaFiltro =
-                                      value.idTipoPendencia.toString();
+                                  astecaController.pendenciaFiltro = value.idTipoPendencia.toString();
                                 },
                                 items: astecaController.astecaTipoPendencias
-                                    .map<
-                                        DropdownMenuItem<
-                                            AstecaTipoPendenciaModel>>((value) {
-                                  return DropdownMenuItem<
-                                      AstecaTipoPendenciaModel>(
+                                    .map<DropdownMenuItem<AstecaTipoPendenciaModel>>((value) {
+                                  return DropdownMenuItem<AstecaTipoPendenciaModel>(
                                     value: value,
-                                    child: TextComponent(
-                                        value.idTipoPendencia.toString() +
-                                            ' - ' +
-                                            value.descricao!),
+                                    child: TextComponent(value.idTipoPendencia.toString() + ' - ' + value.descricao!),
                                   );
                                 }).toList(),
                               ),
@@ -506,13 +472,12 @@ class _AstecaListViewState extends State<AstecaListView> {
                             label: 'CPF ou CNPJ:',
                             maxLines: 1,
                             validator: (value) {
-                              validator.cpfOuCnpj(
-                                  UtilBrasilFields.removeCaracteres(value));
+                              validator.cpfOuCnpj(UtilBrasilFields.removeCaracteres(value));
                             },
                             onSaved: (value) {
-                              astecaController
-                                      .filtroAsteca.documentoFiscal!.cpfCnpj =
-                                  UtilBrasilFields.removeCaracteres(value);
+                              if (value.toString().isNotEmpty) {
+                                astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = UtilBrasilFields.removeCaracteres(value);
+                              }
                             },
                             hintText: 'Digite o CPF ou CNPJ',
                           ),
@@ -529,8 +494,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                             label: 'Número da nota fiscal:',
                             maxLines: 1,
                             onChanged: (value) {
-                              astecaController.filtroAsteca.documentoFiscal!
-                                  .numDocFiscal = value;
+                              astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = value;
                             },
                             hintText: 'Digite o número da nota fiscal',
                           ),
@@ -545,8 +509,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                astecaController.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                astecaController.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '24/02/2022',
@@ -560,8 +523,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                astecaController.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                astecaController.dataFim = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '25/02/2022',
@@ -576,21 +538,15 @@ class _AstecaListViewState extends State<AstecaListView> {
                         children: [
                           ButtonComponent(
                               onPressed: () {
-                                if (astecaController
-                                    .filtroExpandidoFormKey.currentState!
-                                    .validate()) {
-                                  astecaController
-                                      .filtroExpandidoFormKey.currentState!
-                                      .save();
-                                  astecaController
-                                      .filtroExpandidoFormKey.currentState!
-                                      .reset();
-                                  buscarTodas();
+                                // if (astecaController.filtroExpandidoFormKey.currentState!.validate()) {
+                                astecaController.filtroExpandidoFormKey.currentState!.save();
+                                astecaController.filtroExpandidoFormKey.currentState!.reset();
+                                buscarTodas();
 
-                                  setState(() {
-                                    astecaController.abrirFiltro = false;
-                                  });
-                                }
+                                setState(() {
+                                  astecaController.abrirFiltro = false;
+                                });
+                                //}
                               },
                               text: 'Pesquisar'),
                         ],
@@ -603,8 +559,7 @@ class _AstecaListViewState extends State<AstecaListView> {
           ),
           Container(
             height: media.height * 0.7,
-            child:
-                astecaController.carregado ? _buildList() : LoadingComponent(),
+            child: astecaController.carregado ? _buildList() : LoadingComponent(),
           ),
           Container(
             height: media.height * 0.10,
@@ -612,8 +567,7 @@ class _AstecaListViewState extends State<AstecaListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextComponent('Total de páginas: ' +
-                    astecaController.pagina.total.toString()),
+                TextComponent('Total de páginas: ' + astecaController.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(
@@ -629,8 +583,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         ),
                         onPressed: () {
                           if (astecaController.pagina.atual > 0) {
-                            astecaController.pagina.atual =
-                                astecaController.pagina.atual - 1;
+                            astecaController.pagina.atual = astecaController.pagina.atual - 1;
                             buscarTodas();
                           }
                         }),
@@ -638,10 +591,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                     IconButton(
                         icon: Icon(Icons.navigate_next_rounded),
                         onPressed: () {
-                          if (astecaController.pagina.atual !=
-                              astecaController.pagina.total) {
-                            astecaController.pagina.atual =
-                                astecaController.pagina.atual + 1;
+                          if (astecaController.pagina.atual != astecaController.pagina.total) {
+                            astecaController.pagina.atual = astecaController.pagina.atual + 1;
                           }
 
                           buscarTodas();
@@ -649,8 +600,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                     IconButton(
                         icon: Icon(Icons.last_page),
                         onPressed: () {
-                          astecaController.pagina.atual =
-                              astecaController.pagina.total;
+                          astecaController.pagina.atual = astecaController.pagina.total;
                           buscarTodas();
                         }),
                   ],

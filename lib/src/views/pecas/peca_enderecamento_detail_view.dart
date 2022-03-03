@@ -733,8 +733,8 @@ class _PecaEnderecamentoDetailViewState
   buscarPeca(String id) async{
     peca = await _pecasController.buscar(id);
     _controllerNomePeca.text = peca?.descricao ?? '';
-    if (peca?.produto_peca?[0].id_produto_sku != null)
-      buscarProduto(peca!.produto_peca![0].id_produto_sku
+    if (peca?.produto_peca?[0].id_produto != null)
+      buscarProduto(peca!.produto_peca![0].id_produto
           .toString());
   }
 
