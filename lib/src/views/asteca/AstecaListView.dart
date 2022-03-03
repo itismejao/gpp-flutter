@@ -342,7 +342,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              asteca[index].documentoFiscal?.nome ?? '',
+                              astecaController.camelCaseAll(asteca[index].documentoFiscal?.nome ?? ''),
                             )),
                         VerticalDivider(
                           color: Colors.red,
@@ -360,13 +360,13 @@ class _AstecaListViewState extends State<AstecaListView> {
                             flex: 2,
                             child: asteca[index].astecaTipoPendencias!.isNotEmpty
                                 ? TextComponent(
-                                    asteca[index].astecaTipoPendencias!.last.descricao!,
+                                    astecaController.camelCaseFirst(asteca[index].astecaTipoPendencias!.last.descricao!),
                                   )
                                 : TextComponent('Aguardando pendência')),
                         Expanded(
                             flex: 3,
                             child: TextComponent(
-                              asteca[index].defeitoEstadoProd!,
+                              astecaController.camelCaseFirst(asteca[index].defeitoEstadoProd!),
                             ))
                       ],
                     ),

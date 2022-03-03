@@ -329,7 +329,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              pedido[index].cliente!.nome!,
+                              pedidoController.camelCaseAll(pedido[index].cliente!.nome!),
                             )),
                         VerticalDivider(
                           color: Colors.red,

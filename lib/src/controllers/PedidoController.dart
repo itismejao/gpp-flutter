@@ -18,4 +18,25 @@ class PedidoController {
   bool abrirFiltro = false; // false
   PaginaModel pagina = PaginaModel(total: 0, atual: 1);
   NumberFormat formatter = NumberFormat.simpleCurrency(locale: 'pt_BR');
+
+
+  camelCaseAll(String? value){
+    String? nome = '';
+    value!.split(" ").forEach((element) {
+      if(element.length > 3){
+        nome = nome !+ " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+      } else {
+         nome = nome !+ " ${element.toString().toLowerCase()}";
+      }
+      
+
+    });
+    return nome;
+  }
+
+  camelCaseFirst(String? value){
+    return toBeginningOfSentenceCase(value.toString().toLowerCase());
+  }
+
+
 }

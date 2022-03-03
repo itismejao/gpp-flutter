@@ -1357,9 +1357,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
+                  astecaController.camelCaseAll(
                       astecaController.asteca.documentoFiscal!.nome == null
                           ? ''
-                          : astecaController.asteca.documentoFiscal!.nome,
+                          : astecaController.asteca.documentoFiscal!.nome),
                 ),
               ),
             ],
@@ -1514,10 +1515,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'RE',
                   initialValue:
+                  astecaController.camelCaseAll(
                       astecaController.asteca.funcionario!.idFuncionario == null
                           ? ''
                           : astecaController.asteca.funcionario!.idFuncionario
-                              .toString(),
+                              .toString()),
                 ),
               ),
               SizedBox(
@@ -1530,9 +1532,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
+                  astecaController.camelCaseAll(
                       astecaController.asteca.funcionario!.nome == null
                           ? ''
-                          : astecaController.asteca.funcionario!.nome,
+                          : astecaController.asteca.funcionario!.nome),
                 ),
               ),
             ],
@@ -1562,9 +1565,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Defeito',
                   initialValue:
+                  astecaController.camelCaseFirst(
                       astecaController.asteca.defeitoEstadoProd == null
                           ? ''
-                          : astecaController.asteca.defeitoEstadoProd!,
+                          : astecaController.asteca.defeitoEstadoProd!),
                 ),
               ),
             ],
@@ -1580,9 +1584,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   maxLines: 5,
                   label: 'Observação',
-                  initialValue: astecaController.asteca.observacao == null
+                  initialValue: 
+                  astecaController.camelCaseFirst(
+                  astecaController.asteca.observacao == null
                       ? ''
-                      : astecaController.asteca.observacao,
+                      : astecaController.asteca.observacao),
                 ),
               ),
             ],
@@ -1751,11 +1757,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Logradouro',
                   initialValue:
-                      astecaController.asteca.astecaEndCliente?.logradouro ==
+                      astecaController.camelCaseFirst(astecaController.asteca.astecaEndCliente?.logradouro ==
                               null
                           ? ''
                           : astecaController.asteca.astecaEndCliente?.logradouro
-                              .toString(),
+                              .toString()),
                 ),
               ),
               SizedBox(
@@ -1767,12 +1773,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Complemento',
-                  initialValue: astecaController
+                  initialValue: 
+                  astecaController.camelCaseFirst(
+                  astecaController
                               .asteca.astecaEndCliente?.complemento ==
                           null
                       ? ''
                       : astecaController.asteca.astecaEndCliente?.complemento
-                          .toString(),
+                          .toString()),
                 ),
               ),
               SizedBox(
@@ -1803,10 +1811,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Bairro',
                   initialValue:
+                  astecaController.camelCaseAll(
                       astecaController.asteca.astecaEndCliente?.bairro == null
                           ? ''
                           : astecaController.asteca.astecaEndCliente?.bairro
-                              .toString(),
+                              .toString()),
                 ),
               ),
               SizedBox(
@@ -1816,8 +1825,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: InputComponent(
                   enable: false,
                   key: UniqueKey(),
-                  label: 'Cidade',
+                  label: 'CEP',
                   initialValue:
+               
                       astecaController.asteca.astecaEndCliente?.cep == null
                           ? ''
                           : maskFormatter
@@ -1836,11 +1846,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Cidade',
                   initialValue:
+                  astecaController.camelCaseAll(
                       astecaController.asteca.astecaEndCliente?.localidade ==
                               null
                           ? ''
                           : astecaController.asteca.astecaEndCliente?.localidade
-                              .toString(),
+                              .toString()),
                 ),
               ),
               SizedBox(
@@ -1869,9 +1880,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Referência',
-                  initialValue: astecaController
+                  initialValue: 
+                  astecaController.camelCaseFirst(
+                  astecaController
                           .asteca.astecaEndCliente!.pontoReferencia1 ??
-                      '',
+                      ''),
                 ),
               ),
             ],
@@ -2061,9 +2074,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue:
-                      astecaController.asteca.produto?[0].resumida == null
+                      astecaController.camelCaseFirst(astecaController.asteca.produto?[0].resumida == null
                           ? ''
-                          : astecaController.asteca.produto?[0].resumida,
+                          : astecaController.asteca.produto?[0].resumida),
                 ),
               ),
               SizedBox(
@@ -2127,12 +2140,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController
+                  initialValue: 
+                  astecaController.camelCaseAll(
+                  astecaController
                               .asteca.produto?[0].fornecedor?.cliente?.nome ==
                           null
                       ? ''
                       : astecaController
-                          .asteca.produto?[0].fornecedor?.cliente?.nome,
+                          .asteca.produto?[0].fornecedor?.cliente?.nome),
                 ),
               ),
               SizedBox(
@@ -2239,8 +2254,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               .toString()),
                         ),
                         Expanded(
-                          child: TextComponent(astecaController.pedidoSaida
-                              .itemsPedidoSaida![index].peca!.descricao),
+                          child: TextComponent(astecaController.camelCaseFirst(astecaController.pedidoSaida
+                              .itemsPedidoSaida![index].peca!.descricao)),
                         ),
                         Expanded(
                           flex: 2,
@@ -2311,7 +2326,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                     return DropdownMenuItem<
                                         MotivoTrocaPecaModel>(
                                       value: value,
-                                      child: Text(value.nome.toString()),
+                                      child: Text(astecaController.camelCaseFirst(value.nome.toString())),
                                     );
                                   }).toList(),
                                   hintText: 'Selecione o motivo',
@@ -2594,10 +2609,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                             .toString()),
                                       ),
                                       Expanded(
-                                        child: TextComponent(astecaController
+                                        child: TextComponent(astecaController.camelCaseFirst(astecaController
                                             .produtoPecas[index]
                                             .peca
-                                            .descricao),
+                                            .descricao)),
                                       ),
                                       Expanded(
                                           child: TextComponent(astecaController

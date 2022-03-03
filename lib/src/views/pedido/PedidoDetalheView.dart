@@ -135,7 +135,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              itensPedido[index].peca!.descricao,
+                              pedidoController.camelCaseAll(itensPedido[index].peca!.descricao),
                             )),
                         VerticalDivider(
                           color: Colors.red,
@@ -282,7 +282,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                         child: InputComponent(
                             enable: false,
                             label: 'Cliente',
-                            initialValue: pedidoController.pedido.cliente!.nome == null ?  '' : pedidoController.pedido.cliente!.nome.toString()),
+                            initialValue: pedidoController.camelCaseAll(pedidoController.pedido.cliente!.nome == null ?  '' : pedidoController.pedido.cliente!.nome.toString())),
                       ),
                     ],
                   ),
@@ -295,7 +295,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                         child: InputComponent(
                             enable: false,
                             label: 'Produto',
-                            initialValue: pedidoController.pedido.asteca!.produto?[0].resumida == null ?  '' : pedidoController.pedido.asteca!.produto?[0].resumida.toString()),
+                            initialValue: pedidoController.camelCaseFirst(pedidoController.pedido.asteca!.produto?[0].resumida == null ?  '' : pedidoController.pedido.asteca!.produto?[0].resumida.toString())),
                       ),
                     ],
                   ),

@@ -99,4 +99,23 @@ class AstecaController {
   //   }
   //   return null;
   // }
+
+
+  camelCaseAll(String? value){
+    String? nome = '';
+    value!.split(" ").forEach((element) {
+      if(element.length > 3){
+        nome = nome !+ " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+      } else {
+         nome = nome !+ " ${element.toString().toLowerCase()}";
+      }
+      
+
+    });
+    return nome;
+  }
+
+  camelCaseFirst(String? value){
+    return toBeginningOfSentenceCase(value.toString().toLowerCase());
+  }
 }
