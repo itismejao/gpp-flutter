@@ -51,7 +51,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
     try {
       await controller.changeFuncionalities();
     } catch (e) {
-      nofity.error(e.toString());
+      //nofity.error(e.toString());
       setState(() {
         controller.state = UserEnum.error;
       });
@@ -73,7 +73,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
         autenticacaoController.carregado = true;
       });
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 

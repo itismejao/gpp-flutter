@@ -1365,8 +1365,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue:
-                  astecaController.camelCaseAll(
+                  initialValue: astecaController.camelCaseAll(
                       astecaController.asteca.documentoFiscal!.nome == null
                           ? ''
                           : astecaController.asteca.documentoFiscal!.nome),
@@ -1523,8 +1522,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'RE',
-                  initialValue:
-                  astecaController.camelCaseAll(
+                  initialValue: astecaController.camelCaseAll(
                       astecaController.asteca.funcionario!.idFuncionario == null
                           ? ''
                           : astecaController.asteca.funcionario!.idFuncionario
@@ -1540,8 +1538,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue:
-                  astecaController.camelCaseAll(
+                  initialValue: astecaController.camelCaseAll(
                       astecaController.asteca.funcionario!.nome == null
                           ? ''
                           : astecaController.asteca.funcionario!.nome),
@@ -1573,8 +1570,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Defeito',
-                  initialValue:
-                  astecaController.camelCaseFirst(
+                  initialValue: astecaController.camelCaseFirst(
                       astecaController.asteca.defeitoEstadoProd == null
                           ? ''
                           : astecaController.asteca.defeitoEstadoProd!),
@@ -1593,11 +1589,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   maxLines: 5,
                   label: 'Observação',
-                  initialValue: 
-                  astecaController.camelCaseFirst(
-                  astecaController.asteca.observacao == null
-                      ? ''
-                      : astecaController.asteca.observacao),
+                  initialValue: astecaController.camelCaseFirst(
+                      astecaController.asteca.observacao == null
+                          ? ''
+                          : astecaController.asteca.observacao),
                 ),
               ),
             ],
@@ -1765,8 +1760,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Logradouro',
-                  initialValue:
-                      astecaController.camelCaseFirst(astecaController.asteca.astecaEndCliente?.logradouro ==
+                  initialValue: astecaController.camelCaseFirst(
+                      astecaController.asteca.astecaEndCliente?.logradouro ==
                               null
                           ? ''
                           : astecaController.asteca.astecaEndCliente?.logradouro
@@ -1782,9 +1777,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Complemento',
-                  initialValue: 
-                  astecaController.camelCaseFirst(
-                  astecaController
+                  initialValue: astecaController.camelCaseFirst(astecaController
                               .asteca.astecaEndCliente?.complemento ==
                           null
                       ? ''
@@ -1819,8 +1812,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Bairro',
-                  initialValue:
-                  astecaController.camelCaseAll(
+                  initialValue: astecaController.camelCaseAll(
                       astecaController.asteca.astecaEndCliente?.bairro == null
                           ? ''
                           : astecaController.asteca.astecaEndCliente?.bairro
@@ -1836,7 +1828,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'CEP',
                   initialValue:
-               
                       astecaController.asteca.astecaEndCliente?.cep == null
                           ? ''
                           : maskFormatter
@@ -1854,8 +1845,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Cidade',
-                  initialValue:
-                  astecaController.camelCaseAll(
+                  initialValue: astecaController.camelCaseAll(
                       astecaController.asteca.astecaEndCliente?.localidade ==
                               null
                           ? ''
@@ -1889,9 +1879,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Referência',
-                  initialValue: 
-                  astecaController.camelCaseFirst(
-                  astecaController
+                  initialValue: astecaController.camelCaseFirst(astecaController
                           .asteca.astecaEndCliente!.pontoReferencia1 ??
                       ''),
                 ),
@@ -2082,8 +2070,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue:
-                      astecaController.camelCaseFirst(astecaController.asteca.produto?[0].resumida == null
+                  initialValue: astecaController.camelCaseFirst(
+                      astecaController.asteca.produto?[0].resumida == null
                           ? ''
                           : astecaController.asteca.produto?[0].resumida),
                 ),
@@ -2149,9 +2137,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: 
-                  astecaController.camelCaseAll(
-                  astecaController
+                  initialValue: astecaController.camelCaseAll(astecaController
                               .asteca.produto?[0].fornecedor?.cliente?.nome ==
                           null
                       ? ''
@@ -2248,121 +2234,201 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         const Divider(),
         Container(
           height: media.size.height * 0.40,
-          child: ListView.builder(
-              itemCount: astecaController.pedidoSaida.itemsPedidoSaida!.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  color: _buildSituacaoEstoque(index),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextComponent(astecaController
-                              .pedidoSaida.itemsPedidoSaida![index].peca!.idPeca
-                              .toString()),
-                        ),
-                        Expanded(
-                          child: TextComponent(astecaController.camelCaseFirst(astecaController.pedidoSaida
-                              .itemsPedidoSaida![index].peca!.descricao)),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                color: Colors.red,
-                                onPressed: () {
-                                  removerQuantidade(index);
-                                },
-                                icon: Icon(
-                                  Icons.remove_circle_outlined,
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: InputComponent(
-                                  key: UniqueKey(),
-                                  maxLines: 1,
-                                  initialValue: astecaController.pedidoSaida
-                                      .itemsPedidoSaida![index].quantidade
-                                      .toString(),
-                                  onFieldSubmitted: (value) {
-                                    inserirQuantidade(index, value);
-                                  },
-                                ),
-                              ),
-                              IconButton(
-                                color: Colors.green,
-                                onPressed: () {
-                                  adicionarQuantidade(index);
-                                },
-                                icon: Icon(
-                                  Icons.add_circle_outlined,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: TextComponent(astecaController.formatter
-                              .format(astecaController
-                                  .pedidoSaida.itemsPedidoSaida![index].valor)),
-                        ),
-                        Expanded(
-                          child: TextComponent('R\$: ' +
-                              astecaController.formatter.format(
-                                  (astecaController.pedidoSaida
-                                          .itemsPedidoSaida![index].quantidade *
-                                      astecaController.pedidoSaida
-                                          .itemsPedidoSaida![index].valor))),
-                        ),
-                        Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: DropDownComponent(
-                                  onChanged: (value) {
-                                    selecionarMotivoTrocaPeca(index, value);
-                                  },
-                                  items: motivoTrocaPecaController
-                                      .motivoTrocaPecas
-                                      .map((value) {
-                                    return DropdownMenuItem<
-                                        MotivoTrocaPecaModel>(
-                                      value: value,
-                                      child: Text(astecaController.camelCaseFirst(value.nome.toString())),
-                                    );
-                                  }).toList(),
-                                  hintText: 'Selecione o motivo',
-                                ),
-                              ),
-                            )),
-                        Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.grey.shade400,
+          child: astecaController.asteca.pedido == null
+              ? ListView.builder(
+                  itemCount:
+                      astecaController.pedidoSaida.itemsPedidoSaida!.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      color: _buildSituacaoEstoque(index),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextComponent(astecaController.pedidoSaida
+                                  .itemsPedidoSaida![index].peca!.idPeca
+                                  .toString()),
+                            ),
+                            Expanded(
+                              child: TextComponent(astecaController
+                                  .camelCaseFirst(astecaController
+                                      .pedidoSaida
+                                      .itemsPedidoSaida![index]
+                                      .peca!
+                                      .descricao)),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      removerQuantidade(index);
+                                    },
+                                    icon: Icon(
+                                      Icons.remove_circle_outlined,
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    removerPeca(index);
-                                  }),
-                            ],
-                          ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: InputComponent(
+                                      key: UniqueKey(),
+                                      maxLines: 1,
+                                      initialValue: astecaController.pedidoSaida
+                                          .itemsPedidoSaida![index].quantidade
+                                          .toString(),
+                                      onFieldSubmitted: (value) {
+                                        inserirQuantidade(index, value);
+                                      },
+                                    ),
+                                  ),
+                                  IconButton(
+                                    color: Colors.green,
+                                    onPressed: () {
+                                      adicionarQuantidade(index);
+                                    },
+                                    icon: Icon(
+                                      Icons.add_circle_outlined,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: TextComponent(astecaController.formatter
+                                  .format(astecaController.pedidoSaida
+                                      .itemsPedidoSaida![index].valor)),
+                            ),
+                            Expanded(
+                              child: TextComponent('R\$: ' +
+                                  astecaController.formatter.format(
+                                      (astecaController
+                                              .pedidoSaida
+                                              .itemsPedidoSaida![index]
+                                              .quantidade *
+                                          astecaController
+                                              .pedidoSaida
+                                              .itemsPedidoSaida![index]
+                                              .valor))),
+                            ),
+                            Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    child: DropDownComponent(
+                                      onChanged: (value) {
+                                        selecionarMotivoTrocaPeca(index, value);
+                                      },
+                                      items: motivoTrocaPecaController
+                                          .motivoTrocaPecas
+                                          .map((value) {
+                                        return DropdownMenuItem<
+                                            MotivoTrocaPecaModel>(
+                                          value: value,
+                                          child: Text(
+                                              astecaController.camelCaseFirst(
+                                                  value.nome.toString())),
+                                        );
+                                      }).toList(),
+                                      hintText: 'Selecione o motivo',
+                                    ),
+                                  ),
+                                )),
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      onPressed: () {
+                                        removerPeca(index);
+                                      }),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    );
+                  })
+              : Container(
+                  child: ListView.builder(
+                    itemCount: astecaController
+                        .asteca.pedido!.itemsPedidoSaida!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextComponent(astecaController
+                                  .asteca
+                                  .pedido!
+                                  .itemsPedidoSaida![index]
+                                  .idItemPedidoSaida
+                                  .toString()),
+                            ),
+                            Expanded(
+                              child: TextComponent(astecaController
+                                  .camelCaseFirst(astecaController
+                                      .asteca
+                                      .pedido!
+                                      .itemsPedidoSaida![index]
+                                      .peca!
+                                      .descricao)),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: TextComponent(astecaController.asteca
+                                  .pedido!.itemsPedidoSaida![index].quantidade
+                                  .toString()),
+                            ),
+                            Expanded(
+                              child: TextComponent(astecaController.formatter
+                                  .format(astecaController.asteca.pedido!
+                                      .itemsPedidoSaida![index].valor)),
+                            ),
+                            Expanded(
+                                child: TextComponent(
+                              astecaController.formatter.format(astecaController
+                                      .asteca
+                                      .pedido!
+                                      .itemsPedidoSaida![index]
+                                      .quantidade *
+                                  astecaController.asteca.pedido!
+                                      .itemsPedidoSaida![index].valor),
+                            )),
+                            Expanded(
+                              flex: 3,
+                              child: TextComponent(astecaController
+                                  .camelCaseFirst(astecaController
+                                      .asteca
+                                      .pedido!
+                                      .itemsPedidoSaida![index]
+                                      .motivoTrocaPeca!
+                                      .nome
+                                      .toString())),
+                            ),
+                            Expanded(
+                              child: const TextComponent(''),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              }),
+                ),
         ),
         const Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -2619,10 +2685,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                             .toString()),
                                       ),
                                       Expanded(
-                                        child: TextComponent(astecaController.camelCaseFirst(astecaController
-                                            .produtoPecas[index]
-                                            .peca
-                                            .descricao)),
+                                        child: TextComponent(astecaController
+                                            .camelCaseFirst(astecaController
+                                                .produtoPecas[index]
+                                                .peca
+                                                .descricao)),
                                       ),
                                       Expanded(
                                           child: TextComponent(astecaController

@@ -13,7 +13,7 @@ class TitleComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
-    return Text(
+    return SelectableText(
       data,
       style: TextStyle(
           color: color,

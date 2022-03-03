@@ -5,7 +5,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 // ignore: must_be_immutable
 class HomeView extends StatelessWidget {
-  Widget funcionalities;
+  final Widget funcionalities;
   Widget? page;
   final ResponsiveController _responsive = ResponsiveController();
   HomeView({

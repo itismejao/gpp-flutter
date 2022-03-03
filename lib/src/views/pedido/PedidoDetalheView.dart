@@ -59,40 +59,16 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
             },
             child: Container(
                 color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                // decoration: BoxDecoration(
-                //   color: Colors.white,
-                //   boxShadow: [
-                //     BoxShadow(
-                //       color: Colors.grey.withOpacity(0.5),
-                //       spreadRadius: 0,
-                //       blurRadius: 9,
-                //       offset: Offset(0, 5), // changes position of shadow
-                //     ),
-                //   ],
-                //   // border: Border(
-                //   //   left: BorderSide(
-                //   //     color:
-                //   //         situacao(pedidoController.pedidos[index].dataEmissao!),
-                //   //     width: 7.0,
-                //   //   ),
-                //   // ),
-                // ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Column(children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Row(
-                            children: [
-                              TextComponent(
-                                '#' +
-                                    itensPedido[index]
-                                        .idItemPedidoSaida
-                                        .toString(),
-                              )
-                            ],
+                          child: TextComponent(
+                            '#' +
+                                itensPedido[index].idItemPedidoSaida.toString(),
                           ),
                         ),
                         Expanded(
@@ -101,22 +77,19 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                               itensPedido[index].peca!.descricao,
                             )),
                         Expanded(
-                            flex: 2,
                             child: TextComponent(
-                              itensPedido[index].quantidade.toString(),
-                            )),
+                          itensPedido[index].quantidade.toString(),
+                        )),
                         Expanded(
-                          flex: 2,
                           child: TextComponent(pedidoController.formatter
                               .format(itensPedido[index].valor)),
                         ),
                         Expanded(
-                            flex: 2,
                             child: TextComponent(
-                              pedidoController.formatter.format(
-                                  (itensPedido[index].valor *
-                                      itensPedido[index].quantidade)),
-                            )),
+                          pedidoController.formatter.format(
+                              (itensPedido[index].valor *
+                                  itensPedido[index].quantidade)),
+                        )),
                       ],
                     ),
 
@@ -127,99 +100,6 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                     //     width: 7.0,
                     //   ),
                     // ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      TextComponent(
-                                        'ID',
-                                        fontWeight: FontWeight.bold,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                    flex: 4,
-                                    child: TextComponent(
-                                      'Descrição',
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                    flex: 2,
-                                    child: TextComponent(
-                                      'Quantidade',
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                    flex: 2,
-                                    child: TextComponent(
-                                      'Valor R\$',
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                Expanded(
-                                    flex: 2,
-                                    child: TextComponent(
-                                      'Subtotal R\$',
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ],
-                            ),
-                            Divider(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      TextComponent(
-                                        '#' +
-                                            itensPedido[index]
-                                                .idItemPedidoSaida
-                                                .toString(),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                    flex: 4,
-                                    child: TextComponent(
-                                      pedidoController.camelCaseAll(
-                                          itensPedido[index].peca!.descricao),
-                                    )),
-                                VerticalDivider(
-                                  color: Colors.red,
-                                ),
-                                Expanded(
-                                    flex: 2,
-                                    child: TextComponent(
-                                      itensPedido[index].quantidade.toString(),
-                                    )),
-                                Expanded(
-                                  flex: 2,
-                                  child: TextComponent(pedidoController
-                                      .formatter
-                                      .format(itensPedido[index].valor)),
-                                ),
-                                Expanded(
-                                    flex: 2,
-                                    child: TextComponent(
-                                      pedidoController.formatter.format(
-                                          (itensPedido[index].valor *
-                                              itensPedido[index].quantidade)),
-                                    )),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ]),
                 )));
       },
@@ -435,23 +315,20 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                                   fontWeight: FontWeight.bold,
                                 )),
                             Expanded(
-                                flex: 2,
                                 child: TextComponent(
-                                  'Quantidade',
-                                  fontWeight: FontWeight.bold,
-                                )),
+                              'Quantidade',
+                              fontWeight: FontWeight.bold,
+                            )),
                             Expanded(
-                                flex: 2,
                                 child: TextComponent(
-                                  'Valor R\$',
-                                  fontWeight: FontWeight.bold,
-                                )),
+                              'Valor R\$',
+                              fontWeight: FontWeight.bold,
+                            )),
                             Expanded(
-                                flex: 2,
                                 child: TextComponent(
-                                  'Subtotal R\$',
-                                  fontWeight: FontWeight.bold,
-                                )),
+                              'Subtotal R\$',
+                              fontWeight: FontWeight.bold,
+                            )),
                           ],
                         ),
                         Divider(),

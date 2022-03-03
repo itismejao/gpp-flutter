@@ -83,7 +83,7 @@ class InputComponent extends StatelessWidget {
                 keyboardType: keyboardType,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 12 * media.textScaleFactor,
+                    fontSize: 14 * media.textScaleFactor,
                     letterSpacing: 0.15,
                     fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w500),
@@ -91,8 +91,7 @@ class InputComponent extends StatelessWidget {
                     prefixIcon: prefixIcon,
                     hintText: hintText,
                     suffixIcon: suffixIcon,
-                    contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    contentPadding: EdgeInsets.only(top: 15, left: 10),
                     border: InputBorder.none)),
           )
         ],
@@ -127,7 +126,7 @@ class InputComponent extends StatelessWidget {
             keyboardType: keyboardType,
             style: TextStyle(
                 color: Colors.black,
-                fontSize: 12 * media.textScaleFactor,
+                fontSize: 14 * media.textScaleFactor,
                 letterSpacing: 0.15,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w500),

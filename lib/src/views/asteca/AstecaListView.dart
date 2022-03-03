@@ -380,12 +380,6 @@ class _AstecaListViewState extends State<AstecaListView> {
                                                 .descricao!),
                                       )
                                     : TextComponent('Aguardando pendência')),
-                        Expanded(
-                            flex: 3,
-                            child: TextComponent(
-                              astecaController.camelCaseFirst(
-                                  asteca[index].defeitoEstadoProd!),
-                            ))
                       ],
                     ),
                   ],
@@ -465,12 +459,7 @@ class _AstecaListViewState extends State<AstecaListView> {
                                 height: 8,
                               ),
                               DropdownButtonFormFieldComponent(
-                                hintText: astecaController.astecaTipoPendencias
-                                        .first.idTipoPendencia
-                                        .toString() +
-                                    " - " +
-                                    astecaController
-                                        .astecaTipoPendencias.first.descricao!,
+                                hintText: '651 - Peça solicitada ao fornecedor',
                                 onChanged: (AstecaTipoPendenciaModel value) {
                                   astecaController.pendenciaFiltro =
                                       value.idTipoPendencia.toString();
@@ -482,10 +471,11 @@ class _AstecaListViewState extends State<AstecaListView> {
                                   return DropdownMenuItem<
                                       AstecaTipoPendenciaModel>(
                                     value: value,
-                                    child: TextComponent(
-                                        value.idTipoPendencia.toString() +
-                                            ' - ' +
-                                            value.descricao!),
+                                    child: TextComponent(value.idTipoPendencia
+                                            .toString() +
+                                        ' - ' +
+                                        astecaController
+                                            .camelCaseFirst(value.descricao)!),
                                   );
                                 }).toList(),
                               ),

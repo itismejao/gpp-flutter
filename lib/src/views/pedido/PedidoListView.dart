@@ -61,11 +61,11 @@ class _PedidoListViewState extends State<PedidoListView> {
         pedidoController.carregado = true;
       });
     } catch (e) {
+      notify.error(e.toString());
       setState(() {
         pedidoController.pedidos = [];
         pedidoController.carregado = true;
       });
-      notify.error(e.toString());
     }
   }
 
@@ -333,7 +333,8 @@ class _PedidoListViewState extends State<PedidoListView> {
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              pedidoController.camelCaseAll(pedido[index].cliente!.nome!),
+                              pedidoController
+                                  .camelCaseAll(pedido[index].cliente!.nome!),
                             )),
                         Expanded(
                             flex: 2,

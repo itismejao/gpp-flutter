@@ -92,6 +92,7 @@ import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.d
 
 import 'package:gpp/src/views/users/user_list_view.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   await dotenv.load(fileName: "env");
   runApp(GppApp());
@@ -107,7 +108,6 @@ class _GppAppState extends State<GppApp> {
     Widget pagina = NotFoundView();
     if (isAuthenticated()) {
       //Autenticação
-
       Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
@@ -162,6 +162,7 @@ class _GppAppState extends State<GppApp> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'GPP - Gerenciamento de Peças e Pedidos',
         theme: ThemeData(
