@@ -218,11 +218,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   bool verificaEstoque() {
     bool verificaEstoque = true;
     for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-      if (item.peca!.estoque.isEmpty) {
+      if (item.peca!.estoque!.isEmpty) {
         verificaEstoque = false;
         break;
       } else {
-        if (item.quantidade > item.peca!.estoque.first.saldoDisponivel) {
+        if (item.quantidade > item.peca!.estoque!.first.saldoDisponivel) {
           verificaEstoque = false;
           break;
         }
@@ -472,10 +472,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   _buildSituacaoEstoque(index) {
     if (astecaController
-        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque.isEmpty) {
+        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.isEmpty) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!
               .first.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
@@ -689,12 +689,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              ButtonComponent(
-                                  color: primaryColor,
-                                  onPressed: () {
-                                    finalizarPedido();
-                                  },
-                                  text: 'Finalizar pedido'),
+                              astecaController.asteca.pedido == null
+                                  ? ButtonComponent(
+                                      color: primaryColor,
+                                      onPressed: () {
+                                        finalizarPedido();
+                                      },
+                                      text: 'Finalizar pedido')
+                                  : Container(),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -1073,25 +1075,32 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             ),
           ],
         ),
-        Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    Navigator.pushNamed(context, '/pedidos');
-                  });
-                },
-                child: ItemMenu(
-                  data: 'Pedido',
-                  color: Colors.transparent,
-                  borderColor: Colors.transparent,
-                ),
-              ),
-            ),
-          ],
-        ),
-
+        astecaController.asteca.pedido != null
+            ? Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context,
+                            '/pedidos/' +
+                                astecaController.asteca.pedido!.idPedidoSaida
+                                    .toString());
+                      },
+                      child: ItemMenu(
+                        data: 'Pedido',
+                        color: astecaController.step == 1
+                            ? Colors.grey.shade50
+                            : Colors.transparent,
+                        borderColor: astecaController.step == 1
+                            ? secundaryColor
+                            : Colors.transparent,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Container(),
       ],
     );
   }
@@ -2610,13 +2619,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         child: astecaController
                                                     .produtoPecas[index]
                                                     .peca
-                                                    .estoque
+                                                    .estoque!
                                                     .length !=
                                                 0
                                             ? TextComponent(astecaController
                                                 .produtoPecas[index]
                                                 .peca
-                                                .estoque
+                                                .estoque!
                                                 .first
                                                 .saldoDisponivel
                                                 .toString())
@@ -2669,13 +2678,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         child: astecaController
                                                     .produtoPecas[index]
                                                     .peca
-                                                    .estoque
+                                                    .estoque!
                                                     .length !=
                                                 0
                                             ? TextComponent(astecaController
                                                 .produtoPecas[index]
                                                 .peca
-                                                .estoque
+                                                .estoque!
                                                 .first
                                                 .saldoDisponivel
                                                 .toString())
