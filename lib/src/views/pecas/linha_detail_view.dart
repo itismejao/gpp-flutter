@@ -71,16 +71,29 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
     }
   }
 
-  // DropdownMenuItem<String> buildMenuItem(PecasLinhaModel pecasLinhaModel) => DropdownMenuItem(
-  //       value: pecasLinhaModel.linha,
-  //       child: Text(
-  //         pecasLinhaModel.linha.toString(),
-  //         style: TextStyle(
-  //           fontWeight: FontWeight.bold,
-  //           fontSize: 20,
-  //         ),
-  //       ),
-  //     );
+  editarLinha(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasLinhaController.editar()) {
+        notify.sucess("Linha editada com sucesso!");
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
+  editarEspecie(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      if (await _pecasEspecieController.editar()) {
+        notify.sucess("Espécie editada com sucesso!");
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +197,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                     children: [
                       ButtonComponent(
                         onPressed: () {
-                          _pecasLinhaController.editar();
-                          Navigator.pop(context);
+                          editarLinha(context);
                         },
                         text: 'Editar',
                       ),
@@ -425,11 +437,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             pecasEspecieModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      // if (selectedLinha?.id_peca_linha == null) {
-                      //   print('Selecione a linha');
-                      // } else {
                       criarEspecie(context);
-                      // }
                     },
                     text: 'Salvar',
                   )
@@ -437,8 +445,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                     children: [
                       ButtonComponent(
                         onPressed: () {
-                          _pecasEspecieController.editar();
-                          Navigator.pop(context);
+                          editarEspecie(context);
                         },
                         text: 'Editar',
                       ),

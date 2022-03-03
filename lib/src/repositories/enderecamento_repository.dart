@@ -18,7 +18,6 @@ class EnderecamentoRepository {
     required this.api,
   });
 
- 
   Future<List<PisoEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get('/piso');
 
@@ -121,7 +120,7 @@ class EnderecamentoRepository {
 
   Future<bool> criar(PisoEnderecamentoModel pisos) async {
     print(jsonEncode(pisos.toJson()));
-    Response response = await api.post('/piso/' + pisos.id_piso.toString(), pisos.toJson());
+    Response response = await api.post('/piso', pisos.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -130,12 +129,10 @@ class EnderecamentoRepository {
     }
   }
 
-
-
-   Future<bool> editar(PisoEnderecamentoModel pisos) async {
+  Future<bool> editar(PisoEnderecamentoModel pisos) async {
     //print(jsonEncode(pisos.toJson()));
 
-    Response response = await api.put('/piso/'+ pisos.id_piso.toString(), pisos.toJson());
+    Response response = await api.put('/piso/' + pisos.id_piso.toString(), pisos.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -143,7 +140,6 @@ class EnderecamentoRepository {
       throw 'Ocorreu um erro o piso';
     }
   }
-
 
   // excluir e criar Corredor
 
@@ -170,8 +166,7 @@ class EnderecamentoRepository {
     }
   }
 
-  
-   Future<bool> editarCorredor(CorredorEnderecamentoModel corredorModelo) async {
+  Future<bool> editarCorredor(CorredorEnderecamentoModel corredorModelo) async {
     //print(jsonEncode(pisos.toJson()));
 
     Response response = await api.put('/piso/00/corredor/' + corredorModelo.id_corredor.toString(), corredorModelo.toJson());
@@ -208,10 +203,11 @@ class EnderecamentoRepository {
     }
   }
 
-   Future<bool> editarEstante(EstanteEnderecamentoModel estanteModelo) async {
+  Future<bool> editarEstante(EstanteEnderecamentoModel estanteModelo) async {
     //print(jsonEncode(pisos.toJson()));
 
-    Response response = await api.put('/piso/00/corredor/00/estante/' + estanteModelo.id_estante.toString(), estanteModelo.toJson());
+    Response response =
+        await api.put('/piso/00/corredor/00/estante/' + estanteModelo.id_estante.toString(), estanteModelo.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -247,10 +243,11 @@ class EnderecamentoRepository {
     }
   }
 
-   Future<bool> editarPrateleira(PrateleiraEnderecamentoModel prateleiraModelo) async {
+  Future<bool> editarPrateleira(PrateleiraEnderecamentoModel prateleiraModelo) async {
     //print(jsonEncode(pisos.toJson()));
 
-    Response response = await api.put('/piso/00/corredor/00/estante/' + prateleiraModelo.id_prateleira.toString(), prateleiraModelo.toJson());
+    Response response =
+        await api.put('/piso/00/corredor/00/estante/' + prateleiraModelo.id_prateleira.toString(), prateleiraModelo.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -286,10 +283,11 @@ class EnderecamentoRepository {
     }
   }
 
-    Future<bool> editarBox(BoxEnderecamentoModel BoxModelo) async {
+  Future<bool> editarBox(BoxEnderecamentoModel BoxModelo) async {
     //print(jsonEncode(pisos.toJson()));
 
-    Response response = await api.put('/piso/00/corredor/00/estante/00/prateleira/00/box/' + BoxModelo.id_box.toString(),  BoxModelo.toJson());
+    Response response =
+        await api.put('/piso/00/corredor/00/estante/00/prateleira/00/box/' + BoxModelo.id_box.toString(), BoxModelo.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

@@ -83,7 +83,7 @@ class PecasLinhaRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      throw 'Ocorreu um erro ao editar uma cor';
+      throw 'Ocorreu um erro ao editar uma linha';
     }
   }
 }

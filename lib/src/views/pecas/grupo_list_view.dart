@@ -19,14 +19,19 @@ class GrupoListView extends StatefulWidget {
 class _GrupoListViewState extends State<GrupoListView> {
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
 
-  excluir(PecasGrupoModel pecasGrupoModel) async {
+  Future<bool> excluir(context, PecasGrupoModel pecasGrupoModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await _pecasGrupoController.excluir(pecasGrupoModel)) {
-        notify.sucess("Grupo excluído com sucesso!");
+      if (await notify.alert('Deseja excluir o grupo (${pecasGrupoModel.id_peca_grupo_material} - ${pecasGrupoModel.grupo})?')) {
+        if (await _pecasGrupoController.excluir(pecasGrupoModel)) {
+          notify.sucess("Linha excluída com sucesso!");
+          return true;
+        }
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -127,13 +132,9 @@ class _GrupoListViewState extends State<GrupoListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
-                                  onPressed: () => {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return PopUpEditar.popUpPeca(
-                                              context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]));
-                                        }).then((value) => setState(() {}))
+                                  onPressed: () {
+                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]))
+                                        .then((value) => setState(() {}));
                                   },
                                 ),
                                 IconButton(
@@ -142,9 +143,8 @@ class _GrupoListViewState extends State<GrupoListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      // _pecasGrupoController.excluir(_pecasGrupo[index]).then((value) => setState(() {}));
                                       setState(() {
-                                        excluir(_pecasGrupo[index]);
+                                        excluir(context, _pecasGrupo[index]).then((value) => setState(() {}));
                                       });
                                     }),
                               ],
