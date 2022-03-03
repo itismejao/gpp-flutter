@@ -20,8 +20,10 @@ class ItemPedidoSaidaModel {
         idItemPedidoSaida: json['id_item_pedido_saida'],
         quantidade: json['quantidade'],
         valor: json['valor'],
-        motivoTrocaPeca: MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca']),
-        peca: PecaModel.fromJson(json['peca']));
+        motivoTrocaPeca: json['motivo_troca_peca'] != null
+            ? MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca'])
+            : null,
+        peca: json['peca'] != null ? PecaModel.fromJson(json['peca']) : null);
   }
 
   Map<String, dynamic> toJson() {

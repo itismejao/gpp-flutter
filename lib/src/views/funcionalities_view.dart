@@ -64,13 +64,17 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   buscaUsuarioAutenticado() async {
-    setState(() {
-      autenticacaoController.carregado = false;
-    });
-    await autenticacaoController.repository.buscar();
-    setState(() {
-      autenticacaoController.carregado = true;
-    });
+    try {
+      setState(() {
+        autenticacaoController.carregado = false;
+      });
+      await autenticacaoController.repository.buscar();
+      setState(() {
+        autenticacaoController.carregado = true;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
