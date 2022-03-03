@@ -40,4 +40,8 @@ class PecasController {
   Future<bool> editar() async {
     return await pecasRepository.editar(pecasModel);
   }
+
+  Future<bool> editarProdutoPeca() async {
+    return await pecasRepository.editarProdutoPeca(produtoPecaModel);
+  }
 }

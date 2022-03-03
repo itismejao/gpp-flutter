@@ -86,6 +86,19 @@ class PecasRepository {
     }
   }
 
+  Future<bool> editarProdutoPeca(ProdutoPecaModel produtoPecaModel) async {
+    print(jsonEncode(produtoPecaModel.toJson()));
+
+    Response response = await api.put(
+        '/pecas/${produtoPecaModel.id_peca}/produto-peca/${produtoPecaModel.id_produto_peca}', produtoPecaModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar um produto peça';
+    }
+  }
+
   Future<PecasModel> buscar(String codigo) async {
     Response response = await api.get('/pecas/' + codigo);
 

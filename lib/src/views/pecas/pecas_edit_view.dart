@@ -101,6 +101,19 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
     }
   }
 
+  EditarProdutoPeca(context) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      // _pecasController.produtoPecaModel.id_peca = _pecasModelInserido!.id_peca;
+
+      if (await _pecasController.editarProdutoPeca()) {
+        notify.sucess("Produto peça cadastrado com sucesso!");
+      }
+    } catch (e) {
+      notify.error(e.toString());
+    }
+  }
+
   @override
   void initState() {
     pecasEditPopup = widget.pecasEditPopup;
@@ -162,6 +175,13 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                       ),
+                      onChanged: (value) {
+                        _pecasController.produtoPecaModel.id_produto = int.parse(value);
+                        _pecasController.produtoPecaModel.id_produto_peca =
+                            _pecasController.pecasModel.produto_peca![0].id_produto_peca;
+
+                        _pecasController.produtoPecaModel.id_peca = _pecasController.pecasModel.id_peca;
+                      },
                       decoration: InputDecoration(
                         hintText: 'ID',
                         border: InputBorder.none,
@@ -170,7 +190,7 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                           onPressed: () async {
                             await buscaProduto(txtIdProduto.text);
 
-                            _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
+                            // _pecasController.produtoPecaModel.id_produto = int.parse(txtIdProduto.text);
                           },
                           icon: Icon(Icons.search),
                         ),
@@ -278,6 +298,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                   child: InputComponent(
                     label: 'Quantidade',
                     enable: widget.enabled,
+                    initialValue: pecasEditPopup == null
+                        ? ''
+                        : _pecasController.pecasModel.produto_peca == null
+                            ? ''
+                            : _pecasController.pecasModel.produto_peca![0].quantidade_por_produto.toString(),
                     onChanged: (value) {
                       _pecasController.produtoPecaModel.quantidade_por_produto = int.parse(value);
                     },
@@ -808,8 +833,9 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ButtonComponent(
-                        onPressed: () {
-                          editar(context);
+                        onPressed: () async {
+                          await editar(context);
+                          await EditarProdutoPeca(context);
                         },
                         text: 'Editar',
                       ),
