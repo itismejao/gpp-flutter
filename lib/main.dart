@@ -148,7 +148,8 @@ class _GppAppState extends State<GppApp> {
     } else {
       return MaterialPageRoute(builder: (context) => AuthenticateView());
     }
-    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(
+        builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: MenuConsultarView()));
   }
 
   @override
