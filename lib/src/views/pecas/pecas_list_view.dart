@@ -113,79 +113,130 @@ class _PecasListViewState extends State<PecasListView> {
                     style: TextStyle(color: Colors.red),
                   );
                 } else {
-                  return Container(
-                    height: 500,
-                    child: ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // Padding(padding: EdgeInsets.only(left: 10)),
-                              // CheckboxComponent(),
-                              Expanded(
-                                child: Text(
-                                  snapshot.data![index].id_peca.toString(),
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                                  // textAlign: TextAlign.start,
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(snapshot.data![index].numero.toString()),
-                              ),
-                              Expanded(
-                                child: Text(snapshot.data![index].codigo_fabrica == null
-                                    ? ''
-                                    : snapshot.data![index].codigo_fabrica.toString()),
-                              ),
-                              Expanded(
-                                child: Text(snapshot.data![index].descricao.toString()),
-                              ),
+                  return Column(
+                    children: [
+                      Container(
+                        height: 400,
+                        child: ListView.builder(
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Padding(padding: EdgeInsets.only(left: 10)),
+                                  // CheckboxComponent(),
+                                  Expanded(
+                                    child: Text(
+                                      snapshot.data![index].id_peca.toString(),
+                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                      // textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(snapshot.data![index].numero.toString()),
+                                  ),
+                                  Expanded(
+                                    child: Text(snapshot.data![index].codigo_fabrica == null
+                                        ? ''
+                                        : snapshot.data![index].codigo_fabrica.toString()),
+                                  ),
+                                  Expanded(
+                                    child: Text(snapshot.data![index].descricao.toString()),
+                                  ),
 
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.visibility),
-                                      color: Colors.grey.shade400,
-                                      onPressed: () {
-                                        PopUpEditar.popUpPeca(
-                                                context, PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: false))
-                                            .then((value) => setState(() {}));
-                                      },
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.visibility),
+                                          color: Colors.grey.shade400,
+                                          onPressed: () {
+                                            PopUpEditar.popUpPeca(context,
+                                                    PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: false))
+                                                .then((value) => setState(() {}));
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () {
+                                            PopUpEditar.popUpPeca(context,
+                                                    PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: true))
+                                                .then((value) => setState(() {}));
+                                          },
+                                        ),
+                                        // IconButton(
+                                        //   icon: Icon(
+                                        //     Icons.delete,
+                                        //     color: Colors.grey.shade400,
+                                        //   ),
+                                        //   onPressed: () {
+                                        //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
+                                        //     setState(() {
+                                        //       excluir(snapshot.data![index]);
+                                        //     });
+                                        //   },
+                                        // ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      onPressed: () {
-                                        PopUpEditar.popUpPeca(
-                                                context, PecasEditAndView(pecasEditPopup: snapshot.data![index], enabled: true))
-                                            .then((value) => setState(() {}));
-                                      },
-                                    ),
-                                    // IconButton(
-                                    //   icon: Icon(
-                                    //     Icons.delete,
-                                    //     color: Colors.grey.shade400,
-                                    //   ),
-                                    //   onPressed: () {
-                                    //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
-                                    //     setState(() {
-                                    //       excluir(snapshot.data![index]);
-                                    //     });
-                                    //   },
-                                    // ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 50, //media.height * 0.10,
+                        // width: media.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextComponent('Total de páginas: ' + '100'),
+                            Row(
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.first_page),
+                                    onPressed: () {
+                                      // pedidoController.pagina.atual = 1;
+                                      // buscarTodas();
+                                    }),
+                                IconButton(
+                                    icon: const Icon(
+                                      Icons.navigate_before_rounded,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      // if (pedidoController.pagina.atual > 0) {
+                                      //   pedidoController.pagina.atual = pedidoController.pagina.atual - 1;
+                                      //   buscarTodas();
+                                      // }
+                                    }),
+                                TextComponent('1'),
+                                IconButton(
+                                    icon: Icon(Icons.navigate_next_rounded),
+                                    onPressed: () {
+                                      // if (pedidoController.pagina.atual != pedidoController.pagina.total) {
+                                      //   pedidoController.pagina.atual = pedidoController.pagina.atual + 1;
+                                      // }
+
+                                      // buscarTodas();
+                                    }),
+                                IconButton(
+                                    icon: Icon(Icons.last_page),
+                                    onPressed: () {
+                                      // pedidoController.pagina.atual = pedidoController.pagina.total;
+                                      // buscarTodas();
+                                    }),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   );
                 }
             }
