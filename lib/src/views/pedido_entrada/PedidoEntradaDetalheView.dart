@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/PedidoController.dart';
+import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -9,30 +11,31 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
-class PedidoDetalheView extends StatefulWidget {
+class PedidoEntradaDetalheView extends StatefulWidget {
   final int id;
 
-  PedidoDetalheView({
+  PedidoEntradaDetalheView({
     Key? key,
     required this.id,
   }) : super(key: key);
 
   @override
-  _PedidoDetalheViewState createState() => _PedidoDetalheViewState();
+  _PedidoEntradaDetalheViewState createState() =>
+      _PedidoEntradaDetalheViewState();
 }
 
-class _PedidoDetalheViewState extends State<PedidoDetalheView> {
-  late PedidoController pedidoController;
+class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
+  late PedidoEntradaController controller;
   late MaskFormatter maskFormatter;
 
   buscar() async {
     setState(() {
-      pedidoController.carregado = false;
+      controller.carregado = false;
     });
-    pedidoController.pedido = await pedidoController.pedidoRepository.buscar(widget.id);
+    controller.pedidoEntrada = await controller.repository.buscar(widget.id);
 
     setState(() {
-      pedidoController.carregado = true;
+      controller.carregado = true;
     });
   }
 
@@ -40,14 +43,15 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
   void initState() {
     super.initState();
     //Inicializa pedido controller
-    pedidoController = PedidoController();
+    controller = PedidoEntradaController();
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
     //buscar o pedido
     buscar();
   }
 
-  Widget _buildListItem(List<ItemPedidoSaidaModel> itensPedido, int index, BuildContext context) {
+  Widget _buildListItem(List<ItemPedidoEntradaModel> itensPedido, int index,
+      BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -127,7 +131,10 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                           child: Row(
                             children: [
                               TextComponent(
-                                '#' + itensPedido[index].idItemPedidoSaida.toString(),
+                                '#' +
+                                    itensPedido[index]
+                                        .idItemPedidoEntrada
+                                        .toString(),
                               )
                             ],
                           ),
@@ -147,12 +154,15 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                             )),
                         Expanded(
                           flex: 2,
-                          child: TextComponent(pedidoController.formatter.format(itensPedido[index].valor)),
+                          child: TextComponent(controller.formatter
+                              .format(itensPedido[index].custo)),
                         ),
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              pedidoController.formatter.format((itensPedido[index].valor * itensPedido[index].quantidade)),
+                              controller.formatter.format(
+                                  (itensPedido[index].custo! *
+                                      itensPedido[index].quantidade!)),
                             )),
                       ],
                     ),
@@ -169,13 +179,13 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: pedidoController.carregado
+      child: controller.carregado
           ? Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleComponent('Pedido'),
+                  TitleComponent('Pedido de entrada'),
                   SizedBox(
                     height: 16,
                   ),
@@ -184,7 +194,8 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       Expanded(
                         child: InputComponent(
                           label: 'ID',
-                          initialValue: pedidoController.pedido.idPedidoSaida.toString(),
+                          initialValue: controller.pedidoEntrada.idPedidoEntrada
+                              .toString(),
                         ),
                       ),
                       SizedBox(
@@ -192,8 +203,30 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
+                          enable: false,
                           label: 'CPF/CNPJ',
-                          initialValue: pedidoController.pedido.cpfCnpj.toString(),
+                          initialValue: controller
+                                      .pedidoEntrada
+                                      .asteca!
+                                      .produto!
+                                      .first
+                                      .fornecedor!
+                                      .cliente!
+                                      .cpfCnpj !=
+                                  null
+                              ? maskFormatter
+                                  .cpfCnpjFormatter(
+                                      value: controller
+                                          .pedidoEntrada
+                                          .asteca!
+                                          .produto!
+                                          .first
+                                          .fornecedor!
+                                          .cliente!
+                                          .cpfCnpj
+                                          .toString())!
+                                  .getMaskedText()
+                              : '',
                         ),
                       ),
                       SizedBox(
@@ -201,8 +234,10 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       ),
                       Expanded(
                         child: InputComponent(
-                          label: 'Filial de venda',
-                          initialValue: pedidoController.pedido.filialVenda.toString(),
+                          label: 'Fornecedor',
+                          initialValue: controller.pedidoEntrada.asteca!
+                                  .produto!.first.fornecedor!.cliente!.nome ??
+                              '',
                         ),
                       ),
                     ],
@@ -214,18 +249,13 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                     children: [
                       Expanded(
                         child: InputComponent(
-                          label: 'Nº Documento Fiscal',
-                          initialValue: pedidoController.pedido.numDocFiscal.toString(),
+                          label: 'Funionário',
+                          initialValue:
+                              controller.pedidoEntrada.funcionario!.nome ?? '',
                         ),
                       ),
                       SizedBox(
                         width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          label: 'Série Documento Fiscal',
-                          initialValue: pedidoController.pedido.serieDocFiscal,
-                        ),
                       ),
                       SizedBox(
                         width: 8,
@@ -233,8 +263,11 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       Expanded(
                         child: InputComponent(
                           label: 'Data de emissão',
-                          initialValue:
-                              maskFormatter.dataFormatter(value: pedidoController.pedido.dataEmissao.toString()).getMaskedText(),
+                          initialValue: maskFormatter
+                              .dataFormatter(
+                                  value: controller.pedidoEntrada.dataEmissao
+                                      .toString())
+                              .getMaskedText(),
                         ),
                       ),
                     ],
@@ -247,7 +280,8 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                       Expanded(
                         child: InputComponent(
                             label: 'Valor total R\$',
-                            initialValue: pedidoController.formatter.format(pedidoController.pedido.valorTotal)),
+                            initialValue: controller.formatter
+                                .format(controller.pedidoEntrada.valorTotal)),
                       ),
                     ],
                   ),
@@ -263,9 +297,13 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
                   Container(
                     height: 400,
                     child: ListView.builder(
-                      itemCount: pedidoController.pedido.itemsPedidoSaida!.length,
+                      itemCount:
+                          controller.pedidoEntrada.itensPedidoEntrada!.length,
                       itemBuilder: (context, index) {
-                        return _buildListItem(pedidoController.pedido.itemsPedidoSaida!, index, context);
+                        return _buildListItem(
+                            controller.pedidoEntrada.itensPedidoEntrada!,
+                            index,
+                            context);
                       },
                     ),
                   ),

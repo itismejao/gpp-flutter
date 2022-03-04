@@ -13,10 +13,10 @@ class PedidoEntradaController {
   DateTime? dataInicio;
   DateTime? dataFim;
   int? situacao;
-  PedidoEntradaRepository pedidoEntradaRepository = PedidoEntradaRepository();
+  PedidoEntradaRepository repository = PedidoEntradaRepository();
   bool carregado = false;
   List<PedidoEntradaModel> pedidosEntrada = [];
-  PedidoSaidaModel pedido = PedidoSaidaModel();
+  PedidoEntradaModel pedidoEntrada = PedidoEntradaModel();
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   bool abrirFiltro = false; // false

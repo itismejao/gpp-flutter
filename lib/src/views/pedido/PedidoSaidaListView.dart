@@ -23,14 +23,14 @@ class Situacao {
   });
 }
 
-class PedidoListView extends StatefulWidget {
-  const PedidoListView({Key? key}) : super(key: key);
+class PedidoSaidaListView extends StatefulWidget {
+  const PedidoSaidaListView({Key? key}) : super(key: key);
 
   @override
-  _PedidoListViewState createState() => _PedidoListViewState();
+  _PedidoSaidaListViewState createState() => _PedidoSaidaListViewState();
 }
 
-class _PedidoListViewState extends State<PedidoListView> {
+class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   final ResponsiveController _responsive = ResponsiveController();
   ScrollController scrollController = ScrollController();
 
@@ -244,8 +244,8 @@ class _PedidoListViewState extends State<PedidoListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
+            Navigator.pushNamed(context,
+                '/pedidos-saida/' + pedido[index].idPedidoSaida.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

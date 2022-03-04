@@ -46,7 +46,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         controller.carregado = false;
       });
       //parei aqui
-      List retorno = await controller.pedidoEntradaRepository.buscarTodos(
+      List retorno = await controller.repository.buscarTodos(
           controller.pagina.atual,
           idPedido: controller.idPedidoEntrada,
           dataInicio: controller.dataInicio,
@@ -248,7 +248,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(context,
-                '/pedidos/' + pedido[index].idPedidoEntrada.toString());
+                '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -353,17 +353,26 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              maskFormatter
-                                  .cpfCnpjFormatter(
-                                      value: pedido[index]
+                              pedido[index]
                                           .asteca!
                                           .produto!
                                           .first
                                           .fornecedor!
                                           .cliente!
-                                          .cpfCnpj
-                                          .toString())!
-                                  .getMaskedText(),
+                                          .cpfCnpj !=
+                                      null
+                                  ? maskFormatter
+                                      .cpfCnpjFormatter(
+                                          value: pedido[index]
+                                              .asteca!
+                                              .produto!
+                                              .first
+                                              .fornecedor!
+                                              .cliente!
+                                              .cpfCnpj
+                                              .toString())!
+                                      .getMaskedText()
+                                  : '',
                             )),
                         Expanded(
                             flex: 2,
@@ -371,8 +380,11 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                 _buildSituacaoPedido(pedido[index].situacao)),
                         Expanded(
                             flex: 3,
-                            child: TextComponent(controller.formatter
-                                    .format(pedido[index].valorTotal)
+                            child: TextComponent(
+                                pedido[index].valorTotal != null
+                                    ? controller.formatter
+                                        .format(pedido[index].valorTotal)
+                                    : controller.formatter.format(0)
                                 // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
                                 ))
                       ],

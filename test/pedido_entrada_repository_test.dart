@@ -44,19 +44,28 @@ void main() {
             "situacao": 1,
             "valor_total": null,
             "id_movimento_entrada": null,
-            "funcionario": [
-                {
-                    "id_funcionario": 1022189,
-                    "nome": "ALDAIR FERNANDO DE ARAUJO"
-                }
-            ],
+            "id_funcionario": "1022189",
             "asteca": {
                 "id_asteca": 692535,
                 "tipo_asteca": 1,
                 "id_filial_registro": 88,
                 "observacao": "trocar peca de numero 3,divisao direita",
                 "defeito_estado_prod": "trocar peca de numero 3,divisao direita",
-                "data_emissao": "2021-12-18T00:00:00.000000Z"
+                "data_emissao": "2021-12-18T00:00:00.000000Z",
+                "produto": [
+                    {
+                        "id_produto": 62362,
+                        "resumida": "BALCAO COOKTOP NT3050 1P 1G PRT BC/GRA",
+                        "fornecedor": {
+                            "id_fornecedor": 67105,
+                            "cliente": {
+                                "id_cliente": 13309722,
+                                "nome": "INDUSTRIA DE MOVEIS NOTAVEL LTDA",
+                                "cnpj_cpf": "00303732000150"
+                            }
+                        }
+                    }
+                ]
             },
             "items_pedido_entrada": [
                 {
@@ -77,7 +86,7 @@ void main() {
                         "unidade_medida": 1,
                         "volumes": "1",
                         "active": 1,
-                        "custo": 12,0,
+                        "custo": 12,
                         "classificacao_custo": null,
                         "tipo_classificacao_custo": null,
                         "id_peca_material_fabricacao": "1",
@@ -85,10 +94,16 @@ void main() {
                         "updated_at": "2022-03-04T04:14:59.000000Z"
                     }
                 }
+            ],
+            "funcionario": [
+                {
+                    "id_funcionario": 1022189,
+                    "nome": "ALDAIR FERNANDO DE ARAUJO"
+                }
             ]
         }
     ]
-} ''';
+}''';
 
     test('Verifica a busca de pedidos de entrada', () async {
       when(api.get(any))

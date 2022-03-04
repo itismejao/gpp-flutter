@@ -8,7 +8,7 @@ class ClienteModel {
   ClienteModel.fromJson(Map<String, dynamic> json) {
     idCliente = json['id_cliente'];
     nome = json['nome'];
-    cpfCnpj = json['cpf_cnpj'] != null ? json['cpf_cnpj'] : null;
+    cpfCnpj = json['cnpj_cpf'] != null ? json['cnpj_cpf'] : null;
   }
 
   Map<String, dynamic> toJson() {

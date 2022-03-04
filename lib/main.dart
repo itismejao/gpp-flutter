@@ -85,12 +85,13 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
-import 'package:gpp/src/views/pedido/PedidoListView.dart';
+import 'package:gpp/src/views/pedido/PedidoSaidaDetalheView.dart';
+import 'package:gpp/src/views/pedido/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
-import 'package:gpp/src/views/pedido_entrada/PedidoListView.dart';
+import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
+import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
 import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
@@ -118,7 +119,7 @@ class _GppAppState extends State<GppApp> {
 
 //Se existe 1 parâmetros da url
       if (uri.pathSegments.length == 0) {
-        pagina = PedidoListView();
+        pagina = PedidoSaidaListView();
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaListView();
@@ -138,25 +139,20 @@ class _GppAppState extends State<GppApp> {
           pagina = Container();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = AddressingListView();
+        } else if (uri.pathSegments.first == 'pedidos-entrada') {
+          pagina = PedidoEntradaListView();
+        } else if (uri.pathSegments.first == 'pedidos-saida') {
+          pagina = PedidoSaidaListView();
         }
         //Se existe 2 parâmetros da url
-      } else if (uri.pathSegments.length == 2 &&
-          int.tryParse(uri.pathSegments[1]) == null) {
-        if (uri.pathSegments.first == 'pedidos' &&
-            uri.pathSegments[1] == 'saida') {
-          pagina = PedidoListView();
-        } else if (uri.pathSegments.first == 'pedidos' &&
-            uri.pathSegments[1] == 'entrada') {
-          pagina = PedidoEntradaListView();
-        }
-      } else if (uri.pathSegments.length == 2 &&
-          int.tryParse(uri.pathSegments[1]) != null) {
+      } else if (uri.pathSegments.length == 2) {
         var id = int.parse(uri.pathSegments[1]);
-
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos') {
-          pagina = PedidoDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos-saida') {
+          pagina = PedidoSaidaDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos-entrada') {
+          pagina = PedidoEntradaDetalheView(id: id);
         }
       }
     } else {
