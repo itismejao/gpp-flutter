@@ -335,9 +335,6 @@ class _PedidoListViewState extends State<PedidoListView> {
                             child: TextComponent(
                               pedido[index].cliente!.nome!,
                             )),
-                        VerticalDivider(
-                          color: Colors.red,
-                        ),
                         Expanded(
                             flex: 2,
                             child: TextComponent(
@@ -385,7 +382,7 @@ class _PedidoListViewState extends State<PedidoListView> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               children: [
-                Expanded(child: TitleComponent('Pedidos')),
+                Expanded(child: TitleComponent('Pedidos de saída')),
                 Expanded(
                   child: Form(
                     key: pedidoController.filtroFormKey,

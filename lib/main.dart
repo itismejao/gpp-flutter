@@ -90,6 +90,7 @@ import 'package:gpp/src/views/pedido/PedidoListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/pedido_entrada/PedidoListView.dart';
 import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
@@ -121,8 +122,6 @@ class _GppAppState extends State<GppApp> {
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaListView();
-        } else if (uri.pathSegments.first == 'pedidos') {
-          pagina = PedidoListView();
         } else if (uri.pathSegments.first == 'departamentos') {
           pagina = DepartamentoListView();
         } else if (uri.pathSegments.first == 'usuarios') {
@@ -141,7 +140,17 @@ class _GppAppState extends State<GppApp> {
           pagina = AddressingListView();
         }
         //Se existe 2 parâmetros da url
-      } else if (uri.pathSegments.length == 2) {
+      } else if (uri.pathSegments.length == 2 &&
+          int.tryParse(uri.pathSegments[1]) == null) {
+        if (uri.pathSegments.first == 'pedidos' &&
+            uri.pathSegments[1] == 'saida') {
+          pagina = PedidoListView();
+        } else if (uri.pathSegments.first == 'pedidos' &&
+            uri.pathSegments[1] == 'entrada') {
+          pagina = PedidoEntradaListView();
+        }
+      } else if (uri.pathSegments.length == 2 &&
+          int.tryParse(uri.pathSegments[1]) != null) {
         var id = int.parse(uri.pathSegments[1]);
 
         if (uri.pathSegments.first == 'astecas') {
