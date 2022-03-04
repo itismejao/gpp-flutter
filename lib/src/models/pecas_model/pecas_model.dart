@@ -38,9 +38,6 @@ class PecasModel {
 
   List<ProdutoPecaModel>? produto_peca;
 
-  int? paginaAtual;
-  int? paginaTotal;
-
   PecasModel({
     this.id_peca,
     this.numero,
@@ -67,8 +64,6 @@ class PecasModel {
     this.especie,
     this.pecasEspecieModel,
     this.produto_peca,
-    this.paginaAtual,
-    this.paginaTotal,
   });
 
   factory PecasModel.fromJson(Map<String, dynamic> json) {
@@ -100,8 +95,6 @@ class PecasModel {
               return ProdutoPecaModel.fromJson(data);
             }).toList()
           : null,
-      paginaAtual: json['current_page'],
-      paginaTotal: json['last_page'],
       // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
