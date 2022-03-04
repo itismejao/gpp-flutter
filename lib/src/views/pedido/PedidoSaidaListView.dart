@@ -61,11 +61,11 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
         pedidoController.carregado = true;
       });
     } catch (e) {
+      notify.error(e.toString());
       setState(() {
         pedidoController.pedidos = [];
         pedidoController.carregado = true;
       });
-      notify.error(e.toString());
     }
   }
 
@@ -333,7 +333,8 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              pedido[index].cliente!.nome!,
+                              pedidoController
+                                  .camelCaseAll(pedido[index].cliente!.nome!),
                             )),
                         Expanded(
                             flex: 2,
@@ -405,7 +406,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                   width: 8,
                 ),
                 ButtonComponent(
-                    icon: Icon(Icons.add, color: Colors.white),
+                    icon: Icon(Icons.tune_rounded, color: Colors.white),
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
@@ -418,7 +419,6 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
             ),
           ),
           Container(
-            color: Colors.grey.shade50,
             height: pedidoController.abrirFiltro ? null : 0,
             child: Padding(
               padding: const EdgeInsets.all(16),

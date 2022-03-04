@@ -35,7 +35,8 @@ class PedidoRepository {
       PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
       return [pedidos, pagina];
     } else {
-      var error = jsonDecode(response.body)['error'];
+      var error = json.decode(response.body)['error'];
+      print('pedido: ' + error);
       throw error;
     }
   }

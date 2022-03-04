@@ -28,23 +28,30 @@ class AstecaRepository {
   }
 
   Future<List> buscarTodas(int pagina,
-      {AstecaModel? filtroAsteca, String? pendencia, DateTime? dataInicio, DateTime? dataFim}) async {
+      {AstecaModel? filtroAsteca,
+      String? pendencia,
+      DateTime? dataInicio,
+      DateTime? dataFim}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'idAsteca': filtroAsteca?.idAsteca ?? '',
       'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
-      'numeroNotaFiscalVenda': filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+      'numeroNotaFiscalVenda':
+          filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
       'pendencia': pendencia?.toString() ?? '',
       'dataInicio': dataInicio != null ? dataInicio.toString() : '',
       'dataFim': dataFim != null ? dataFim.toString() : ''
     };
 
-    Response response = await api.get(endpoint, queryParameters: queryParameters);
+    Response response =
+        await api.get(endpoint, queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaModel> astecas = data['astecas'].map<AstecaModel>((data) => AstecaModel.fromJson(data)).toList();
+      List<AstecaModel> astecas = data['astecas']
+          .map<AstecaModel>((data) => AstecaModel.fromJson(data))
+          .toList();
 
       //Obtém a pagina
       PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
@@ -260,8 +267,10 @@ class PendenciaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaTipoPendenciaModel> astecaTipoPendencia =
-          data.map<AstecaTipoPendenciaModel>((data) => AstecaTipoPendenciaModel.fromJson(data)).toList();
+      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
+          .map<AstecaTipoPendenciaModel>(
+              (data) => AstecaTipoPendenciaModel.fromJson(data))
+          .toList();
       return astecaTipoPendencia;
     } else {
       var error = jsonDecode(response.body)['error'];
@@ -269,8 +278,10 @@ class PendenciaRepository {
     }
   }
 
-  Future<bool> criar(AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
-    Response response = await api.post('/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
+  Future<bool> criar(
+      AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
+    Response response = await api.post(
+        '/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
