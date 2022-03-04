@@ -165,7 +165,9 @@ class _PecasListViewState extends State<PecasListView> {
                                 onPressed: () {
                                   PopUpEditar.popUpPeca(context,
                                           PecasEditAndView(pecasEditPopup: _pecasController.listaPecas[index], enabled: true))
-                                      .then((value) => setState(() {}));
+                                      .then((value) => setState(() {
+                                            buscarTodasPecas();
+                                          }));
                                 },
                               ),
                               // IconButton(
