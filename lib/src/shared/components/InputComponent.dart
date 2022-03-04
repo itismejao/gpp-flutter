@@ -91,7 +91,7 @@ class InputComponent extends StatelessWidget {
                     prefixIcon: prefixIcon,
                     hintText: hintText,
                     suffixIcon: suffixIcon,
-                    contentPadding: EdgeInsets.only(top: 15, left: 10),
+                    contentPadding: EdgeInsets.only(top: 5, left: 10),
                     border: InputBorder.none)),
           )
         ],

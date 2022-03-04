@@ -388,12 +388,44 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ]);
             });
       } else {
-        myShowDialog(
-            'Não é possível finalizar o pedido, existe peças adicionadas sem estoque');
+        exibirDialogPedidoEntrada();
       }
     } catch (e) {
       print(e);
     }
+  }
+
+  exibirDialogPedidoEntrada() {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {},
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text(
+          "Would you like to continue learning how to use Flutter alerts?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    var teste = showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+
+    print(teste);
   }
 
   pesquisarPecas(value) {
