@@ -56,7 +56,9 @@ class AstecaModel {
                 return ProdutoModel.fromJson(data);
               }).toList()
             : null,
-        funcionario: FuncionarioModel.fromJson(json['funcionario'].first),
+        funcionario: json['funcionario'] != null
+            ? FuncionarioModel.fromJson(json['funcionario'].first)
+            : null,
         astecaTipoPendencias: json['pendencia'] != null
             ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
                 return AstecaTipoPendenciaModel.fromJson(data);

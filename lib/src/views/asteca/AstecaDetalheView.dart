@@ -218,11 +218,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   bool verificaEstoque() {
     bool verificaEstoque = true;
     for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-      if (item.peca!.estoque.isEmpty) {
+      if (item.peca!.estoque!.isEmpty) {
         verificaEstoque = false;
         break;
       } else {
-        if (item.quantidade > item.peca!.estoque.first.saldoDisponivel) {
+        if (item.quantidade > item.peca!.estoque!.first.saldoDisponivel) {
           verificaEstoque = false;
           break;
         }
@@ -472,10 +472,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   _buildSituacaoEstoque(index) {
     if (astecaController
-        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque.isEmpty) {
+        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.isEmpty) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!
               .first.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
@@ -2534,13 +2534,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         child: astecaController
                                                     .produtoPecas[index]
                                                     .peca
-                                                    .estoque
+                                                    .estoque!
                                                     .length !=
                                                 0
                                             ? TextComponent(astecaController
                                                 .produtoPecas[index]
                                                 .peca
-                                                .estoque
+                                                .estoque!
                                                 .first
                                                 .saldoDisponivel
                                                 .toString())
@@ -2593,13 +2593,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         child: astecaController
                                                     .produtoPecas[index]
                                                     .peca
-                                                    .estoque
+                                                    .estoque!
                                                     .length !=
                                                 0
                                             ? TextComponent(astecaController
                                                 .produtoPecas[index]
                                                 .peca
-                                                .estoque
+                                                .estoque!
                                                 .first
                                                 .saldoDisponivel
                                                 .toString())
