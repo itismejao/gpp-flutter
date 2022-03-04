@@ -46,6 +46,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
     maskFormatter = MaskFormatter();
     //buscar o pedido
     buscar();
+    
   }
 
   Widget _buildListItem(
