@@ -113,12 +113,12 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                       ),
                       InputComponent(
                         label: 'Estante',
-                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
                         hintText: 'Digite a Estante',
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.id_estante.toString();
                           });
                         },
                       ),
@@ -149,7 +149,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     );
   }
 
-   openFormEdit(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openFormEdit(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -196,7 +196,7 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                   handleEdit(context, prateleiraEnderecamentoReplacement);
+                                  handleEdit(context, prateleiraEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -301,14 +301,14 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                                 ));
                                           },
                                           text: 'Box'),
-                                       IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {                                            
-                                          openFormEdit(context,  enderecamentoController.listaPrateleira[index]);
-                                         },
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        onPressed: () {
+                                          openFormEdit(context, enderecamentoController.listaPrateleira[index]);
+                                        },
                                       ),
                                       IconButton(
                                           icon: Icon(
