@@ -41,7 +41,6 @@ class EnderecamentoRepository {
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<CorredorEnderecamentoModel> enderecamentoCorredor =
           data.map<CorredorEnderecamentoModel>((data) => CorredorEnderecamentoModel.fromJson(data)).toList();
@@ -56,9 +55,9 @@ class EnderecamentoRepository {
   Future<List<EstanteEnderecamentoModel>> buscarEstante(String idCorredor) async {
     Response response = await api.get('/piso/10/corredor/' + idCorredor + '/estante');
 
+
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<EstanteEnderecamentoModel> enderecamentoEstante =
           data.map<EstanteEnderecamentoModel>((data) => EstanteEnderecamentoModel.fromJson(data)).toList();
@@ -75,7 +74,6 @@ class EnderecamentoRepository {
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<PrateleiraEnderecamentoModel> enderecamentoPrateleira =
           data.map<PrateleiraEnderecamentoModel>((data) => PrateleiraEnderecamentoModel.fromJson(data)).toList();
@@ -92,8 +90,6 @@ class EnderecamentoRepository {
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-
-      print(data);
 
       List<BoxEnderecamentoModel> enderecamentoBox =
           data.map<BoxEnderecamentoModel>((data) => BoxEnderecamentoModel.fromJson(data)).toList();
@@ -120,7 +116,7 @@ class EnderecamentoRepository {
   }
 
   Future<bool> criar(PisoEnderecamentoModel pisos) async {
-    print(jsonEncode(pisos.toJson()));
+
     Response response = await api.post('/piso/' + pisos.id_piso.toString(), pisos.toJson());
 
     if (response.statusCode == StatusCode.OK) {

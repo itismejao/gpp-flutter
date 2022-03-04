@@ -1,18 +1,25 @@
+import 'package:gpp/src/models/estante_enderecamento_model.dart';
+
 class PrateleiraEnderecamentoModel {
   int? id_prateleira;
   String? desc_prateleira;
   int? id_estante;
+  EstanteEnderecamentoModel? estante;
 
   PrateleiraEnderecamentoModel({
     this.id_prateleira,
     this.desc_prateleira,
-    this.id_estante});
+    this.id_estante,
+    this.estante
+  });
 
     factory PrateleiraEnderecamentoModel.fromJson(Map<String, dynamic> json) {
     return PrateleiraEnderecamentoModel(
       id_prateleira: json['id_prateleira'],
       desc_prateleira: json['desc_prateleira'],
-      id_estante: json['id_estante']);
+      id_estante: json['id_estante'],
+      estante: json['estante'] == null ? null : EstanteEnderecamentoModel.fromJson(json['estante'])
+    );
   }
 
     Map<String, dynamic> toJson() {

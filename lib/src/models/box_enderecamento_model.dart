@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 
 class BoxEnderecamentoModel {
   int? id_box;
@@ -9,6 +10,7 @@ class BoxEnderecamentoModel {
   double? profundidade;
   int? unidade_medida;
   String? created_at;
+  PrateleiraEnderecamentoModel? prateleira;
 
   BoxEnderecamentoModel(
       {this.id_box,
@@ -19,6 +21,7 @@ class BoxEnderecamentoModel {
       this.profundidade,
       this.unidade_medida,
       this.created_at,
+      this.prateleira
       }
 
       );
@@ -33,6 +36,7 @@ class BoxEnderecamentoModel {
         profundidade: json['profundidade'],
         unidade_medida: json['unidade_medida'],
         created_at: json['created_at'],
+        prateleira: json['prateleira'] == null ? null : PrateleiraEnderecamentoModel.fromJson(json['prateleira'])
     );
   }
 
@@ -53,8 +57,6 @@ class BoxEnderecamentoModel {
 
   String calcularMedida(){
     String? medida = '-';
-    print('Teste Medida\n');
-    print(this.altura);
     if (this.altura != null){
       medida = altura.toString();
       if(this.largura != null) {
