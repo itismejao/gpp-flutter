@@ -78,7 +78,7 @@ class AstecaModel {
     data['id_filial_registro'] = this.idFilialRegistro;
     data['observacao'] = this.observacao;
     data['defeito_estado_prod'] = this.defeitoEstadoProd;
-    data['data_emissao'] = this.dataEmissao;
+    data['data_emissao'] = this.dataEmissao.toString();
     if (this.astecaEndCliente != null) {
       data['asteca_end_cliente'] = this.astecaEndCliente!.toJson();
     }

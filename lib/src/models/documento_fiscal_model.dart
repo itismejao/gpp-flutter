@@ -35,8 +35,12 @@ class DocumentoFiscalModel {
         numDocFiscal: json['num_doc_fiscal'],
         serieDocFiscal: json['serie_doc_fiscal'],
         dataEmissao: DateTime.parse(json['data_emissao']),
-        itemDocFiscal: json['item_doc_fiscal'] != null ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal']) : null,
-        cliente: json['cliente'] != null ? ClienteModel.fromJson(json['cliente']) : null);
+        itemDocFiscal: json['item_doc_fiscal'] != null
+            ? new ItemDocFiscalModel.fromJson(json['item_doc_fiscal'])
+            : null,
+        cliente: json['cliente'] != null
+            ? ClienteModel.fromJson(json['cliente'])
+            : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -48,7 +52,7 @@ class DocumentoFiscalModel {
     data['cpf_cnpj'] = this.cpfCnpj;
     data['num_doc_fiscal'] = this.numDocFiscal;
     data['serie_doc_fiscal'] = this.serieDocFiscal;
-    data['data_emissao'] = this.dataEmissao;
+    data['data_emissao'] = this.dataEmissao.toString();
     if (this.itemDocFiscal != null) {
       data['item_doc_fiscal'] = this.itemDocFiscal!.toJson();
     }

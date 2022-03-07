@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/PedidoEntradaController.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
+import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
+import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/ProdutoPecaModel.dart';
-import 'package:gpp/src/shared/utils/GerarPedidoPDF.dart';
+import 'package:gpp/src/shared/utils/GerarPedidoEntradaPDF.dart';
+import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
@@ -45,6 +49,7 @@ class AstecaDetalheView extends StatefulWidget {
 
 class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late AstecaController astecaController;
+  late PedidoEntradaController pedidoEntracaController;
 
   List<ItemPeca> itemsPeca = [];
   List<ItemPeca> itemsPecaBusca = [];
@@ -294,12 +299,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   finalizarPedido() async {
     try {
-      if (!verificarSelecaoMotivoTrocaPeca()) {
-        myShowDialog('Selecione o motivo de troca da peça');
-      }
-
       if (verificaEstoque()) {
-        print('as');
+        if (!verificarSelecaoMotivoTrocaPeca()) {
+          myShowDialog('Selecione o motivo de troca da peça');
+        }
 
         //Criar o pedido
         astecaController.pedidoSaida.cpfCnpj =
@@ -321,72 +324,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         PedidoSaidaModel pedidoResposta = await astecaController
             .pedidoRepository
             .criar(astecaController.pedidoSaida);
-
-        //Notificação
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(actions: <Widget>[
-                Row(
-                  children: [
-                    Padding(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: TextComponent(
-                                'Nº Pedido: #${pedidoResposta.idPedidoSaida}',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: TextComponent(
-                                  'Nome do cliente: ${pedidoResposta.cliente!.nome}'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: TextComponent(
-                                  'Filial venda: ${pedidoResposta.filialVenda}'),
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  children: [
-                    ButtonComponent(
-                        color: primaryColor,
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacementNamed(context, '/pedidos');
-                        },
-                        text: 'Ok'),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    ButtonComponent(
-                        icon: Icon(
-                          Icons.print,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          GerarPedidoPDF(pedido: pedidoResposta).imprimirPDF();
-                        },
-                        text: 'Imprimir')
-                  ],
-                )
-              ]);
-            });
       } else {
         exibirDialogPedidoEntrada();
       }
@@ -395,25 +332,159 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     }
   }
 
+  exibirComprovantePedidoSaida(pedidoConfirmacao) {
+    //Notificação
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Row(
+              children: [
+                Padding(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: TextComponent(
+                            'Nº Pedido: #${pedidoConfirmacao.idPedidoSaida}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Nome do cliente: ${pedidoConfirmacao.cliente!.nome}'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Filial venda: ${pedidoConfirmacao.filialVenda}'),
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
+              ],
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                ButtonComponent(
+                    color: primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/pedidos-saida');
+                    },
+                    text: 'Ok'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.print,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      GerarPedidoSaidaPDF(pedido: pedidoConfirmacao)
+                          .imprimirPDF();
+                    },
+                    text: 'Imprimir')
+              ],
+            )
+          ]);
+        });
+  }
+
+  exibirComprovantePedidoEntrada(PedidoEntradaModel pedidoConfirmacao) {
+    //Notificação
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Row(
+              children: [
+                Padding(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: TextComponent(
+                            'Nº Pedido: #${pedidoConfirmacao.idPedidoEntrada}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.produto!.first.fornecedor!.cliente!.nome}'),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
+              ],
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                ButtonComponent(
+                    color: primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(
+                          context, '/pedidos-entrada');
+                    },
+                    text: 'Ok'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.print,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      GerarPedidoEntradaPDF(pedidoEntrada: pedidoConfirmacao)
+                          .imprimirPDF();
+                    },
+                    text: 'Imprimir')
+              ],
+            )
+          ]);
+        });
+  }
+
   exibirDialogPedidoEntrada() {
     // set up the buttons
-    Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () {},
+    Widget cancelarButton = TextButton(
+      child: Text("Não"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
-    Widget continueButton = TextButton(
-      child: Text("Continue"),
-      onPressed: () {},
+    Widget confirmarButton = TextButton(
+      child: Text("Sim"),
+      onPressed: () {
+        Navigator.pop(context);
+        criarPedidoEntrada();
+        print('teste');
+      },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
+      title: Text("Aviso"),
       content: Text(
-          "Would you like to continue learning how to use Flutter alerts?"),
+          "Existem peças adicionadas que não possui  estoque disponível, gostaria de criar um pedido de entrada"),
       actions: [
-        cancelButton,
-        continueButton,
+        cancelarButton,
+        confirmarButton,
       ],
     );
 
@@ -424,8 +495,45 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         return alert;
       },
     );
+  }
 
-    print(teste);
+  List<ItemPedidoEntradaModel> criarItensPedidoEntrada() {
+    List<ItemPedidoEntradaModel> itensPedidoEntrada = [];
+
+    astecaController.pedidoSaida.itemsPedidoSaida!.forEach((e) {
+      itensPedidoEntrada.add(ItemPedidoEntradaModel(
+          quantidade: e.quantidade, custo: e.valor, peca: e.peca));
+    });
+
+    return itensPedidoEntrada;
+  }
+
+  criarPedidoEntrada() async {
+    //Criar o pedido de entrada
+    PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
+        situacao: 1, //Em aberto,
+        valorTotal: astecaController.pedidoSaida.valorTotal,
+        //dataEmissao: DateTime.now(),
+        funcionario: astecaController.pedidoSaida.funcionario,
+        asteca: astecaController.asteca,
+        itensPedidoEntrada: criarItensPedidoEntrada());
+
+    //Solicita a criação do pedido de entrada
+    try {
+      var pedidoConfirmacao =
+          await pedidoEntracaController.repository.criar(pedidoEntrada);
+
+      //Atualiza a pendência da asteca
+      var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
+
+      await astecaController.repository.pendencia
+          .criar(astecaController.asteca, pendencia);
+
+      //Exibi comprovante
+      exibirComprovantePedidoEntrada(pedidoConfirmacao);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   pesquisarPecas(value) {
@@ -470,6 +578,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     super.initState();
 
     astecaController = AstecaController();
+
+    //Pedido de entrada controller
+    pedidoEntracaController = PedidoEntradaController();
     _responsive = ResponsiveController();
 
     //Instância máscaras

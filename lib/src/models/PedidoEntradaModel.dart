@@ -48,7 +48,8 @@ class PedidoEntradaModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['situacao'] = situacao;
     data['valor_total'] = valorTotal;
-    data['data_emissao'] = dataEmissao;
+    //data['data_emissao'] =
+    //     dataEmissao != null ? dataEmissao!.toIso8601String() : null;
     data['asteca'] = asteca != null ? asteca!.toJson() : null;
     data['funcionario'] = funcionario != null ? funcionario!.toJson() : null;
     data['itens_pedido_entrada'] = itensPedidoEntrada != null

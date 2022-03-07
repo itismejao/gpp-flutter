@@ -119,7 +119,7 @@ class _GppAppState extends State<GppApp> {
 
 //Se existe 1 parâmetros da url
       if (uri.pathSegments.length == 0) {
-        pagina = PedidoSaidaListView();
+        pagina = AstecaListView();
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaListView();
