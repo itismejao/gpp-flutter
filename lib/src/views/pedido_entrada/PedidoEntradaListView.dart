@@ -327,9 +327,14 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                         Expanded(
                           child: Row(
                             children: [
-                              TextComponent(
-                                '#' + pedido[index].idPedidoEntrada.toString(),
-                              )
+                              pedido[index].idPedidoEntrada != null
+                                  ? TextComponent(
+                                      '#' +
+                                          pedido[index]
+                                              .idPedidoEntrada
+                                              .toString(),
+                                    )
+                                  : Container()
                             ],
                           ),
                         ),
@@ -337,29 +342,42 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             flex: 4,
                             child: TextComponent(
                               pedido[index]
-                                  .asteca!
-                                  .produto!
-                                  .first
-                                  .fornecedor!
-                                  .cliente!
-                                  .nome!,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(pedido[index].dataEmissao!),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              pedido[index]
                                           .asteca!
                                           .produto!
                                           .first
                                           .fornecedor!
                                           .cliente!
-                                          .cpfCnpj !=
+                                          .nome! !=
+                                      null
+                                  ? pedido[index]
+                                      .asteca!
+                                      .produto!
+                                      .first
+                                      .fornecedor!
+                                      .cliente!
+                                      .nome!
+                                  : '',
+                            )),
+                        Expanded(
+                            flex: 2,
+                            child: pedido[index].dataEmissao != null
+                                ? TextComponent(
+                                    DateFormat('dd/MM/yyyy')
+                                        .format(pedido[index].dataEmissao!),
+                                  )
+                                : Container()),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent(
+                              maskFormatter.cpfCnpjFormatter(
+                                          value: pedido[index]
+                                              .asteca!
+                                              .produto!
+                                              .first
+                                              .fornecedor!
+                                              .cliente!
+                                              .cpfCnpj
+                                              .toString()) !=
                                       null
                                   ? maskFormatter
                                       .cpfCnpjFormatter(
@@ -376,8 +394,11 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             )),
                         Expanded(
                             flex: 2,
-                            child:
-                                _buildSituacaoPedido(pedido[index].situacao)),
+                            child: _buildSituacaoPedido(
+                                        pedido[index].situacao) !=
+                                    null
+                                ? _buildSituacaoPedido(pedido[index].situacao)
+                                : Container()),
                         Expanded(
                             flex: 3,
                             child: TextComponent(
