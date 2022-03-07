@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
+import 'package:gpp/src/views/entrada/entrada_manual_view.dart';
 import 'package:gpp/src/views/entrada/entrada_pedido_view.dart';
 
 
@@ -119,7 +120,7 @@ class _MenuEntradaViewState extends State<MenuEntradaView> {
       case 1:
         return EntradaPedidoView();
       case 2:
-        return Container();//EntradaManualView();
+        return EntradaManualView();
       case 3:
         return Container();//EntradaHistoricoView();
     }

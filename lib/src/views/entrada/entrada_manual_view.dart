@@ -9,14 +9,14 @@ import '../../shared/components/TitleComponent.dart';
 import '../../shared/repositories/styles.dart';
 
 
-class EntradaPedidoView extends StatefulWidget {
-  const EntradaPedidoView({Key? key}) : super(key: key);
+class EntradaManualView extends StatefulWidget {
+  const EntradaManualView({Key? key}) : super(key: key);
 
   @override
-  _EntradaPedidoViewState createState() => _EntradaPedidoViewState();
+  _EntradaManualViewState createState() => _EntradaManualViewState();
 }
 
-class _EntradaPedidoViewState extends State<EntradaPedidoView> {
+class _EntradaManualViewState extends State<EntradaManualView> {
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   List<String> pedidos = [];
 
@@ -31,9 +31,9 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
           child: Row(
             children: [
               const Padding(padding: EdgeInsets.only(left: 20)),
-              const Icon(Icons.input),
+              const Icon(Icons.edit),
               const Padding(padding: EdgeInsets.only(right: 12)),
-              const TitleComponent('Entrada via Pedido'),
+              const TitleComponent('Entrada Manual'),
             ],
           ),
         ),
@@ -101,33 +101,25 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: Form(
-                  key: filtroFormKey,
-                  child: TextFormField(
-                    onFieldSubmitted: (value) {
-                      setState(() {
-                        pedidos.add(value);
-                      });
+                child: TextFormField(
+                  onFieldSubmitted: (value) {
 
-                      filtroFormKey.currentState!.reset();
-                    },
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                        hintText: 'Pedido',
-                        labelText: 'Digite o número do pedido',
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-
-                            filtroFormKey.currentState!.reset();
-                          },
-                          icon: Icon(Icons.search),
-                        ),),
+                  },
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
                   ),
+                  decoration: InputDecoration(
+                      hintText: 'ID',
+                      labelText: 'ID',
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(Icons.search),
+                      ),),
                 ),
               ),
             ),
@@ -209,7 +201,6 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
 
                     },
                     text: 'Adicionar Peça'),
-            
               ],
             ),
           ),
