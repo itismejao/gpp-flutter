@@ -30,7 +30,8 @@ class PecaModel {
     data['id_peca'] = idPeca;
     data['descricao'] = descricao;
     data['custo'] = custo;
-    data['estoque'] = estoque!.map((e) => e.toJson()).toList();
+    data['estoque'] =
+        estoque != null ? estoque!.map((e) => e.toJson()).toList() : null;
     return data;
   }
 }

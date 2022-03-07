@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
 import 'package:gpp/src/controllers/PedidoEntradaController.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
@@ -50,7 +51,7 @@ class AstecaDetalheView extends StatefulWidget {
 class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late AstecaController astecaController;
   late PedidoEntradaController pedidoEntracaController;
-
+  late EmailPedidoEntradaController emailPedidoEntracaController;
   List<ItemPeca> itemsPeca = [];
   List<ItemPeca> itemsPecaBusca = [];
   int marcados = 0;
@@ -453,11 +454,34 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       GerarPedidoEntradaPDF(pedidoEntrada: pedidoConfirmacao)
                           .imprimirPDF();
                     },
-                    text: 'Imprimir')
+                    text: 'Imprimir'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.email,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      enviarEmailPedidoEntrada(pedidoConfirmacao);
+                    },
+                    text: 'Enviar e-mail')
               ],
             )
           ]);
         });
+  }
+
+  enviarEmailPedidoEntrada(pedidoConfirmacao) async {
+    try {
+      if (await emailPedidoEntracaController.repository
+          .criar(pedidoConfirmacao)) {
+        print('email enviado');
+      }
+    } catch (e) {
+      print('email não enviado');
+    }
   }
 
   exibirDialogPedidoEntrada() {
@@ -581,6 +605,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
     //Pedido de entrada controller
     pedidoEntracaController = PedidoEntradaController();
+
+    //E-mail pedido de entrada controller
+    emailPedidoEntracaController = EmailPedidoEntradaController();
     _responsive = ResponsiveController();
 
     //Instância máscaras
