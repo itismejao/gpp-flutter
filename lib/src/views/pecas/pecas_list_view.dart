@@ -153,6 +153,7 @@ class _PecasListViewState extends State<PecasListView> {
                                     IconButton(
                                       icon: Icon(Icons.visibility),
                                       color: Colors.grey.shade400,
+                                      tooltip: 'Visualizar',
                                       onPressed: () {
                                         PopUpEditar.popUpPeca(
                                                 context,
@@ -166,6 +167,7 @@ class _PecasListViewState extends State<PecasListView> {
                                         Icons.edit,
                                         color: Colors.grey.shade400,
                                       ),
+                                      tooltip: 'Editar',
                                       onPressed: () {
                                         PopUpEditar.popUpPeca(
                                                 context,
@@ -208,6 +210,7 @@ class _PecasListViewState extends State<PecasListView> {
                           children: [
                             IconButton(
                                 icon: Icon(Icons.first_page),
+                                tooltip: 'Primeira Página',
                                 onPressed: () {
                                   _pecasController.pecasPagina.paginaAtual = 1;
                                   buscarTodasPecas();
@@ -217,6 +220,7 @@ class _PecasListViewState extends State<PecasListView> {
                                   Icons.navigate_before_rounded,
                                   color: Colors.black,
                                 ),
+                                tooltip: 'Página Anterior',
                                 onPressed: () {
                                   if (_pecasController.pecasPagina.paginaAtual! > 0) {
                                     _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! - 1;
@@ -226,6 +230,7 @@ class _PecasListViewState extends State<PecasListView> {
                             TextComponent(_pecasController.pecasPagina.paginaAtual.toString()),
                             IconButton(
                                 icon: Icon(Icons.navigate_next_rounded),
+                                tooltip: 'Próxima Página',
                                 onPressed: () {
                                   if (_pecasController.pecasPagina.paginaAtual != _pecasController.pecasPagina.paginaTotal) {
                                     _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! + 1;
@@ -235,6 +240,7 @@ class _PecasListViewState extends State<PecasListView> {
                                 }),
                             IconButton(
                                 icon: Icon(Icons.last_page),
+                                tooltip: 'Última Página',
                                 onPressed: () {
                                   _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaTotal;
                                   buscarTodasPecas();

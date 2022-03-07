@@ -137,6 +137,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
+                                  tooltip: 'Editar',
                                   onPressed: () {
                                     PopUpEditar.popUpPeca(context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]))
                                         .then((value) => setState(() {}));
@@ -147,6 +148,7 @@ class _EspecieListViewState extends State<EspecieListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasEspecieController.excluir(_pecasEspecie[index]).then((value) => setState(() {}));
                                       excluir(context, _pecasEspecie[index]).then((value) => setState(() {}));

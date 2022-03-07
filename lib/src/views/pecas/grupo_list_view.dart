@@ -132,6 +132,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
+                                  tooltip: 'Editar',
                                   onPressed: () {
                                     PopUpEditar.popUpPeca(context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]))
                                         .then((value) => setState(() {}));
@@ -142,6 +143,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       setState(() {
                                         excluir(context, _pecasGrupo[index]).then((value) => setState(() {}));

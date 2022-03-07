@@ -146,6 +146,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
+                                  tooltip: 'Editar',
                                   onPressed: () {
                                     PopUpEditar.popUpPeca(context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]))
                                         .then((value) => setState(() {}));
@@ -156,6 +157,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasMaterialController.excluir(_pecasMaterial[index]).then((value) => setState(() {}));
                                       excluir(context, _pecasMaterial[index]).then((value) => setState(() {}));
