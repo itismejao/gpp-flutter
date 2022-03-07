@@ -80,4 +80,37 @@ class NotifyController {
       return result;
     }
   }
+
+  warning(String message) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Alerta!'),
+          content: Text(message),
+          actions: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 25, bottom: 15, right: 25),
+                  child: Text(
+                    "OK",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

@@ -2,9 +2,9 @@ import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_estoque_model.dart';
 
 class PecaEnderacamentoModel{
-  int id_peca_enderecamento;
-  int id_peca_estoque;
-  int id_box;
+  int? id_peca_enderecamento;
+  int? id_peca_estoque;
+  int? id_box;
   PecasEstoqueModel? peca_estoque;
   String endereco;
   String? nomeFornecedor;
@@ -38,7 +38,7 @@ class PecaEnderacamentoModel{
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    data['id_peca_enderecamento'] = this.id_peca_enderecamento;
+    //data['id_peca_enderecamento'] = this.id_peca_enderecamento;
     data['id_peca_estoque'] = this.id_peca_estoque;
     data['id_box'] = this.id_box;
 

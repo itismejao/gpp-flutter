@@ -1,13 +1,21 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_enderecamento_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/models/estante_enderecamento_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_enderecamento_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_estoque_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import '../../models/box_enderecamento_model.dart';
@@ -28,13 +36,41 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
   PecaEnderacamentoModel? pecaEnderecamento;
 
   late EnderecamentoController enderecamentoController;
+  late PecaEstoqueController _pecasEstoqueController;
+  late PecaEnderecamentoController _pecaEnderecamentoController;
+
+  TextEditingController _controllerIdPeca = new TextEditingController();
+  TextEditingController _controllerNomePeca = new TextEditingController();
+  TextEditingController _controllerEnderecoPeca = new TextEditingController();
+
+  PecasEstoqueModel? pecaEstoque;
+
+  PisoEnderecamentoModel? _pisoSelected;
+  CorredorEnderecamentoModel? _corredorSelected;
+  PrateleiraEnderecamentoModel? _prateleiraSelected;
+  EstanteEnderecamentoModel? _estanteSelected;
+  BoxEnderecamentoModel? _boxSelected;
+
+
 
   @override
   void initState() {
     pecaEnderecamento = widget.pecaEnderecamento;
-    print('id_corredor');
-    print(pecaEnderecamento!.box!.prateleira!.estante!.corredor!.id_corredor?.toString());
     enderecamentoController = EnderecamentoController();
+    _pecaEnderecamentoController = PecaEnderecamentoController();
+    if(pecaEnderecamento!.id_peca_estoque == null)
+      _pecasEstoqueController = PecaEstoqueController();
+    else {
+      _controllerIdPeca.text = pecaEnderecamento!.peca_estoque!.pecasModel!.id_peca.toString();
+      _controllerNomePeca.text = pecaEnderecamento!.peca_estoque!.pecasModel!.descricao ?? '';
+      _pisoSelected = pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso;
+      _corredorSelected = pecaEnderecamento!.box?.prateleira?.estante?.corredor ;
+      _prateleiraSelected = pecaEnderecamento!.box?.prateleira;
+      _estanteSelected = pecaEnderecamento!.box?.prateleira?.estante;
+      _boxSelected = pecaEnderecamento!.box;
+    }
+
+    _controllerEnderecoPeca.text = pecaEnderecamento!.endereco;
     // TODO: implement initState
     super.initState();
   }
@@ -47,9 +83,29 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(pecaEnderecamento == null ? Icons.add_box : Icons.edit),
+            Icon(pecaEnderecamento!.id_peca_estoque == null ? Icons.location_on_outlined : Icons.sync_outlined),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent(pecaEnderecamento == null ? 'Endereçar' : 'Editar Endereço'),
+            TitleComponent(pecaEnderecamento!.id_peca_estoque == null ? 'Endereçar Peça' : 'Transferir Peça'),
+            new Spacer(),
+            pecaEnderecamento!.id_peca_enderecamento == null ? Container() :
+            IconButton(onPressed: () async{
+              NotifyController notify = NotifyController(context: context);
+              try {
+                if (await notify.alert('Deseja remover o endereçamento da peça (${pecaEnderecamento!.peca_estoque!.pecasModel!.descricao}) localizado no endereço: ${pecaEnderecamento!.endereco}?')) {
+                  if (await _pecaEnderecamentoController.excluir(pecaEnderecamento!)) {
+                    notify.sucess("Endereçamento excluído com sucesso!");
+                    Navigator.pop(context);
+                  }
+              }
+              } catch (e) {
+                notify.error(e.toString());
+                Navigator.pop(context);
+              }
+
+             }, icon: Icon(Icons.delete_outlined),
+              tooltip: 'Remover Endereçamento',
+              color: Colors.red,
+            )
           ],
         ),
       ),
@@ -57,31 +113,98 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
       Padding(padding: EdgeInsets.only(bottom: 20)),
       Column(
         children: [
-          pecaEnderecamento == null
-              ? Container()
-              : Row(
+          Row(
             children: [
-              const Padding(padding: EdgeInsets.only(left: 5)),
+              const Padding(padding: EdgeInsets.only(right: 5)),
               Flexible(
                 flex: 1,
-                child: InputComponent(
-                  enable: true,
-                  initialValue: pecaEnderecamento?.peca_estoque?.pecasModel?.id_peca.toString(),
-                  label: 'ID Peça',
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    controller: _controllerIdPeca,
+                    keyboardType: TextInputType.number,
+                    enabled: pecaEnderecamento!.id_peca_estoque == null ? true : false,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration: InputDecoration(
+                        hintText: 'ID',
+                        labelText: 'ID',
+                        border: InputBorder.none,
+                        contentPadding:
+                        const  EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        suffixIcon: IconButton(
+                          onPressed: () async {
+                            if (_controllerIdPeca.text == '') {
+                              _controllerNomePeca.text = '';
+                            } else {
+                              buscarPeca(_controllerIdPeca.text);
+                            }
+                          },
+                          icon: const  Icon(Icons.search),
+                        )),
+                  ),
                 ),
               ),
               const Padding(padding: EdgeInsets.only(right: 10)),
               Flexible(
-                flex: 4,
-                child: InputComponent(
-                  enable: false,
-                  initialValue: pecaEnderecamento?.peca_estoque?.pecasModel?.descricao ?? '',
-                  label: 'Nome Peça',
+                flex: 5,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    controller: _controllerNomePeca,
+                    enabled: false,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Nome Peça',
+                      labelText: 'Nome Peça',
+                      border: InputBorder.none,
+                      contentPadding:
+                      const  EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    ),
+                  ),
                 ),
               ),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                flex: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    controller: _controllerEnderecoPeca,
+                    enabled: false,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Endereço Atual',
+                      labelText: 'Endereço Atual',
+                      border: InputBorder.none,
+                      contentPadding:
+                      const  EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    ),
+                  ),
+                ),
+              ),
+              // Fim Fornecedor
+              const  Padding(padding: EdgeInsets.only(right: 5)),
             ],
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
+          pecaEnderecamento!.id_peca_estoque == null ?
+          Container() :
           Row(
             children: [
               const Padding(padding: EdgeInsets.only(left: 5)),
@@ -118,14 +241,16 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                 value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
                                 onChanged: (value) {
                                   setState(() {
-                                    //limparCorredor();
-                                    pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso = value!;
+                                    zerarCampos();
+                                    _pisoSelected = value;
+                                    pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso = _pisoSelected;
 
                                   });
                                 },
                                 dropdownSearchDecoration:
                                 InputDecoration(
                                     enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
                                     hintText: "Selecione o Piso:",
                                     labelText: "Piso"
                                 ),
@@ -134,10 +259,10 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                   color: Colors.black,
                                 ),
                                 showAsSuffixIcons: true,
-                                selectedItem: pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso,
+                                selectedItem: _pisoSelected,
                                 showClearButton: true,
                                 clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
-                                 // limparFieldsLoc();
+                                  zerarCampos();
                                 },),
                                 emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
                               ),
@@ -148,7 +273,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarCorredor(pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso!.id_piso?.toString() ?? ''),
+                      future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -176,14 +301,17 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                     value!.desc_corredor!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
-                                    //limparEstante();
-                                    pecaEnderecamento!.box!.prateleira!.estante!.corredor = value!;
+                                    zerarCorredor();
+                                    _corredorSelected = value;
+                                    //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.id_corredor = value?.id_corredor;
+                                    //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.desc_corredor = value?.desc_corredor;
                                   });
 
                                 },
                                 dropdownSearchDecoration:
                                 InputDecoration(
                                     enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
                                     hintText: "Selecione o Corredor:",
                                     labelText: "Corredor"
                                 ),
@@ -192,16 +320,16 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                   color: Colors.black,
                                 ),
                                 showAsSuffixIcons: true,
-                                selectedItem: pecaEnderecamento!.box!.prateleira!.estante!.corredor,
+                                selectedItem: _corredorSelected,
                                 showClearButton: true,
                                 clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
 
-                                  //limparCorredor();
+                                  zerarCorredor();
 
                                 },),
                                 emptyBuilder: (context, searchEntry) => Center(
                                     child:
-                                    pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso == null ?
+                                    _corredorSelected == null ?
                                     Text('Selecione um Piso!') :
                                     Text('Corredor não encontrado!')
 
@@ -214,7 +342,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarEstante(pecaEnderecamento!.box!.prateleira!.estante!.corredor!.id_corredor?.toString() ?? ''),
+                      future: enderecamentoController.buscarEstante(_corredorSelected?.id_corredor.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -242,14 +370,17 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                     value!.desc_estante!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
-                                    //limparPrateleira();
-                                    pecaEnderecamento!.box!.prateleira!.estante = value!;
+                                    zerarPrateleira();
+                                    _estanteSelected = value;
+                                   // pecaEnderecamento!.box!.prateleira!.estante!.id_estante = value?.id_estante;
+                                   // pecaEnderecamento!.box!.prateleira!.estante!.desc_estante = value?.desc_estante;
                                   });
 
                                 },
                                 dropdownSearchDecoration:
                                 InputDecoration(
                                     enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
                                     hintText: "Selecione a Estante:",
                                     labelText: "Estante"
                                 ),
@@ -258,16 +389,16 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                   color: Colors.black,
                                 ),
                                 showAsSuffixIcons: true,
-                                selectedItem: pecaEnderecamento!.box!.prateleira!.estante,
+                                selectedItem: _estanteSelected,
                                 showClearButton: true,
                                 clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
 
-                                  //limparEstante();
+                                  zerarEstante();
 
                                 },),
                                 emptyBuilder: (context, searchEntry) => Center(
                                     child:
-                                    pecaEnderecamento!.box!.prateleira!.estante!.corredor == null ?
+                                    _estanteSelected == null ?
                                     Text('Selecione um Corredor!') :
                                     Text('Estante não encontrado!')
 
@@ -279,7 +410,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarPrateleira(pecaEnderecamento!.box!.prateleira!.id_estante.toString()),
+                      future: enderecamentoController.buscarPrateleira(_estanteSelected?.id_estante.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -307,13 +438,17 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                     value!.desc_prateleira!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
-                                    pecaEnderecamento!.box!.prateleira = value!;
+                                    zerarPrateleira();
+                                    _prateleiraSelected = value;
+                                    //pecaEnderecamento!.box!.prateleira!.id_prateleira = value?.id_prateleira;
+                                    //pecaEnderecamento!.box!.prateleira!.desc_prateleira = value?.desc_prateleira;
                                   });
 
                                 },
                                 dropdownSearchDecoration:
                                 InputDecoration(
                                     enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
                                     hintText: "Selecione a Prateleira:",
                                     labelText: "Prateleira"
                                 ),
@@ -322,16 +457,16 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                   color: Colors.black,
                                 ),
                                 showAsSuffixIcons: true,
-                                selectedItem: pecaEnderecamento!.box!.prateleira,
+                                selectedItem: _prateleiraSelected,
                                 showClearButton: true,
                                 clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
 
-                                  //limparPrateleira();
+                                 zerarPrateleira();
 
                                 },),
                                 emptyBuilder: (context, searchEntry) => Center(
                                     child:
-                                    pecaEnderecamento!.box!.prateleira!.estante == null ?
+                                    _estanteSelected == null ?
                                     Text('Selecione uma Estante!') :
                                     Text('Prateleira não encontrado!')
 
@@ -343,7 +478,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarBox(pecaEnderecamento!.box!.prateleira!.id_prateleira.toString()),
+                      future: enderecamentoController.buscarBox(_prateleiraSelected?.id_prateleira.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -371,13 +506,18 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                     value!.desc_box!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
-                                    pecaEnderecamento!.box = value!;
+                                    zerarBox();
+                                    _boxSelected = value;
+                                    pecaEnderecamento!.box!.id_box = value?.id_box;
+                                    pecaEnderecamento!.box!.desc_box = value?.desc_box;
+                                    pecaEnderecamento!.id_box = value!.id_box;
                                   });
 
                                 },
                                 dropdownSearchDecoration:
                                 InputDecoration(
                                     enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
                                     hintText: "Selecione o Box:",
                                     labelText: "Box"
                                 ),
@@ -386,16 +526,16 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                   color: Colors.black,
                                 ),
                                 showAsSuffixIcons: true,
-                                selectedItem: pecaEnderecamento!.box,
+                                selectedItem: _boxSelected,
                                 showClearButton: true,
                                 clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
 
-                                  //limparBox();
+                                  zerarBox();
 
                                 },),
                                 emptyBuilder: (context, searchEntry) => Center(
                                     child:
-                                    pecaEnderecamento!.box!.prateleira == null ?
+                                    _prateleiraSelected == null ?
                                     Text('Selecione uma Prateleira!') :
                                     Text('Box não encontrado!')
 
@@ -409,22 +549,40 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              pecaEnderecamento == null
-                  ? ButtonComponent(
-                onPressed: () {
-                  //create(context);
-                },
-                text: 'Endereçar',
-              )
-                  : Row(
+              Row(
                 children: [
                   ButtonComponent(
-                    onPressed: () {
-                      // _pecasCorController.editar();
-                      //editar(context);
-                      Navigator.pop(context);
+                    onPressed: () async {
+                      if(pecaEnderecamento!.id_peca_enderecamento == null){
+                        pecaEnderecamento!.id_peca_estoque = pecaEstoque!.id_peca_estoque;
+
+                        NotifyController notify = NotifyController(context: context);
+                        try {
+                          if (await _pecaEnderecamentoController.create(pecaEnderecamento!)) {
+                            notify.sucess("Peça endereçada com sucesso!");
+                          }
+                        } catch (e) {
+                            notify.error(e.toString());
+                          }
+                        Navigator.pop(context);
+                      } else {
+                        NotifyController notify = NotifyController(context: context);
+                        try {
+                          if (pecaEnderecamento!.id_box == null){
+                            notify.warning("É necessário informar para qual box a peça será transferida!");
+                          } else {
+                            if (await _pecaEnderecamentoController.editar(pecaEnderecamento!)) {
+                              notify.sucess("Peça endereçada com sucesso!");
+                              Navigator.pop(context);
+                            }
+                          }
+                        } catch (e) {
+                          notify.error(e.toString());
+                          Navigator.pop(context);
+                        }
+                      }
                     },
-                    text: 'Editar',
+                    text: 'Salvar',
                   ),
                   Padding(padding: EdgeInsets.only(right: 20)),
                   ButtonComponent(
@@ -441,5 +599,43 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
         ],
       ),
     ]);
+  }
+
+  buscarPeca(String id) async{
+    pecaEstoque = await _pecasEstoqueController.buscarEstoque(id,pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso!.id_filial);
+    _controllerNomePeca.text = pecaEstoque?.pecasModel?.descricao ?? '';
+  }
+
+  zerarCampos(){
+    //_pisoSelected = null;
+    zerarCorredor();
+  }
+
+  zerarCorredor(){
+    setState(() {
+      _corredorSelected = null;
+    });
+    zerarEstante();
+  }
+
+  zerarEstante(){
+    setState(() {
+      _estanteSelected = null;
+    });
+    zerarPrateleira();
+  }
+
+  zerarPrateleira(){
+    setState(() {
+      _prateleiraSelected = null;
+    });
+    zerarBox();
+  }
+
+  zerarBox(){
+    setState(() {
+      _boxSelected = null;
+      pecaEnderecamento!.id_box = null;
+    });
   }
 }

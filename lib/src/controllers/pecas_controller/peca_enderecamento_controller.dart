@@ -17,4 +17,17 @@ class PecaEnderecamentoController{
     return lista[0];
   }
 
+  Future<bool> create(PecaEnderacamentoModel pe) async {
+    return await pecasEnderecamentoRepository.create(pe);
+  }
+
+  Future<bool> editar(PecaEnderacamentoModel pe) async {
+    return await pecasEnderecamentoRepository.editar(pe);
+  }
+
+  Future<bool> excluir(PecaEnderacamentoModel pe) async {
+    return await pecasEnderecamentoRepository.excluir(pe);
+  }
+
+
 }

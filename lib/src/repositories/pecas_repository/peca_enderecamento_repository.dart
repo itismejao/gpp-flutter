@@ -46,5 +46,41 @@ class PecaEnderecamentoRepository{
 
   }
 
+  Future<bool> create(PecaEnderacamentoModel pe) async {
+
+    Response response = await api.post('/peca-enderecamento', pe.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<bool> editar(PecaEnderacamentoModel pe) async {
+
+    Response response = await api.put('/peca-enderecamento/${pe.id_peca_enderecamento}', pe.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
+
+  Future<bool> excluir(PecaEnderacamentoModel pe) async {
+    Response response = await api.delete('/peca-enderecamento/' + pe.id_peca_enderecamento.toString());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw Exception(error);
+    }
+  }
+
 
 }
