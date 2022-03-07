@@ -731,21 +731,6 @@ class _PecaEnderecamentoDetailViewState
             ],
           ),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(vertical: 16.0),
-        //   child: Row(
-        //     children: [
-        //       Expanded(
-        //         child: InputComponent(
-        //           prefixIcon: Icon(
-        //             Icons.search,
-        //           ),
-        //           hintText: 'Buscar',
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
         const Divider(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
@@ -807,7 +792,7 @@ class _PecaEnderecamentoDetailViewState
                   );
                 } else {
                   return Container(
-                    height: 450,
+                    height: media.height,
                     child: ListView.builder(
                       primary: false,
                       itemCount: snapshot.data?.length,

@@ -77,6 +77,7 @@ import 'package:gpp/src/views/asteca/AstecaListView.dart';
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
+import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 
 import 'package:gpp/src/views/funcionalities_view.dart';
 
@@ -136,12 +137,13 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'pecas-consultar') {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-
           pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = AddressingListView();
-
+        } else if (uri.pathSegments.first == 'estoque-entrada') {
+          pagina = MenuEntradaView();
         }
+
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
         var id = int.parse(uri.pathSegments[1]);
