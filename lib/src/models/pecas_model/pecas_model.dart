@@ -90,12 +90,12 @@ class PecasModel {
       // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
       pecasEspecieModel: json["especie"] == null ? null : PecasEspecieModel.fromJson(json["especie"]),
 
-      // produto_peca: json['produto_peca'] != null
-      //     ? json['produto_peca'].map<ProdutoPecaModel>((data) {
-      //         return ProdutoPecaModel.fromJson(data);
-      //       }).toList()
-      //     : null,
-       produto_peca: json["produto_peca"] == null ? null : List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
+      produto_peca: json['produto_peca'] != null
+          ? json['produto_peca'].map<ProdutoPecaModel>((data) {
+              return ProdutoPecaModel.fromJson(data);
+            }).toList()
+          : null,
+      // produto_peca: List<ProdutoPecaModel>.from(json["produto_peca"].map((x) => ProdutoPecaModel.fromJson(x))),
     );
   }
 

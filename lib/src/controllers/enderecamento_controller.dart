@@ -56,7 +56,7 @@ class EnderecamentoController {
     return await repository.criar(pisoModel);
   }
 
-   Future<bool> editar() async {
+  Future<bool> editar() async {
     return await repository.editar(pisoModel);
   }
 
@@ -69,7 +69,7 @@ class EnderecamentoController {
     return await repository.criarCorredor(corredor, idPiso);
   }
 
-   Future<bool> editarCorredor() async {
+  Future<bool> editarCorredor() async {
     return await repository.editarCorredor(corredorModel);
   }
 
@@ -82,7 +82,7 @@ class EnderecamentoController {
     return await repository.criarEstante(estanteEnderecamentoModel, IdCorredor);
   }
 
-    Future<bool> editarEstante() async {
+  Future<bool> editarEstante() async {
     return await repository.editarEstante(estanteModel);
   }
 

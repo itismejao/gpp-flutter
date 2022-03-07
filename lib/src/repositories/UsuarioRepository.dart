@@ -94,7 +94,8 @@ class UsuarioRepository {
       return funcionalidades;
     } else {
       var error = json.decode(response.body)['error'];
-      throw UserException(error);
+
+      throw error;
     }
   }
 

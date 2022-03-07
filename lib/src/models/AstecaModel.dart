@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/asteca_end_cliente_model.dart';
 import 'package:gpp/src/models/asteca_motivo_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
@@ -18,6 +19,7 @@ class AstecaModel {
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
+  PedidoSaidaModel? pedido;
 
   AstecaModel({
     this.idAsteca,
@@ -32,6 +34,7 @@ class AstecaModel {
     this.documentoFiscal,
     this.produto,
     this.funcionario,
+    this.pedido,
   });
 
   factory AstecaModel.fromJson(Map<String, dynamic> json) {
@@ -61,6 +64,9 @@ class AstecaModel {
             ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
                 return AstecaTipoPendenciaModel.fromJson(data);
               }).toList()
+            : null,
+        pedido: json['pedido'] != null
+            ? PedidoSaidaModel.fromJson(json['pedido'])
             : null);
   }
   Map<String, dynamic> toJson() {
