@@ -68,6 +68,7 @@ import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
 import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
 import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
+import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
@@ -81,9 +82,13 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+
 import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
+import 'package:gpp/src/views/pecas/menu_enderecamento_peca_view.dart';
 import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
@@ -131,9 +136,11 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'pecas-consultar') {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          pagina = Container();
+
+          pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = AddressingListView();
+
         }
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
@@ -166,7 +173,8 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey,floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),)),
+
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

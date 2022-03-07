@@ -6,12 +6,14 @@ class TextComponent extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? fontSize;
   final double? letterSpacing;
+  final TextAlign? textAlign;
   const TextComponent(this.data,
       {Key? key,
       this.color,
       this.fontWeight,
       this.fontSize,
-      this.letterSpacing})
+      this.letterSpacing,
+      this.textAlign})
       : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class TextComponent extends StatelessWidget {
     final media = MediaQuery.of(context);
     return Text(
       data,
+      textAlign: textAlign ?? TextAlign.left,
       style: TextStyle(
         color: color ?? Colors.black,
         fontSize: fontSize ?? 16 * media.textScaleFactor,
