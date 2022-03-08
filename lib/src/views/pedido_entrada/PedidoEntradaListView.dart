@@ -46,6 +46,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         controller.carregado = false;
       });
       //parei aqui
+
       List retorno = await controller.repository.buscarTodos(
           controller.pagina.atual,
           idPedido: controller.idPedidoEntrada,
@@ -438,7 +439,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        controller.idPedidoEntrada = int.parse(value);
+                        controller.idPedidoEntrada = int.tryParse(value);
                         //Limpa o formúlario
                         controller.filtroFormKey.currentState!.reset();
                         buscarTodas();

@@ -46,6 +46,7 @@ class PedidoEntradaModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_pedido_entrada'] = idPedidoEntrada;
     data['situacao'] = situacao;
     data['valor_total'] = valorTotal;
     //data['data_emissao'] =

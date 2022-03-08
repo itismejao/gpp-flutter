@@ -322,9 +322,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         astecaController.pedidoSaida.cliente =
             astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
-        PedidoSaidaModel pedidoResposta = await astecaController
+        PedidoSaidaModel pedidoComprovante = await astecaController
             .pedidoRepository
             .criar(astecaController.pedidoSaida);
+
+        exibirComprovantePedidoSaida(pedidoComprovante);
       } else {
         exibirDialogPedidoEntrada();
       }
@@ -465,6 +467,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     ),
                     onPressed: () {
                       enviarEmailPedidoEntrada(pedidoConfirmacao);
+                      Navigator.pop(context);
                     },
                     text: 'Enviar e-mail')
               ],
@@ -477,10 +480,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     try {
       if (await emailPedidoEntracaController.repository
           .criar(pedidoConfirmacao)) {
-        print('email enviado');
+        myShowDialog('E-mail enviado com sucesso');
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pushNamed(context, '/pedidos-entrada');
       }
     } catch (e) {
-      print('email não enviado');
+      print(e.toString());
     }
   }
 
@@ -1051,7 +1056,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 ),
               ],
             )
-          : LoadingComponent();
+          : Container(height: media.size.height, child: LoadingComponent());
     }
   }
 

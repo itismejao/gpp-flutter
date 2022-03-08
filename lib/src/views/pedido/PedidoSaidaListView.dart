@@ -390,7 +390,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        pedidoController.idPedido = int.parse(value);
+                        pedidoController.idPedido = int.tryParse(value);
                         //Limpa o formúlario
                         pedidoController.filtroFormKey.currentState!.reset();
                         buscarTodas();
