@@ -5,6 +5,8 @@ import 'package:gpp/src/views/asteca/components/item_menu.dart';
 import 'package:gpp/src/views/entrada/entrada_manual_view.dart';
 import 'package:gpp/src/views/entrada/entrada_pedido_view.dart';
 
+import 'entrada_historico_view.dart';
+
 
 class MenuEntradaView extends StatefulWidget {
   int? selected;
@@ -122,7 +124,7 @@ class _MenuEntradaViewState extends State<MenuEntradaView> {
       case 2:
         return EntradaManualView();
       case 3:
-        return Container();//EntradaHistoricoView();
+        return EntradaHistoricoView();
     }
   }
 }
