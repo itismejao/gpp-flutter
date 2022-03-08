@@ -6,6 +6,7 @@ class ItemMovimentoEntradaModel{
   int? id_item_movimento_entrada;
   int? id_movimento_entrada;
   int? quantidade;
+  int? quantidade_pedido;
   int? movimento_entrada;
   int? id_peca;
   double? valor_unitario;
@@ -15,10 +16,11 @@ class ItemMovimentoEntradaModel{
     this.id_item_movimento_entrada,
     this.id_movimento_entrada,
     this.quantidade,
+    this.quantidade_pedido,
     this.movimento_entrada,
     this.id_peca,
     this.valor_unitario,
-    this.pecaModel
+    this.pecaModel,
 });
 
   factory ItemMovimentoEntradaModel.fromJson(Map<String, dynamic> json) {

@@ -101,6 +101,8 @@ import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.d
 
 import 'package:gpp/src/views/users/user_list_view.dart';
 
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   await dotenv.load(fileName: "env");
@@ -146,7 +148,10 @@ class _GppAppState extends State<GppApp> {
           pagina = PedidoEntradaListView();
         } else if (uri.pathSegments.first == 'pedidos-saida') {
           pagina = PedidoSaidaListView();
+        } else if (uri.pathSegments.first == 'estoque-entrada') {
+          pagina = MenuEntradaView();
         }
+
 
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {

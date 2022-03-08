@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/controllers/entrada/movimento_entrada_controller.dart';
+import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/shared/utils/CurrencyPtBrInputFormatter.dart';
 
 
@@ -17,8 +20,10 @@ class EntradaPedidoView extends StatefulWidget {
 }
 
 class _EntradaPedidoViewState extends State<EntradaPedidoView> {
+
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
-  List<String> pedidos = [];
+  PedidoEntradaController pedidoEntradaController = PedidoEntradaController();
+  MovimentoEntradaController movimentoEntradaController = MovimentoEntradaController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +110,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                   key: filtroFormKey,
                   child: TextFormField(
                     onFieldSubmitted: (value) {
-                      setState(() {
-                        pedidos.add(value);
-                      });
-
+                      adicionarPedido(value);
                       filtroFormKey.currentState!.reset();
                     },
                     style: TextStyle(
@@ -158,14 +160,14 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 5)),
-        pedidos.isEmpty ? Container () :
+        pedidoEntradaController.pedidosEntrada.isEmpty ? Container () :
           Container(
             height: 50,
             width: media.width,
             child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: pedidos.length,
+                itemCount: pedidoEntradaController.pedidosEntrada.length,
                 itemBuilder: (context,index){
                   return Container(
                     width: 100,
@@ -176,7 +178,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                           children: [
                             Expanded(
                               child: Text(
-                                  'Pedido\n'+pedidos[index],
+                                pedidoEntradaController.pedidosEntrada[index].idPedidoEntrada.toString(),
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -376,5 +378,15 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
         ),
       ],
     );
+  }
+
+  adicionarPedido(String numPedido) async {
+    PedidoEntradaModel pedidoEntradaBusca;
+
+    pedidoEntradaBusca = await pedidoEntradaController.repository.buscar(int.parse(numPedido));
+    setState(() {
+      pedidoEntradaController.pedidosEntrada.add(pedidoEntradaBusca);
+    });
+
   }
 }

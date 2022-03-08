@@ -1,8 +1,6 @@
 
 import 'package:gpp/src/models/entrada/item_movimento_entrada_model.dart';
 import 'package:gpp/src/views/entrada/situacao_entrada.dart';
-import 'package:gpp/src/views/pedido/PedidoListView.dart';
-import 'package:intl/intl.dart';
 
 class MovimentoEntradaModel{
 
@@ -14,7 +12,7 @@ class MovimentoEntradaModel{
   DateTime? data_entrada;
   double? custo_total;
   SituacaoEntrada? situacao;
-  List<ItemMovimentoEntradaModel>? itemMovimentoEntradaModel;
+  List<ItemMovimentoEntradaModel>? itemMovimentoEntradaModel = [];
 
   MovimentoEntradaModel({
     this.id_movimento_entrada,
