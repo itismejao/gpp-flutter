@@ -9,19 +9,19 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
-class PedidoDetalheView extends StatefulWidget {
+class PedidoSaidaDetalheView extends StatefulWidget {
   final int id;
 
-  PedidoDetalheView({
+  PedidoSaidaDetalheView({
     Key? key,
     required this.id,
   }) : super(key: key);
 
   @override
-  _PedidoDetalheViewState createState() => _PedidoDetalheViewState();
+  _PedidoSaidaDetalheViewState createState() => _PedidoSaidaDetalheViewState();
 }
 
-class _PedidoDetalheViewState extends State<PedidoDetalheView> {
+class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
   late PedidoController pedidoController;
   late MaskFormatter maskFormatter;
 
@@ -46,6 +46,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
     maskFormatter = MaskFormatter();
     //buscar o pedido
     buscar();
+    
   }
 
   Widget _buildListItem(
@@ -55,53 +56,58 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
         return GestureDetector(
             onTap: () {
               // Navigator.pushNamed(
-              //     context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
+              //     context, '/pedidos-entrada/' + pedido[index].idPedidoSaida.toString());
             },
-            child: Container(
-                color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextComponent(
-                            '#' +
-                                itensPedido[index].idItemPedidoSaida.toString(),
-                          ),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: TextComponent(
-                              itensPedido[index].peca!.descricao,
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+                    color:
+                        (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextComponent(
+                                '#' +
+                                    itensPedido[index]
+                                        .idItemPedidoSaida
+                                        .toString(),
+                              ),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: TextComponent(
+                                  itensPedido[index].peca!.descricao,
+                                )),
+                            Expanded(
+                                child: TextComponent(
+                              itensPedido[index].quantidade.toString(),
                             )),
-                        Expanded(
-                            child: TextComponent(
-                          itensPedido[index].quantidade.toString(),
-                        )),
-                        Expanded(
-                          child: TextComponent(pedidoController.formatter
-                              .format(itensPedido[index].valor)),
+                            Expanded(
+                              child: TextComponent(pedidoController.formatter
+                                  .format(itensPedido[index].valor)),
+                            ),
+                            Expanded(
+                                child: TextComponent(
+                              pedidoController.formatter.format(
+                                  (itensPedido[index].valor *
+                                      itensPedido[index].quantidade)),
+                            )),
+                          ],
                         ),
-                        Expanded(
-                            child: TextComponent(
-                          pedidoController.formatter.format(
-                              (itensPedido[index].valor *
-                                  itensPedido[index].quantidade)),
-                        )),
-                      ],
-                    ),
 
-                    // border: Border(
-                    //   left: BorderSide(
-                    //     color:
-                    //         situacao(pedidoController.pedidos[index].dataEmissao!),
-                    //     width: 7.0,
-                    //   ),
-                    // ),
-                  ]),
-                )));
+                        // border: Border(
+                        //   left: BorderSide(
+                        //     color:
+                        //         situacao(pedidoController.pedidos[index].dataEmissao!),
+                        //     width: 7.0,
+                        //   ),
+                        // ),
+                      ]),
+                    ))));
       },
     );
   }
@@ -115,7 +121,7 @@ class _PedidoDetalheViewState extends State<PedidoDetalheView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleComponent('Pedido'),
+                  TitleComponent('Pedido de saída'),
                   SizedBox(
                     height: 16,
                   ),

@@ -20,10 +20,9 @@ class PecasLinhaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
-
-      // print('Buscar Todos');
-      // print(pecasLinha[0].especie?[1].id_peca_especie);
+      List<PecasLinhaModel> pecasLinha = data
+          .map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data))
+          .toList();
 
       return pecasLinha;
     } else {
@@ -39,7 +38,9 @@ class PecasLinhaRepository {
       var data = jsonDecode(response.body);
       // List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
 
-      List<PecasLinhaModel> pecasLinha = data.map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data)).toList();
+      List<PecasLinhaModel> pecasLinha = data
+          .map<PecasLinhaModel>((data) => PecasLinhaModel.fromJson(data))
+          .toList();
 
       print('Buscar Especie vinculada');
       print(pecasLinha[0].id_peca_linha);
@@ -64,7 +65,8 @@ class PecasLinhaRepository {
   }
 
   Future<bool> excluir(PecasLinhaModel pecasLinhaModel) async {
-    Response response = await api.delete('/peca-linha/' + pecasLinhaModel.id_peca_linha.toString());
+    Response response = await api
+        .delete('/peca-linha/' + pecasLinhaModel.id_peca_linha.toString());
 
     if (response.statusCode == StatusCode.OK) {
       print(response.body);
@@ -78,7 +80,9 @@ class PecasLinhaRepository {
   Future<bool> editar(PecasLinhaModel pecasLinhaModel) async {
     print(jsonEncode(pecasLinhaModel.toJson()));
 
-    Response response = await api.put('/peca-linha/${pecasLinhaModel.id_peca_linha}', pecasLinhaModel.toJson());
+    Response response = await api.put(
+        '/peca-linha/${pecasLinhaModel.id_peca_linha}',
+        pecasLinhaModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

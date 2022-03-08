@@ -410,7 +410,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        astecaController.filtroAsteca.idAsteca = value;
+                        astecaController.filtroAsteca.idAsteca =
+                            int.tryParse(value);
                         //Limpa o formúlario
                         astecaController.filtroFormKey.currentState!.reset();
                         buscarTodas();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
@@ -23,57 +25,58 @@ class Situacao {
   });
 }
 
-class PedidoListView extends StatefulWidget {
-  const PedidoListView({Key? key}) : super(key: key);
+class PedidoEntradaListView extends StatefulWidget {
+  const PedidoEntradaListView({Key? key}) : super(key: key);
 
   @override
-  _PedidoListViewState createState() => _PedidoListViewState();
+  _PedidoEntradaListViewState createState() => _PedidoEntradaListViewState();
 }
 
-class _PedidoListViewState extends State<PedidoListView> {
+class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
   final ResponsiveController _responsive = ResponsiveController();
   ScrollController scrollController = ScrollController();
 
-  late final PedidoController pedidoController;
+  late final PedidoEntradaController controller;
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
     NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
-        pedidoController.carregado = false;
+        controller.carregado = false;
       });
       //parei aqui
-      List retorno = await pedidoController.pedidoRepository.buscarTodos(
-          pedidoController.pagina.atual,
-          idPedido: pedidoController.idPedido,
-          dataInicio: pedidoController.dataInicio,
-          dataFim: pedidoController.dataFim,
-          situacao: pedidoController.situacao);
 
-      pedidoController.pedidos = retorno[0];
-      pedidoController.pagina = retorno[1];
+      List retorno = await controller.repository.buscarTodos(
+          controller.pagina.atual,
+          idPedido: controller.idPedidoEntrada,
+          dataInicio: controller.dataInicio,
+          dataFim: controller.dataFim,
+          situacao: controller.situacao);
+
+      controller.pedidosEntrada = retorno[0];
+      controller.pagina = retorno[1];
 
       //Limpa filtros;
       limparFiltro();
       //Atualiza o status para carregado
       setState(() {
-        pedidoController.carregado = true;
+        controller.carregado = true;
       });
     } catch (e) {
-      notify.error(e.toString());
       setState(() {
-        pedidoController.pedidos = [];
-        pedidoController.carregado = true;
+        controller.pedidosEntrada = [];
+        controller.carregado = true;
       });
+      notify.error(e.toString());
     }
   }
 
   limparFiltro() {
-    pedidoController.idPedido = null;
-    pedidoController.dataInicio = null;
-    pedidoController.dataFim = null;
-    pedidoController.situacao = null;
+    controller.idPedidoEntrada = null;
+    controller.dataInicio = null;
+    controller.dataFim = null;
+    controller.situacao = null;
   }
 
   _buildSituacaoPedido(value) {
@@ -92,7 +95,7 @@ class _PedidoListViewState extends State<PedidoListView> {
     super.initState();
 
     //Iniciliza o controlador de pedido
-    pedidoController = PedidoController();
+    controller = PedidoEntradaController();
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
 
@@ -131,16 +134,17 @@ class _PedidoListViewState extends State<PedidoListView> {
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
           return ListView.builder(
-              itemCount: pedidoController.pedidos.length,
+              itemCount: controller.pedidosEntrada.length,
               itemBuilder: (context, index) {
-                return _buildListItem(pedidoController.pedidos, index, context);
+                return _buildListItem(
+                    controller.pedidosEntrada, index, context);
               });
         }
 
         return ListView.builder(
-            itemCount: pedidoController.pedidos.length,
+            itemCount: controller.pedidosEntrada.length,
             itemBuilder: (context, index) {
-              return _buildListItem(pedidoController.pedidos, index, context);
+              return _buildListItem(controller.pedidosEntrada, index, context);
             });
       },
     );
@@ -149,7 +153,7 @@ class _PedidoListViewState extends State<PedidoListView> {
   }
 
   Widget _buildListItem(
-      List<PedidoSaidaModel> pedido, int index, BuildContext context) {
+      List<PedidoEntradaModel> pedido, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -244,8 +248,8 @@ class _PedidoListViewState extends State<PedidoListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
+            Navigator.pushNamed(context,
+                '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -263,7 +267,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                 border: Border(
                   left: BorderSide(
                     color:
-                        situacao(pedidoController.pedidos[index].dataEmissao!),
+                        situacao(controller.pedidosEntrada[index].dataEmissao!),
                     width: 7.0,
                   ),
                 ),
@@ -324,40 +328,85 @@ class _PedidoListViewState extends State<PedidoListView> {
                         Expanded(
                           child: Row(
                             children: [
-                              TextComponent(
-                                '#' + pedido[index].idPedidoSaida.toString(),
-                              )
+                              pedido[index].idPedidoEntrada != null
+                                  ? TextComponent(
+                                      '#' +
+                                          pedido[index]
+                                              .idPedidoEntrada
+                                              .toString(),
+                                    )
+                                  : Container()
                             ],
                           ),
                         ),
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              pedidoController
-                                  .camelCaseAll(pedido[index].cliente!.nome!),
+                              pedido[index]
+                                          .asteca!
+                                          .produto!
+                                          .first
+                                          .fornecedor!
+                                          .cliente!
+                                          .nome! !=
+                                      null
+                                  ? pedido[index]
+                                      .asteca!
+                                      .produto!
+                                      .first
+                                      .fornecedor!
+                                      .cliente!
+                                      .nome!
+                                  : '',
                             )),
+                        Expanded(
+                            flex: 2,
+                            child: pedido[index].dataEmissao != null
+                                ? TextComponent(
+                                    DateFormat('dd/MM/yyyy')
+                                        .format(pedido[index].dataEmissao!),
+                                  )
+                                : Container()),
                         Expanded(
                             flex: 2,
                             child: TextComponent(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(pedido[index].dataEmissao!),
+                              maskFormatter.cpfCnpjFormatter(
+                                          value: pedido[index]
+                                              .asteca!
+                                              .produto!
+                                              .first
+                                              .fornecedor!
+                                              .cliente!
+                                              .cpfCnpj
+                                              .toString()) !=
+                                      null
+                                  ? maskFormatter
+                                      .cpfCnpjFormatter(
+                                          value: pedido[index]
+                                              .asteca!
+                                              .produto!
+                                              .first
+                                              .fornecedor!
+                                              .cliente!
+                                              .cpfCnpj
+                                              .toString())!
+                                      .getMaskedText()
+                                  : '',
                             )),
                         Expanded(
                             flex: 2,
-                            child: TextComponent(
-                              maskFormatter
-                                  .cpfCnpjFormatter(
-                                      value: pedido[index].cpfCnpj.toString())!
-                                  .getMaskedText(),
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child:
-                                _buildSituacaoPedido(pedido[index].situacao)),
+                            child: _buildSituacaoPedido(
+                                        pedido[index].situacao) !=
+                                    null
+                                ? _buildSituacaoPedido(pedido[index].situacao)
+                                : Container()),
                         Expanded(
                             flex: 3,
-                            child: TextComponent(pedidoController.formatter
-                                    .format(pedido[index].valorTotal)
+                            child: TextComponent(
+                                pedido[index].valorTotal != null
+                                    ? controller.formatter
+                                        .format(pedido[index].valorTotal)
+                                    : controller.formatter.format(0)
                                 // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
                                 ))
                       ],
@@ -383,16 +432,16 @@ class _PedidoListViewState extends State<PedidoListView> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               children: [
-                Expanded(child: TitleComponent('Pedidos')),
+                Expanded(child: TitleComponent('Pedidos de entrada')),
                 Expanded(
                   child: Form(
-                    key: pedidoController.filtroFormKey,
+                    key: controller.filtroFormKey,
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        pedidoController.idPedido = int.parse(value);
+                        controller.idPedidoEntrada = int.tryParse(value);
                         //Limpa o formúlario
-                        pedidoController.filtroFormKey.currentState!.reset();
+                        controller.filtroFormKey.currentState!.reset();
                         buscarTodas();
                       },
                       prefixIcon: Icon(
@@ -406,12 +455,11 @@ class _PedidoListViewState extends State<PedidoListView> {
                   width: 8,
                 ),
                 ButtonComponent(
-                    icon: Icon(Icons.tune_rounded, color: Colors.white),
+                    icon: Icon(Icons.add, color: Colors.white),
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        pedidoController.abrirFiltro =
-                            !(pedidoController.abrirFiltro);
+                        controller.abrirFiltro = !(controller.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -419,14 +467,15 @@ class _PedidoListViewState extends State<PedidoListView> {
             ),
           ),
           Container(
-            height: pedidoController.abrirFiltro ? null : 0,
+            color: Colors.grey.shade50,
+            height: controller.abrirFiltro ? null : 0,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Form(
-                    key: pedidoController.filtroExpandidoFormKey,
+                    key: controller.filtroExpandidoFormKey,
                     child: Row(
                       children: [
                         Expanded(
@@ -439,7 +488,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                               ),
                               DropdownButtonFormFieldComponent(
                                 onChanged: (value) {
-                                  pedidoController.situacao = value.id;
+                                  controller.situacao = value.id;
                                 },
                                 hintText: 'Em aberto',
                                 items: <Situacao>[
@@ -468,7 +517,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                pedidoController.dataInicio =
+                                controller.dataInicio =
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
@@ -483,7 +532,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                pedidoController.dataFim =
+                                controller.dataFim =
                                     DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
@@ -500,16 +549,14 @@ class _PedidoListViewState extends State<PedidoListView> {
                       children: [
                         ButtonComponent(
                             onPressed: () {
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
+                              controller.filtroExpandidoFormKey.currentState!
                                   .save();
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
+                              controller.filtroExpandidoFormKey.currentState!
                                   .reset();
                               buscarTodas();
 
                               setState(() {
-                                pedidoController.abrirFiltro = false;
+                                controller.abrirFiltro = false;
                               });
                             },
                             text: 'Pesquisar')
@@ -522,8 +569,7 @@ class _PedidoListViewState extends State<PedidoListView> {
           ),
           Container(
             height: media.height * 0.7,
-            child:
-                pedidoController.carregado ? _buildList() : LoadingComponent(),
+            child: controller.carregado ? _buildList() : LoadingComponent(),
           ),
           Container(
             height: media.height * 0.10,
@@ -531,14 +577,14 @@ class _PedidoListViewState extends State<PedidoListView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextComponent('Total de páginas: ' +
-                    pedidoController.pagina.total.toString()),
+                TextComponent(
+                    'Total de páginas: ' + controller.pagina.total.toString()),
                 Row(
                   children: [
                     IconButton(
                         icon: Icon(Icons.first_page),
                         onPressed: () {
-                          pedidoController.pagina.atual = 1;
+                          controller.pagina.atual = 1;
                           buscarTodas();
                         }),
                     IconButton(
@@ -547,20 +593,20 @@ class _PedidoListViewState extends State<PedidoListView> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          if (pedidoController.pagina.atual > 0) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual - 1;
+                          if (controller.pagina.atual > 0) {
+                            controller.pagina.atual =
+                                controller.pagina.atual - 1;
                             buscarTodas();
                           }
                         }),
-                    TextComponent(pedidoController.pagina.atual.toString()),
+                    TextComponent(controller.pagina.atual.toString()),
                     IconButton(
                         icon: Icon(Icons.navigate_next_rounded),
                         onPressed: () {
-                          if (pedidoController.pagina.atual !=
-                              pedidoController.pagina.total) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual + 1;
+                          if (controller.pagina.atual !=
+                              controller.pagina.total) {
+                            controller.pagina.atual =
+                                controller.pagina.atual + 1;
                           }
 
                           buscarTodas();
@@ -568,8 +614,7 @@ class _PedidoListViewState extends State<PedidoListView> {
                     IconButton(
                         icon: Icon(Icons.last_page),
                         onPressed: () {
-                          pedidoController.pagina.atual =
-                              pedidoController.pagina.total;
+                          controller.pagina.atual = controller.pagina.total;
                           buscarTodas();
                         }),
                   ],
