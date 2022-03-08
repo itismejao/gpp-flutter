@@ -87,6 +87,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
@@ -182,8 +183,11 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey,floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),)),
-
+            inputDecorationTheme: const InputDecorationTheme(
+              iconColor: Colors.grey,
+              floatingLabelStyle:
+                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+            )),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

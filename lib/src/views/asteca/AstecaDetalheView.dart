@@ -1275,13 +1275,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       onTap: () {
                         Navigator.pushNamed(
                             context,
-                            '/pedidos/' +
+                            '/pedidos-saida/' +
                                 astecaController
                                     .asteca.pedidoSaida!.idPedidoSaida
                                     .toString());
                       },
                       child: ItemMenu(
-                        data: 'Pedido',
+                        data: 'Pedido de saída',
                         color: astecaController.step == 1
                             ? Colors.grey.shade50
                             : Colors.transparent,
