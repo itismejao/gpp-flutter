@@ -40,7 +40,6 @@ class EnderecamentoRepository {
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<CorredorEnderecamentoModel> enderecamentoCorredor = data
           .map<CorredorEnderecamentoModel>(
@@ -59,9 +58,9 @@ class EnderecamentoRepository {
     Response response =
         await api.get('/piso/10/corredor/' + idCorredor + '/estante');
 
+
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<EstanteEnderecamentoModel> enderecamentoEstante = data
           .map<EstanteEnderecamentoModel>(
@@ -82,7 +81,6 @@ class EnderecamentoRepository {
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-      print(data);
 
       List<PrateleiraEnderecamentoModel> enderecamentoPrateleira = data
           .map<PrateleiraEnderecamentoModel>(
@@ -103,12 +101,8 @@ class EnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      print(data);
-
-      List<BoxEnderecamentoModel> enderecamentoBox = data
-          .map<BoxEnderecamentoModel>(
-              (data) => BoxEnderecamentoModel.fromJson(data))
-          .toList();
+      List<BoxEnderecamentoModel> enderecamentoBox =
+          data.map<BoxEnderecamentoModel>((data) => BoxEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoBox;
     } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_pagina_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/repositories/pecas_repository/pecas_repository.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -10,12 +11,10 @@ class PecasController {
   late final PecasRepository pecasRepository = PecasRepository(api: gppApi);
 
   PecasModel pecasModel = PecasModel();
+  List<PecasModel> listaPecas = [];
+  PecasPaginaModel pecasPagina = PecasPaginaModel(paginaAtual: 1, paginaTotal: 0);
 
   ProdutoPecaModel produtoPecaModel = ProdutoPecaModel();
-
-  // Future<bool> criar() async {
-  //   return await pecasRepository.criar(pecasModel);
-  // }
 
   Future<PecasModel> criarPeca() async {
     return await pecasRepository.criarPeca(pecasModel);
@@ -25,8 +24,8 @@ class PecasController {
     return await pecasRepository.criarProdutoPeca(produtoPecaModel);
   }
 
-  Future<List<PecasModel>> buscarTodos() async {
-    return await pecasRepository.buscarTodos();
+  Future<List> buscarTodos(int pagina) async {
+    return await pecasRepository.buscarTodos(pagina);
   }
 
   Future<PecasModel> buscar(String codigo) async {
