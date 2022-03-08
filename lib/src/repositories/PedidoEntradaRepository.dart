@@ -56,12 +56,10 @@ class PedidoEntradaRepository {
   }
 
   Future<PedidoEntradaModel> criar(PedidoEntradaModel pedidoEntrada) async {
-    print(jsonEncode(pedidoEntrada.toJson()));
     Response response =
         await api.post('/pedido-entrada', pedidoEntrada.toJson());
 
     if (response.statusCode == StatusCode.OK) {
-      print(jsonDecode(response.body));
       var data = jsonDecode(response.body);
 
       PedidoEntradaModel pedidoEntrada = PedidoEntradaModel.fromJson(data);

@@ -230,24 +230,24 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                     SizedBox(
                       height: 16,
                     ),
-                    Row(children: [
-                      Expanded(
-                        child: InputComponent(
-                            enable: false,
-                            label: 'ID',
-                            initialValue:
-                                controller.pedidoEntrada.asteca!.idAsteca ==
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: InputComponent(
+                                enable: false,
+                                label: 'ID',
+                                initialValue: controller
+                                            .pedidoEntrada.asteca!.idAsteca ==
                                         null
                                     ? ''
                                     : controller.pedidoEntrada.asteca!.idAsteca
                                         .toString()),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
                           ButtonComponent(
                             icon: Icon(
                               Icons.wysiwyg_outlined,
@@ -259,10 +259,8 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                                   "/astecas/${controller.pedidoEntrada.asteca!.idAsteca}");
                             },
                             text: 'Ver mais',
-                          ),
-                        ],
-                      )
-                    ]),
+                          )
+                        ]),
                     SizedBox(
                       height: 16,
                     ),

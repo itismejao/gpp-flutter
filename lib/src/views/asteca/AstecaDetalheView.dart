@@ -871,7 +871,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              astecaController.asteca.pedido == null
+                              astecaController.asteca.pedidoSaida == null
                                   ? ButtonComponent(
                                       color: primaryColor,
                                       onPressed: () {
@@ -1267,7 +1267,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             ),
           ],
         ),
-        astecaController.asteca.pedido != null
+        astecaController.asteca.pedidoSaida != null
             ? Row(
                 children: [
                   Expanded(
@@ -1276,7 +1276,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                         Navigator.pushNamed(
                             context,
                             '/pedidos/' +
-                                astecaController.asteca.pedido!.idPedidoSaida
+                                astecaController
+                                    .asteca.pedidoSaida!.idPedidoSaida
                                     .toString());
                       },
                       child: ItemMenu(
@@ -2426,7 +2427,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         const Divider(),
         Container(
           height: media.size.height * 0.40,
-          child: astecaController.asteca.pedido == null
+          child: astecaController.asteca.pedidoSaida == null
               ? ListView.builder(
                   itemCount:
                       astecaController.pedidoSaida.itemsPedidoSaida!.length,
@@ -2556,7 +2557,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               : Container(
                   child: ListView.builder(
                     itemCount: astecaController
-                        .asteca.pedido!.itemsPedidoSaida!.length,
+                        .asteca.pedidoSaida!.itemsPedidoSaida!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -2565,40 +2566,46 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           children: [
                             Expanded(
                               child: TextComponent(astecaController
-                                  .asteca
-                                  .pedido!
-                                  .itemsPedidoSaida![index]
-                                  .idItemPedidoSaida
-                                  .toString()),
+                                      .asteca
+                                      .pedidoSaida!
+                                      .itemsPedidoSaida?[index]
+                                      .idItemPedidoSaida
+                                      .toString() ??
+                                  ''),
                             ),
                             Expanded(
                               child: TextComponent(astecaController
-                                  .camelCaseFirst(astecaController
-                                      .asteca
-                                      .pedido!
-                                      .itemsPedidoSaida![index]
-                                      .peca!
-                                      .descricao)),
+                                      .camelCaseFirst(astecaController
+                                          .asteca
+                                          .pedidoSaida!
+                                          .itemsPedidoSaida![index]
+                                          .peca!
+                                          .descricao) ??
+                                  ''),
                             ),
                             Expanded(
                               flex: 2,
-                              child: TextComponent(astecaController.asteca
-                                  .pedido!.itemsPedidoSaida![index].quantidade
-                                  .toString()),
+                              child: TextComponent(astecaController
+                                      .asteca
+                                      .pedidoSaida!
+                                      .itemsPedidoSaida?[index]
+                                      .quantidade
+                                      .toString() ??
+                                  ''),
                             ),
                             Expanded(
                               child: TextComponent(astecaController.formatter
-                                  .format(astecaController.asteca.pedido!
+                                  .format(astecaController.asteca.pedidoSaida!
                                       .itemsPedidoSaida![index].valor)),
                             ),
                             Expanded(
                                 child: TextComponent(
                               astecaController.formatter.format(astecaController
                                       .asteca
-                                      .pedido!
+                                      .pedidoSaida!
                                       .itemsPedidoSaida![index]
                                       .quantidade *
-                                  astecaController.asteca.pedido!
+                                  astecaController.asteca.pedidoSaida!
                                       .itemsPedidoSaida![index].valor),
                             )),
                             Expanded(
@@ -2606,7 +2613,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               child: TextComponent(astecaController
                                   .camelCaseFirst(astecaController
                                       .asteca
-                                      .pedido!
+                                      .pedidoSaida!
                                       .itemsPedidoSaida![index]
                                       .motivoTrocaPeca!
                                       .nome

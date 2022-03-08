@@ -19,7 +19,7 @@ class AstecaModel {
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
-  PedidoSaidaModel? pedido;
+  PedidoSaidaModel? pedidoSaida;
 
   AstecaModel({
     this.idAsteca,
@@ -34,7 +34,7 @@ class AstecaModel {
     this.documentoFiscal,
     this.produto,
     this.funcionario,
-    this.pedido,
+    this.pedidoSaida,
   });
 
   factory AstecaModel.fromJson(Map<String, dynamic> json) {
@@ -67,8 +67,8 @@ class AstecaModel {
                 return AstecaTipoPendenciaModel.fromJson(data);
               }).toList()
             : null,
-        pedido: json['pedido'] != null
-            ? PedidoSaidaModel.fromJson(json['pedido'])
+        pedidoSaida: json['pedido_saida'] != null
+            ? PedidoSaidaModel.fromJson(json['pedido_saida'])
             : null);
   }
   Map<String, dynamic> toJson() {

@@ -11,7 +11,6 @@ class EmailPedidoEntradaRepository {
   ApiService api = gppApi;
 
   Future<bool> criar(PedidoEntradaModel pedidoEntrada) async {
-    print(jsonEncode(pedidoEntrada.toJson()));
     Response response =
         await api.post('/email-pedido-entrada', pedidoEntrada.toJson());
 
