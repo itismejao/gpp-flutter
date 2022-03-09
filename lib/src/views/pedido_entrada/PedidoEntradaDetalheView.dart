@@ -116,6 +116,58 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
     );
   }
 
+  _buildSituacaoPedido(value) {
+    if (value == 1) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Em aberto',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 2) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.orange, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Pendente',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 3) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.green, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Concluído',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 4) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.red, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Cancelado',
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -126,8 +178,10 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TitleComponent('Pedido de entrada'),
+                        _buildSituacaoPedido(controller.pedidoEntrada.situacao)
                       ],
                     ),
                     SizedBox(

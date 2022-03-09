@@ -80,7 +80,22 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
     if (value == 1) {
       return TextComponent(
         'Em aberto',
+        color: Colors.blue,
+      );
+    } else if (value == 2) {
+      return TextComponent(
+        'Pendente',
+        color: Colors.orange,
+      );
+    } else if (value == 3) {
+      return TextComponent(
+        'Concluído',
         color: Colors.green,
+      );
+    } else if (value == 4) {
+      return TextComponent(
+        'Cancelado',
+        color: Colors.red,
       );
     }
   }
@@ -351,9 +366,10 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                                   .getMaskedText(),
                             )),
                         Expanded(
-                            flex: 2,
-                            child:
-                                _buildSituacaoPedido(pedido[index].situacao)),
+                                flex: 2,
+                                child: _buildSituacaoPedido(
+                                    pedido[index].situacao)) ??
+                            Container(),
                         Expanded(
                             flex: 3,
                             child: TextComponent(pedidoController.formatter

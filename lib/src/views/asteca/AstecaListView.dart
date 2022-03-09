@@ -158,7 +158,7 @@ class _AstecaListViewState extends State<AstecaListView> {
     }
   }
 
-  exibirAstecaDetalhe(id) {
+  exibirDetalhe(id) {
     AlertDialog alert = AlertDialog(
       content: Container(
           height: 1000,
@@ -302,7 +302,7 @@ class _AstecaListViewState extends State<AstecaListView> {
           onTap: () {
             // Navigator.pushNamed(
             //     context, '/astecas/' + asteca[index].idAsteca.toString());
-            exibirAstecaDetalhe(asteca[index].idAsteca.toString());
+            exibirDetalhe(asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

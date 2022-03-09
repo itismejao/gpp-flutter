@@ -81,7 +81,22 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
     if (value == 1) {
       return TextComponent(
         'Em aberto',
+        color: Colors.blue,
+      );
+    } else if (value == 2) {
+      return TextComponent(
+        'Pendente',
+        color: Colors.orange,
+      );
+    } else if (value == 3) {
+      return TextComponent(
+        'Concluído',
         color: Colors.green,
+      );
+    } else if (value == 4) {
+      return TextComponent(
+        'Cancelado',
+        color: Colors.red,
       );
     }
   }
@@ -483,8 +498,8 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                 items: <Situacao>[
                                   Situacao(id: 1, descricao: 'Em aberto'),
                                   Situacao(id: 2, descricao: 'Pendente'),
-                                  Situacao(id: 3, descricao: 'Em separação'),
-                                  Situacao(id: 4, descricao: 'Fechado')
+                                  Situacao(id: 3, descricao: 'Concluído'),
+                                  Situacao(id: 4, descricao: 'Cancelado')
                                 ].map<DropdownMenuItem<Situacao>>(
                                     (Situacao value) {
                                   return DropdownMenuItem<Situacao>(
