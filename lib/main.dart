@@ -65,8 +65,7 @@ import 'package:gpp/src/views/addressing/addressing_list_view.dart';
 
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 import 'package:gpp/src/views/asteca/AstecaListView.dart';
-
-import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 
@@ -118,7 +117,7 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'motivos-defeitos') {
           pagina = MotivosTrocaPecasListView();
         } else if (uri.pathSegments.first == 'logout') {
-          pagina = AuthenticateView();
+          pagina = AutenticacaoView();
         } else if (uri.pathSegments.first == 'pecas-cadastrar') {
           pagina = MenuCadastrarView();
         } else if (uri.pathSegments.first == 'pecas-consultar') {
@@ -145,7 +144,7 @@ class _GppAppState extends State<GppApp> {
         }
       }
     } else {
-      return MaterialPageRoute(builder: (context) => AuthenticateView());
+      return MaterialPageRoute(builder: (context) => AutenticacaoView());
     }
     return MaterialPageRoute(
         builder: (context) =>

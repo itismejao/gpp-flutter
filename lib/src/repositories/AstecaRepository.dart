@@ -34,10 +34,12 @@ class AstecaRepository {
       DateTime? dataFim}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
-      'idAsteca': filtroAsteca?.idAsteca ?? '',
-      'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
+      'idAsteca': filtroAsteca!.idAsteca != null
+          ? filtroAsteca.idAsteca.toString()
+          : '',
+      'cpfCnpj': filtroAsteca.documentoFiscal?.cpfCnpj?.toString() ?? '',
       'numeroNotaFiscalVenda':
-          filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+          filtroAsteca.documentoFiscal?.numDocFiscal?.toString() ?? '',
       'pendencia': pendencia?.toString() ?? '',
       'dataInicio': dataInicio != null ? dataInicio.toString() : '',
       'dataFim': dataFim != null ? dataFim.toString() : ''

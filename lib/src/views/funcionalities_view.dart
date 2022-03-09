@@ -261,7 +261,7 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-              child: autenticacaoController.carregado
+              child: !autenticacaoController.carregado
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
