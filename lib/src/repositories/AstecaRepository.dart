@@ -262,7 +262,7 @@ class PendenciaRepository {
   ApiService api = gppApi;
 
   Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
-    Response response = await api.get('/asteca' + '/pendencia');
+    Response response = await api.get('/astecas/pendencias');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -281,7 +281,7 @@ class PendenciaRepository {
   Future<bool> criar(
       AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
     Response response = await api.post(
-        '/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
+        '/astecas/${asteca.idAsteca}/pendencias', pendencia.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

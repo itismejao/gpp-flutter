@@ -507,7 +507,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     );
 
     // set up the AlertDialog
-    AlertDialog(
+    AlertDialog alert = AlertDialog(
       title: Text("Aviso"),
       content: Text(
           "Existem peças adicionadas que não possui  estoque disponível, gostaria de criar um pedido de entrada"),
@@ -518,6 +518,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     );
 
     // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   List<ItemPedidoEntradaModel> criarItensPedidoEntrada() {

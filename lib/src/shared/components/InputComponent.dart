@@ -130,12 +130,15 @@ class InputComponent extends StatelessWidget {
                 color: Colors.black,
                 fontSize: 14 * media.textScaleFactor,
                 letterSpacing: 0.15,
+                height: 2,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w500),
             decoration: InputDecoration(
                 prefixIcon: prefixIcon,
                 hintText: hintText,
-                contentPadding: EdgeInsets.only(top: 15, left: 10),
+                contentPadding: prefixIcon != null
+                    ? EdgeInsets.only(top: 10, bottom: 14, left: 10)
+                    : EdgeInsets.only(top: 5, bottom: 15, left: 20),
                 border: InputBorder.none)),
       );
     }
