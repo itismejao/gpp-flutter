@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -21,7 +19,9 @@ class ProdutoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<ProdutoModel> produto = data.map<ProdutoModel>((data) => ProdutoModel.fromJson(data)).toList();
+      List<ProdutoModel> produto = data
+          .map<ProdutoModel>((data) => ProdutoModel.fromJson(data))
+          .toList();
 
       return produto;
     } else {

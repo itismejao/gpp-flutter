@@ -4,10 +4,8 @@ import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/PedidoController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -343,21 +341,12 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             flex: 4,
                             child: TextComponent(
                               pedido[index]
-                                          .asteca!
-                                          .produto!
-                                          .first
-                                          .fornecedor!
-                                          .cliente!
-                                          .nome! !=
-                                      null
-                                  ? pedido[index]
-                                      .asteca!
-                                      .produto!
-                                      .first
-                                      .fornecedor!
-                                      .cliente!
-                                      .nome!
-                                  : '',
+                                  .asteca!
+                                  .produto!
+                                  .first
+                                  .fornecedor!
+                                  .cliente!
+                                  .nome!,
                             )),
                         Expanded(
                             flex: 2,

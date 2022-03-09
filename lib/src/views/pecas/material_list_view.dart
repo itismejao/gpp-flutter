@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
-import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
-import 'package:gpp/src/shared/components/ButtonComponent.dart';
-import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
@@ -114,22 +111,30 @@ class _MaterialListViewState extends State<MaterialListView> {
                           // CheckboxComponent(),
                           Expanded(
                             child: Text(
-                              _pecasMaterial[index].id_peca_material_fabricacao.toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                              _pecasMaterial[index]
+                                  .id_peca_material_fabricacao
+                                  .toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
-                            child: Text(_pecasMaterial[index].material.toString()),
+                            child:
+                                Text(_pecasMaterial[index].material.toString()),
                           ),
                           Expanded(
                             child: Text(_pecasMaterial[index].sigla.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao.values[_pecasMaterial[index].situacao!].name),
+                            child: Text(Situacao
+                                .values[_pecasMaterial[index].situacao!].name),
                           ),
                           Expanded(
-                            child: Text(_pecasMaterial[index].grupo_material!.grupo.toString()),
+                            child: Text(_pecasMaterial[index]
+                                .grupo_material!
+                                .grupo
+                                .toString()),
                           ),
                           Expanded(
                             child: Row(
@@ -147,7 +152,11 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     color: Colors.grey.shade400,
                                   ),
                                   onPressed: () {
-                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]))
+                                    PopUpEditar.popUpPeca(
+                                            context,
+                                            MaterialDetailView(
+                                                pecasMaterialModel:
+                                                    _pecasMaterial[index]))
                                         .then((value) => setState(() {}));
                                   },
                                 ),
@@ -158,7 +167,8 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     ),
                                     onPressed: () {
                                       // _pecasMaterialController.excluir(_pecasMaterial[index]).then((value) => setState(() {}));
-                                      excluir(context, _pecasMaterial[index]).then((value) => setState(() {}));
+                                      excluir(context, _pecasMaterial[index])
+                                          .then((value) => setState(() {}));
                                     }),
                               ],
                             ),

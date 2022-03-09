@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/PedidoController.dart';
 import 'package:gpp/src/controllers/PedidoEntradaController.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
-import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';

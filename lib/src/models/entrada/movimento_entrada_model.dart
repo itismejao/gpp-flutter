@@ -1,8 +1,6 @@
 import 'package:gpp/src/models/entrada/item_movimento_entrada_model.dart';
 import 'package:gpp/src/views/entrada/situacao_entrada.dart';
 
-import 'package:intl/intl.dart';
-
 class MovimentoEntradaModel {
   int? id_movimento_entrada;
   int? id_funcionario;

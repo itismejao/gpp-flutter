@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/cliente_model.dart';
 
 class PecasFornecedorModel {
@@ -20,7 +19,9 @@ class PecasFornecedorModel {
       id_fornecedor: json['id_fornecedor'],
       enviado: json['enviado'],
       cli_forn_principal: json['cli_forn_principal'],
-      cliente: json['cliente'] == null ? null : PecasClienteModel.fromJson(json['cliente']),
+      cliente: json['cliente'] == null
+          ? null
+          : PecasClienteModel.fromJson(json['cliente']),
     );
   }
 

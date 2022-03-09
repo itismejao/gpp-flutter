@@ -5,14 +5,13 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.da
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
-import 'package:gpp/src/repositories/pecas_repository/pecas_linha_repository.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
+// ignore: must_be_immutable
 class EspecieDetailView extends StatefulWidget {
   PecasLinhaModel? pecasLinhaModel;
   PecasEspecieModel? pecasEspecieModel;
@@ -28,7 +27,6 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   PecasLinhaModel? selectedLinha;
-  List<PecasLinhaModel> _pecasLinha = [];
 
   PecasLinhaModel? pecasLinhaModel;
   PecasEspecieModel? pecasEspecieModel;
@@ -103,10 +101,13 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(pecasLinhaModel != null || pecasEspecieModel != null ? Icons.edit : Icons.add_box),
+            Icon(pecasLinhaModel != null || pecasEspecieModel != null
+                ? Icons.edit
+                : Icons.add_box),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent(
-                pecasLinhaModel != null || pecasEspecieModel != null ? 'Editar Linha e Espécie' : 'Cadastrar Linha e Espécie'),
+            TitleComponent(pecasLinhaModel != null || pecasEspecieModel != null
+                ? 'Editar Linha e Espécie'
+                : 'Cadastrar Linha e Espécie'),
           ],
         ),
       ),
@@ -126,7 +127,9 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                   children: [
                     Padding(padding: EdgeInsets.only(bottom: 30)),
                     pecasLinhaModel == null ? Container() : linha(context),
-                    pecasEspecieModel == null ? Padding(padding: EdgeInsets.only(bottom: 30)) : Padding(padding: EdgeInsets.zero),
+                    pecasEspecieModel == null
+                        ? Padding(padding: EdgeInsets.only(bottom: 30))
+                        : Padding(padding: EdgeInsets.zero),
                     pecasEspecieModel == null ? Container() : especie(context),
                   ],
                 )
@@ -145,10 +148,13 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                   Flexible(
                     child: InputComponent(
                       enable: false,
-                      initialValue: pecasLinhaModel == null ? '' : pecasLinhaModel!.id_peca_linha.toString(),
+                      initialValue: pecasLinhaModel == null
+                          ? ''
+                          : pecasLinhaModel!.id_peca_linha.toString(),
                       label: 'ID',
                       onChanged: (value) {
-                        _pecasLinhaController.pecasLinhaModel.id_peca_linha = value;
+                        _pecasLinhaController.pecasLinhaModel.id_peca_linha =
+                            value;
                       },
                     ),
                   ),
@@ -158,11 +164,13 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                       onChanged: (Situacao? newValue) {
                         setState(() {
                           pecasLinhaModel?.situacao = newValue!.index;
-                          _pecasLinhaController.pecasLinhaModel.situacao = newValue!.index;
+                          _pecasLinhaController.pecasLinhaModel.situacao =
+                              newValue!.index;
                         });
                       },
                       items: Situacao.values.map((Situacao? situacao) {
-                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                        return DropdownMenuItem<Situacao>(
+                            value: situacao, child: Text(situacao!.name));
                       }).toList())
                 ],
               ),
@@ -174,7 +182,8 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             Flexible(
               child: InputComponent(
                 label: 'Nome da Linha',
-                initialValue: pecasLinhaModel == null ? '' : pecasLinhaModel!.linha,
+                initialValue:
+                    pecasLinhaModel == null ? '' : pecasLinhaModel!.linha,
                 onChanged: (value) {
                   _pecasLinhaController.pecasLinhaModel.linha = value;
                 },
@@ -227,7 +236,8 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                     children: [
                       Text(
                         'Cadastrar Espécie',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -243,10 +253,13 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                   Flexible(
                     child: InputComponent(
                       enable: false,
-                      initialValue: pecasEspecieModel == null ? '' : pecasEspecieModel!.id_peca_especie.toString(),
+                      initialValue: pecasEspecieModel == null
+                          ? ''
+                          : pecasEspecieModel!.id_peca_especie.toString(),
                       label: 'ID',
                       onChanged: (value) {
-                        _pecasEspecieController.pecasEspecieModel.id_peca_especie = value;
+                        _pecasEspecieController
+                            .pecasEspecieModel.id_peca_especie = value;
                       },
                     ),
                   ),
@@ -256,11 +269,13 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                       onChanged: (Situacao? newValue) {
                         setState(() {
                           pecasEspecieModel?.situacao = newValue!.index;
-                          _pecasEspecieController.pecasEspecieModel.situacao = newValue!.index;
+                          _pecasEspecieController.pecasEspecieModel.situacao =
+                              newValue!.index;
                         });
                       },
                       items: Situacao.values.map((Situacao? situacao) {
-                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                        return DropdownMenuItem<Situacao>(
+                            value: situacao, child: Text(situacao!.name));
                       }).toList())
                 ],
               ),
@@ -331,11 +346,15 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
                             child: DropdownSearch<PecasLinhaModel?>(
                               mode: Mode.DIALOG,
                               showSearchBox: true,
-                              selectedItem: pecasEspecieModel == null ? snapshot.data[0] : pecasEspecieModel!.linha,
+                              selectedItem: pecasEspecieModel == null
+                                  ? snapshot.data[0]
+                                  : pecasEspecieModel!.linha,
                               items: snapshot.data,
-                              itemAsString: (PecasLinhaModel? value) => value!.linha!,
+                              itemAsString: (PecasLinhaModel? value) =>
+                                  value!.linha!,
                               onChanged: (value) {
-                                _pecasEspecieController.pecasEspecieModel.id_peca_linha = value!.id_peca_linha;
+                                _pecasEspecieController.pecasEspecieModel
+                                    .id_peca_linha = value!.id_peca_linha;
                               },
                               dropdownSearchDecoration: InputDecoration(
                                 enabledBorder: InputBorder.none,
@@ -422,7 +441,8 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             Flexible(
               child: InputComponent(
                 label: 'Nome da Espécie',
-                initialValue: pecasEspecieModel == null ? '' : pecasEspecieModel!.especie,
+                initialValue:
+                    pecasEspecieModel == null ? '' : pecasEspecieModel!.especie,
                 onChanged: (value) {
                   _pecasEspecieController.pecasEspecieModel.especie = value;
                 },

@@ -56,32 +56,19 @@
 //     );
 //   }
 // }
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/addressing/addressing_list_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
-import 'package:gpp/src/controllers/AutenticacaoController.dart';
-import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
 
-import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 import 'package:gpp/src/views/asteca/AstecaListView.dart';
 
 import 'package:gpp/src/views/authenticated/authenticate_view.dart';
 
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
-import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 
 import 'package:gpp/src/views/funcionalities_view.dart';
 
@@ -91,12 +78,9 @@ import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
-import 'package:gpp/src/views/pecas/menu_enderecamento_peca_view.dart';
-import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
-import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class PecasPaginaModel {
   int? paginaAtual;
   int? paginaTotal;

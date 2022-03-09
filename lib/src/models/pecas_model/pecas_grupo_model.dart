@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 
 class PecasGrupoModel {
