@@ -13,20 +13,24 @@ class MovimentoEntradaController{
 
   List<ItemPedidoEntradaModel> listaItensSomados = [];
 
+  int? id_fornecedor;
+
   late final MovimentoEntradaRepository movimentoEntradaRepository = MovimentoEntradaRepository(api: gppApi);
 
   Future<List<MovimentoEntradaModel>> buscarTodos(String? id_filial, {String? id_funcionario}) async{
     return await movimentoEntradaRepository.buscarTodos(id_filial,id_funcionario: id_funcionario);
   }
 
-  somarLista(List<ItemPedidoEntradaModel> listaItensPedido){
-    listaItensPedido.forEach((itemPedido) {
+  somarLista(List<ItemPedidoEntradaModel>? listaItensPedido){
+    listaItensPedido?.forEach((itemPedido) {
       ItemPedidoEntradaModel ip;
-      ip = listaItensSomados.firstWhere((itemSomado) => itemPedido.idItemPedidoEntrada == itemSomado.idItemPedidoEntrada, orElse: ()=>ItemPedidoEntradaModel());
-      if (ip.quantidade == null){
+      //ip = listaItensSomados.firstWhere((itemSomado) => itemPedido.idItemPedidoEntrada == itemSomado.idItemPedidoEntrada, orElse: ()=>ItemPedidoEntradaModel());
+      int index = listaItensSomados.indexWhere((element) => itemPedido.idItemPedidoEntrada == element.idItemPedidoEntrada);
+      if (index == -1){
         listaItensSomados.add(itemPedido);
-      } else {
-        //Soma na quantidade
+      }
+      else {
+        listaItensSomados[index].quantidade = listaItensSomados[index].quantidade! + itemPedido.quantidade!;
       }
     });
 
