@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
-
-import 'cores_detail_view.dart';
 
 class PopUpEditar {
   static popUpPeca(context, Widget pagina) {

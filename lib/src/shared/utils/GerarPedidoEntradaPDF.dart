@@ -7,8 +7,6 @@ import 'package:printing/printing.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
-
 class GerarPedidoEntradaPDF {
   PedidoEntradaModel pedidoEntrada;
   MaskFormatter maskFormatter = MaskFormatter();

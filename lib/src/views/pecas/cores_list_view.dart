@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
-import 'package:gpp/src/shared/components/CheckboxComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -30,7 +29,8 @@ class _CoresListViewState extends State<CoresListView> {
   Future<bool> excluir(context, PecasCorModel pecasCorModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert('Deseja excluir a cor (${pecasCorModel.id_peca_cor} - ${pecasCorModel.cor})?')) {
+      if (await notify.alert(
+          'Deseja excluir a cor (${pecasCorModel.id_peca_cor} - ${pecasCorModel.cor})?')) {
         if (await _pecasCorController.excluir(pecasCorModel)) {
           notify.sucess("Cor excluída com sucesso!");
           return true;
@@ -117,7 +117,8 @@ class _CoresListViewState extends State<CoresListView> {
                           Expanded(
                             child: Text(
                               _pecaCor[index].id_peca_cor.toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
@@ -128,7 +129,8 @@ class _CoresListViewState extends State<CoresListView> {
                             child: Text(_pecaCor[index].sigla.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao.values[_pecaCor[index].situacao!].name),
+                            child: Text(Situacao
+                                .values[_pecaCor[index].situacao!].name),
                           ),
                           Expanded(
                             child: Row(
@@ -139,7 +141,10 @@ class _CoresListViewState extends State<CoresListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      PopUpEditar.popUpPeca(context, CoresDetailView(pecaCor: _pecaCor[index]))
+                                      PopUpEditar.popUpPeca(
+                                              context,
+                                              CoresDetailView(
+                                                  pecaCor: _pecaCor[index]))
                                           .then((value) => setState(() {}));
                                     }),
                                 IconButton(
@@ -148,7 +153,8 @@ class _CoresListViewState extends State<CoresListView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () {
-                                      excluir(context, _pecaCor[index]).then((value) => setState(() {}));
+                                      excluir(context, _pecaCor[index])
+                                          .then((value) => setState(() {}));
                                     }),
                               ],
                             ),

@@ -46,7 +46,58 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
     maskFormatter = MaskFormatter();
     //buscar o pedido
     buscar();
-    
+  }
+
+  _buildSituacaoPedido(value) {
+    if (value == 1) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Em aberto',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 2) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.orange, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Pendente',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 3) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.green, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Concluído',
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else if (value == 4) {
+      return Container(
+        decoration: BoxDecoration(
+            color: Colors.red, borderRadius: BorderRadius.circular(5)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
+          child: TextComponent(
+            'Cancelado',
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildListItem(
@@ -121,7 +172,13 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleComponent('Pedido de saída'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TitleComponent('Pedido de saída'),
+                      _buildSituacaoPedido(pedidoController.pedido.situacao)
+                    ],
+                  ),
                   SizedBox(
                     height: 16,
                   ),

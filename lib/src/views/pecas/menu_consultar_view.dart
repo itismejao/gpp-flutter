@@ -9,6 +9,7 @@ import 'package:gpp/src/views/pecas/linha_list_view.dart';
 import 'package:gpp/src/views/pecas/material_list_view.dart';
 import 'package:gpp/src/views/pecas/pecas_list_view.dart';
 
+// ignore: must_be_immutable
 class MenuConsultarView extends StatefulWidget {
   int? selected;
 
@@ -70,8 +71,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 1 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 1 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 1 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 1 ? secundaryColor : Colors.transparent,
                   data: 'Peças',
                 ),
               ),
@@ -88,8 +91,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 2 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 2 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 2 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 2 ? secundaryColor : Colors.transparent,
                   data: 'Cores',
                 ),
               ),
@@ -106,8 +111,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 3 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 3 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 3 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 3 ? secundaryColor : Colors.transparent,
                   data: 'Grupo Fabricação',
                 ),
               ),
@@ -124,8 +131,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 4 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 4 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 4 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 4 ? secundaryColor : Colors.transparent,
                   data: 'Material Fabricação',
                 ),
               ),
@@ -142,8 +151,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 5 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 5 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 5 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 5 ? secundaryColor : Colors.transparent,
                   data: 'Linha',
                 ),
               ),
@@ -160,8 +171,10 @@ class _MenuConsultarViewState extends State<MenuConsultarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 6 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 6 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 6 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 6 ? secundaryColor : Colors.transparent,
                   data: 'Espécie',
                 ),
               ),

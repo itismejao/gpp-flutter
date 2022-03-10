@@ -1,9 +1,7 @@
-
 import 'package:gpp/src/models/entrada/item_movimento_entrada_model.dart';
 import 'package:gpp/src/views/entrada/situacao_entrada.dart';
 
-class MovimentoEntradaModel{
-
+class MovimentoEntradaModel {
   int? id_movimento_entrada;
   int? id_funcionario;
   String? nome_funcionario;
@@ -15,34 +13,33 @@ class MovimentoEntradaModel{
   List<ItemMovimentoEntradaModel>? itemMovimentoEntradaModel = [];
   List<int>? id_pedido_entrada = [];
 
-  MovimentoEntradaModel({
-    this.id_movimento_entrada,
-    this.id_funcionario,
-    this.custo_total,
-    this.data_entrada,
-    this.num_nota_fiscal,
-    this.serie,
-    this.situacao,
-    this.itemMovimentoEntradaModel,
-    this.nome_funcionario
-  });
+  MovimentoEntradaModel(
+      {this.id_movimento_entrada,
+      this.id_funcionario,
+      this.custo_total,
+      this.data_entrada,
+      this.num_nota_fiscal,
+      this.serie,
+      this.situacao,
+      this.itemMovimentoEntradaModel,
+      this.nome_funcionario});
 
   factory MovimentoEntradaModel.fromJson(Map<String, dynamic> json) {
     return MovimentoEntradaModel(
-      id_movimento_entrada: json['id_movimento_entrada'],
-      id_funcionario: json['id_funcionario'],
-      custo_total: json['custo_total'],
-      data_entrada: json['data_entrada'] == null ? null : DateTime.parse(json['data_entrada']),
-      num_nota_fiscal: json['num_nota_fiscal'],
-      serie: json['serie'],
-      situacao: SituacaoEntrada.values[json['situacao']],
-      itemMovimentoEntradaModel: json['items_movimento'] == null ? null :
-      json['items_movimento'].map<ItemMovimentoEntradaModel>((data){
-        return  ItemMovimentoEntradaModel.fromJson(data);
-      }).toList()
-
-
-    );
+        id_movimento_entrada: json['id_movimento_entrada'],
+        id_funcionario: json['id_funcionario'],
+        custo_total: json['custo_total'],
+        data_entrada: json['data_entrada'] == null
+            ? null
+            : DateTime.parse(json['data_entrada']),
+        num_nota_fiscal: json['num_nota_fiscal'],
+        serie: json['serie'],
+        situacao: SituacaoEntrada.values[json['situacao']],
+        itemMovimentoEntradaModel: json['items_movimento'] == null
+            ? null
+            : json['items_movimento'].map<ItemMovimentoEntradaModel>((data) {
+                return ItemMovimentoEntradaModel.fromJson(data);
+              }).toList());
   }
 
   Map<String, dynamic> toJson() {
@@ -60,7 +57,4 @@ class MovimentoEntradaModel{
 
     return data;
   }
-
-
-
 }

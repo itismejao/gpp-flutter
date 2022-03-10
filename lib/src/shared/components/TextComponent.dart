@@ -7,12 +7,14 @@ class TextComponent extends StatelessWidget {
   final double? fontSize;
   final double? letterSpacing;
   final TextAlign? textAlign;
+  final FontStyle? fontStyle;
   const TextComponent(this.data,
       {Key? key,
       this.color,
       this.fontWeight,
       this.fontSize,
       this.letterSpacing,
+      this.fontStyle,
       this.textAlign})
       : super(key: key);
 
@@ -24,9 +26,9 @@ class TextComponent extends StatelessWidget {
       textAlign: textAlign ?? TextAlign.left,
       style: TextStyle(
         color: color ?? Colors.black,
-        fontSize: fontSize ?? 16 * media.textScaleFactor,
+        fontSize: fontSize ?? 12 * media.textScaleFactor,
         letterSpacing: letterSpacing ?? 0.15,
-        fontStyle: FontStyle.normal,
+        fontStyle: fontStyle ?? FontStyle.normal,
         fontWeight: fontWeight ?? FontWeight.w500,
       ),
     );
