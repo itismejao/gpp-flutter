@@ -39,9 +39,9 @@ class ItemMovimentoEntradaModel{
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
     //data['id_item_movimento_entrada'] = this.id_item_movimento_entrada;
-    data['id_movimento_entrada'] = this.id_movimento_entrada;
+    //data['id_movimento_entrada'] = this.id_movimento_entrada;
     data['quantidade'] = this.quantidade;
-    data['movimento_entrada'] = this.movimento_entrada;
+    //data['movimento_entrada'] = this.movimento_entrada;
     data['id_peca'] = this.id_peca;
     data['valor_unitario'] = this.valor_unitario;
 

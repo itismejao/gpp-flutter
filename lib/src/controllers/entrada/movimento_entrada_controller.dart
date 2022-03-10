@@ -13,12 +13,20 @@ class MovimentoEntradaController{
 
   List<ItemPedidoEntradaModel> listaItensSomados = [];
 
+  List<ItemMovimentoEntradaModel> listaItens = [];
+
   int? id_fornecedor;
 
   late final MovimentoEntradaRepository movimentoEntradaRepository = MovimentoEntradaRepository(api: gppApi);
 
   Future<List<MovimentoEntradaModel>> buscarTodos(String? id_filial, {String? id_funcionario}) async{
     return await movimentoEntradaRepository.buscarTodos(id_filial,id_funcionario: id_funcionario);
+  }
+
+  Future<bool> create() async {
+    movimentoEntradaModel?.id_funcionario = 1033293;
+    movimentoEntradaModel?.itemMovimentoEntradaModel = listaItens;
+    return await movimentoEntradaRepository.create(movimentoEntradaModel);
   }
 
   somarLista(List<ItemPedidoEntradaModel>? listaItensPedido){
@@ -37,12 +45,27 @@ class MovimentoEntradaController{
 
   }
 
-  ItensPedidoToItensEntrada(PedidoEntradaModel pedidoEntradaModel){
-    pedidoEntradaModel.itensPedidoEntrada?.forEach((element) {
-      movimentoEntradaModel?.itemMovimentoEntradaModel?.add(ItemMovimentoEntradaModel(
-
-      ));
+ bool ItensPedidoToItensEntrada(){
+    bool sucess = true;
+    movimentoEntradaModel!.custo_total = 0;
+    movimentoEntradaModel!.data_entrada = DateTime.now();
+    listaItensSomados.forEach((element) {
+      if(element.quantidade_recebida == null){
+        sucess = false;
+      } else {
+        ItemMovimentoEntradaModel itemEntrada = ItemMovimentoEntradaModel(
+          quantidade: element.quantidade_recebida,
+          quantidade_pedido: element.quantidade,
+          id_peca: element.peca!.idPeca,
+          pecaModel: element.peca,
+          valor_unitario: element.custo
+        );
+        listaItens.add(itemEntrada);
+        movimentoEntradaModel!.custo_total = (movimentoEntradaModel!.custo_total! + element.custo!);
+      }
     });
+    return sucess;
+
   }
 
 }

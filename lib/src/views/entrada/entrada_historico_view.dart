@@ -105,6 +105,16 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                         child: Row(
                                           children: [
                                             TextComponent(
+                                              'ID',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            TextComponent(
                                               'Data de Entrada',
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -142,6 +152,10 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
+                                      Expanded(
+                                        child: TextComponent(
+                                          '#'+snapshot.data![index].id_movimento_entrada.toString(),
+                                        ),),
                                       Expanded(
                                         child: Row(
                                           children: [
