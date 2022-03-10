@@ -33,4 +33,18 @@ class MovimentoEntradaRepository {
       throw error;
     }
   }
+
+  Future<bool> create(MovimentoEntradaModel? me) async {
+
+    Response response = await api.post('/movimento-entrada', me!.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+
+  }
+
 }
