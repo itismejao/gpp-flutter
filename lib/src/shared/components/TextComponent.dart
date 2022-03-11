@@ -26,7 +26,7 @@ class TextComponent extends StatelessWidget {
       textAlign: textAlign ?? TextAlign.left,
       style: TextStyle(
         color: color ?? Colors.black,
-        fontSize: fontSize ?? 12 * media.textScaleFactor,
+        fontSize: fontSize ?? 14 * media.textScaleFactor,
         letterSpacing: letterSpacing ?? 0.15,
         fontStyle: fontStyle ?? FontStyle.normal,
         fontWeight: fontWeight ?? FontWeight.w500,

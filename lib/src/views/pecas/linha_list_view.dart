@@ -134,6 +134,7 @@ class _LinhaListViewState extends State<LinhaListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
+                                  tooltip: 'Editar',
                                   onPressed: () {
                                     PopUpEditar.popUpPeca(
                                             context,
@@ -148,6 +149,7 @@ class _LinhaListViewState extends State<LinhaListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasLinhaController.excluir(_pecasLinha[index]).then((value) => setState(() {}));
                                       setState(() {

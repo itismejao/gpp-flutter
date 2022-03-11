@@ -510,7 +510,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     AlertDialog alert = AlertDialog(
       title: Text("Aviso"),
       content: Text(
-          "Existem peças adicionadas que não possui  estoque disponível, gostaria de criar um pedido de entrada"),
+          "Existem peças adicionadas que não possui  estoque disponível, gostaria de criar um pedido de entrada ?"),
       actions: [
         cancelarButton,
         confirmarButton,

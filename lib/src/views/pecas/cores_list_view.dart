@@ -140,6 +140,7 @@ class _CoresListViewState extends State<CoresListView> {
                                       Icons.edit,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Editar',
                                     onPressed: () {
                                       PopUpEditar.popUpPeca(
                                               context,
@@ -152,6 +153,7 @@ class _CoresListViewState extends State<CoresListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       excluir(context, _pecaCor[index])
                                           .then((value) => setState(() {}));

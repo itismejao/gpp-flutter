@@ -30,7 +30,6 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
   TextEditingController _controllerNotaFiscal = TextEditingController();
   TextEditingController _controllerSerie = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     Size media = MediaQuery.of(context).size;
@@ -141,7 +140,6 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                         tooltip: 'Buscar',
                         onPressed: () {
                           if (_controllerNumPedido != '') {
-
                             adicionarPedido(_controllerNumPedido.text);
                             filtroFormKey.currentState!.reset();
                           }
@@ -181,38 +179,39 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
           ],
         ),
         const Padding(padding: EdgeInsets.only(top: 5)),
-        pedidoEntradaController.pedidosEntrada.isEmpty ? Container () :
-        Container(
-          height: 45,
-          width: media.width,
-          child:ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: pedidoEntradaController.pedidosEntrada == null
-                    ? 0
-                    : pedidoEntradaController.pedidosEntrada.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 80,
-                    child: Card(
-                      color: secundaryColor,
-                      child: Expanded(
-                        child: Text(
-                          'Pedido\n' +
-                              pedidoEntradaController
-                                  .pedidosEntrada[index].idPedidoEntrada
-                                  .toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
+        pedidoEntradaController.pedidosEntrada.isEmpty
+            ? Container()
+            : Container(
+                height: 45,
+                width: media.width,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: pedidoEntradaController.pedidosEntrada == null
+                      ? 0
+                      : pedidoEntradaController.pedidosEntrada.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: 80,
+                      child: Card(
+                        color: secundaryColor,
+                        child: Expanded(
+                          child: Text(
+                            'Pedido\n' +
+                                pedidoEntradaController
+                                    .pedidosEntrada[index].idPedidoEntrada
+                                    .toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-        ),
         const Padding(padding: EdgeInsets.only(top: 15)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -522,11 +521,11 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
       bool success = movimentoEntradaController.ItensPedidoToItensEntrada();
       if (success) {
         try {
-          if (await movimentoEntradaController.create()){
+          if (await movimentoEntradaController.create()) {
             notify.sucess('Entrada realizada com sucesso');
             Navigator.pushNamed(context, 'astecas');
           }
-        } catch(e) {
+        } catch (e) {
           notify.error2(e.toString());
         }
       } else {

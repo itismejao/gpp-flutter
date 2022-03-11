@@ -62,19 +62,20 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         controller.carregado = true;
       });
     } catch (e) {
+      limparFiltro();
       setState(() {
         controller.pedidosEntrada = [];
         controller.carregado = true;
       });
-      notify.error(e.toString());
+      notify.error2(e.toString());
     }
   }
 
   limparFiltro() {
+    controller.situacao = null;
     controller.idPedidoEntrada = null;
     controller.dataInicio = null;
     controller.dataFim = null;
-    controller.situacao = null;
   }
 
   _buildSituacaoPedido(value) {

@@ -40,13 +40,13 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   buscarTodasPecas() async {
-    List pecasRetornadas = await _pecasController
-        .buscarTodos(_pecasController.pecasPagina.paginaAtual!);
+    List pecasRetornadas = await _pecasController.buscarTodos(_pecasController.pecasPagina.paginaAtual!);
 
     _pecasController.listaPecas = pecasRetornadas[0];
     _pecasController.pecasPagina = pecasRetornadas[1];
 
     setState(() {
+      _pecasController.carregado = true;
       _pecasController.listaPecas;
     });
   }
@@ -112,156 +112,145 @@ class _PecasListViewState extends State<PecasListView> {
           ],
         ),
         Divider(),
-        Column(
-          children: [
-            Container(
-              height: 400,
-              child: ListView.builder(
-                itemCount: _pecasController.listaPecas.length,
-                itemBuilder: (context, index) {
-                  return Container(
+        _pecasController.carregado
+            ? Column(
+                children: [
+                  Container(
+                    height: 400,
+                    child: ListView.builder(
+                      itemCount: _pecasController.listaPecas.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Padding(padding: EdgeInsets.only(left: 10)),
+                              // CheckboxComponent(),
+                              Expanded(
+                                child: Text(
+                                  _pecasController.listaPecas[index].id_peca.toString(),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                  // textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(_pecasController.listaPecas[index].id_peca.toString()),
+                              ),
+                              Expanded(
+                                child: Text(_pecasController.listaPecas[index].codigo_fabrica == null
+                                    ? ''
+                                    : _pecasController.listaPecas[index].codigo_fabrica.toString()),
+                              ),
+                              Expanded(
+                                child: Text(_pecasController.listaPecas[index].descricao.toString()),
+                              ),
+
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.visibility),
+                                      color: Colors.grey.shade400,
+                                      tooltip: 'Visualizar',
+                                      onPressed: () {
+                                        PopUpEditar.popUpPeca(
+                                                context,
+                                                PecasEditAndView(
+                                                    pecasEditPopup: _pecasController.listaPecas[index], enabled: false))
+                                            .then((value) => setState(() {}));
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                      tooltip: 'Editar',
+                                      onPressed: () {
+                                        PopUpEditar.popUpPeca(
+                                                context,
+                                                PecasEditAndView(
+                                                    pecasEditPopup: _pecasController.listaPecas[index], enabled: true))
+                                            .then((value) => setState(() {
+                                                  buscarTodasPecas();
+                                                }));
+                                      },
+                                    ),
+                                    // IconButton(
+                                    //   icon: Icon(
+                                    //     Icons.delete,
+                                    //     color: Colors.grey.shade400,
+                                    //   ),
+                                    //   onPressed: () {
+                                    //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
+                                    //     setState(() {
+                                    //       excluir(snapshot.data![index]);
+                                    //     });
+                                    //   },
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 50, //media.height * 0.10,
+                    // width: media.width,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Padding(padding: EdgeInsets.only(left: 10)),
-                        // CheckboxComponent(),
-                        Expanded(
-                          child: Text(
-                            _pecasController.listaPecas[index].id_peca
-                                .toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 16),
-                            // textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(_pecasController.listaPecas[index].id_peca
-                              .toString()),
-                        ),
-                        Expanded(
-                          child: Text(_pecasController
-                                      .listaPecas[index].codigo_fabrica ==
-                                  null
-                              ? ''
-                              : _pecasController
-                                  .listaPecas[index].codigo_fabrica
-                                  .toString()),
-                        ),
-                        Expanded(
-                          child: Text(_pecasController
-                              .listaPecas[index].descricao
-                              .toString()),
-                        ),
-
-                        Expanded(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.visibility),
-                                color: Colors.grey.shade400,
+                        TextComponent('Total de páginas: ' + _pecasController.pecasPagina.paginaTotal.toString()),
+                        Row(
+                          children: [
+                            IconButton(
+                                icon: Icon(Icons.first_page),
+                                tooltip: 'Primeira Página',
                                 onPressed: () {
-                                  PopUpEditar.popUpPeca(
-                                          context,
-                                          PecasEditAndView(
-                                              pecasEditPopup: _pecasController
-                                                  .listaPecas[index],
-                                              enabled: false))
-                                      .then((value) => setState(() {}));
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: Colors.grey.shade400,
+                                  _pecasController.pecasPagina.paginaAtual = 1;
+                                  buscarTodasPecas();
+                                }),
+                            IconButton(
+                                icon: const Icon(
+                                  Icons.navigate_before_rounded,
+                                  color: Colors.black,
                                 ),
+                                tooltip: 'Página Anterior',
                                 onPressed: () {
-                                  PopUpEditar.popUpPeca(
-                                          context,
-                                          PecasEditAndView(
-                                              pecasEditPopup: _pecasController
-                                                  .listaPecas[index],
-                                              enabled: true))
-                                      .then((value) => setState(() {
-                                            buscarTodasPecas();
-                                          }));
-                                },
-                              ),
-                              // IconButton(
-                              //   icon: Icon(
-                              //     Icons.delete,
-                              //     color: Colors.grey.shade400,
-                              //   ),
-                              //   onPressed: () {
-                              //     // _pecasController.excluir(snapshot.data![index]).then((value) => setState(() {}));
-                              //     setState(() {
-                              //       excluir(snapshot.data![index]);
-                              //     });
-                              //   },
-                              // ),
-                            ],
-                          ),
+                                  if (_pecasController.pecasPagina.paginaAtual! > 0) {
+                                    _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! - 1;
+                                    buscarTodasPecas();
+                                  }
+                                }),
+                            TextComponent(_pecasController.pecasPagina.paginaAtual.toString()),
+                            IconButton(
+                                icon: Icon(Icons.navigate_next_rounded),
+                                tooltip: 'Próxima Página',
+                                onPressed: () {
+                                  if (_pecasController.pecasPagina.paginaAtual != _pecasController.pecasPagina.paginaTotal) {
+                                    _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! + 1;
+                                  }
+
+                                  buscarTodasPecas();
+                                }),
+                            IconButton(
+                                icon: Icon(Icons.last_page),
+                                tooltip: 'Última Página',
+                                onPressed: () {
+                                  _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaTotal;
+                                  buscarTodasPecas();
+                                }),
+                          ],
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-            ),
-            Container(
-              height: 50, //media.height * 0.10,
-              // width: media.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextComponent('Total de páginas: ' +
-                      _pecasController.pecasPagina.paginaTotal.toString()),
-                  Row(
-                    children: [
-                      IconButton(
-                          icon: Icon(Icons.first_page),
-                          onPressed: () {
-                            _pecasController.pecasPagina.paginaAtual = 1;
-                            buscarTodasPecas();
-                          }),
-                      IconButton(
-                          icon: const Icon(
-                            Icons.navigate_before_rounded,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {
-                            if (_pecasController.pecasPagina.paginaAtual! > 0) {
-                              _pecasController.pecasPagina.paginaAtual =
-                                  _pecasController.pecasPagina.paginaAtual! - 1;
-                              buscarTodasPecas();
-                            }
-                          }),
-                      TextComponent(
-                          _pecasController.pecasPagina.paginaAtual.toString()),
-                      IconButton(
-                          icon: Icon(Icons.navigate_next_rounded),
-                          onPressed: () {
-                            if (_pecasController.pecasPagina.paginaAtual !=
-                                _pecasController.pecasPagina.paginaTotal) {
-                              _pecasController.pecasPagina.paginaAtual =
-                                  _pecasController.pecasPagina.paginaAtual! + 1;
-                            }
-
-                            buscarTodasPecas();
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.last_page),
-                          onPressed: () {
-                            _pecasController.pecasPagina.paginaAtual =
-                                _pecasController.pecasPagina.paginaTotal;
-                            buscarTodasPecas();
-                          }),
-                    ],
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
+              )
+            : CircularProgressIndicator(),
         // FutureBuilder(
         //   future: _pecasController.buscarTodos(),
         //   builder: (context, AsyncSnapshot<List<PecasModel>> snapshot) {
