@@ -33,7 +33,6 @@ class AstecaListView extends StatefulWidget {
 
 class _AstecaListViewState extends State<AstecaListView> {
   final ResponsiveController _responsive = ResponsiveController();
-  ScrollController scrollController = ScrollController();
 
   late final AstecaController astecaController;
   late MaskFormatter maskFormatter;
@@ -80,17 +79,6 @@ class _AstecaListViewState extends State<AstecaListView> {
     astecaController.dataFim = null;
   }
 
-  proximaPagina() async {
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        //proxima página
-        astecaController.pagina.atual = astecaController.pagina.atual + 1;
-        await buscarTodas();
-      }
-    });
-  }
-
   buscarTipoPendencias() async {
     setState(() {
       astecaController.carregado = false;
@@ -124,14 +112,6 @@ class _AstecaListViewState extends State<AstecaListView> {
     //Buscar pendências
 
     buscarTipoPendencias();
-
-    //ScrollController
-    proximaPagina();
-  }
-
-  void dispose() {
-    super.dispose();
-    scrollController.dispose();
   }
 
   situacao(DateTime data) {

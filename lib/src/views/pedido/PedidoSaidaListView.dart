@@ -32,7 +32,6 @@ class PedidoSaidaListView extends StatefulWidget {
 
 class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   final ResponsiveController _responsive = ResponsiveController();
-  ScrollController scrollController = ScrollController();
 
   late final PedidoController pedidoController;
   late MaskFormatter maskFormatter;
