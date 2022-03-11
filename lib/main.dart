@@ -68,6 +68,7 @@ import 'package:gpp/src/views/asteca/AstecaListView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
+import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 
 import 'package:gpp/src/views/funcionalities_view.dart';
 
