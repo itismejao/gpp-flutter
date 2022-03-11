@@ -95,7 +95,7 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                   ),
                                 ),
                               ),
-                            ),
+                            //),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -122,6 +122,7 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                             ),
                                           ],
                                         ),
+                                      ),
                                         Expanded(
                                           child: TextComponent(
                                             'Funcionário',
@@ -169,25 +170,7 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                             )
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                    Divider(),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              TextComponent(
-                                                DateFormat('dd/MM/yyyy').format(
-                                                    snapshot.data![index]
-                                                            .data_entrada ??
-                                                        DateTime.now()),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                      ),
                                         Expanded(
                                           child: TextComponent(
                                             snapshot.data![index].id_funcionario
