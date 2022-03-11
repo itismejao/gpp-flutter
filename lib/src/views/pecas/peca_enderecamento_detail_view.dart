@@ -80,7 +80,7 @@ class _PecaEnderecamentoDetailViewState
             const TitleComponent('Endereçar Peças'),
             new Spacer(),
             ButtonComponent(
-                icon: Icon(Icons.add, color: Colors.white),
+                icon: Icon(Icons.tune, color: Colors.white),
                 color: secundaryColor,
                 onPressed: () {
                   setState(() {
@@ -387,7 +387,6 @@ class _PecaEnderecamentoDetailViewState
                               setState(() {
                                 limparCorredor();
                                 _pisoSelected = value!;
-
                               });
                             },
                             dropdownSearchDecoration:
@@ -792,7 +791,7 @@ class _PecaEnderecamentoDetailViewState
                   );
                 } else {
                   return Container(
-                    height: media.height,
+                    height: media.height/2,
                     child: ListView.builder(
                       primary: false,
                       itemCount: snapshot.data?.length,
@@ -805,7 +804,7 @@ class _PecaEnderecamentoDetailViewState
                               // CheckboxComponent(),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].box!.prateleira!.estante!.corredor!.piso!.id_filial.toString(),
+                                  snapshot.data![index].peca_estoque == null ? snapshot.data![index].box!.prateleira!.estante!.corredor!.piso!.id_filial.toString() : snapshot.data![index].peca_estoque!.filial.toString(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -820,7 +819,7 @@ class _PecaEnderecamentoDetailViewState
                                 ),
                               ),
                               Expanded(
-                                child: Text(snapshot.data![index].box!.calcularMedida(),
+                                child: Text(snapshot.data![index].box?.calcularMedida() ?? '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -1017,6 +1016,11 @@ class _PecaEnderecamentoDetailViewState
 
     _controllerIdPeca.clear();
     _controllerNomePeca.clear();
+
+    id_fornecedor = null;
+    id_produto = null;
+    id_peca = null;
+
   }
 
   limparFields(){

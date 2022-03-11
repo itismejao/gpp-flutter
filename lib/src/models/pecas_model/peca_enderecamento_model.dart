@@ -31,7 +31,7 @@ class PecaEnderacamentoModel{
       endereco: json['endereco'],
       nomeFornecedor: json['fornecedor'],
       descPiso: json['piso'],
-      box: BoxEnderecamentoModel.fromJson(json['box'])
+      box: json['box'] == null ? null : BoxEnderecamentoModel.fromJson(json['box'])
     );
   }
 
