@@ -588,7 +588,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                                   : Text(
                                                       'Box não encontrado!')),
                                     ),
-                                  );
+                                  )));
                               }
                             })),
                   ],

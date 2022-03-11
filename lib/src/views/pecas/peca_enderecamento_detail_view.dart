@@ -398,44 +398,6 @@ class _PecaEnderecamentoDetailViewState
                         );}})
                   ),
 
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                Flexible(
-                    flex: 1,
-                    child: FutureBuilder(
-                        future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                              return Text("Sem conexão!");
-                            case ConnectionState.active:
-                            case ConnectionState.waiting:
-                              return Center(
-                                  child:
-                                  new CircularProgressIndicator());
-                            case ConnectionState.done:
-                              return Container(
-                                padding: EdgeInsets.only(
-                                    left: 12, right: 12),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius:
-                                  BorderRadius.circular(5),
-                                ),
-                                showAsSuffixIcons: true,
-                                selectedItem: _pisoSelected,
-                                showClearButton: true,
-                                clearButton: IconButton(
-                                  icon: Icon(Icons.clear),
-                                  onPressed: () {
-                                    limparFieldsLoc();
-                                  },
-                                ),
-                                emptyBuilder: (context, searchEntry) => Center(
-                                    child: Text('Nenhum piso encontrado!')),
-                              ),
-                            );
-                        }
-                      })),
               const Padding(padding: EdgeInsets.only(right: 10)),
               Flexible(
                   flex: 1,
