@@ -61,7 +61,8 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
         pedidoController.carregado = true;
       });
     } catch (e) {
-      notify.error(e.toString());
+      limparFiltro();
+      notify.error2(e.toString());
       setState(() {
         pedidoController.pedidos = [];
         pedidoController.carregado = true;
@@ -70,10 +71,10 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   }
 
   limparFiltro() {
+    pedidoController.situacao = null;
     pedidoController.idPedido = null;
     pedidoController.dataInicio = null;
     pedidoController.dataFim = null;
-    pedidoController.situacao = null;
   }
 
   _buildSituacaoPedido(value) {
@@ -460,8 +461,8 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                                 items: <Situacao>[
                                   Situacao(id: 1, descricao: 'Em aberto'),
                                   Situacao(id: 2, descricao: 'Pendente'),
-                                  Situacao(id: 3, descricao: 'Em separação'),
-                                  Situacao(id: 4, descricao: 'Fechado')
+                                  Situacao(id: 3, descricao: 'Concluído'),
+                                  Situacao(id: 4, descricao: 'Cancelado')
                                 ].map<DropdownMenuItem<Situacao>>(
                                     (Situacao value) {
                                   return DropdownMenuItem<Situacao>(

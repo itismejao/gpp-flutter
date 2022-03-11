@@ -62,11 +62,13 @@ class _AstecaListViewState extends State<AstecaListView> {
         astecaController.carregado = true;
       });
     } catch (e) {
+      limparFiltro();
       setState(() {
         astecaController.astecas = [];
         astecaController.carregado = true;
       });
-      notify.error(e.toString());
+
+      notify.error2(e.toString());
     }
   }
 
@@ -543,9 +545,9 @@ class _AstecaListViewState extends State<AstecaListView> {
                           child: InputComponent(
                             label: 'Número da nota fiscal:',
                             maxLines: 1,
-                            onChanged: (value) {
+                            onSaved: (value) {
                               astecaController.filtroAsteca.documentoFiscal!
-                                  .numDocFiscal = value;
+                                  .numDocFiscal = int.tryParse(value);
                             },
                             hintText: 'Digite o número da nota fiscal',
                           ),
