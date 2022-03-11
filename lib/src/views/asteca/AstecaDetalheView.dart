@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
+import 'package:gpp/src/controllers/PedidoEntradaController.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
+import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
+import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/ProdutoPecaModel.dart';
-import 'package:gpp/src/shared/utils/GerarPedidoPDF.dart';
+import 'package:gpp/src/shared/utils/GerarPedidoEntradaPDF.dart';
+import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
@@ -45,7 +50,8 @@ class AstecaDetalheView extends StatefulWidget {
 
 class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late AstecaController astecaController;
-
+  late PedidoEntradaController pedidoEntracaController;
+  late EmailPedidoEntradaController emailPedidoEntracaController;
   List<ItemPeca> itemsPeca = [];
   List<ItemPeca> itemsPecaBusca = [];
   int marcados = 0;
@@ -294,12 +300,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   finalizarPedido() async {
     try {
-      if (!verificarSelecaoMotivoTrocaPeca()) {
-        myShowDialog('Selecione o motivo de troca da peça');
-      }
-
       if (verificaEstoque()) {
-        print('as');
+        if (!verificarSelecaoMotivoTrocaPeca()) {
+          myShowDialog('Selecione o motivo de troca da peça');
+        }
 
         //Criar o pedido
         astecaController.pedidoSaida.cpfCnpj =
@@ -318,81 +322,246 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         astecaController.pedidoSaida.cliente =
             astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
-        PedidoSaidaModel pedidoResposta = await astecaController
+        PedidoSaidaModel pedidoComprovante = await astecaController
             .pedidoRepository
             .criar(astecaController.pedidoSaida);
 
-        //Notificação
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(actions: <Widget>[
-                Row(
-                  children: [
-                    Padding(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: TextComponent(
-                                'Nº Pedido: #${pedidoResposta.idPedidoSaida}',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: TextComponent(
-                                  'Nome do cliente: ${pedidoResposta.cliente!.nome}'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 4.0),
-                              child: TextComponent(
-                                  'Filial venda: ${pedidoResposta.filialVenda}'),
-                            )
-                          ],
-                        ),
-                        padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  children: [
-                    ButtonComponent(
-                        color: primaryColor,
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacementNamed(context, '/pedidos');
-                        },
-                        text: 'Ok'),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    ButtonComponent(
-                        icon: Icon(
-                          Icons.print,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          GerarPedidoPDF(pedido: pedidoResposta).imprimirPDF();
-                        },
-                        text: 'Imprimir')
-                  ],
-                )
-              ]);
-            });
+        exibirComprovantePedidoSaida(pedidoComprovante);
       } else {
-        myShowDialog(
-            'Não é possível finalizar o pedido, existe peças adicionadas sem estoque');
+        exibirDialogPedidoEntrada();
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  exibirComprovantePedidoSaida(pedidoConfirmacao) {
+    //Notificação
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Row(
+              children: [
+                Padding(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: TextComponent(
+                            'Nº Pedido: #${pedidoConfirmacao.idPedidoSaida}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Nome do cliente: ${pedidoConfirmacao.cliente!.nome}'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Filial venda: ${pedidoConfirmacao.filialVenda}'),
+                        )
+                      ],
+                    ),
+                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
+              ],
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                ButtonComponent(
+                    color: primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/pedidos-saida');
+                    },
+                    text: 'Ok'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.print,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      GerarPedidoSaidaPDF(pedido: pedidoConfirmacao)
+                          .imprimirPDF();
+                    },
+                    text: 'Imprimir')
+              ],
+            )
+          ]);
+        });
+  }
+
+  exibirComprovantePedidoEntrada(PedidoEntradaModel pedidoConfirmacao) {
+    //Notificação
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(actions: <Widget>[
+            Row(
+              children: [
+                Padding(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: TextComponent(
+                            'Nº Pedido: #${pedidoConfirmacao.idPedidoEntrada}',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: TextComponent(
+                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.produto!.first.fornecedor!.cliente!.nome}'),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0))
+              ],
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              children: [
+                ButtonComponent(
+                    color: primaryColor,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(
+                          context, '/pedidos-entrada');
+                    },
+                    text: 'Ok'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.print,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      GerarPedidoEntradaPDF(pedidoEntrada: pedidoConfirmacao)
+                          .imprimirPDF();
+                    },
+                    text: 'Imprimir'),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(
+                      Icons.email,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      enviarEmailPedidoEntrada(pedidoConfirmacao);
+                      Navigator.pop(context);
+                    },
+                    text: 'Enviar e-mail')
+              ],
+            )
+          ]);
+        });
+  }
+
+  enviarEmailPedidoEntrada(pedidoConfirmacao) async {
+    try {
+      if (await emailPedidoEntracaController.repository
+          .criar(pedidoConfirmacao)) {
+        myShowDialog('E-mail enviado com sucesso');
+        await Future.delayed(Duration(seconds: 3));
+        Navigator.pushNamed(context, '/pedidos-entrada');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  exibirDialogPedidoEntrada() {
+    // set up the buttons
+    Widget cancelarButton = TextButton(
+      child: Text("Não"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget confirmarButton = TextButton(
+      child: Text("Sim"),
+      onPressed: () {
+        Navigator.pop(context);
+        criarPedidoEntrada();
+        print('teste');
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Aviso"),
+      content: Text(
+          "Existem peças adicionadas que não possui  estoque disponível, gostaria de criar um pedido de entrada"),
+      actions: [
+        cancelarButton,
+        confirmarButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  List<ItemPedidoEntradaModel> criarItensPedidoEntrada() {
+    List<ItemPedidoEntradaModel> itensPedidoEntrada = [];
+
+    astecaController.pedidoSaida.itemsPedidoSaida!.forEach((e) {
+      itensPedidoEntrada.add(ItemPedidoEntradaModel(
+          quantidade: e.quantidade, custo: e.valor, peca: e.peca));
+    });
+
+    return itensPedidoEntrada;
+  }
+
+  criarPedidoEntrada() async {
+    //Criar o pedido de entrada
+    PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
+        situacao: 1, //Em aberto,
+        valorTotal: astecaController.pedidoSaida.valorTotal,
+        //dataEmissao: DateTime.now(),
+        funcionario: astecaController.pedidoSaida.funcionario,
+        asteca: astecaController.asteca,
+        itensPedidoEntrada: criarItensPedidoEntrada());
+
+    //Solicita a criação do pedido de entrada
+    try {
+      var pedidoConfirmacao =
+          await pedidoEntracaController.repository.criar(pedidoEntrada);
+
+      //Atualiza a pendência da asteca
+      var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
+
+      await astecaController.repository.pendencia
+          .criar(astecaController.asteca, pendencia);
+
+      //Exibi comprovante
+      exibirComprovantePedidoEntrada(pedidoConfirmacao);
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -438,6 +607,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     super.initState();
 
     astecaController = AstecaController();
+
+    //Pedido de entrada controller
+    pedidoEntracaController = PedidoEntradaController();
+
+    //E-mail pedido de entrada controller
+    emailPedidoEntracaController = EmailPedidoEntradaController();
     _responsive = ResponsiveController();
 
     //Instância máscaras
@@ -614,45 +789,52 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               //     ),
                               //   ),
                               // ),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      astecaController.abrirDropDownButton =
-                                          !astecaController.abrirDropDownButton;
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: secundaryColor,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, top: 12, bottom: 12),
-                                        child: astecaController
-                                                .asteca
-                                                .astecaTipoPendencias!
-                                                .isNotEmpty
-                                            ? TextComponent(
-                                                astecaController
-                                                        .asteca
-                                                        .astecaTipoPendencias!
-                                                        .last
-                                                        .idTipoPendencia
-                                                        .toString() +
-                                                    ' - ' +
-                                                    astecaController
-                                                        .asteca
-                                                        .astecaTipoPendencias!
-                                                        .last
-                                                        .descricao!,
-                                                color: Colors.white)
-                                            : const TextComponent(
-                                                'Aguardando Pendência',
-                                                color: Colors.white)),
-                                  ),
-                                ),
-                              ),
+                              astecaController.carregado
+                                  ? Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            astecaController
+                                                    .abrirDropDownButton =
+                                                !astecaController
+                                                    .abrirDropDownButton;
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: secundaryColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12,
+                                                  top: 12,
+                                                  bottom: 12),
+                                              child: astecaController
+                                                      .asteca
+                                                      .astecaTipoPendencias!
+                                                      .isNotEmpty
+                                                  ? TextComponent(
+                                                      astecaController
+                                                              .asteca
+                                                              .astecaTipoPendencias!
+                                                              .last
+                                                              .idTipoPendencia
+                                                              .toString() +
+                                                          ' - ' +
+                                                          astecaController
+                                                              .asteca
+                                                              .astecaTipoPendencias!
+                                                              .last
+                                                              .descricao!,
+                                                      color: Colors.white)
+                                                  : const TextComponent(
+                                                      'Aguardando Pendência',
+                                                      color: Colors.white)),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
@@ -682,14 +864,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: const Divider(),
-                        ),
-                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
-                              astecaController.asteca.pedido == null
+                              astecaController.asteca.pedidoSaida == null
                                   ? ButtonComponent(
                                       color: primaryColor,
                                       onPressed: () {
@@ -717,7 +895,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             right: 14,
                             child: Container(
                               height: 240,
-                              width: 700,
+                              width: 600,
                               decoration: BoxDecoration(
                                   color: Colors.grey.shade50,
                                   borderRadius: BorderRadius.circular(5)),
@@ -735,127 +913,137 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                       )
                                     ],
                                   ),
-                                  Expanded(
-                                    child: astecaController
-                                            .astecaTipoPendenciasBuscar.isEmpty
-                                        ? ListView.builder(
-                                            itemCount: astecaController
-                                                .astecaTipoPendencias.length,
-                                            itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    handlePendencia(
-                                                        astecaController.asteca,
-                                                        astecaController
-                                                                .astecaTipoPendencias[
-                                                            index]);
+                                  astecaController.carregado
+                                      ? Expanded(
+                                          child: astecaController
+                                                  .astecaTipoPendenciasBuscar
+                                                  .isEmpty
+                                              ? ListView.builder(
+                                                  itemCount: astecaController
+                                                      .astecaTipoPendencias
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          handlePendencia(
+                                                              astecaController
+                                                                  .asteca,
+                                                              astecaController
+                                                                      .astecaTipoPendencias[
+                                                                  index]);
 
-                                                    astecaController
-                                                            .abrirDropDownButton =
-                                                        false;
-                                                  });
-                                                },
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 16),
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 16,
-                                                        height: 16,
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                secundaryColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        2)),
+                                                          astecaController
+                                                                  .abrirDropDownButton =
+                                                              false;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 8,
+                                                                horizontal: 16),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 16,
+                                                              height: 16,
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      secundaryColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              2)),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            TextComponent(
+                                                              astecaController
+                                                                      .astecaTipoPendencias[
+                                                                          index]
+                                                                      .idTipoPendencia
+                                                                      .toString() +
+                                                                  ' - ' +
+                                                                  astecaController
+                                                                      .astecaTipoPendencias[
+                                                                          index]
+                                                                      .descricao
+                                                                      .toString(),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      TextComponent(
-                                                        astecaController
-                                                                .astecaTipoPendencias[
-                                                                    index]
-                                                                .idTipoPendencia
-                                                                .toString() +
-                                                            ' - ' +
-                                                            astecaController
-                                                                .astecaTipoPendencias[
-                                                                    index]
-                                                                .descricao
-                                                                .toString(),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : ListView.builder(
-                                            itemCount: astecaController
-                                                .astecaTipoPendenciasBuscar
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    handlePendencia(
-                                                        astecaController.asteca,
-                                                        astecaController
-                                                                .astecaTipoPendenciasBuscar[
-                                                            index]);
+                                                    );
+                                                  },
+                                                )
+                                              : ListView.builder(
+                                                  itemCount: astecaController
+                                                      .astecaTipoPendenciasBuscar
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          handlePendencia(
+                                                              astecaController
+                                                                  .asteca,
+                                                              astecaController
+                                                                      .astecaTipoPendenciasBuscar[
+                                                                  index]);
 
-                                                    astecaController
-                                                            .abrirDropDownButton =
-                                                        false;
-                                                  });
-                                                },
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 16),
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 16,
-                                                        height: 16,
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                secundaryColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        2)),
+                                                          astecaController
+                                                                  .abrirDropDownButton =
+                                                              false;
+                                                        });
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 8,
+                                                                horizontal: 16),
+                                                        child: Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 16,
+                                                              height: 16,
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      secundaryColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              2)),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            TextComponent(
+                                                              astecaController
+                                                                      .astecaTipoPendenciasBuscar[
+                                                                          index]
+                                                                      .idTipoPendencia
+                                                                      .toString() +
+                                                                  ' - ' +
+                                                                  astecaController
+                                                                      .astecaTipoPendenciasBuscar[
+                                                                          index]
+                                                                      .descricao
+                                                                      .toString(),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
-                                                      SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      TextComponent(
-                                                        astecaController
-                                                                .astecaTipoPendenciasBuscar[
-                                                                    index]
-                                                                .idTipoPendencia
-                                                                .toString() +
-                                                            ' - ' +
-                                                            astecaController
-                                                                .astecaTipoPendenciasBuscar[
-                                                                    index]
-                                                                .descricao
-                                                                .toString(),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                  ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ))
@@ -864,7 +1052,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 ),
               ],
             )
-          : LoadingComponent();
+          : Container(height: media.size.height * 0, child: LoadingComponent());
     }
   }
 
@@ -1075,7 +1263,30 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             ),
           ],
         ),
-        astecaController.asteca.pedido != null
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    astecaController.step = 5;
+                    astecaController.abrirDropDownButton = false;
+                  });
+                },
+                child: ItemMenu(
+                  data: 'Histórico de pendências',
+                  color: astecaController.step == 5
+                      ? Colors.grey.shade50
+                      : Colors.transparent,
+                  borderColor: astecaController.step == 5
+                      ? secundaryColor
+                      : Colors.transparent,
+                ),
+              ),
+            ),
+          ],
+        ),
+        astecaController.asteca.pedidoSaida != null
             ? Row(
                 children: [
                   Expanded(
@@ -1083,12 +1294,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       onTap: () {
                         Navigator.pushNamed(
                             context,
-                            '/pedidos/' +
-                                astecaController.asteca.pedido!.idPedidoSaida
+                            '/pedidos-saida/' +
+                                astecaController
+                                    .asteca.pedidoSaida!.idPedidoSaida
                                     .toString());
                       },
                       child: ItemMenu(
-                        data: 'Pedido',
+                        data: 'Pedido de saída',
                         color: astecaController.step == 1
                             ? Colors.grey.shade50
                             : Colors.transparent,
@@ -1117,7 +1329,84 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         return _buildAstecaProduct(media);
       case 4:
         return _buildAstecaParts(media);
+      case 5:
+        return historicoPendencias();
     }
+  }
+
+  historicoPendencias() {
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.history_rounded,
+                size: 32,
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              TitleComponent('Histórico de pendências')
+            ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          astecaController.carregado
+              ? Container(
+                  height: 700,
+                  child: ListView.builder(
+                    itemCount:
+                        astecaController.asteca.astecaTipoPendencias!.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: (index % 2) == 0
+                              ? MainAxisAlignment.start
+                              : MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: 340,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey.shade100),
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    TextComponent(
+                                      'Pendência:  ${astecaController.asteca.astecaTipoPendencias![index].idTipoPendencia} - ${astecaController.asteca.astecaTipoPendencias![index].descricao}',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.normal,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextComponent(
+                                      'Data ${DateFormat('dd/MM/yyyy').format(astecaController.asteca.astecaTipoPendencias![index].dataCria!)}',
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.normal,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : LoadingComponent()
+        ],
+      ),
+    );
   }
 
   _buildAstecaInformation(MediaQueryData media) {
@@ -2234,7 +2523,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         const Divider(),
         Container(
           height: media.size.height * 0.40,
-          child: astecaController.asteca.pedido == null
+          child: astecaController.asteca.pedidoSaida == null
               ? ListView.builder(
                   itemCount:
                       astecaController.pedidoSaida.itemsPedidoSaida!.length,
@@ -2364,7 +2653,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               : Container(
                   child: ListView.builder(
                     itemCount: astecaController
-                        .asteca.pedido!.itemsPedidoSaida!.length,
+                        .asteca.pedidoSaida!.itemsPedidoSaida!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -2373,40 +2662,46 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           children: [
                             Expanded(
                               child: TextComponent(astecaController
-                                  .asteca
-                                  .pedido!
-                                  .itemsPedidoSaida![index]
-                                  .idItemPedidoSaida
-                                  .toString()),
+                                      .asteca
+                                      .pedidoSaida!
+                                      .itemsPedidoSaida?[index]
+                                      .idItemPedidoSaida
+                                      .toString() ??
+                                  ''),
                             ),
                             Expanded(
                               child: TextComponent(astecaController
-                                  .camelCaseFirst(astecaController
-                                      .asteca
-                                      .pedido!
-                                      .itemsPedidoSaida![index]
-                                      .peca!
-                                      .descricao)),
+                                      .camelCaseFirst(astecaController
+                                          .asteca
+                                          .pedidoSaida!
+                                          .itemsPedidoSaida![index]
+                                          .peca!
+                                          .descricao) ??
+                                  ''),
                             ),
                             Expanded(
                               flex: 2,
-                              child: TextComponent(astecaController.asteca
-                                  .pedido!.itemsPedidoSaida![index].quantidade
-                                  .toString()),
+                              child: TextComponent(astecaController
+                                      .asteca
+                                      .pedidoSaida!
+                                      .itemsPedidoSaida?[index]
+                                      .quantidade
+                                      .toString() ??
+                                  ''),
                             ),
                             Expanded(
                               child: TextComponent(astecaController.formatter
-                                  .format(astecaController.asteca.pedido!
+                                  .format(astecaController.asteca.pedidoSaida!
                                       .itemsPedidoSaida![index].valor)),
                             ),
                             Expanded(
                                 child: TextComponent(
                               astecaController.formatter.format(astecaController
                                       .asteca
-                                      .pedido!
+                                      .pedidoSaida!
                                       .itemsPedidoSaida![index]
                                       .quantidade *
-                                  astecaController.asteca.pedido!
+                                  astecaController.asteca.pedidoSaida!
                                       .itemsPedidoSaida![index].valor),
                             )),
                             Expanded(
@@ -2414,7 +2709,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               child: TextComponent(astecaController
                                   .camelCaseFirst(astecaController
                                       .asteca
-                                      .pedido!
+                                      .pedidoSaida!
                                       .itemsPedidoSaida![index]
                                       .motivoTrocaPeca!
                                       .nome
@@ -2430,10 +2725,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   ),
                 ),
         ),
-        const Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: const Divider(),
-        ),
+        const Divider(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -2454,336 +2746,333 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   }
 
   exibirPecas(context) async {
-    //Carrega peças
-    await buscarProdutoPecas();
+    try {
+      //Carrega peças
+      await buscarProdutoPecas();
 
-    MediaQueryData media = MediaQuery.of(context);
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (context, setState) {
-            return AlertDialog(
-              title: Row(
-                children: [
-                  const Icon(
-                    Icons.settings,
-                    size: 32,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  const TitleComponent('Peças'),
-                ],
-              ),
-              content: Container(
-                width: media.size.width * 0.80,
-                height: media.size.height * 0.80,
-                child: Column(
+      MediaQueryData media = MediaQuery.of(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (context, setState) {
+              return AlertDialog(
+                title: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Row(
-                        children: [
-                          const TextComponent(
-                            'Selecione uma ou mais peças para realizar a manutenção do produto',
-                            letterSpacing: 0.15,
-                            fontSize: 16,
-                          ),
-                        ],
-                      ),
+                    const Icon(
+                      Icons.settings,
+                      size: 32,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: InputComponent(
-                              onChanged: (value) {
-                                setState(() {
-                                  pesquisarPecas(value);
-                                });
-                              },
-                              maxLines: 1,
-                              prefixIcon: const Icon(
-                                Icons.search,
-                              ),
-                              hintText:
-                                  'Digite o número de identificação da peça ou o nome',
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          ButtonComponent(
-                              icon:
-                                  Icon(Icons.tune_rounded, color: Colors.white),
-                              color: secundaryColor,
-                              onPressed: () {
-                                setState(() {
-                                  abrirFiltro = !abrirFiltro;
-                                });
-                              },
-                              text: 'Adicionar filtro')
-                        ],
-                      ),
+                    const SizedBox(
+                      width: 12,
                     ),
-                    Container(
-                      height: abrirFiltro ? null : 0,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    const TitleComponent('Peças'),
+                  ],
+                ),
+                content: Container(
+                  width: media.size.width * 0.80,
+                  height: media.size.height * 0.80,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Container(
-                              width: 220,
-                              child: DropDownComponent(
-                                icon: const Icon(
-                                  Icons.swap_vert,
-                                ),
-                                items: <String>[
-                                  'Ordem crescente',
-                                  'Ordem decrescente'
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                hintText: 'Nome',
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Container(
-                              width: 220,
-                              child: DropDownComponent(
-                                icon: const Icon(
-                                  Icons.swap_vert,
-                                ),
-                                items: <String>[
-                                  'Ordem crescente',
-                                  'Ordem decrescente'
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                hintText: 'Estoque disponível',
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Container(
-                              width: 220,
-                              child: DropDownComponent(
-                                icon: const Icon(
-                                  Icons.swap_vert,
-                                ),
-                                items: <String>[
-                                  'Último dia',
-                                  'Último 15 dias',
-                                  'Último 30 dias',
-                                  'Último semestre',
-                                  'Último ano'
-                                ].map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                hintText: 'Período',
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.grey.shade50,
-                      height: astecaController.abrirFiltro ? null : 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: InputComponent(
-                                label: 'Data de criação:',
-                                hintText: 'Digite a data de criação da peça',
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: InputComponent(
-                                label: 'Data de criação:',
-                                hintText: 'Digite a data de criação da peça',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        CheckboxComponent(
-                          value: marcados == itemsPeca.length,
-                          onChanged: (bool value) {
-                            setState(() {
-                              marcarTodosCheckbox(value);
-                            });
-                          },
-                        ),
-                        Expanded(
-                          child: const TextComponent('ID'),
-                        ),
-                        Expanded(
-                          child: const TextComponent('Nome'),
-                        ),
-                        Expanded(
-                          child: const TextComponent('Valor R\$',
+                            const TextComponent(
+                              'Selecione uma ou mais peças para realizar a manutenção do produto',
                               letterSpacing: 0.15,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                            ),
+                          ],
                         ),
-                        Expanded(
-                          child: const TextComponent('Estoque disponível'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
                         ),
-                      ],
-                    ),
-                    const Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: const Divider(),
-                    ),
-                    Expanded(
-                      child: itemsPecaBusca.length == 0
-                          ? ListView.builder(
-                              itemCount: itemsPeca.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  color: (index % 2) == 0
-                                      ? Colors.white
-                                      : Colors.grey.shade50,
-                                  child: Row(
-                                    children: [
-                                      CheckboxComponent(
-                                          value: itemsPeca[index].marcado,
-                                          onChanged: (bool value) => {
-                                                setState(() {
-                                                  marcarCheckbox(index, value);
-                                                })
-                                              }),
-                                      Expanded(
-                                        child: TextComponent(astecaController
-                                            .produtoPecas[index].peca.idPeca
-                                            .toString()),
-                                      ),
-                                      Expanded(
-                                        child: TextComponent(astecaController
-                                            .camelCaseFirst(astecaController
-                                                .produtoPecas[index]
-                                                .peca
-                                                .descricao)),
-                                      ),
-                                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: InputComponent(
+                                onChanged: (value) {
+                                  setState(() {
+                                    pesquisarPecas(value);
+                                  });
+                                },
+                                maxLines: 1,
+                                prefixIcon: const Icon(
+                                  Icons.search,
+                                ),
+                                hintText:
+                                    'Digite o número de identificação da peça ou o nome',
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            ButtonComponent(
+                                icon: Icon(Icons.tune_rounded,
+                                    color: Colors.white),
+                                color: secundaryColor,
+                                onPressed: () {
+                                  setState(() {
+                                    abrirFiltro = !abrirFiltro;
+                                  });
+                                },
+                                text: 'Adicionar filtro')
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: abrirFiltro ? null : 0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 220,
+                                child: DropDownComponent(
+                                  icon: const Icon(
+                                    Icons.swap_vert,
+                                  ),
+                                  items: <String>[
+                                    'Ordem crescente',
+                                    'Ordem decrescente'
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hintText: 'Nome',
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Container(
+                                width: 220,
+                                child: DropDownComponent(
+                                  icon: const Icon(
+                                    Icons.swap_vert,
+                                  ),
+                                  items: <String>[
+                                    'Ordem crescente',
+                                    'Ordem decrescente'
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hintText: 'Estoque disponível',
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Container(
+                                width: 220,
+                                child: DropDownComponent(
+                                  icon: const Icon(
+                                    Icons.swap_vert,
+                                  ),
+                                  items: <String>[
+                                    'Último dia',
+                                    'Último 15 dias',
+                                    'Último 30 dias',
+                                    'Último semestre',
+                                    'Último ano'
+                                  ].map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                  hintText: 'Período',
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        color: Colors.grey.shade50,
+                        height: astecaController.abrirFiltro ? null : 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: InputComponent(
+                                  label: 'Data de criação:',
+                                  hintText: 'Digite a data de criação da peça',
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: InputComponent(
+                                  label: 'Data de criação:',
+                                  hintText: 'Digite a data de criação da peça',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Divider(),
+                      Row(
+                        children: [
+                          CheckboxComponent(
+                            value: marcados == itemsPeca.length,
+                            onChanged: (bool value) {
+                              setState(() {
+                                marcarTodosCheckbox(value);
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: const TextComponent('ID'),
+                          ),
+                          Expanded(
+                            child: const TextComponent('Nome'),
+                          ),
+                          Expanded(
+                            child: const TextComponent('Valor R\$',
+                                letterSpacing: 0.15,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: const TextComponent('Estoque disponível'),
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      Expanded(
+                        child: itemsPecaBusca.length == 0
+                            ? ListView.builder(
+                                itemCount: itemsPeca.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    color: (index % 2) == 0
+                                        ? Colors.white
+                                        : Colors.grey.shade50,
+                                    child: Row(
+                                      children: [
+                                        CheckboxComponent(
+                                            value: itemsPeca[index].marcado,
+                                            onChanged: (bool value) => {
+                                                  setState(() {
+                                                    marcarCheckbox(
+                                                        index, value);
+                                                  })
+                                                }),
+                                        Expanded(
                                           child: TextComponent(astecaController
-                                              .formatter
-                                              .format(astecaController
+                                              .produtoPecas[index].peca.idPeca
+                                              .toString()),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(astecaController
+                                              .camelCaseFirst(astecaController
                                                   .produtoPecas[index]
                                                   .peca
-                                                  .custo))),
-                                      Expanded(
-                                        child: astecaController
-                                                    .produtoPecas[index]
-                                                    .peca
-                                                    .estoque!
-                                                    .length !=
-                                                0
-                                            ? TextComponent(astecaController
-                                                .produtoPecas[index]
-                                                .peca
-                                                .estoque!
-                                                .first
-                                                .saldoDisponivel
-                                                .toString())
-                                            : TextComponent('0'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              })
-                          : ListView.builder(
-                              itemCount: itemsPecaBusca.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  color: (index % 2) == 0
-                                      ? Colors.white
-                                      : Colors.grey.shade50,
-                                  child: Row(
-                                    children: [
-                                      CheckboxComponent(
-                                          value: itemsPecaBusca[index].marcado,
-                                          onChanged: (bool value) => {
-                                                setState(() {
-                                                  marcarCheckbox(index, value);
-                                                })
-                                              }),
-                                      Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .idPeca
-                                                .toString()),
-                                      ),
-                                      Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .descricao),
-                                      ),
-                                      Expanded(
-                                        child: TextComponent(
-                                            itemsPecaBusca[index]
-                                                .produtoPeca
-                                                .peca
-                                                .custo
-                                                .toString()),
-                                      ),
-                                      Expanded(
-                                        child: astecaController
-                                                    .produtoPecas[index]
-                                                    .peca
-                                                    .estoque!
-                                                    .length !=
-                                                0
-                                            ? TextComponent(astecaController
-                                                .produtoPecas[index]
-                                                .peca
-                                                .estoque!
-                                                .first
-                                                .saldoDisponivel
-                                                .toString())
-                                            : TextComponent('0'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16,
+                                                  .descricao)),
+                                        ),
+                                        Expanded(
+                                            child: TextComponent(
+                                                astecaController.formatter
+                                                    .format(astecaController
+                                                        .produtoPecas[index]
+                                                        .peca
+                                                        .custo))),
+                                        Expanded(
+                                          child: astecaController
+                                                      .produtoPecas[index]
+                                                      .peca
+                                                      .estoque!
+                                                      .length !=
+                                                  0
+                                              ? TextComponent(astecaController
+                                                  .produtoPecas[index]
+                                                  .peca
+                                                  .estoque!
+                                                  .first
+                                                  .saldoDisponivel
+                                                  .toString())
+                                              : TextComponent('0'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                })
+                            : ListView.builder(
+                                itemCount: itemsPecaBusca.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    color: (index % 2) == 0
+                                        ? Colors.white
+                                        : Colors.grey.shade50,
+                                    child: Row(
+                                      children: [
+                                        CheckboxComponent(
+                                            value:
+                                                itemsPecaBusca[index].marcado,
+                                            onChanged: (bool value) => {
+                                                  setState(() {
+                                                    marcarCheckbox(
+                                                        index, value);
+                                                  })
+                                                }),
+                                        Expanded(
+                                          child: TextComponent(
+                                              itemsPecaBusca[index]
+                                                  .produtoPeca
+                                                  .peca
+                                                  .idPeca
+                                                  .toString()),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                              itemsPecaBusca[index]
+                                                  .produtoPeca
+                                                  .peca
+                                                  .descricao),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                              itemsPecaBusca[index]
+                                                  .produtoPeca
+                                                  .peca
+                                                  .custo
+                                                  .toString()),
+                                        ),
+                                        Expanded(
+                                          child: astecaController
+                                                      .produtoPecas[index]
+                                                      .peca
+                                                      .estoque!
+                                                      .length !=
+                                                  0
+                                              ? TextComponent(astecaController
+                                                  .produtoPecas[index]
+                                                  .peca
+                                                  .estoque!
+                                                  .first
+                                                  .saldoDisponivel
+                                                  .toString())
+                                              : TextComponent('0'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
                       ),
-                      child: Row(
+                      const Divider(),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextComponent(
@@ -2809,13 +3098,15 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             ],
                           )
                         ],
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
+              );
+            });
           });
-        });
+    } catch (e) {
+      myShowDialog(e.toString());
+    }
   }
 }

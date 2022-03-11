@@ -1,5 +1,3 @@
-import 'package:gpp/src/models/user_model.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:universal_html/html.dart';
 
 final storage = window.localStorage;

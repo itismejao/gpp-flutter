@@ -17,13 +17,11 @@ class PecaModel {
     return PecaModel(
         idPeca: json['id_peca'],
         descricao: json['descricao'],
-        custo: json['custo'] != null ? json['custo'] : null,
+        custo: json['custo'] != null ? json['custo'].toDouble() : null,
         estoque: json['estoque'] != null
-            ? (json['estoque'] as List).isNotEmpty
-                ? json['estoque'].map<PecaEstoqueModel>((json) {
-                    return PecaEstoqueModel.fromJson(json);
-                  }).toList()
-                : []
+            ? json['estoque'].map<PecaEstoqueModel>((json) {
+                return PecaEstoqueModel.fromJson(json);
+              }).toList()
             : null);
   }
 

@@ -12,16 +12,16 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 
-class AuthenticateView extends StatefulWidget {
-  const AuthenticateView({
+class AutenticacaoView extends StatefulWidget {
+  const AutenticacaoView({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AuthenticateViewState createState() => _AuthenticateViewState();
+  _AutenticacaoViewState createState() => _AutenticacaoViewState();
 }
 
-class _AuthenticateViewState extends State<AuthenticateView> {
+class _AutenticacaoViewState extends State<AutenticacaoView> {
   late AutenticacaoController controller;
   final ResponsiveController _responsive = ResponsiveController();
 
@@ -68,7 +68,6 @@ class _AuthenticateViewState extends State<AuthenticateView> {
                   child: TitleComponent('Login')),
               InputComponent(
                 label: "RE",
-                keyboardType: TextInputType.number,
                 onFieldSubmitted: (value) {
                   autenticar(context);
                 },

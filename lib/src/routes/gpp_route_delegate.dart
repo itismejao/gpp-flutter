@@ -3,7 +3,8 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/routes/gpp_route_path.dart';
 import 'package:gpp/src/views/appbar_view.dart';
-import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
+
 import 'package:gpp/src/views/departamentos/departament_view.dart';
 
 import 'package:gpp/src/views/funcionalities_view.dart';
@@ -117,7 +118,7 @@ class GppRouterDelegate extends RouterDelegate<GppRoutePath>
 
     // ignore: unnecessary_null_comparison
     if (!authenticated) {
-      stack = AuthenticateView();
+      stack = AutenticacaoView();
     } else {
       var subStack;
 

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
-import 'package:gpp/src/shared/components/ButtonComponent.dart';
-import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/pecas_edit_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
@@ -56,6 +53,7 @@ class _PecasListViewState extends State<PecasListView> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
 

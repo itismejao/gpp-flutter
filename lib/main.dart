@@ -56,45 +56,42 @@
 //     );
 //   }
 // }
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/addressing/addressing_list_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_estante_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
-import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
-import 'package:gpp/src/controllers/AutenticacaoController.dart';
-import 'package:gpp/src/repositories/AutenticacaoRepository.dart';
 
-import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 import 'package:gpp/src/views/asteca/AstecaListView.dart';
-
-import 'package:gpp/src/views/authenticated/authenticate_view.dart';
+import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
+import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 
 import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/pedido/PedidoDetalheView.dart';
-import 'package:gpp/src/views/pedido/PedidoListView.dart';
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+import 'package:gpp/src/views/pedido/PedidoSaidaDetalheView.dart';
+import 'package:gpp/src/views/pedido/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
-import 'package:gpp/src/views/pecas/pecas_detail_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
-import 'package:gpp/src/views/rearson_parts/rearson_parts_form_view.dart';
+import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
+import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
 
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 
 import 'package:gpp/src/views/users/user_list_view.dart';
 
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   await dotenv.load(fileName: "env");
+
   runApp(GppApp());
 }
 
@@ -116,8 +113,6 @@ class _GppAppState extends State<GppApp> {
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaListView();
-        } else if (uri.pathSegments.first == 'pedidos') {
-          pagina = PedidoListView();
         } else if (uri.pathSegments.first == 'departamentos') {
           pagina = DepartamentoListView();
         } else if (uri.pathSegments.first == 'usuarios') {
@@ -125,30 +120,41 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'motivos-defeitos') {
           pagina = MotivosTrocaPecasListView();
         } else if (uri.pathSegments.first == 'logout') {
-          pagina = AuthenticateView();
+          pagina = AutenticacaoView();
         } else if (uri.pathSegments.first == 'pecas-cadastrar') {
           pagina = MenuCadastrarView();
         } else if (uri.pathSegments.first == 'pecas-consultar') {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          pagina = Container();
+          pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = AddressingListView();
+        } else if (uri.pathSegments.first == 'pedidos-entrada') {
+          pagina = PedidoEntradaListView();
+        } else if (uri.pathSegments.first == 'pedidos-saida') {
+          pagina = PedidoSaidaListView();
+        } else if (uri.pathSegments.first == 'estoque-entrada') {
+          pagina = MenuEntradaView();
         }
+
+
         //Se existe 2 parâmetros da url
       } else if (uri.pathSegments.length == 2) {
         var id = int.parse(uri.pathSegments[1]);
-
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos') {
-          pagina = PedidoDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos-saida') {
+          pagina = PedidoSaidaDetalheView(id: id);
+        } else if (uri.pathSegments.first == 'pedidos-entrada') {
+          pagina = PedidoEntradaDetalheView(id: id);
         }
       }
     } else {
-      return MaterialPageRoute(builder: (context) => AuthenticateView());
+      return MaterialPageRoute(builder: (context) => AutenticacaoView());
     }
-    return MaterialPageRoute(builder: (context) => HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
+    return MaterialPageRoute(
+        builder: (context) =>
+            HomeView(funcionalities: const FuncionalitiesView(), page: pagina));
   }
 
   @override
@@ -166,7 +172,11 @@ class _GppAppState extends State<GppApp> {
         theme: ThemeData(
             primarySwatch: Colors.blue,
             fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(iconColor: Colors.grey)),
+            inputDecorationTheme: const InputDecorationTheme(
+              iconColor: Colors.grey,
+              floatingLabelStyle:
+                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+            )),
         onGenerateRoute: (settings) {
           // Handle '/'
           //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));

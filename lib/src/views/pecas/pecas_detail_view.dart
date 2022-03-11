@@ -1,19 +1,14 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
-import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -33,9 +28,7 @@ class PecasDetailView extends StatefulWidget {
 class _PecasDetailViewState extends State<PecasDetailView> {
   PecasController _pecasController = PecasController();
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
-  PecasEspecieController _pecasEspecieController = PecasEspecieController();
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
-  PecasMaterialController _pecasMaterialController = PecasMaterialController();
   ProdutoController _produtoController = ProdutoController();
 
   final txtIdProduto = TextEditingController();
@@ -102,6 +95,7 @@ class _PecasDetailViewState extends State<PecasDetailView> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }

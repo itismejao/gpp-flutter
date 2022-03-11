@@ -65,8 +65,6 @@ class UsuarioRepository {
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
 
-    print(jsonEncode(dataSend));
-
     Response response = await api.put(
         '/user/itensfuncionalidades/' + user.id.toString(), dataSend);
 

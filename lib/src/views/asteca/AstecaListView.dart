@@ -20,6 +20,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:gpp/src/shared/utils/Validator.dart';
+import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 
 import 'package:intl/intl.dart';
 
@@ -157,6 +158,30 @@ class _AstecaListViewState extends State<AstecaListView> {
     }
   }
 
+  exibirDetalhe(id) {
+    AlertDialog alert = AlertDialog(
+      content: Container(
+          height: 1000,
+          width: 1200,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AstecaDetalheView(id: int.tryParse(id)!),
+              ],
+            ),
+          )),
+      actions: [],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Widget _buildList() {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
@@ -275,8 +300,9 @@ class _AstecaListViewState extends State<AstecaListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/astecas/' + asteca[index].idAsteca.toString());
+            // Navigator.pushNamed(
+            //     context, '/astecas/' + asteca[index].idAsteca.toString());
+            exibirDetalhe(asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -410,7 +436,8 @@ class _AstecaListViewState extends State<AstecaListView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        astecaController.filtroAsteca.idAsteca = value;
+                        astecaController.filtroAsteca.idAsteca =
+                            int.tryParse(value);
                         //Limpa o formúlario
                         astecaController.filtroFormKey.currentState!.reset();
                         buscarTodas();

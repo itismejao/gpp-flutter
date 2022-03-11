@@ -36,7 +36,7 @@ class PedidoRepository {
       return [pedidos, pagina];
     } else {
       var error = json.decode(response.body)['error'];
-      print('pedido: ' + error);
+
       throw error;
     }
   }

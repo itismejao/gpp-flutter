@@ -23,14 +23,14 @@ class Situacao {
   });
 }
 
-class PedidoListView extends StatefulWidget {
-  const PedidoListView({Key? key}) : super(key: key);
+class PedidoSaidaListView extends StatefulWidget {
+  const PedidoSaidaListView({Key? key}) : super(key: key);
 
   @override
-  _PedidoListViewState createState() => _PedidoListViewState();
+  _PedidoSaidaListViewState createState() => _PedidoSaidaListViewState();
 }
 
-class _PedidoListViewState extends State<PedidoListView> {
+class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   final ResponsiveController _responsive = ResponsiveController();
   ScrollController scrollController = ScrollController();
 
@@ -80,7 +80,22 @@ class _PedidoListViewState extends State<PedidoListView> {
     if (value == 1) {
       return TextComponent(
         'Em aberto',
+        color: Colors.blue,
+      );
+    } else if (value == 2) {
+      return TextComponent(
+        'Pendente',
+        color: Colors.orange,
+      );
+    } else if (value == 3) {
+      return TextComponent(
+        'Concluído',
         color: Colors.green,
+      );
+    } else if (value == 4) {
+      return TextComponent(
+        'Cancelado',
+        color: Colors.red,
       );
     }
   }
@@ -244,8 +259,8 @@ class _PedidoListViewState extends State<PedidoListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/pedidos/' + pedido[index].idPedidoSaida.toString());
+            Navigator.pushNamed(context,
+                '/pedidos-saida/' + pedido[index].idPedidoSaida.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -351,9 +366,10 @@ class _PedidoListViewState extends State<PedidoListView> {
                                   .getMaskedText(),
                             )),
                         Expanded(
-                            flex: 2,
-                            child:
-                                _buildSituacaoPedido(pedido[index].situacao)),
+                                flex: 2,
+                                child: _buildSituacaoPedido(
+                                    pedido[index].situacao)) ??
+                            Container(),
                         Expanded(
                             flex: 3,
                             child: TextComponent(pedidoController.formatter
@@ -383,14 +399,14 @@ class _PedidoListViewState extends State<PedidoListView> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               children: [
-                Expanded(child: TitleComponent('Pedidos')),
+                Expanded(child: TitleComponent('Pedidos de saída')),
                 Expanded(
                   child: Form(
                     key: pedidoController.filtroFormKey,
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        pedidoController.idPedido = int.parse(value);
+                        pedidoController.idPedido = int.tryParse(value);
                         //Limpa o formúlario
                         pedidoController.filtroFormKey.currentState!.reset();
                         buscarTodas();
