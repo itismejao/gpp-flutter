@@ -63,6 +63,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
       _prateleiraSelected = pecaEnderecamento!.box?.prateleira;
       _estanteSelected = pecaEnderecamento!.box?.prateleira?.estante;
       _boxSelected = pecaEnderecamento!.box;
+      pecaEstoque = pecaEnderecamento!.peca_estoque;
     }
 
     _controllerEnderecoPeca.text = pecaEnderecamento!.endereco;
@@ -210,312 +211,337 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
             ],
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
-          pecaEnderecamento!.id_peca_estoque == null
-              ? Container()
-              : Row(
-                  children: [
-                    const Padding(padding: EdgeInsets.only(left: 5)),
-                    Flexible(
-                        flex: 1,
-                        child: FutureBuilder(
-                            future: enderecamentoController.buscarTodos(),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text("Sem conexão!");
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
-                                case ConnectionState.done:
-                                  return Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 12, right: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
+          pecaEnderecamento!.id_peca_estoque == null ?
+          Container() :
+          Row(
+            children: [
+              const Padding(padding: EdgeInsets.only(left: 5)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarTodos(),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: const EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PisoEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                enabled: pecaEnderecamento!.box == null ? true : false,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (PisoEnderecamentoModel? value) =>
+                                value?.id_filial == null ? value!.desc_piso!.toUpperCase() :
+                                value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
+                                onChanged: (value) {
+                                  setState(() {
+                                    zerarCampos();
+                                    _pisoSelected = value;
+                                    pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso = _pisoSelected;
+
+                                  });
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Piso:",
+                                    labelText: "Piso"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _pisoSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+                                  zerarCampos();
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
+                              ),
+                            );}})
+              ),
+
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<CorredorEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (CorredorEnderecamentoModel? value) =>
+                                    value!.desc_corredor!.toUpperCase(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    zerarCorredor();
+                                    _corredorSelected = value;
+                                    //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.id_corredor = value?.id_corredor;
+                                    //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.desc_corredor = value?.desc_corredor;
+                                  });
+
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Corredor:",
+                                    labelText: "Corredor"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _corredorSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  zerarCorredor();
+
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(
                                     child:
-                                        DropdownSearch<PisoEnderecamentoModel>(
-                                      mode: Mode.MENU,
-                                      enabled: false,
-                                      showSearchBox: true,
-                                      items: snapshot.data,
-                                      itemAsString: (PisoEnderecamentoModel?
-                                              value) =>
-                                          value?.id_filial == null
-                                              ? value!.desc_piso!.toUpperCase()
-                                              : value!.desc_piso!
-                                                      .toUpperCase() +
-                                                  " (" +
-                                                  value.id_filial.toString() +
-                                                  ")",
-                                      onChanged: (value) {
-                                        setState(() {
-                                          zerarCampos();
-                                          _pisoSelected = value;
-                                          pecaEnderecamento!
-                                              .box
-                                              ?.prateleira
-                                              ?.estante
-                                              ?.corredor
-                                              ?.piso = _pisoSelected;
-                                        });
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                          enabledBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          hintText: "Selecione o Piso:",
-                                          labelText: "Piso"),
-                                      dropDownButton: Icon(
-                                        Icons.arrow_drop_down_rounded,
-                                        color: Colors.black,
-                                      ),
-                                      showAsSuffixIcons: true,
-                                      selectedItem: _pisoSelected,
-                                      showClearButton: true,
-                                      clearButton: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        onPressed: () {
-                                          zerarCampos();
-                                        },
-                                      ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: Text(
-                                                  'Nenhum piso encontrado!')),
-                                    ),
-                                  );
-                              }
-                            })),
-                    const Padding(padding: EdgeInsets.only(right: 10)),
-                    Flexible(
-                        flex: 1,
-                        child: FutureBuilder(
-                            future: enderecamentoController.buscarCorredor(
-                                _pisoSelected?.id_piso.toString() ?? ''),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text("Sem conexão!");
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
-                                case ConnectionState.done:
-                                  return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: DropdownSearch<
-                                        CorredorEnderecamentoModel>(
-                                      mode: Mode.MENU,
-                                      showSearchBox: true,
-                                      items: snapshot.data,
-                                      itemAsString:
-                                          (CorredorEnderecamentoModel? value) =>
-                                              value!.desc_corredor!
-                                                  .toUpperCase(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          zerarCorredor();
-                                          _corredorSelected = value;
-                                          //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.id_corredor = value?.id_corredor;
-                                          //pecaEnderecamento!.box!.prateleira!.estante!.corredor!.desc_corredor = value?.desc_corredor;
-                                        });
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                          enabledBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          hintText: "Selecione o Corredor:",
-                                          labelText: "Corredor"),
-                                      dropDownButton: Icon(
-                                        Icons.arrow_drop_down_rounded,
-                                        color: Colors.black,
-                                      ),
-                                      showAsSuffixIcons: true,
-                                      selectedItem: _corredorSelected,
-                                      showClearButton: true,
-                                      clearButton: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        onPressed: () {
-                                          zerarCorredor();
-                                        },
-                                      ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _corredorSelected == null
-                                                  ? Text('Selecione um Piso!')
-                                                  : Text(
-                                                      'Corredor não encontrado!')),
-                                    ),
-                                  );
-                              }
-                            })),
-                    const Padding(padding: EdgeInsets.only(right: 10)),
-                    Flexible(
-                        flex: 1,
-                        child: FutureBuilder(
-                            future: enderecamentoController.buscarEstante(
-                                _corredorSelected?.id_corredor.toString() ??
-                                    ''),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text("Sem conexão!");
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
-                                case ConnectionState.done:
-                                  return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: DropdownSearch<
-                                        EstanteEnderecamentoModel>(
-                                      mode: Mode.MENU,
-                                      showSearchBox: true,
-                                      items: snapshot.data,
-                                      itemAsString:
-                                          (EstanteEnderecamentoModel? value) =>
-                                              value!.desc_estante!
-                                                  .toUpperCase(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          zerarPrateleira();
-                                          _estanteSelected = value;
-                                          // pecaEnderecamento!.box!.prateleira!.estante!.id_estante = value?.id_estante;
-                                          // pecaEnderecamento!.box!.prateleira!.estante!.desc_estante = value?.desc_estante;
-                                        });
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                          enabledBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          hintText: "Selecione a Estante:",
-                                          labelText: "Estante"),
-                                      dropDownButton: Icon(
-                                        Icons.arrow_drop_down_rounded,
-                                        color: Colors.black,
-                                      ),
-                                      showAsSuffixIcons: true,
-                                      selectedItem: _estanteSelected,
-                                      showClearButton: true,
-                                      clearButton: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        onPressed: () {
-                                          zerarEstante();
-                                        },
-                                      ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _estanteSelected == null
-                                                  ? Text(
-                                                      'Selecione um Corredor!')
-                                                  : Text(
-                                                      'Estante não encontrado!')),
-                                    ),
-                                  );
-                              }
-                            })),
-                    const Padding(padding: EdgeInsets.only(right: 10)),
-                    Flexible(
-                        flex: 1,
-                        child: FutureBuilder(
-                            future: enderecamentoController.buscarPrateleira(
-                                _estanteSelected?.id_estante.toString() ?? ''),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text("Sem conexão!");
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
-                                case ConnectionState.done:
-                                  return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: DropdownSearch<
-                                        PrateleiraEnderecamentoModel>(
-                                      mode: Mode.MENU,
-                                      showSearchBox: true,
-                                      items: snapshot.data,
-                                      itemAsString:
-                                          (PrateleiraEnderecamentoModel?
-                                                  value) =>
-                                              value!.desc_prateleira!
-                                                  .toUpperCase(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          zerarPrateleira();
-                                          _prateleiraSelected = value;
-                                          //pecaEnderecamento!.box!.prateleira!.id_prateleira = value?.id_prateleira;
-                                          //pecaEnderecamento!.box!.prateleira!.desc_prateleira = value?.desc_prateleira;
-                                        });
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                          enabledBorder: InputBorder.none,
-                                          disabledBorder: InputBorder.none,
-                                          hintText: "Selecione a Prateleira:",
-                                          labelText: "Prateleira"),
-                                      dropDownButton: Icon(
-                                        Icons.arrow_drop_down_rounded,
-                                        color: Colors.black,
-                                      ),
-                                      showAsSuffixIcons: true,
-                                      selectedItem: _prateleiraSelected,
-                                      showClearButton: true,
-                                      clearButton: IconButton(
-                                        icon: Icon(Icons.clear),
-                                        onPressed: () {
-                                          zerarPrateleira();
-                                        },
-                                      ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _estanteSelected == null
-                                                  ? Text(
-                                                      'Selecione uma Estante!')
-                                                  : Text(
-                                                      'Prateleira não encontrado!')),
-                                    ),
-                                  );
-                              }
-                            })),
-                    const Padding(padding: EdgeInsets.only(right: 10)),
-                    Flexible(
-                        flex: 1,
-                        child: FutureBuilder(
-                            future: enderecamentoController.buscarBox(
-                                _prateleiraSelected?.id_prateleira.toString() ??
-                                    ''),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text("Sem conexão!");
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
-                                case ConnectionState.done:
-                                  return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
+                                    _corredorSelected == null ?
+                                    Text('Selecione um Piso!') :
+                                    Text('Corredor não encontrado!')
+
+                                ),
+                              ),
+                            );}})
+
+              ),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarEstante(_corredorSelected?.id_corredor.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<EstanteEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (EstanteEnderecamentoModel? value) =>
+                                    value!.desc_estante!.toUpperCase(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    zerarPrateleira();
+                                    _estanteSelected = value;
+                                   // pecaEnderecamento!.box!.prateleira!.estante!.id_estante = value?.id_estante;
+                                   // pecaEnderecamento!.box!.prateleira!.estante!.desc_estante = value?.desc_estante;
+                                  });
+
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "Selecione a Estante:",
+                                    labelText: "Estante"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _estanteSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  zerarEstante();
+
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(
+                                    child:
+                                    _estanteSelected == null ?
+                                    Text('Selecione um Corredor!') :
+                                    Text('Estante não encontrado!')
+
+                                ),
+                              ),
+                            );}})
+              ),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarPrateleira(_estanteSelected?.id_estante.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PrateleiraEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (PrateleiraEnderecamentoModel? value) =>
+                                    value!.desc_prateleira!.toUpperCase(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    zerarPrateleira();
+                                    _prateleiraSelected = value;
+                                    //pecaEnderecamento!.box!.prateleira!.id_prateleira = value?.id_prateleira;
+                                    //pecaEnderecamento!.box!.prateleira!.desc_prateleira = value?.desc_prateleira;
+                                  });
+
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "Selecione a Prateleira:",
+                                    labelText: "Prateleira"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _prateleiraSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                 zerarPrateleira();
+
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(
+                                    child:
+                                    _estanteSelected == null ?
+                                    Text('Selecione uma Estante!') :
+                                    Text('Prateleira não encontrado!')
+
+                                ),
+                              ),
+                            );}})
+              ),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarBox(_prateleiraSelected?.id_prateleira.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child:
+                                new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius:
+                                BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<BoxEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString:
+                                    (BoxEnderecamentoModel? value) =>
+                                    value!.desc_box!.toUpperCase(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    zerarBox();
+                                    _boxSelected = value;
+                                    pecaEnderecamento!.box?.id_box = value?.id_box;
+                                    pecaEnderecamento!.box?.desc_box = value?.desc_box;
+                                    pecaEnderecamento!.id_box = value!.id_box;
+                                  });
+
+                                },
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Box:",
+                                    labelText: "Box"
+                                ),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _boxSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
+
+                                  zerarBox();
+
+                                },),
+                                emptyBuilder: (context, searchEntry) => Center(
                                     child:
                                         DropdownSearch<BoxEnderecamentoModel>(
                                       mode: Mode.MENU,
@@ -575,24 +601,32 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                 children: [
                   ButtonComponent(
                     onPressed: () async {
-                      if (pecaEnderecamento!.id_peca_enderecamento == null) {
-                        pecaEnderecamento!.id_peca_estoque =
-                            pecaEstoque!.id_peca_estoque;
 
-                        NotifyController notify =
-                            NotifyController(context: context);
-                        try {
-                          if (await _pecaEnderecamentoController
-                              .create(pecaEnderecamento!)) {
-                            notify.sucess("Peça endereçada com sucesso!");
+                      NotifyController notify = NotifyController(context: context);
+
+                      if(pecaEnderecamento!.id_peca_enderecamento == null){
+
+
+
+                        if (pecaEnderecamento!.id_box == null){
+
+                          notify.warning("É necessário informar para qual box a peça será transferida!");
+                        } else {
+
+                        pecaEnderecamento!.id_peca_estoque = pecaEstoque!.id_peca_estoque;
+
+
+                          try {
+                            if (await _pecaEnderecamentoController.create(
+                                pecaEnderecamento!)) {
+                              notify.sucess("Peça endereçada com sucesso!");
+                            }
+                          } catch (e) {
+                            notify.error(e.toString());
                           }
-                        } catch (e) {
-                          notify.error(e.toString());
+                          Navigator.pop(context);
                         }
-                        Navigator.pop(context);
                       } else {
-                        NotifyController notify =
-                            NotifyController(context: context);
                         try {
                           if (pecaEnderecamento!.id_box == null) {
                             notify.warning(

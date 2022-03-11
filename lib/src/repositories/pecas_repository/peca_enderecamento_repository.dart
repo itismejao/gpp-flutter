@@ -78,7 +78,7 @@ class PecaEnderecamentoRepository{
       return true;
     } else {
       var error = json.decode(response.body)['error'];
-      throw Exception(error);
+      throw error;
     }
   }
 
