@@ -24,6 +24,7 @@ class PecasModel {
   int? tipo_classificacao_custo;
   int? id_peca_especie;
   String? id_peca_material_fabricacao;
+  int? id_peca_cor;
   // DateTime? created_at;
   // DateTime? updated_at;
   List<PecasCorModel>? cor;
@@ -56,6 +57,7 @@ class PecasModel {
     this.id_peca_material_fabricacao,
     // this.created_at,
     // this.updated_at,
+    this.id_peca_cor,
     this.cor,
     this.pecasCorModel,
     this.material_fabricacao,
@@ -82,17 +84,13 @@ class PecasModel {
       classificacao_custo: json['classificacao_custo'],
       tipo_classificacao_custo: json['tipo_classificacao_custo'],
       id_peca_material_fabricacao: json['id_peca_material_fabricacao'],
-      pecasCorModel:
-          json["cor"] == null ? null : PecasCorModel.fromJson(json["cor"]),
+      id_peca_cor: json['id_peca_cor'],
+      pecasCorModel: json["cor"] == null ? null : PecasCorModel.fromJson(json["cor"]),
       // created_at: json['created_at'],
       // updated_at: json['updated_at'],
-      pecasMaterialModel: json['material_fabricacao'] == null
-          ? null
-          : PecasMaterialModel.fromJson(json['material_fabricacao']),
+      pecasMaterialModel: json['material_fabricacao'] == null ? null : PecasMaterialModel.fromJson(json['material_fabricacao']),
       // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
-      pecasEspecieModel: json["especie"] == null
-          ? null
-          : PecasEspecieModel.fromJson(json["especie"]),
+      pecasEspecieModel: json["especie"] == null ? null : PecasEspecieModel.fromJson(json["especie"]),
 
       produto_peca: json['produto_peca'] != null
           ? json['produto_peca'].map<ProdutoPecaModel>((data) {
@@ -122,6 +120,7 @@ class PecasModel {
     data['tipo_classificacao_custo'] = this.tipo_classificacao_custo;
     data['id_peca_especie'] = this.id_peca_especie;
     data['id_peca_material_fabricacao'] = this.id_peca_material_fabricacao;
+    data['id_peca_cor'] = this.id_peca_cor;
     data['cor'] = this.pecasCorModel;
     // data['created_at'] = this.created_at;
     // data['updated_at'] = this.updated_at;
