@@ -34,10 +34,12 @@ class AstecaRepository {
       DateTime? dataFim}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
-      'idAsteca': filtroAsteca?.idAsteca ?? '',
-      'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
+      'idAsteca': filtroAsteca!.idAsteca != null
+          ? filtroAsteca.idAsteca.toString()
+          : '',
+      'cpfCnpj': filtroAsteca.documentoFiscal?.cpfCnpj?.toString() ?? '',
       'numeroNotaFiscalVenda':
-          filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+          filtroAsteca.documentoFiscal?.numDocFiscal?.toString() ?? '',
       'pendencia': pendencia?.toString() ?? '',
       'dataInicio': dataInicio != null ? dataInicio.toString() : '',
       'dataFim': dataFim != null ? dataFim.toString() : ''
@@ -262,7 +264,7 @@ class PendenciaRepository {
   ApiService api = gppApi;
 
   Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
-    Response response = await api.get('/asteca' + '/pendencia');
+    Response response = await api.get('/astecas/pendencias');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -281,7 +283,7 @@ class PendenciaRepository {
   Future<bool> criar(
       AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
     Response response = await api.post(
-        '/asteca/${asteca.idAsteca}/pendencia', pendencia.toJson());
+        '/astecas/${asteca.idAsteca}/pendencias', pendencia.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

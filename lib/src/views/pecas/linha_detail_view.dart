@@ -5,14 +5,13 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.da
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
-import 'package:gpp/src/repositories/pecas_repository/pecas_linha_repository.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
+// ignore: must_be_immutable
 class EspecieDetailView extends StatefulWidget {
   PecasLinhaModel? pecasLinhaModel;
   PecasEspecieModel? pecasEspecieModel;
@@ -28,7 +27,6 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   PecasLinhaModel? selectedLinha;
-  List<PecasLinhaModel> _pecasLinha = [];
 
   PecasLinhaModel? pecasLinhaModel;
   PecasEspecieModel? pecasEspecieModel;
@@ -49,14 +47,17 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
     super.initState();
   }
 
-  criarLinha(context) async {
+  Future<bool> criarLinha(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasLinhaController.inserir()) {
         notify.sucess("Linha cadastrada com sucesso!");
+        return true;
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -189,7 +190,7 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
             pecasLinhaModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      criarLinha(context);
+                      criarLinha(context).then((value) => setState(() {}));
                     },
                     text: 'Salvar',
                   )

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 import 'package:gpp/src/controllers/entrada/movimento_entrada_controller.dart';
 import 'package:gpp/src/models/entrada/movimento_entrada_model.dart';
@@ -25,6 +23,7 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
   @override
   void initState() {
     movimentoEntradaController = MovimentoEntradaController();
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
@@ -70,30 +69,33 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                       primary: false,
                       itemCount: snapshot.data?.length,
                       itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 0,
-                                  blurRadius: 9,
-                                  offset: Offset(0, 5), // changes position of shadow
-                                ),
-                              ],
-                              border: Border(
-                                left: BorderSide(
-                                  color: snapshot.data![index].situacao == SituacaoEntrada.Cancelado ? Colors.red : secundaryColor,
-                                  width: 7.0,
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 0,
+                                    blurRadius: 9,
+                                    offset: Offset(
+                                        0, 5), // changes position of shadow
+                                  ),
+                                ],
+                                border: Border(
+                                  left: BorderSide(
+                                    color: snapshot.data![index].situacao ==
+                                            SituacaoEntrada.Cancelado
+                                        ? Colors.red
+                                        : secundaryColor,
+                                    width: 7.0,
+                                  ),
                                 ),
                               ),
-                            ),
+                            //),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -121,27 +123,30 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                           ],
                                         ),
                                       ),
-                                      Expanded(
+                                        Expanded(
                                           child: TextComponent(
                                             'Funcionário',
                                             fontWeight: FontWeight.bold,
-                                          ),),
-                                      Expanded(
-                                          child: TextComponent(
-                                            'Nota Fiscal',
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Expanded(
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: TextComponent(
+                                          'Nota Fiscal',
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                        Expanded(
                                           child: TextComponent(
                                             'Série',
                                             fontWeight: FontWeight.bold,
-                                          ),),
-                                      Expanded(
-                                        child: TextComponent(
-                                          'Situação',
-                                          fontWeight: FontWeight.bold,
-                                        ),),
-                                      Expanded(
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                            'Situação',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Expanded(
                                           child: TextComponent(
                                             'Custo',
                                             fontWeight: FontWeight.bold,
@@ -166,41 +171,45 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                           ],
                                         ),
                                       ),
-                                      Expanded(
+                                        Expanded(
                                           child: TextComponent(
-                                            snapshot.data![index].id_funcionario.toString(),
-                                          ),),
-                                      Expanded(
+                                            snapshot.data![index].id_funcionario
+                                                .toString(),
+                                          ),
+                                        ),
+                                        Expanded(
                                           child: TextComponent(
-                                            snapshot.data![index].num_nota_fiscal.toString(),
-                                          ),),
-                                      Expanded(
-                                          child: TextComponent(
-                                            snapshot.data![index].serie.toString(),
-                                          )),
-                                      Expanded(
-                                          child:
-                                          TextComponent(
-                                            snapshot.data![index].situacao.toString().split('.').last,
-                                          )
-                                      ),
-                                      Expanded(
-                                          child:
-                                          TextComponent(
-                                            snapshot.data![index].custo_total.toString(),
-                                          )
-                                      ),
-
-                                    ],
-                                  ),
-                                ],
+                                            snapshot
+                                                .data![index].num_nota_fiscal
+                                                .toString(),
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: TextComponent(
+                                          snapshot.data![index].serie
+                                              .toString(),
+                                        )),
+                                        Expanded(
+                                            child: TextComponent(
+                                          snapshot.data![index].situacao
+                                              .toString()
+                                              .split('.')
+                                              .last,
+                                        )),
+                                        Expanded(
+                                            child: TextComponent(
+                                          snapshot.data![index].custo_total
+                                              .toString(),
+                                        )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }
-                  ),
+                        );
+                      }),
                 );
               }
           }

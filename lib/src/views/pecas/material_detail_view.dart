@@ -12,8 +12,8 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 class MaterialDetailView extends StatefulWidget {
-  PecasGrupoModel? pecasGrupoModel;
-  PecasMaterialModel? pecasMaterialModel;
+  final PecasGrupoModel? pecasGrupoModel;
+  final PecasMaterialModel? pecasMaterialModel;
 
   MaterialDetailView({this.pecasGrupoModel, this.pecasMaterialModel});
 
@@ -43,18 +43,22 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
       _pecasMaterialController.pecasMaterialModel = pecasMaterialModel!;
     }
 
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
 
-  criarGrupo(context) async {
+  Future<bool> criarGrupo(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasGrupoController.create()) {
         notify.sucess("Grupo cadastrado com sucesso!");
+        return true;
       }
+      return false;
     } catch (e) {
       notify.error(e.toString());
+      return false;
     }
   }
 
@@ -185,7 +189,7 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
             pecasGrupoModel == null
                 ? ButtonComponent(
                     onPressed: () {
-                      criarGrupo(context);
+                      criarGrupo(context).then((value) => setState((() {})));
                     },
                     text: 'Salvar',
                   )

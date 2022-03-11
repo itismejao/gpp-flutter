@@ -31,7 +31,8 @@ class PrateleiraEnderecamentoRepository {
     }
   }
 
-  Future<bool> create(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
+  Future<bool> create(
+      PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
     Response response = await api.post(path, enderecamentoPrateleira.toJson());
 
     if (response.statusCode == StatusCode.OK) {
@@ -55,7 +56,8 @@ class PrateleiraEnderecamentoRepository {
   //   }
   // }
 
-  Future<bool> excluir(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
+  Future<bool> excluir(
+      PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
     Response response = await api.delete(
       path + '/' + enderecamentoPrateleira.id_estante.toString(),
     );

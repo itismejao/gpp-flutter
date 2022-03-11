@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
-import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
@@ -22,7 +21,8 @@ class _EspecieListViewState extends State<EspecieListView> {
   Future<bool> excluir(context, PecasEspecieModel pecasEspecieModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert('Deseja excluir a espécie (${pecasEspecieModel.id_peca_especie} - ${pecasEspecieModel.especie})?')) {
+      if (await notify.alert(
+          'Deseja excluir a espécie (${pecasEspecieModel.id_peca_especie} - ${pecasEspecieModel.especie})?')) {
         if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
           notify.sucess("Espécie excluída com sucesso!");
           return true;
@@ -109,18 +109,22 @@ class _EspecieListViewState extends State<EspecieListView> {
                           Expanded(
                             child: Text(
                               _pecasEspecie[index].id_peca_especie.toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].especie.toString()),
+                            child:
+                                Text(_pecasEspecie[index].especie.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao.values[_pecasEspecie[index].situacao!].name),
+                            child: Text(Situacao
+                                .values[_pecasEspecie[index].situacao!].name),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].linha!.linha.toString()),
+                            child: Text(
+                                _pecasEspecie[index].linha!.linha.toString()),
                           ),
                           Expanded(
                             child: Row(
@@ -137,8 +141,13 @@ class _EspecieListViewState extends State<EspecieListView> {
                                     Icons.edit,
                                     color: Colors.grey.shade400,
                                   ),
+                                  tooltip: 'Editar',
                                   onPressed: () {
-                                    PopUpEditar.popUpPeca(context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]))
+                                    PopUpEditar.popUpPeca(
+                                            context,
+                                            EspecieDetailView(
+                                                pecasEspecieModel:
+                                                    _pecasEspecie[index]))
                                         .then((value) => setState(() {}));
                                   },
                                 ),
@@ -147,9 +156,11 @@ class _EspecieListViewState extends State<EspecieListView> {
                                       Icons.delete,
                                       color: Colors.grey.shade400,
                                     ),
+                                    tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasEspecieController.excluir(_pecasEspecie[index]).then((value) => setState(() {}));
-                                      excluir(context, _pecasEspecie[index]).then((value) => setState(() {}));
+                                      excluir(context, _pecasEspecie[index])
+                                          .then((value) => setState(() {}));
                                     }),
                               ],
                             ),

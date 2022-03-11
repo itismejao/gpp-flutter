@@ -2,7 +2,6 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 
 import 'package:gpp/src/shared/services/auth.dart';
@@ -42,7 +41,6 @@ class _FuncionalitiesViewState extends State<FuncionalitiesView> {
   }
 
   buscarFuncionalidades() async {
-    NotifyController nofity = NotifyController(context: context);
     if (mounted) {
       setState(() {
         controller.state = UserEnum.loading;

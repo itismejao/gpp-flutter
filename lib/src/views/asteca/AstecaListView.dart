@@ -20,6 +20,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:gpp/src/shared/utils/Validator.dart';
+import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 
 import 'package:intl/intl.dart';
 
@@ -32,7 +33,6 @@ class AstecaListView extends StatefulWidget {
 
 class _AstecaListViewState extends State<AstecaListView> {
   final ResponsiveController _responsive = ResponsiveController();
-  ScrollController scrollController = ScrollController();
 
   late final AstecaController astecaController;
   late MaskFormatter maskFormatter;
@@ -61,11 +61,13 @@ class _AstecaListViewState extends State<AstecaListView> {
         astecaController.carregado = true;
       });
     } catch (e) {
+      limparFiltro();
       setState(() {
         astecaController.astecas = [];
         astecaController.carregado = true;
       });
-      notify.error(e.toString());
+
+      notify.error2(e.toString());
     }
   }
 
@@ -75,17 +77,6 @@ class _AstecaListViewState extends State<AstecaListView> {
     astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = null;
     astecaController.dataInicio = null;
     astecaController.dataFim = null;
-  }
-
-  proximaPagina() async {
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        //proxima página
-        astecaController.pagina.atual = astecaController.pagina.atual + 1;
-        await buscarTodas();
-      }
-    });
   }
 
   buscarTipoPendencias() async {
@@ -121,14 +112,6 @@ class _AstecaListViewState extends State<AstecaListView> {
     //Buscar pendências
 
     buscarTipoPendencias();
-
-    //ScrollController
-    proximaPagina();
-  }
-
-  void dispose() {
-    super.dispose();
-    scrollController.dispose();
   }
 
   situacao(DateTime data) {
@@ -155,6 +138,30 @@ class _AstecaListViewState extends State<AstecaListView> {
       default:
         return 'Aguardando tipo de asteca';
     }
+  }
+
+  exibirDetalhe(id) {
+    AlertDialog alert = AlertDialog(
+      content: Container(
+          height: 1000,
+          width: 1200,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AstecaDetalheView(id: int.tryParse(id)!),
+              ],
+            ),
+          )),
+      actions: [],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Widget _buildList() {
@@ -275,8 +282,9 @@ class _AstecaListViewState extends State<AstecaListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(
-                context, '/astecas/' + asteca[index].idAsteca.toString());
+            // Navigator.pushNamed(
+            //     context, '/astecas/' + asteca[index].idAsteca.toString());
+            exibirDetalhe(asteca[index].idAsteca.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -517,9 +525,9 @@ class _AstecaListViewState extends State<AstecaListView> {
                           child: InputComponent(
                             label: 'Número da nota fiscal:',
                             maxLines: 1,
-                            onChanged: (value) {
+                            onSaved: (value) {
                               astecaController.filtroAsteca.documentoFiscal!
-                                  .numDocFiscal = value;
+                                  .numDocFiscal = int.tryParse(value);
                             },
                             hintText: 'Digite o número da nota fiscal',
                           ),

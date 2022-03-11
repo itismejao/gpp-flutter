@@ -57,7 +57,7 @@ class InputComponent extends StatelessWidget {
           Container(
             height: 42,
             decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                color: Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(5)),
             child: TextFormField(
                 inputFormatters: inputFormatter,
@@ -102,7 +102,8 @@ class InputComponent extends StatelessWidget {
       return Container(
         height: 42,
         decoration: BoxDecoration(
-            color: Colors.grey.shade50, borderRadius: BorderRadius.circular(5)),
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(5)),
         child: TextFormField(
             controller: controller,
             inputFormatters: inputFormatter,
@@ -130,12 +131,15 @@ class InputComponent extends StatelessWidget {
                 color: Colors.black,
                 fontSize: 14 * media.textScaleFactor,
                 letterSpacing: 0.15,
+                height: 2,
                 fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w500),
             decoration: InputDecoration(
                 prefixIcon: prefixIcon,
                 hintText: hintText,
-                contentPadding: EdgeInsets.only(top: 15, left: 10),
+                contentPadding: prefixIcon != null
+                    ? EdgeInsets.only(top: 10, bottom: 14, left: 10)
+                    : EdgeInsets.only(top: 5, bottom: 15, left: 20),
                 border: InputBorder.none)),
       );
     }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:gpp/src/models/fornecedor_model.dart';
 import 'package:gpp/src/models/pecas_model/fornecedor_pecas_model.dart';
 
 class ProdutoModel {

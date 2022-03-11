@@ -7,7 +7,7 @@ import 'package:gpp/src/views/entrada/entrada_pedido_view.dart';
 
 import 'entrada_historico_view.dart';
 
-
+// ignore: must_be_immutable
 class MenuEntradaView extends StatefulWidget {
   int? selected;
 
@@ -69,8 +69,10 @@ class _MenuEntradaViewState extends State<MenuEntradaView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 1 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 1 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 1 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 1 ? secundaryColor : Colors.transparent,
                   data: 'Entrada via Pedido',
                 ),
               ),
@@ -87,8 +89,10 @@ class _MenuEntradaViewState extends State<MenuEntradaView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 2 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 2 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 2 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 2 ? secundaryColor : Colors.transparent,
                   data: 'Entrada Manual',
                 ),
               ),
@@ -105,8 +109,10 @@ class _MenuEntradaViewState extends State<MenuEntradaView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 3 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 3 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 3 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 3 ? secundaryColor : Colors.transparent,
                   data: 'Histórico',
                 ),
               ),
