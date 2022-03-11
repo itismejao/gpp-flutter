@@ -366,10 +366,9 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                                   .getMaskedText(),
                             )),
                         Expanded(
-                                flex: 2,
-                                child: _buildSituacaoPedido(
-                                    pedido[index].situacao)) ??
-                            Container(),
+                            flex: 2,
+                            child:
+                                _buildSituacaoPedido(pedido[index].situacao)),
                         Expanded(
                             flex: 3,
                             child: TextComponent(pedidoController.formatter
