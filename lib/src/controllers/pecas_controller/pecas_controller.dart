@@ -14,6 +14,8 @@ class PecasController {
   List<PecasModel> listaPecas = [];
   PecasPaginaModel pecasPagina = PecasPaginaModel(paginaAtual: 1, paginaTotal: 0);
 
+  bool carregado = false;
+
   ProdutoPecaModel produtoPecaModel = ProdutoPecaModel();
 
   Future<PecasModel> criarPeca() async {

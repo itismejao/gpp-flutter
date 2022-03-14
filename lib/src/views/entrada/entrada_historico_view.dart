@@ -95,24 +95,34 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                   ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              TextComponent(
-                                                'Data de Entrada',
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ],
-                                          ),
+                            //),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            TextComponent(
+                                              'ID',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
                                         ),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            TextComponent(
+                                              'Data de Entrada',
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                         Expanded(
                                           child: TextComponent(
                                             'Funcionário',
@@ -140,27 +150,27 @@ class _EntradaHistoricoViewState extends State<EntradaHistoricoView> {
                                           child: TextComponent(
                                             'Custo',
                                             fontWeight: FontWeight.bold,
-                                          ),
+                                          ),),
+                                    ],
+                                  ),
+                                  Divider(),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: TextComponent(
+                                          '#'+snapshot.data![index].id_movimento_entrada.toString(),
+                                        ),),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            TextComponent(
+                                              DateFormat('dd/MM/yyyy')
+                                                  .format(snapshot.data![index].data_entrada ?? DateTime.now()),
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                    Divider(),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Row(
-                                            children: [
-                                              TextComponent(
-                                                DateFormat('dd/MM/yyyy').format(
-                                                    snapshot.data![index]
-                                                            .data_entrada ??
-                                                        DateTime.now()),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                      ),
                                         Expanded(
                                           child: TextComponent(
                                             snapshot.data![index].id_funcionario

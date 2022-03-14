@@ -10,7 +10,8 @@ class MovimentoEntradaModel {
   DateTime? data_entrada;
   double? custo_total;
   SituacaoEntrada? situacao;
-  List<ItemMovimentoEntradaModel>? itemMovimentoEntradaModel;
+  List<ItemMovimentoEntradaModel>? itemMovimentoEntradaModel = [];
+  List<int>? id_pedido_entrada = [];
 
   MovimentoEntradaModel(
       {this.id_movimento_entrada,
@@ -47,10 +48,12 @@ class MovimentoEntradaModel {
     //data['id_movimento_entrada'] = this.id_movimento_entrada;
     data['id_funcionario'] = this.id_funcionario;
     data['custo_total'] = this.custo_total;
-    data['data_entrada'] = this.data_entrada;
+    data['data_entrada'] = this.data_entrada.toString();
     data['num_nota_fiscal'] = this.num_nota_fiscal;
     data['serie'] = this.serie;
     data['situacao'] = this.situacao;
+    data['id_pedido_entrada'] = this.id_pedido_entrada;
+    data['items_movimento'] = this.itemMovimentoEntradaModel?.map((item) => item.toJson()).toList();
 
     return data;
   }

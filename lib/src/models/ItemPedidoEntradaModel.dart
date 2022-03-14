@@ -5,6 +5,7 @@ class ItemPedidoEntradaModel {
   int? quantidade;
   double? custo;
   PecaModel? peca;
+  int? quantidade_recebida;
 
   ItemPedidoEntradaModel({
     this.idItemPedidoEntrada,
