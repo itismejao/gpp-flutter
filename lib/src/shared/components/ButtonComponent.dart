@@ -22,13 +22,14 @@ class ButtonComponent extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPressed(),
       child: Container(
+        height: 42,
         decoration: BoxDecoration(
             color: color ?? secundaryColor,
             borderRadius: BorderRadius.circular(5)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon ?? Container(),

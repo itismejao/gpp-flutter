@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 
 class PecasMaterialModel {
@@ -26,7 +25,9 @@ class PecasMaterialModel {
       sigla: json['sigla'],
       situacao: json['situacao'],
       id_peca_grupo_material: json['id_peca_grupo_material'],
-      grupo_material: json['grupo_material'] == null ? null : PecasGrupoModel.fromJson(json['grupo_material']),
+      grupo_material: json['grupo_material'] == null
+          ? null
+          : PecasGrupoModel.fromJson(json['grupo_material']),
     );
   }
 

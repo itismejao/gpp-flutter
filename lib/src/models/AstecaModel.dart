@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/asteca_end_cliente_model.dart';
 import 'package:gpp/src/models/asteca_motivo_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
@@ -18,6 +19,7 @@ class AstecaModel {
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
+  PedidoSaidaModel? pedidoSaida;
 
   AstecaModel({
     this.idAsteca,
@@ -32,6 +34,7 @@ class AstecaModel {
     this.documentoFiscal,
     this.produto,
     this.funcionario,
+    this.pedidoSaida,
   });
 
   factory AstecaModel.fromJson(Map<String, dynamic> json) {
@@ -56,11 +59,16 @@ class AstecaModel {
                 return ProdutoModel.fromJson(data);
               }).toList()
             : null,
-        funcionario: FuncionarioModel.fromJson(json['funcionario'].first),
+        funcionario: json['funcionario'] != null
+            ? FuncionarioModel.fromJson(json['funcionario'].first)
+            : null,
         astecaTipoPendencias: json['pendencia'] != null
             ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
                 return AstecaTipoPendenciaModel.fromJson(data);
               }).toList()
+            : null,
+        pedidoSaida: json['pedido_saida'] != null
+            ? PedidoSaidaModel.fromJson(json['pedido_saida'])
             : null);
   }
   Map<String, dynamic> toJson() {
@@ -70,7 +78,7 @@ class AstecaModel {
     data['id_filial_registro'] = this.idFilialRegistro;
     data['observacao'] = this.observacao;
     data['defeito_estado_prod'] = this.defeitoEstadoProd;
-    data['data_emissao'] = this.dataEmissao;
+    data['data_emissao'] = this.dataEmissao.toString();
     if (this.astecaEndCliente != null) {
       data['asteca_end_cliente'] = this.astecaEndCliente!.toJson();
     }

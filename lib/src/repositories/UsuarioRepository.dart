@@ -65,8 +65,6 @@ class UsuarioRepository {
         .map((subFuncionalitie) => subFuncionalitie.toJson())
         .toList();
 
-    print(jsonEncode(dataSend));
-
     Response response = await api.put(
         '/user/itensfuncionalidades/' + user.id.toString(), dataSend);
 
@@ -94,7 +92,8 @@ class UsuarioRepository {
       return funcionalidades;
     } else {
       var error = json.decode(response.body)['error'];
-      throw UserException(error);
+
+      throw error;
     }
   }
 

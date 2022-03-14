@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 
 class PecasEspecieModel {
@@ -23,7 +22,9 @@ class PecasEspecieModel {
       especie: json['especie'],
       situacao: json['situacao'],
       id_peca_linha: json['id_peca_linha'],
-      linha: json["linha"] == null ? null : PecasLinhaModel.fromJson(json["linha"]),
+      linha: json["linha"] == null
+          ? null
+          : PecasLinhaModel.fromJson(json["linha"]),
     );
   }
 

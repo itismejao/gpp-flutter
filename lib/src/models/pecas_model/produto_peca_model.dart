@@ -45,9 +45,10 @@ class ProdutoPecaModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
 
-    // data['id_produto_peca'] = this.id_produto_peca;
-    // data['id_produto_sku'] = this.id_produto_sku;
+
+    data['id_produto_peca'] = this.id_produto_peca;
     data['id_produto'] = this.id_produto;
+
     data['id_peca'] = this.id_peca;
     // data['id_material_fabricacao'] = this.id_material_fabricacao;
     // data['id_cor'] = this.id_cor;

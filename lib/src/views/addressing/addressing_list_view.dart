@@ -1,22 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/addressing_floor_controller.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/enderecamento_corredor_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
-import 'package:gpp/src/shared/components/status_component.dart';
-import 'package:gpp/src/repositories/piso_enderecamento_repository.dart';
-import 'package:gpp/src/repositories/corredor_enderecamento_repository.dart';
 
-import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 
@@ -34,8 +25,8 @@ class _AddressingListViewState extends State<AddressingListView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
+    enderecamentoController.listaPiso =
+        await enderecamentoController.buscarTodos();
 
     enderecamentoController.isLoaded = true;
 
@@ -51,7 +42,7 @@ class _AddressingListViewState extends State<AddressingListView> {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Motivo de piso adicionado com sucesso!');
+        notify.sucess('Piso adicionado com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
@@ -73,8 +64,6 @@ class _AddressingListViewState extends State<AddressingListView> {
     }
   }
 
-
-
   //  handleEdit(context) async {
   //   NotifyController notify = NotifyController(context: context);
   //   try {
@@ -86,7 +75,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   //   }
   // }
 
-   handleEdit(context, PisoEnderecamentoModel editaPiso) async {
+  handleEdit(context, PisoEnderecamentoModel editaPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
@@ -125,11 +114,11 @@ class _AddressingListViewState extends State<AddressingListView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = 500;
+                            pisoEnderecamentoReplacement.id_filial =
+                                int.parse(value);
                           });
                         },
                       ),
@@ -144,7 +133,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate (context, pisoEnderecamentoReplacement);
+                                  handleCreate(
+                                      context, pisoEnderecamentoReplacement);
                                 },
                                 text: 'Adicionar')
                           ],
@@ -161,7 +151,7 @@ class _AddressingListViewState extends State<AddressingListView> {
     );
   }
 
-    openFormEdit(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
+  openFormEdit(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -189,7 +179,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
+                        initialValue:
+                            pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
@@ -208,7 +199,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                   handleEdit(context, pisoEnderecamentoReplacement);
+                                  handleEdit(
+                                      context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -285,14 +277,20 @@ class _AddressingListViewState extends State<AddressingListView> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                            color: (index % 2) == 0
+                                ? Colors.white
+                                : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].id_piso
+                                      .toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].desc_piso
+                                      .toString()),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -303,23 +301,33 @@ class _AddressingListViewState extends State<AddressingListView> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => HomeView(
-                                                    funcionalities: FuncionalitiesView(),
+                                                  builder: (context) =>
+                                                      HomeView(
+                                                    funcionalities:
+                                                        FuncionalitiesView(),
                                                     page: CadastroCorredorView(
-                                                        idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
+                                                        idPiso:
+                                                            enderecamentoController
+                                                                .listaPiso[
+                                                                    index]
+                                                                .id_piso
+                                                                .toString()),
                                                   ),
                                                 ));
                                           },
                                           text: 'Corredor'),
-                                          IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {                                            
-                                          openFormEdit(context,  enderecamentoController.listaPiso[index]);
-                                        },
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.grey.shade400,
                                         ),
+                                        onPressed: () {
+                                          openFormEdit(
+                                              context,
+                                              enderecamentoController
+                                                  .listaPiso[index]);
+                                        },
+                                      ),
                                       IconButton(
                                         icon: Icon(
                                           Icons.delete,
@@ -328,7 +336,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                                         onPressed: () {
                                           handleDelete(
                                             context,
-                                            enderecamentoController.listaPiso[index],
+                                            enderecamentoController
+                                                .listaPiso[index],
                                           );
                                         },
                                       )

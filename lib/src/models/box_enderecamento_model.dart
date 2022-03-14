@@ -1,3 +1,5 @@
+import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
+
 class BoxEnderecamentoModel {
   int? id_box;
   String? desc_box;
@@ -7,6 +9,7 @@ class BoxEnderecamentoModel {
   double? profundidade;
   int? unidade_medida;
   String? created_at;
+  PrateleiraEnderecamentoModel? prateleira;
 
   BoxEnderecamentoModel(
       {this.id_box,
@@ -16,7 +19,8 @@ class BoxEnderecamentoModel {
       this.largura,
       this.profundidade,
       this.unidade_medida,
-      this.created_at});
+      this.created_at,
+      this.prateleira});
 
   factory BoxEnderecamentoModel.fromJson(Map<String, dynamic> json) {
     return BoxEnderecamentoModel(
@@ -27,7 +31,10 @@ class BoxEnderecamentoModel {
         largura: json['largura'],
         profundidade: json['profundidade'],
         unidade_medida: json['unidade_medida'],
-        created_at: json['created_at']);
+        created_at: json['created_at'],
+        prateleira: json['prateleira'] == null
+            ? null
+            : PrateleiraEnderecamentoModel.fromJson(json['prateleira']));
   }
 
   Map<String, dynamic> toJson() {
@@ -43,5 +50,19 @@ class BoxEnderecamentoModel {
     data['created_at'] = this.created_at;
 
     return data;
+  }
+
+  String calcularMedida() {
+    String? medida = '-';
+    if (this.altura != null) {
+      medida = altura.toString();
+      if (this.largura != null) {
+        medida = medida + 'x' + largura.toString();
+        if (this.profundidade != null) {
+          medida = medida + 'x' + profundidade.toString();
+        }
+      }
+    }
+    return medida;
   }
 }

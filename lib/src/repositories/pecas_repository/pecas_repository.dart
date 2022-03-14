@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_pagina_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
@@ -45,7 +45,8 @@ class PecasRepository {
   Future<bool> criarProdutoPeca(ProdutoPecaModel produtoPecaModel) async {
     print(jsonEncode(produtoPecaModel.toJson()));
 
-    Response response = await api.post('/pecas/00/produto-peca', produtoPecaModel.toJson());
+    Response response =
+        await api.post('/pecas/00/produto-peca', produtoPecaModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -54,8 +55,13 @@ class PecasRepository {
     }
   }
 
-  Future<List<PecasModel>> buscarTodos() async {
-    Response response = await api.get('/pecas');
+  Future<List> buscarTodos(int pagina) async {
+    Map<String, String> queryParameters = {
+      'page': pagina.toString(),
+    };
+
+    Response response =
+        await api.get('/pecas', queryParameters: queryParameters);
 
     //print(response.body);
 
@@ -65,9 +71,13 @@ class PecasRepository {
       // print(jsonDecode(response.body));
 
       // Fazer trazer array no model
-      List<PecasModel> pecas = data["data"].map<PecasModel>((data) => PecasModel.fromJson(data)).toList();
+      List<PecasModel> pecas = data["data"]
+          .map<PecasModel>((data) => PecasModel.fromJson(data))
+          .toList();
 
-      return pecas;
+      PecasPaginaModel pecasPagina = PecasPaginaModel.fromJson(data);
+
+      return [pecas, pecasPagina];
     } else {
       var error = json.decode(response.body)['error'];
       throw error;
@@ -77,12 +87,27 @@ class PecasRepository {
   Future<bool> editar(PecasModel pecasModel) async {
     print(jsonEncode(pecasModel.toJson()));
 
-    Response response = await api.put('/pecas/${pecasModel.id_peca}', pecasModel.toJson());
+    Response response =
+        await api.put('/pecas/${pecasModel.id_peca}', pecasModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
       throw 'Ocorreu um erro ao editar uma peça';
+    }
+  }
+
+  Future<bool> editarProdutoPeca(ProdutoPecaModel produtoPecaModel) async {
+    print(jsonEncode(produtoPecaModel.toJson()));
+
+    Response response = await api.put(
+        '/pecas/${produtoPecaModel.id_peca}/produto-peca/${produtoPecaModel.id_produto_peca}',
+        produtoPecaModel.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      throw 'Ocorreu um erro ao editar um produto peça';
     }
   }
 
@@ -94,13 +119,7 @@ class PecasRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      print('buscou peca');
-      print(data);
-
       PecasModel pecas = PecasModel.fromJson(data);
-
-      print('buscou peca 2');
-      print(pecas.id_peca);
 
       return pecas;
     } else {
@@ -110,7 +129,8 @@ class PecasRepository {
   }
 
   Future<bool> excluir(PecasModel pecasModel) async {
-    Response response = await api.delete('/pecas/' + pecasModel.id_peca.toString());
+    Response response =
+        await api.delete('/pecas/' + pecasModel.id_peca.toString());
 
     if (response.statusCode == StatusCode.OK) {
       print(response.body);

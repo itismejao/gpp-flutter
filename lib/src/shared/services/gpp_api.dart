@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:gpp/main.dart';
+import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -40,6 +42,11 @@ class ApiService {
           .get(uri, headers: getHeader())
           .timeout(const Duration(seconds: 30));
 
+      if (response.statusCode == StatusCode.UNAUTHORIZED) {
+        logout();
+        navigatorKey.currentState!.pushNamed('/logout');
+      }
+
       return response;
     } on TimeoutException {
       throw TimeoutException("Tempo de conexão excedido");
@@ -52,6 +59,11 @@ class ApiService {
       var response = await http
           .post(uri, headers: getHeader(), body: jsonEncode(body))
           .timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == StatusCode.UNAUTHORIZED) {
+        logout();
+        navigatorKey.currentState!.pushNamed('/logout');
+      }
 
       return response;
     } on TimeoutException {
@@ -94,12 +106,22 @@ class ApiService {
     var response =
         await http.put(uri, headers: getHeader(), body: jsonEncode(body));
 
+    if (response.statusCode == StatusCode.UNAUTHORIZED) {
+      logout();
+      navigatorKey.currentState!.pushNamed('/logout');
+    }
+
     return response;
   }
 
   Future<dynamic> delete(String endpoint) async {
     var uri = Uri.parse(baseUrl! + endpoint);
     var response = await http.delete(uri, headers: getHeader());
+
+    if (response.statusCode == StatusCode.UNAUTHORIZED) {
+      logout();
+      navigatorKey.currentState!.pushNamed('/logout');
+    }
 
     return response;
   }

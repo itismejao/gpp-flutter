@@ -38,6 +38,7 @@ class AutenticacaoRepository {
       usuario = UsuarioModel.fromJson(jsonDecode(response.body));
     } else {
       var error = json.decode(response.body)['error'];
+
       throw error;
     }
   }

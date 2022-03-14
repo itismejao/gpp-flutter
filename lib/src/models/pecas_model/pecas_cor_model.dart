@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class PecasCorModel {
   int? id_peca_cor;
   String? cor;

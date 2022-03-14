@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class PecasClienteModel {
   int? id_cliente;
   String? nome;

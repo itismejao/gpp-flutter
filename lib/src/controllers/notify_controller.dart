@@ -8,12 +8,22 @@ class NotifyController {
     required this.context,
   });
 
-  void error(String message) {
+  void error2(String message) {
     final snackBar = SnackBar(
         duration: const Duration(seconds: 5),
         backgroundColor: Colors.red,
         content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void error(String? message) {
+    // if (message != null) {
+    //   final snackBar = SnackBar(
+    //       duration: const Duration(seconds: 5),
+    //       backgroundColor: Colors.red,
+    //       content: Text(message));
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // }
   }
 
   void sucess(String message) {
@@ -80,4 +90,37 @@ class NotifyController {
       return result;
     }
   }
+
+  warning(String message) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Alerta!'),
+          content: Text(message),
+          actions: <Widget>[
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 15, left: 25, bottom: 15, right: 25),
+                  child: Text(
+                    "OK",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
