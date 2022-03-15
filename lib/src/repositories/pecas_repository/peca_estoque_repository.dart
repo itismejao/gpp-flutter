@@ -33,6 +33,26 @@ class PecaEstoqueRepository{
 
   }
 
+  Future<List<PecasEstoqueModel>> consultarEstoque() async{
+
+    Map<String, String> queryParameters = {
+    };
+
+    Response response = await api.get('/consulta-estoque', queryParameters: queryParameters);
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return data['data'].map<PecasEstoqueModel>((data) =>  PecasEstoqueModel.fromJson(data)).toList();
+
+    } else {
+      var error = json.decode(response.body)['error'];
+      throw error;
+    }
+
+  }
+
+
 
 
 

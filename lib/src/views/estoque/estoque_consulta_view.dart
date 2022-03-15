@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
@@ -12,7 +14,6 @@ class EstoqueConsultaView extends StatefulWidget {
 }
 
 class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
-
   TextEditingController _controllerIdFilial = new TextEditingController();
   TextEditingController _controllerNomeFilial = new TextEditingController();
 
@@ -31,7 +32,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   TextEditingController _controllerBox = new TextEditingController();
 
   bool? disponivel;
+  bool? endereco;
 
+  PecaEstoqueController pecaEstoqueController = PecaEstoqueController();
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +80,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Filial',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
-                          onPressed: () async {
-                          },
+                          onPressed: () async {},
                           icon: Icon(Icons.search),
                         ),
                       ),
@@ -107,7 +109,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Nome Filial',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -132,7 +134,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           labelText: 'ID',
                           border: InputBorder.none,
                           contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              EdgeInsets.only(top: 15, bottom: 10, left: 10),
                           suffixIcon: IconButton(
                             onPressed: () async {},
                             icon: Icon(Icons.search),
@@ -159,7 +161,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Nome Fornecedor',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -190,8 +192,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'ID',
                         labelText: 'ID',
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             if (_controllerIdProduto.text == '') {
@@ -225,8 +227,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'Nome Produto',
                         labelText: 'Nome Produto',
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -283,8 +285,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'Nome Peça',
                         labelText: 'Nome Peça',
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -311,8 +313,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -334,8 +336,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -357,8 +359,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
@@ -380,41 +382,271 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(
+                            top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
-                new Spacer(),
                 Flexible(
+                  flex: 3,
                   child: ListTile(
                     title: const Text('Disponível'),
                     leading: Radio(
                       groupValue: disponivel,
                       value: true,
-                      onChanged: (value){
-                        disponivel = value as bool?;
+                      onChanged: (value) {
+                        setState(() {
+                          disponivel = true;
+                        });
                       },
                     ),
-
-                ),),
+                  ),
+                ),
                 Flexible(
+                  flex: 3,
                   child: ListTile(
                     title: const Text('Reservado'),
                     leading: Radio(
                       groupValue: disponivel,
                       value: false,
-                      onChanged: (value){
-                        disponivel = value as bool?;
+                      onChanged: (value) {
+                        setState(() {
+                          disponivel = false;
+                        });
                       },
                     ),
-
-                  ),),
+                  ),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: ListTile(
+                    title: const Text('Endereçado'),
+                    leading: Radio(
+                      groupValue: endereco,
+                      value: true,
+                      onChanged: (value) {
+                        setState(() {
+                          endereco = true;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: ListTile(
+                    title: const Text('Sem endereço'),
+                    leading: Radio(
+                      groupValue: endereco,
+                      value: false,
+                      onChanged: (value) {
+                        setState(() {
+                          endereco = false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 20)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 5)),
+                Flexible(
+                  child: ButtonComponent(onPressed: () {}, text: 'Pesquisar'),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 5)),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          size: 32,
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        const TitleComponent('Endereços'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        ButtonComponent(
+                            color: primaryColor,
+                            onPressed: () {},
+                            text: 'Limpar Filtros')
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: const TextComponent(
+                        'Filial',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: const TextComponent('Endereço'),
+                    ),
+                    Expanded(
+                      child: const TextComponent(
+                        'Cod. Peça',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: const TextComponent('Descrição Peça'),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: const TextComponent('Fornecedor'),
+                    ),
+                    Expanded(
+                      child: const TextComponent(
+                        'Disp.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: const TextComponent(
+                        'Reserv.',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: const TextComponent(
+                        'Ações',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              Container(
+                height: media.height / 2,
+                child: ListView.builder(
+                  primary: false,
+                  itemCount: pecaEstoqueController.pecas_estoque.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Padding(padding: EdgeInsets.only(left: 10)),
+                          // CheckboxComponent(),
+                          Expanded(
+                            child: Text(
+                              pecaEstoqueController.pecas_estoque[index]!.filial
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              '-',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              pecaEstoqueController
+                                  .pecas_estoque[index]!.id_peca
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Text(pecaEstoqueController
+                                    .pecas_estoque[index]!
+                                    .pecasModel
+                                    ?.descricao ??
+                                ''),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(''),
+                          ),
+                          Expanded(
+                            child: Text(
+                              pecaEstoqueController
+                                  .pecas_estoque[index]!.saldo_disponivel
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              pecaEstoqueController
+                                  .pecas_estoque[index]!.saldo_reservado
+                                  .toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.location_on_outlined,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    onPressed: () async {},
+                                  ),
+                                ),
+                                Expanded(
+                                  child: IconButton(
+                                    tooltip: 'Etiqueta',
+                                    icon: Icon(
+                                      Icons.local_offer_outlined,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    onPressed: () => {
+                                      //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              )
+            ])
           ]),
         ),
       ],
