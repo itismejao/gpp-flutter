@@ -28,7 +28,7 @@ class PecasRepository {
   // }
 
   Future<PecasModel> criarPeca(PecasModel pecas) async {
-    print(jsonEncode(pecas.toJson()));
+    //  print(jsonEncode(pecas.toJson()));
     Response response = await api.post('/pecas', pecas.toJson());
 
     var data = jsonDecode(response.body);

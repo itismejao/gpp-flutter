@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/PecasController.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';

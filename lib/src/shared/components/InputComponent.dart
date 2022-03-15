@@ -79,6 +79,7 @@ class InputComponent extends StatelessWidget {
                   if (validator != null) {
                     validator!(value);
                   }
+                  return null;
                 },
                 keyboardType: keyboardType,
                 style: TextStyle(
@@ -125,6 +126,7 @@ class InputComponent extends StatelessWidget {
               if (validator != null) {
                 validator!(value);
               }
+              return null;
             },
             keyboardType: keyboardType,
             style: TextStyle(

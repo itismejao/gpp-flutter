@@ -74,6 +74,7 @@ import 'package:gpp/src/views/funcionalities_view.dart';
 
 import 'package:gpp/src/views/home/home_view.dart';
 import 'package:gpp/src/views/not_found_view.dart';
+import 'package:gpp/src/views/pecas/PecasListView.dart';
 import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido/PedidoSaidaListView.dart';
@@ -107,7 +108,7 @@ class _GppAppState extends State<GppApp> {
 
 //Se existe 1 parâmetros da url
       if (uri.pathSegments.length == 0) {
-        pagina = AstecaListView();
+        pagina = PecasListView();
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaListView();

@@ -187,9 +187,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: pedidoEntradaController.pedidosEntrada == null
-                      ? 0
-                      : pedidoEntradaController.pedidosEntrada.length,
+                  itemCount: pedidoEntradaController.pedidosEntrada.length,
                   itemBuilder: (context, index) {
                     return Container(
                       width: 80,

@@ -1,6 +1,9 @@
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MaskFormatter {
+  NumberFormat formatter = NumberFormat.simpleCurrency(locale: 'pt_BR');
+
   MaskTextInputFormatter? cpfCnpjFormatter({String? value}) {
     if (value!.length == 11) {
       return cpfFormatter(value: value);
@@ -50,10 +53,15 @@ class MaskFormatter {
     );
   }
 
-  MaskTextInputFormatter realInputFormmater(String? value) {
+  MaskTextInputFormatter medida(value) {
     return MaskTextInputFormatter(
       initialText: value,
-      mask: '##.###,###,###',
+      mask: '#,##',
+      filter: {"#": RegExp(r'[0-9]')},
     );
+  }
+
+  realInputFormmater(value) {
+    return formatter.format(value);
   }
 }
