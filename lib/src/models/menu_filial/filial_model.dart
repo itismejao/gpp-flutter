@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class MenuFilialModel {
+class FilialModel {
   int? id_filial;
   String? sigla;
 
-  MenuFilialModel({
+  FilialModel({
     this.id_filial,
     this.sigla,
   });
 
-  factory MenuFilialModel.fromJson(Map<String, dynamic> json) {
-    return MenuFilialModel(
+  factory FilialModel.fromJson(Map<String, dynamic> json) {
+    return FilialModel(
       id_filial: json['id_filial'],
       sigla: json['sigla'],
     );
