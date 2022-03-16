@@ -38,6 +38,11 @@ class _AddressingListViewState extends State<AddressingListView> {
 
   handleCreate(context, PisoEnderecamentoModel piso) async {
     NotifyController notify = NotifyController(context: context);
+
+    if (piso.id_filial == null) {
+      piso.id_filial = getFilial().id_filial;
+    }
+
     try {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
@@ -115,6 +120,7 @@ class _AddressingListViewState extends State<AddressingListView> {
                       InputComponent(
                         label: 'Filial',
                         hintText: 'Digite a filial',
+                        initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
                             pisoEnderecamentoReplacement.id_filial = int.parse(value);
