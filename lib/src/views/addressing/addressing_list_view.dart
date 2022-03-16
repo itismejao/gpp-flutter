@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
@@ -25,7 +26,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
+    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 

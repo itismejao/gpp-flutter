@@ -18,6 +18,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/pecas/endereco_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
@@ -25,12 +26,10 @@ class PecaEnderecamentoDetailView extends StatefulWidget {
   const PecaEnderecamentoDetailView({Key? key}) : super(key: key);
 
   @override
-  _PecaEnderecamentoDetailViewState createState() =>
-      _PecaEnderecamentoDetailViewState();
+  _PecaEnderecamentoDetailViewState createState() => _PecaEnderecamentoDetailViewState();
 }
 
-class _PecaEnderecamentoDetailViewState
-    extends State<PecaEnderecamentoDetailView> {
+class _PecaEnderecamentoDetailViewState extends State<PecaEnderecamentoDetailView> {
   late PecaEnderecamentoController pecaEnderecamentoController;
   late EnderecamentoController enderecamentoController;
   late PecasController _pecasController;
@@ -111,8 +110,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'Filial',
                       labelText: 'Filial',
                       border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       suffixIcon: IconButton(
                         onPressed: () async {
                           //await buscaProduto(txtIdProduto.text);
@@ -146,8 +144,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'Nome Filial',
                       labelText: 'Nome Filial',
                       border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -171,8 +168,7 @@ class _PecaEnderecamentoDetailViewState
                         hintText: 'ID',
                         labelText: 'ID',
                         border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                        contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {},
                           icon: Icon(Icons.search),
@@ -198,8 +194,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'Nome Fornecedor',
                       labelText: 'Nome Fornecedor',
                       border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -230,8 +225,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'ID',
                       labelText: 'ID',
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       suffixIcon: IconButton(
                         onPressed: () async {
                           if (_controllerIdProduto.text == '') {
@@ -265,8 +259,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'Nome Produto',
                       labelText: 'Nome Produto',
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -290,8 +283,7 @@ class _PecaEnderecamentoDetailViewState
                         hintText: 'ID',
                         labelText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             if (_controllerIdPeca.text == '') {
@@ -323,8 +315,7 @@ class _PecaEnderecamentoDetailViewState
                       hintText: 'Nome Peça',
                       labelText: 'Nome Peça',
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -344,74 +335,66 @@ class _PecaEnderecamentoDetailViewState
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                    future: enderecamentoController.buscarTodos(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    return Text("Sem conexão!");
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                    return Center(
-                    child:
-                    new CircularProgressIndicator());
-                    case ConnectionState.done:
-                        return Container(
-                          padding: const EdgeInsets.only(
-                              left: 12, right: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius:
-                            BorderRadius.circular(5),
-                          ),
-                          child: DropdownSearch<PisoEnderecamentoModel>(
-                          mode: Mode.MENU,
-                          showSearchBox: true,
-                          items: snapshot.data,
-                          itemAsString:
-                              (PisoEnderecamentoModel? value) =>
-                              value?.id_filial == null ? value!.desc_piso!.toUpperCase() :
-                              value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
-                            onChanged: (value) {
-                              setState(() {
-                                limparCorredor();
-                                _pisoSelected = value!;
-                              });
-                            },
-                            dropdownSearchDecoration:
-                            InputDecoration(
-                              enabledBorder: InputBorder.none,
-                                hintText: "Selecione o Piso:",
-                                labelText: "Piso"
-                            ),
-                            dropDownButton: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.black,
-                            ),
-                            showAsSuffixIcons: true,
-                            selectedItem: _pisoSelected,
-                            showClearButton: true,
-                            clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
-                               limparFieldsLoc();
-                            },),
-                            emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
-                      ),
-                        );}})
-                  ),
-
-              const Padding(padding: EdgeInsets.only(right: 10)),
-              Flexible(
-                  flex: 1,
-                  child: FutureBuilder(
-                      future: enderecamentoController.buscarCorredor(
-                          _pisoSelected?.id_piso.toString() ?? ''),
+                      future: enderecamentoController.buscarTodos(getFilial().id_filial!),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                             return Text("Sem conexão!");
                           case ConnectionState.active:
                           case ConnectionState.waiting:
-                            return Center(
-                                child: new CircularProgressIndicator());
+                            return Center(child: new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
+                              padding: const EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PisoEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString: (PisoEnderecamentoModel? value) => value?.id_filial == null
+                                    ? value!.desc_piso!.toUpperCase()
+                                    : value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
+                                onChanged: (value) {
+                                  setState(() {
+                                    limparCorredor();
+                                    _pisoSelected = value!;
+                                  });
+                                },
+                                dropdownSearchDecoration: InputDecoration(
+                                    enabledBorder: InputBorder.none, hintText: "Selecione o Piso:", labelText: "Piso"),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _pisoSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: () {
+                                    limparFieldsLoc();
+                                  },
+                                ),
+                                emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
+                              ),
+                            );
+                        }
+                      })),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(child: new CircularProgressIndicator());
                           case ConnectionState.done:
                             return Container(
                               padding: EdgeInsets.only(left: 12, right: 12),
@@ -423,9 +406,7 @@ class _PecaEnderecamentoDetailViewState
                                 mode: Mode.MENU,
                                 showSearchBox: true,
                                 items: snapshot.data,
-                                itemAsString:
-                                    (CorredorEnderecamentoModel? value) =>
-                                        value!.desc_corredor!.toUpperCase(),
+                                itemAsString: (CorredorEnderecamentoModel? value) => value!.desc_corredor!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
                                     limparEstante();
@@ -433,9 +414,7 @@ class _PecaEnderecamentoDetailViewState
                                   });
                                 },
                                 dropdownSearchDecoration: InputDecoration(
-                                    enabledBorder: InputBorder.none,
-                                    hintText: "Selecione o Corredor:",
-                                    labelText: "Corredor"),
+                                    enabledBorder: InputBorder.none, hintText: "Selecione o Corredor:", labelText: "Corredor"),
                                 dropDownButton: Icon(
                                   Icons.arrow_drop_down_rounded,
                                   color: Colors.black,
@@ -450,9 +429,7 @@ class _PecaEnderecamentoDetailViewState
                                   },
                                 ),
                                 emptyBuilder: (context, searchEntry) => Center(
-                                    child: _pisoSelected == null
-                                        ? Text('Selecione um Piso!')
-                                        : Text('Corredor não encontrado!')),
+                                    child: _pisoSelected == null ? Text('Selecione um Piso!') : Text('Corredor não encontrado!')),
                               ),
                             );
                         }
@@ -461,16 +438,14 @@ class _PecaEnderecamentoDetailViewState
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarEstante(
-                          _corredorSelected?.id_corredor.toString() ?? ''),
+                      future: enderecamentoController.buscarEstante(_corredorSelected?.id_corredor.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                             return Text("Sem conexão!");
                           case ConnectionState.active:
                           case ConnectionState.waiting:
-                            return Center(
-                                child: new CircularProgressIndicator());
+                            return Center(child: new CircularProgressIndicator());
                           case ConnectionState.done:
                             return Container(
                               padding: EdgeInsets.only(left: 12, right: 12),
@@ -482,9 +457,7 @@ class _PecaEnderecamentoDetailViewState
                                 mode: Mode.MENU,
                                 showSearchBox: true,
                                 items: snapshot.data,
-                                itemAsString:
-                                    (EstanteEnderecamentoModel? value) =>
-                                        value!.desc_estante!.toUpperCase(),
+                                itemAsString: (EstanteEnderecamentoModel? value) => value!.desc_estante!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
                                     limparPrateleira();
@@ -492,9 +465,7 @@ class _PecaEnderecamentoDetailViewState
                                   });
                                 },
                                 dropdownSearchDecoration: InputDecoration(
-                                    enabledBorder: InputBorder.none,
-                                    hintText: "Selecione a Estante:",
-                                    labelText: "Estante"),
+                                    enabledBorder: InputBorder.none, hintText: "Selecione a Estante:", labelText: "Estante"),
                                 dropDownButton: Icon(
                                   Icons.arrow_drop_down_rounded,
                                   color: Colors.black,
@@ -520,16 +491,14 @@ class _PecaEnderecamentoDetailViewState
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarPrateleira(
-                          _estanteSelected?.id_estante.toString() ?? ''),
+                      future: enderecamentoController.buscarPrateleira(_estanteSelected?.id_estante.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                             return Text("Sem conexão!");
                           case ConnectionState.active:
                           case ConnectionState.waiting:
-                            return Center(
-                                child: new CircularProgressIndicator());
+                            return Center(child: new CircularProgressIndicator());
                           case ConnectionState.done:
                             return Container(
                               padding: EdgeInsets.only(left: 12, right: 12),
@@ -537,14 +506,11 @@ class _PecaEnderecamentoDetailViewState
                                 color: Colors.grey.shade200,
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              child:
-                                  DropdownSearch<PrateleiraEnderecamentoModel>(
+                              child: DropdownSearch<PrateleiraEnderecamentoModel>(
                                 mode: Mode.MENU,
                                 showSearchBox: true,
                                 items: snapshot.data,
-                                itemAsString:
-                                    (PrateleiraEnderecamentoModel? value) =>
-                                        value!.desc_prateleira!.toUpperCase(),
+                                itemAsString: (PrateleiraEnderecamentoModel? value) => value!.desc_prateleira!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
                                     limparBox();
@@ -580,16 +546,14 @@ class _PecaEnderecamentoDetailViewState
               Flexible(
                   flex: 1,
                   child: FutureBuilder(
-                      future: enderecamentoController.buscarBox(
-                          _prateleiraSelected?.id_prateleira.toString() ?? ''),
+                      future: enderecamentoController.buscarBox(_prateleiraSelected?.id_prateleira.toString() ?? ''),
                       builder: (context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
                             return Text("Sem conexão!");
                           case ConnectionState.active:
                           case ConnectionState.waiting:
-                            return Center(
-                                child: new CircularProgressIndicator());
+                            return Center(child: new CircularProgressIndicator());
                           case ConnectionState.done:
                             return Container(
                               padding: EdgeInsets.only(left: 12, right: 12),
@@ -601,17 +565,14 @@ class _PecaEnderecamentoDetailViewState
                                 mode: Mode.MENU,
                                 showSearchBox: true,
                                 items: snapshot.data,
-                                itemAsString: (BoxEnderecamentoModel? value) =>
-                                    value!.desc_box!.toUpperCase(),
+                                itemAsString: (BoxEnderecamentoModel? value) => value!.desc_box!.toUpperCase(),
                                 onChanged: (value) {
                                   setState(() {
                                     _boxSelected = value!;
                                   });
                                 },
                                 dropdownSearchDecoration: InputDecoration(
-                                    enabledBorder: InputBorder.none,
-                                    hintText: "Selecione o Box:",
-                                    labelText: "Box"),
+                                    enabledBorder: InputBorder.none, hintText: "Selecione o Box:", labelText: "Box"),
                                 dropDownButton: Icon(
                                   Icons.arrow_drop_down_rounded,
                                   color: Colors.black,
@@ -648,18 +609,10 @@ class _PecaEnderecamentoDetailViewState
                 onPressed: () {
                   setState(() {
                     abrirFiltro = false;
-                    id_filial = _controllerIdFilial.text != ''
-                        ? int.parse(_controllerIdFilial.text)
-                        : null;
-                    id_fornecedor = _controllerIdFornecedor.text != ''
-                        ? int.parse(_controllerIdFornecedor.text)
-                        : null;
-                    id_produto = _controllerIdProduto.text != ''
-                        ? int.parse(_controllerIdProduto.text)
-                        : null;
-                    id_peca = _controllerIdPeca.text != ''
-                        ? int.parse(_controllerIdPeca.text)
-                        : null;
+                    id_filial = _controllerIdFilial.text != '' ? int.parse(_controllerIdFilial.text) : null;
+                    id_fornecedor = _controllerIdFornecedor.text != '' ? int.parse(_controllerIdFornecedor.text) : null;
+                    id_produto = _controllerIdProduto.text != '' ? int.parse(_controllerIdProduto.text) : null;
+                    id_peca = _controllerIdPeca.text != '' ? int.parse(_controllerIdPeca.text) : null;
                   });
                 },
                 text: 'Pesquisar'),
@@ -774,8 +727,7 @@ class _PecaEnderecamentoDetailViewState
               _estanteSelected?.id_estante,
               _prateleiraSelected?.id_prateleira,
               _boxSelected?.id_box),
-          builder:
-              (context, AsyncSnapshot<List<PecaEnderacamentoModel>> snapshot) {
+          builder: (context, AsyncSnapshot<List<PecaEnderacamentoModel>> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return Text('none');
@@ -791,7 +743,7 @@ class _PecaEnderecamentoDetailViewState
                   );
                 } else {
                   return Container(
-                    height: media.height/2,
+                    height: media.height / 2,
                     child: ListView.builder(
                       primary: false,
                       itemCount: snapshot.data?.length,
@@ -804,7 +756,9 @@ class _PecaEnderecamentoDetailViewState
                               // CheckboxComponent(),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque == null ? snapshot.data![index].box!.prateleira!.estante!.corredor!.piso!.id_filial.toString() : snapshot.data![index].peca_estoque!.filial.toString(),
+                                  snapshot.data![index].peca_estoque == null
+                                      ? snapshot.data![index].box!.prateleira!.estante!.corredor!.piso!.id_filial.toString()
+                                      : snapshot.data![index].peca_estoque!.filial.toString(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -817,52 +771,38 @@ class _PecaEnderecamentoDetailViewState
                               Expanded(
                                 child: Text(
                                   snapshot.data![index].endereco,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                                 ),
                               ),
                               Expanded(
-                                child: Text(snapshot.data![index].box?.calcularMedida() ?? '-',
+                                child: Text(
+                                  snapshot.data![index].box?.calcularMedida() ?? '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque?.pecasModel
-                                          ?.id_peca
-                                          .toString() ??
-                                      '-',
+                                  snapshot.data![index].peca_estoque?.pecasModel?.id_peca.toString() ?? '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 flex: 3,
-                                child: Text(snapshot.data![index].peca_estoque
-                                        ?.pecasModel?.descricao ??
-                                    '-'),
+                                child: Text(snapshot.data![index].peca_estoque?.pecasModel?.descricao ?? '-'),
                               ),
                               Expanded(
                                 flex: 2,
-                                child: Text(
-                                    snapshot.data![index].nomeFornecedor ??
-                                        '-'),
+                                child: Text(snapshot.data![index].nomeFornecedor ?? '-'),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque
-                                          ?.saldo_disponivel
-                                          .toString() ??
-                                      '-',
+                                  snapshot.data![index].peca_estoque?.saldo_disponivel.toString() ?? '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque
-                                          ?.saldo_reservado
-                                          .toString() ??
-                                      '-',
+                                  snapshot.data![index].peca_estoque?.saldo_reservado.toString() ?? '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -872,25 +812,17 @@ class _PecaEnderecamentoDetailViewState
                                   children: [
                                     Expanded(
                                       child: IconButton(
-                                        tooltip: snapshot.data![index]
-                                                    .id_peca_estoque ==
-                                                null
-                                            ? 'Endereçar Peça'
-                                            : 'Transferir Peça',
+                                        tooltip:
+                                            snapshot.data![index].id_peca_estoque == null ? 'Endereçar Peça' : 'Transferir Peça',
                                         icon: Icon(
-                                          snapshot.data![index]
-                                                      .id_peca_estoque ==
-                                                  null
+                                          snapshot.data![index].id_peca_estoque == null
                                               ? Icons.location_on_outlined
                                               : Icons.sync_outlined,
                                           color: Colors.grey.shade400,
                                         ),
                                         onPressed: () async {
                                           await PopUpEditar.popUpPeca(
-                                              context,
-                                              EnderecoDetailView(
-                                                  pecaEnderecamento:
-                                                      snapshot.data![index]));
+                                              context, EnderecoDetailView(pecaEnderecamento: snapshot.data![index]));
                                           setState(() {});
                                         },
                                       ),
@@ -926,8 +858,7 @@ class _PecaEnderecamentoDetailViewState
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextComponent('Total de páginas: ' +
-                  pecaEnderecamentoController.pagina.total.toString()),
+              TextComponent('Total de páginas: ' + pecaEnderecamentoController.pagina.total.toString()),
               Row(
                 children: [
                   IconButton(
@@ -947,22 +878,18 @@ class _PecaEnderecamentoDetailViewState
                       onPressed: () {
                         setState(() {
                           if (pecaEnderecamentoController.pagina.atual > 1) {
-                            pecaEnderecamentoController.pagina.atual =
-                                pecaEnderecamentoController.pagina.atual - 1;
+                            pecaEnderecamentoController.pagina.atual = pecaEnderecamentoController.pagina.atual - 1;
                             //buscarTodas();
                           }
                         });
                       }),
-                  TextComponent(
-                      pecaEnderecamentoController.pagina.atual.toString()),
+                  TextComponent(pecaEnderecamentoController.pagina.atual.toString()),
                   IconButton(
                       icon: Icon(Icons.navigate_next_rounded),
                       onPressed: () {
                         setState(() {
-                          if (pecaEnderecamentoController.pagina.atual !=
-                              pecaEnderecamentoController.pagina.total) {
-                            pecaEnderecamentoController.pagina.atual =
-                                pecaEnderecamentoController.pagina.atual + 1;
+                          if (pecaEnderecamentoController.pagina.atual != pecaEnderecamentoController.pagina.total) {
+                            pecaEnderecamentoController.pagina.atual = pecaEnderecamentoController.pagina.atual + 1;
                           }
                         });
 
@@ -972,8 +899,7 @@ class _PecaEnderecamentoDetailViewState
                       icon: Icon(Icons.last_page),
                       onPressed: () {
                         setState(() {
-                          pecaEnderecamentoController.pagina.atual =
-                              pecaEnderecamentoController.pagina.total;
+                          pecaEnderecamentoController.pagina.atual = pecaEnderecamentoController.pagina.total;
                         });
 
                         //buscarTodas();
@@ -1046,7 +972,6 @@ class _PecaEnderecamentoDetailViewState
     id_fornecedor = null;
     id_produto = null;
     id_peca = null;
-
   }
 
   limparFields() {
@@ -1057,20 +982,15 @@ class _PecaEnderecamentoDetailViewState
   buscarPeca(String id) async {
     peca = await _pecasController.buscar(id);
     _controllerNomePeca.text = peca?.descricao ?? '';
-    if (peca?.produto_peca?[0].id_produto != null)
-      buscarProduto(peca!.produto_peca![0].id_produto.toString());
+    if (peca?.produto_peca?[0].id_produto != null) buscarProduto(peca!.produto_peca![0].id_produto.toString());
   }
 
   buscarProduto(String id) async {
     await _produtoController.buscar(id);
-    _controllerNomeProduto.text =
-        _produtoController.produtoModel.resumida ?? '';
-    _controllerIdProduto.text =
-        _produtoController.produtoModel.id_produto.toString();
-    _controllerNomeFornecedor.text =
-        _produtoController.produtoModel.fornecedor?[0].cliente!.nome ?? '';
-    _controllerIdFornecedor.text =
-        _produtoController.produtoModel.id_fornecedor.toString();
+    _controllerNomeProduto.text = _produtoController.produtoModel.resumida ?? '';
+    _controllerIdProduto.text = _produtoController.produtoModel.id_produto.toString();
+    _controllerNomeFornecedor.text = _produtoController.produtoModel.fornecedor?[0].cliente!.nome ?? '';
+    _controllerIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
   }
 
   buscarFornecedor(String id) {}
