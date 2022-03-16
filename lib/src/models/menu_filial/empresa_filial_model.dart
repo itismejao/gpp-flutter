@@ -22,4 +22,11 @@ class EmpresaFilialModel {
       filial: json['filial'] != null ? FilialModel.fromJson(json['filial']) : null,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id_empresa'] = this.id_empresa;
+    data['id_filial'] = this.id_filial;
+    return data;
+  }
 }

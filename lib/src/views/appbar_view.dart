@@ -3,17 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
+import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
-// ignore: must_be_immutable
-class AppBarView extends StatelessWidget {
+class AppBarView extends StatefulWidget {
+  const AppBarView({Key? key}) : super(key: key);
+
+  @override
+  State<AppBarView> createState() => _AppBarViewState();
+}
+
+class _AppBarViewState extends State<AppBarView> {
   final ResponsiveController _responsive = ResponsiveController();
-  AppBarView({
-    Key? key,
-  }) : super(key: key);
 
   FilialController _filialController = FilialController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (getFilial().id_filial == null) {
+      setFilial(
+          filial: EmpresaFilialModel(
+        id_empresa: 1,
+        id_filial: 500,
+        filial: FilialModel(id_filial: 500, sigla: 'DP/ASTEC'),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +150,7 @@ class AppBarView extends StatelessWidget {
                     items: snapshot.data,
                     itemAsString: (EmpresaFilialModel? value) => value!.id_filial!.toString(),
                     onChanged: (value) {
-                      FilialController.selectedFilial = value;
+                      setFilial(filial: value);
                     },
                     searchFieldProps: TextFieldProps(
                       decoration: InputDecoration(
@@ -192,7 +212,7 @@ class AppBarView extends StatelessWidget {
                     ),
                     popupBackgroundColor: primaryColor, // Cor de fundo para caixa de seleção
                     showAsSuffixIcons: true,
-                    selectedItem: FilialController.selectedFilial,
+                    selectedItem: getFilial(),
                   ),
                 );
             }
