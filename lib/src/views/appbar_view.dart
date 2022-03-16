@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
+import 'package:gpp/src/models/user_model.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 // ignore: must_be_immutable
