@@ -97,14 +97,13 @@ class AppBarView extends StatelessWidget {
   filial(BuildContext context) {
     return Row(
       children: [
-        // Text(
-        //   'Filial',
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //     fontWeight: FontWeight.w500,
-        //   ),
-        // ),
-        // Padding(padding: EdgeInsets.only(right: 20)),
+        Text(
+          'Filial',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         FutureBuilder(
           future: _filialController.buscarTodos(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -117,8 +116,8 @@ class AppBarView extends StatelessWidget {
               case ConnectionState.done:
                 print(snapshot.data);
                 return Container(
-                  width: 200,
-                  height: 40,
+                  width: 150,
+                  // height: 40,
                   padding: EdgeInsets.only(left: 12, right: 12),
                   decoration: BoxDecoration(
                     color: primaryColor,
@@ -128,29 +127,60 @@ class AppBarView extends StatelessWidget {
                     mode: Mode.MENU,
                     showSearchBox: true,
                     items: snapshot.data,
-                    itemAsString: (EmpresaFilialModel? value) {
-                      return value!.id_filial!.toString();
-                    },
-                    popupItemBuilder: (context, value, verdadeiro) {
-                      return Text(
-                        "${value!.id_filial.toString()}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      );
-                    },
+                    itemAsString: (EmpresaFilialModel? value) => value!.id_filial!.toString(),
                     onChanged: (value) {
                       // txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
 
                       // _pecasController.pecasModel.id_peca_material_fabricacao =
                       // value.id_peca_material_fabricacao.toString();
                     },
+                    searchFieldProps: TextFieldProps(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 2.0), // borda branca quando clica
+                          // borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white, width: 2.0), // borda branca quando clica
+                        ),
+                        labelText: 'Pesquisar',
+                        labelStyle: TextStyle(color: Colors.white),
+                      ),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    dropdownBuilder: (context, value) {
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '${value!.id_filial}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                    popupItemBuilder: (context, value, verdadeiro) {
+                      return Column(
+                        children: [
+                          Text(
+                            "${value!.id_filial}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Padding(padding: EdgeInsets.only(bottom: 5, top: 5)),
+                        ],
+                      );
+                    },
                     dropdownSearchDecoration: InputDecoration(
                       fillColor: primaryColor, // Cor fundo caixa dropdown
                       filled: true,
-                      // border: OutlineInputBorder(
-                      //   borderSide: BorderSide(color: Colors.white, width: 2.0),
-                      //   borderRadius: BorderRadius.circular(25.0),
-                      // ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white, width: 2.0), // borda branca quando clica
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 2.0), // borda branca quando clica
                         borderRadius: BorderRadius.circular(25.0),
