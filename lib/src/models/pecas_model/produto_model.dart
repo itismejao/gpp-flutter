@@ -1,4 +1,5 @@
 import 'package:gpp/src/models/pecas_model/fornecedor_pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 
 class ProdutoModel {
   int? id_produto;
@@ -8,6 +9,7 @@ class ProdutoModel {
   String? marca;
   String? data_cadastro;
   int? id_fornecedor;
+  List<PecasModel>? pecas;
 
   List<PecasFornecedorModel>? fornecedor;
 
@@ -42,7 +44,7 @@ class ProdutoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-
+    data['pecas'] = pecas!.map((e) => e.toJson()).toList();
     return data;
   }
 }

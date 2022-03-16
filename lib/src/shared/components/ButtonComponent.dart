@@ -47,23 +47,21 @@ class _ButtonComponentState extends State<ButtonComponent> {
           decoration: BoxDecoration(
               color: widget.color ?? secundaryColor,
               borderRadius: BorderRadius.circular(5)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.icon ?? Container(),
-                SizedBox(
-                  width: 8,
-                ),
-                TextComponent(
-                  widget.text,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ],
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widget.icon ?? Container(),
+              SizedBox(
+                width: 8,
+              ),
+              TextComponent(
+                widget.text,
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ],
           ),
         ),
       ),

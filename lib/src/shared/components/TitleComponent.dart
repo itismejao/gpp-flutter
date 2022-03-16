@@ -17,7 +17,7 @@ class TitleComponent extends StatelessWidget {
       data,
       style: TextStyle(
           color: color,
-          fontSize: 26 * media.textScaleFactor,
+          fontSize: 18 * media.textScaleFactor,
           letterSpacing: 0.20,
           fontWeight: FontWeight.bold),
     );

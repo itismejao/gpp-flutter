@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/PecasController.dart';
 
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/produto_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -14,6 +16,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
+import '../../controllers/pecas_controller/produto_controller.dart';
 import '../../shared/components/CheckboxComponent.dart';
 
 class ItemPeca {
@@ -31,6 +34,7 @@ class PecasListView extends StatefulWidget {
 
 class _PecasListViewState extends State<PecasListView> {
   int marcados = 0;
+  int ativos = 0;
   bool ativar = false;
   List<ItemPeca> itemsPeca = [];
   bool importado = false;
@@ -38,6 +42,7 @@ class _PecasListViewState extends State<PecasListView> {
   late GlobalKey<FormState> formKey;
 
   late PecasController pecaController;
+  late ProdutoController produtoController;
 
   selecionarTodos(bool value) {
     if (value) {
@@ -147,20 +152,19 @@ class _PecasListViewState extends State<PecasListView> {
 
   inserirPecas(setState, context) async {
     NotifyController notificacao = NotifyController(context: context);
+
     try {
       if (await notificacao.alert(
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
-        //Realiza a inserção no banco de dados
+        produtoController.produtoModel.pecas = [];
 
-        itemsPeca.forEach((itemPeca) async {
-          PecasModel peca = itemPeca.peca;
+        //Chama o endpoint
+        await produtoController.produtoRepository.inserirPecasProduto(
+            produtoController.produtoModel.id_produto.toString(),
+            produtoController.produtoModel);
 
-          //Se o item estiver marcado, realiza a inserção
-          if (itemPeca.marcado) {
-            //Realiza a criação das peças
-            await pecaController.pecasRepository.criarPeca(peca);
-          }
-        });
+        //Limpa
+        produtoController.produtoModel = ProdutoModel();
 
         //Fecha a caixa de dialogo
         Navigator.pop(context);
@@ -170,6 +174,15 @@ class _PecasListViewState extends State<PecasListView> {
       //Imprime erro
       notificacao.error2(e.toString());
     }
+  }
+
+  adicionarProdutoPecas() {
+    itemsPeca.forEach((itemPeca) async {
+      //Se o item estiver marcado, realiza a inserção
+      if (itemPeca.marcado) {
+        produtoController.produtoModel.pecas!.add(itemPeca.peca);
+      }
+    });
   }
 
   preVisualizarArquivo() async {
@@ -185,13 +198,72 @@ class _PecasListViewState extends State<PecasListView> {
                 Container(
                   width: media.size.width * 0.9,
                   height: media.size.height * 0.8,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        Expanded(
                           child: Column(
                             children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Row(
+                                  children: [TitleComponent('Produto')],
+                                ),
+                              ),
+                              Divider(),
+                              Form(
+                                  child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: InputComponent(
+                                          maxLines: 1,
+                                          label: 'Código do produto',
+                                          hintText: '4584544',
+                                          onFieldSubmitted: (value) {
+                                            carregarProduto(value);
+                                            print(produtoController
+                                                .produtoModel.resumida);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                        child: InputComponent(
+                                          key: UniqueKey(),
+                                          initialValue: produtoController
+                                              .produtoModel.resumida,
+                                          label: 'Descrição',
+                                          hintText: 'Guarda roupa',
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                        child: InputComponent(
+                                          key: UniqueKey(),
+                                          initialValue: produtoController
+                                                  .produtoModel
+                                                  .fornecedor
+                                                  ?.first
+                                                  .cliente
+                                                  ?.nome ??
+                                              '',
+                                          label: 'Fornecedor',
+                                          hintText: 'Guarda roupa',
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 24.0),
@@ -219,6 +291,9 @@ class _PecasListViewState extends State<PecasListView> {
                                         selecionarTodos(value);
                                       });
                                     },
+                                  ),
+                                  SizedBox(
+                                    width: 8,
                                   ),
                                   const Expanded(
                                     flex: 2,
@@ -311,44 +386,43 @@ class _PecasListViewState extends State<PecasListView> {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  const Expanded(
-                                    child: const TextComponent(
-                                      'Classificação de custo',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  const Expanded(
-                                    child: const TextComponent(
-                                      'Tipo de classificação de custo',
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Row(children: [
-                                      Switch(
-                                          activeColor: primaryColor,
-                                          value: ativar,
-                                          onChanged: (bool value) {
-                                            setState(() {
-                                              ativarInativarTodos(value);
-                                            });
-                                          }),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      const TextComponent(
-                                        'Ativo/inativo',
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ]),
-                                  ),
+                                  // const Expanded(
+                                  //   child: const TextComponent(
+                                  //     'Classificação de custo',
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   width: 8,
+                                  // ),
+                                  // const Expanded(
+                                  //   child: const TextComponent(
+                                  //     'Tipo de classificação de custo',
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
+                                  // SizedBox(
+                                  //   width: 8,
+                                  // ),
+                                  // Expanded(
+                                  //   child: Wrap(children: [
+                                  //     Switch(
+                                  //         activeColor: primaryColor,
+                                  //         value: ativar,
+                                  //         onChanged: (bool value) {
+                                  //           setState(() {
+                                  //             ativarInativarTodos(value);
+                                  //           });
+                                  //         }),
+                                  //     SizedBox(
+                                  //       width: 8,
+                                  //     ),
+                                  //     const TextComponent(
+                                  //       'Ativo/inativo',
+                                  //       fontWeight: FontWeight.bold,
+                                  //     ),
+                                  //   ]),
+                                  // ),
                                 ],
                               ),
                               Divider(),
@@ -375,6 +449,9 @@ class _PecasListViewState extends State<PecasListView> {
                                                               index, value);
                                                         })
                                                       }),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
                                               Expanded(
                                                 flex: 2,
                                                 child: InputComponent(
@@ -394,58 +471,115 @@ class _PecasListViewState extends State<PecasListView> {
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                    initialValue:
-                                                        itemsPeca[index]
+                                                  initialValue: itemsPeca[index]
+                                                      .peca
+                                                      .unidade
+                                                      .toString(),
+                                                  onSaved: (value) {
+                                                    itemsPeca[index]
                                                             .peca
-                                                            .unidade
-                                                            .toString()),
+                                                            .unidade =
+                                                        int.tryParse(value);
+                                                  },
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                    initialValue: maskFormatter
-                                                        .medida(itemsPeca[index]
+                                                  initialValue: maskFormatter
+                                                      .medida(
+                                                          value:
+                                                              itemsPeca[index]
+                                                                  .peca
+                                                                  .altura
+                                                                  .toString())
+                                                      .getMaskedText(),
+                                                  inputFormatter: [
+                                                    maskFormatter.medida()
+                                                  ],
+                                                  onSaved: (value) {
+                                                    itemsPeca[index]
                                                             .peca
-                                                            .altura
-                                                            .toString())
-                                                        .getMaskedText()),
+                                                            .altura =
+                                                        double.tryParse(
+                                                            UtilBrasilFields
+                                                                .removeCaracteres(
+                                                                    value));
+                                                  },
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                    initialValue: maskFormatter
-                                                        .medida(itemsPeca[index]
+                                                  initialValue: maskFormatter
+                                                      .medida(
+                                                          value:
+                                                              itemsPeca[index]
+                                                                  .peca
+                                                                  .largura
+                                                                  .toString())
+                                                      .getMaskedText(),
+                                                  inputFormatter: [
+                                                    maskFormatter.medida()
+                                                  ],
+                                                  onSaved: (value) {
+                                                    itemsPeca[index]
                                                             .peca
-                                                            .largura
-                                                            .toString())
-                                                        .getMaskedText()),
+                                                            .largura =
+                                                        double.tryParse(
+                                                            UtilBrasilFields
+                                                                .removeCaracteres(
+                                                                    value));
+                                                  },
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                    initialValue: maskFormatter
-                                                        .medida(itemsPeca[index]
+                                                  initialValue: maskFormatter
+                                                      .medida(
+                                                          value:
+                                                              itemsPeca[index]
+                                                                  .peca
+                                                                  .profundidade
+                                                                  .toString())
+                                                      .getMaskedText(),
+                                                  inputFormatter: [
+                                                    maskFormatter.medida()
+                                                  ],
+                                                  onSaved: (value) {
+                                                    print(value);
+                                                    itemsPeca[index]
                                                             .peca
-                                                            .profundidade
-                                                            .toString())
-                                                        .getMaskedText()),
+                                                            .profundidade =
+                                                        double.tryParse(
+                                                            UtilBrasilFields
+                                                                .removeCaracteres(
+                                                                    value));
+                                                  },
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                    initialValue:
-                                                        itemsPeca[index]
-                                                            .peca
-                                                            .volumes
-                                                            .toString()),
+                                                  initialValue: itemsPeca[index]
+                                                      .peca
+                                                      .volumes
+                                                      .toString(),
+                                                  onSaved: (value) {
+                                                    itemsPeca[index]
+                                                        .peca
+                                                        .volumes = value;
+                                                  },
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 8,
@@ -457,6 +591,15 @@ class _PecasListViewState extends State<PecasListView> {
                                                           itemsPeca[index]
                                                               .peca
                                                               .custo),
+                                                  onSaved: (value) {
+                                                    itemsPeca[index]
+                                                            .peca
+                                                            .custo =
+                                                        double.tryParse(
+                                                            UtilBrasilFields
+                                                                .removeCaracteres(
+                                                                    value));
+                                                  },
                                                 ),
                                               ),
                                               SizedBox(
@@ -468,6 +611,11 @@ class _PecasListViewState extends State<PecasListView> {
                                                     .peca
                                                     .codigo_fabrica
                                                     .toString(),
+                                                onSaved: (value) {
+                                                  itemsPeca[index]
+                                                      .peca
+                                                      .codigo_fabrica = value;
+                                                },
                                               )),
                                               SizedBox(
                                                 width: 8,
@@ -478,6 +626,10 @@ class _PecasListViewState extends State<PecasListView> {
                                                     .peca
                                                     .numero
                                                     .toString(),
+                                                onSaved: (value) {
+                                                  itemsPeca[index].peca.numero =
+                                                      value;
+                                                },
                                               )),
                                               SizedBox(
                                                 width: 8,
@@ -489,48 +641,65 @@ class _PecasListViewState extends State<PecasListView> {
                                                         itemsPeca[index]
                                                             .peca
                                                             .unidade_medida),
+                                                onSaved: (value) {
+                                                  itemsPeca[index]
+                                                          .peca
+                                                          .unidade_medida =
+                                                      int.tryParse(value);
+                                                },
                                               )),
                                               SizedBox(
                                                 width: 8,
                                               ),
-                                              Expanded(
-                                                  child: InputComponent(
-                                                initialValue: itemsPeca[index]
-                                                    .peca
-                                                    .classificacao_custo
-                                                    .toString(),
-                                              )),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Expanded(
-                                                  child: InputComponent(
-                                                initialValue: itemsPeca[index]
-                                                    .peca
-                                                    .tipo_classificacao_custo
-                                                    .toString(),
-                                              )),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Expanded(
-                                                  flex: 2,
-                                                  child: Switch(
-                                                      activeColor: primaryColor,
-                                                      value: itemsPeca[index]
-                                                                  .peca
-                                                                  .active ==
-                                                              1
-                                                          ? true
-                                                          : false,
-                                                      onChanged: (bool value) {
-                                                        setState((() {
-                                                          itemsPeca[index]
-                                                                  .peca
-                                                                  .active =
-                                                              value ? 1 : 0;
-                                                        }));
-                                                      }))
+                                              // Expanded(
+                                              //     child: InputComponent(
+                                              //   initialValue: itemsPeca[index]
+                                              //       .peca
+                                              //       .classificacao_custo
+                                              //       .toString(),
+                                              //   onSaved: (value) {
+                                              //     itemsPeca[index]
+                                              //             .peca
+                                              //             .classificacao_custo =
+                                              //         int.tryParse(value);
+                                              //   },
+                                              // )),
+                                              // SizedBox(
+                                              //   width: 8,
+                                              // ),
+                                              // Expanded(
+                                              //     child: InputComponent(
+                                              //   initialValue: itemsPeca[index]
+                                              //       .peca
+                                              //       .tipo_classificacao_custo
+                                              //       .toString(),
+                                              //   onSaved: (value) {
+                                              //     itemsPeca[index]
+                                              //             .peca
+                                              //             .tipo_classificacao_custo =
+                                              //         int.tryParse(value);
+                                              //   },
+                                              // )),
+                                              // SizedBox(
+                                              //   width: 8,
+                                              // ),
+                                              // Expanded(
+                                              //     child: Switch(
+                                              //         activeColor: primaryColor,
+                                              //         value: itemsPeca[index]
+                                              //                     .peca
+                                              //                     .active ==
+                                              //                 1
+                                              //             ? true
+                                              //             : false,
+                                              //         onChanged: (bool value) {
+                                              //           setState((() {
+                                              //             itemsPeca[index]
+                                              //                     .peca
+                                              //                     .active =
+                                              //                 value ? 1 : 0;
+                                              //           }));
+                                              //         }))
                                             ],
                                           ),
                                         ),
@@ -546,7 +715,7 @@ class _PecasListViewState extends State<PecasListView> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -581,14 +750,14 @@ class _PecasListViewState extends State<PecasListView> {
                             ],
                           ),
                         ),
-                      ),
-                      importado
-                          ? LinearProgressIndicator(
-                              color: secundaryColor,
-                              backgroundColor: primaryColor,
-                            )
-                          : Container(),
-                    ],
+                        importado
+                            ? LinearProgressIndicator(
+                                color: secundaryColor,
+                                backgroundColor: primaryColor,
+                              )
+                            : Container(),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -599,12 +768,21 @@ class _PecasListViewState extends State<PecasListView> {
     );
   }
 
+  carregarProduto(value) async {
+//busca o produto
+    produtoController.produtoModel =
+        await produtoController.produtoRepository.buscar(value);
+  }
+
   @override
   void initState() {
     super.initState();
 
     //Inicializa o controlador de peça
     pecaController = new PecasController();
+
+    //Inicializa o controlador de produto
+    produtoController = new ProdutoController();
 
     //Inicializa maskFormatter
     maskFormatter = new MaskFormatter();

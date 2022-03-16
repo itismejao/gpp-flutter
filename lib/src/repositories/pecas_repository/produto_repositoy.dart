@@ -44,4 +44,17 @@ class ProdutoRepository {
       throw error;
     }
   }
+
+  Future<void> inserirPecasProduto(String id, ProdutoModel produto) async {
+    Response response =
+        await api.post('/produtos/${id}/pecas', produto.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      //var data = jsonDecode(response.body);
+
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
 }

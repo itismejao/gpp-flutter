@@ -53,7 +53,7 @@ class MaskFormatter {
     );
   }
 
-  MaskTextInputFormatter medida(value) {
+  MaskTextInputFormatter medida({String? value}) {
     return MaskTextInputFormatter(
       initialText: value,
       mask: '#,##',
