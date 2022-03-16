@@ -129,10 +129,7 @@ class AppBarView extends StatelessWidget {
                     items: snapshot.data,
                     itemAsString: (EmpresaFilialModel? value) => value!.id_filial!.toString(),
                     onChanged: (value) {
-                      // txtIdMaterial.text = value!.id_peca_material_fabricacao.toString();
-
-                      // _pecasController.pecasModel.id_peca_material_fabricacao =
-                      // value.id_peca_material_fabricacao.toString();
+                      FilialController.selectedFilial = value;
                     },
                     searchFieldProps: TextFieldProps(
                       decoration: InputDecoration(
