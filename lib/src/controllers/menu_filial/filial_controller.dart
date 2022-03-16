@@ -15,7 +15,7 @@ class FilialController {
   );
 
   static void filialLogin() {
-    List filiaisAsteca = [89, 101, 106, 116, 119, 210, 217, 451, 500, 516, 519, 520, 529, 541, 545, 547, 548];
+    List filiaisAsteca = [89, 101, 106, 116, 119, 210, 217, 451, 500, 516, 519, 520, 529, 541, 545, 547, 548, 901];
 
     if (filiaisAsteca.contains(usuario.idFilial)) {
       selectedFilial = EmpresaFilialModel(id_filial: usuario.idFilial);

@@ -183,8 +183,8 @@ class AppBarView extends StatelessWidget {
                         borderSide: BorderSide(color: Colors.white, width: 2.0), // borda branca quando clica
                         borderRadius: BorderRadius.circular(25.0),
                       ),
-                      labelText: 'Filial',
-                      labelStyle: TextStyle(color: Colors.white),
+                      // labelText: 'Filial',
+                      // labelStyle: TextStyle(color: Colors.white),
                     ),
                     dropDownButton: Icon(
                       Icons.arrow_drop_down_rounded,
