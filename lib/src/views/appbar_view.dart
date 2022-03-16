@@ -1,12 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/menu_filial/menu_filial_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
-
+import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
-import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
-
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 // ignore: must_be_immutable
@@ -16,8 +12,7 @@ class AppBarView extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  MenuFilialController _menuFilialController = MenuFilialController();
-  PecasLinhaController _pecasLinhaController = PecasLinhaController();
+  FilialController _filialController = FilialController();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +106,7 @@ class AppBarView extends StatelessWidget {
         // ),
         // Padding(padding: EdgeInsets.only(right: 20)),
         FutureBuilder(
-          future: _menuFilialController.buscarTodos(),
+          future: _filialController.buscarTodos(),
           builder: (context, AsyncSnapshot snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -169,6 +164,7 @@ class AppBarView extends StatelessWidget {
                     ),
                     popupBackgroundColor: primaryColor, // Cor de fundo para caixa de seleção
                     showAsSuffixIcons: true,
+                    selectedItem: FilialController.selectedFilial,
                   ),
                 );
             }

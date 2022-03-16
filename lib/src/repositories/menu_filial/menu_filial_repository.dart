@@ -6,10 +6,10 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class MenuFilialRepository {
+class FilialRepository {
   ApiService api;
 
-  MenuFilialRepository({
+  FilialRepository({
     required this.api,
   });
 
