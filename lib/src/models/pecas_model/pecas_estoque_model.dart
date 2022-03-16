@@ -1,3 +1,4 @@
+import 'package:gpp/src/models/pecas_model/peca_enderecamento_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 
 class PecasEstoqueModel {
@@ -9,6 +10,8 @@ class PecasEstoqueModel {
   int? quantidade_transferencia;
   int? quantidade_minima;
   PecasModel? pecasModel;
+  PecaEnderacamentoModel? enderecamento;
+  String? fornecedor;
 
   PecasEstoqueModel({
     this.id_peca_estoque,
@@ -18,7 +21,10 @@ class PecasEstoqueModel {
     this.saldo_reservado,
     this.quantidade_transferencia,
     this.quantidade_minima,
-    this.pecasModel
+    this.fornecedor,
+    this.pecasModel,
+    this.enderecamento
+
   });
 
   factory PecasEstoqueModel.fromJson(Map<String, dynamic> json) {
@@ -30,7 +36,9 @@ class PecasEstoqueModel {
       saldo_reservado: json['saldo_reservado'],
       quantidade_transferencia: json['quantidade_transferencia'],
       quantidade_minima: json['quantidade_minima'],
-      pecasModel: json['peca'] == null ? null : PecasModel.fromJson(json['peca'])
+      fornecedor: json['fornecedor'],
+      pecasModel: json['peca'] == null ? null : PecasModel.fromJson(json['peca']),
+      enderecamento: json['enderecamento'] == null ? null : PecaEnderacamentoModel.fromJson(json['enderecamento'])
     );
   }
 

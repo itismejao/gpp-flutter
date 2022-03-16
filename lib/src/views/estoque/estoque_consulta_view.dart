@@ -31,7 +31,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   TextEditingController _controllerEstante = new TextEditingController();
   TextEditingController _controllerBox = new TextEditingController();
 
-  bool? disponivel;
+  bool disponivel = false;
+  bool reservado = false;
+  bool transferencia = false;
   bool? endereco;
 
   PecaEstoqueController pecaEstoqueController = PecaEstoqueController();
@@ -307,16 +309,21 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      controller: _controllerCorredor,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
+                        controller: _controllerCorredor,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        }),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
@@ -330,16 +337,20 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      controller: _controllerPrateleira,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
+                        enabled: _controllerCorredor.text == '' ? false : true,
+                        controller: _controllerEstante,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding:
+                              const EdgeInsets.only(top: 10, bottom: 10),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        }),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
@@ -353,16 +364,22 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      controller: _controllerEstante,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
+                        enabled: _controllerEstante.text == '' ? false : true,
+                        controller: _controllerPrateleira,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        }),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
@@ -376,16 +393,23 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextFormField(
-                      controller: _controllerBox,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
+                        enabled:
+                            _controllerPrateleira.text == '' ? false : true,
+                        controller: _controllerBox,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        }),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
@@ -393,12 +417,11 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                   flex: 3,
                   child: ListTile(
                     title: const Text('Disponível'),
-                    leading: Radio(
-                      groupValue: disponivel,
-                      value: true,
+                    leading: Checkbox(
+                      value: disponivel,
                       onChanged: (value) {
                         setState(() {
-                          disponivel = true;
+                          disponivel = value!;
                         });
                       },
                     ),
@@ -408,12 +431,25 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                   flex: 3,
                   child: ListTile(
                     title: const Text('Reservado'),
-                    leading: Radio(
-                      groupValue: disponivel,
-                      value: false,
+                    leading: Checkbox(
+                      value: reservado,
                       onChanged: (value) {
                         setState(() {
-                          disponivel = false;
+                          reservado = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: ListTile(
+                    title: const Text('Transferência'),
+                    leading: Checkbox(
+                      value: transferencia,
+                      onChanged: (value) {
+                        setState(() {
+                          transferencia = value!;
                         });
                       },
                     ),
@@ -457,7 +493,11 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
               children: [
                 const Padding(padding: EdgeInsets.only(left: 5)),
                 Flexible(
-                  child: ButtonComponent(onPressed: () {}, text: 'Pesquisar'),
+                  child: ButtonComponent(
+                      onPressed: () async {
+                        consultarEstoque();
+                      },
+                      text: 'Pesquisar'),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
               ],
@@ -544,106 +584,184 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                 ),
               ),
               const Divider(),
-              Container(
-                height: media.height / 2,
-                child: ListView.builder(
-                  primary: false,
-                  itemCount: pecaEstoqueController.pecas_estoque.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Padding(padding: EdgeInsets.only(left: 10)),
-                          // CheckboxComponent(),
-                          Expanded(
-                            child: Text(
-                              pecaEstoqueController.pecas_estoque[index]!.filial
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              '',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              '-',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              pecaEstoqueController
-                                  .pecas_estoque[index]!.id_peca
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Text(pecaEstoqueController
-                                    .pecas_estoque[index]!
-                                    .pecasModel
-                                    ?.descricao ??
-                                ''),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text(''),
-                          ),
-                          Expanded(
-                            child: Text(
-                              pecaEstoqueController
-                                  .pecas_estoque[index]!.saldo_disponivel
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              pecaEstoqueController
-                                  .pecas_estoque[index]!.saldo_reservado
-                                  .toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Expanded(
+              Center(
+                child: Container(
+                  height: media.height / 2,
+                  child: Stack(
+                    children: [
+                      ListView.builder(
+                        primary: false,
+                        itemCount: pecaEstoqueController.pecas_estoque.length,
+                        itemBuilder: (context, index) {
+                          return Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                // Padding(padding: EdgeInsets.only(left: 10)),
+                                // CheckboxComponent(),
                                 Expanded(
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.location_on_outlined,
-                                      color: Colors.grey.shade400,
-                                    ),
-                                    onPressed: () async {},
+                                  child: Text(
+                                    pecaEstoqueController
+                                        .pecas_estoque[index]!.filial
+                                        .toString(),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 Expanded(
-                                  child: IconButton(
-                                    tooltip: 'Etiqueta',
-                                    icon: Icon(
-                                      Icons.local_offer_outlined,
-                                      color: Colors.grey.shade400,
-                                    ),
-                                    onPressed: () => {
-                                      //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
-                                    },
+                                  child: Text(
+                                    pecaEstoqueController.pecas_estoque[index]!
+                                            .enderecamento?.endereco ??
+                                        '-',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    pecaEstoqueController
+                                        .pecas_estoque[index]!.id_peca
+                                        .toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Text(pecaEstoqueController
+                                          .pecas_estoque[index]!
+                                          .pecasModel
+                                          ?.descricao ??
+                                      ''),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(pecaEstoqueController
+                                          .pecas_estoque[index]!.fornecedor ??
+                                      '-'),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    pecaEstoqueController
+                                        .pecas_estoque[index]!.saldo_disponivel
+                                        .toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    pecaEstoqueController
+                                        .pecas_estoque[index]!.saldo_reservado
+                                        .toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.visibility,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () async {},
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: IconButton(
+                                          tooltip: 'Etiqueta',
+                                          icon: Icon(
+                                            Icons.local_offer_outlined,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () => {
+                                            //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
+                      pecaEstoqueController.isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: media.height * 0.10,
+                width: media.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextComponent('Total de páginas: ' +
+                        pecaEstoqueController.paginaModel.total.toString()),
+                    Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.first_page),
+                            onPressed: () {
+                              setState(() {
+                                pecaEstoqueController.paginaModel.atual = 1;
+                              });
+                              consultarEstoque();
+                              //buscarTodas();
+                            }),
+                        IconButton(
+                            icon: const Icon(
+                              Icons.navigate_before_rounded,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (pecaEstoqueController.paginaModel.atual >
+                                    1) {
+                                  pecaEstoqueController.paginaModel.atual =
+                                      pecaEstoqueController.paginaModel.atual -
+                                          1;
+                                  //buscarTodas();
+                                }
+                              });
+                              consultarEstoque();
+                            }),
+                        TextComponent(
+                            pecaEstoqueController.paginaModel.atual.toString()),
+                        IconButton(
+                            icon: Icon(Icons.navigate_next_rounded),
+                            onPressed: () {
+                              setState(() {
+                                if (pecaEstoqueController.paginaModel.atual !=
+                                    pecaEstoqueController.paginaModel.total) {
+                                  pecaEstoqueController.paginaModel.atual =
+                                      pecaEstoqueController.paginaModel.atual +
+                                          1;
+                                }
+                              });
+                              consultarEstoque();
+                              //buscarTodas();
+                            }),
+                        IconButton(
+                            icon: Icon(Icons.last_page),
+                            onPressed: () {
+                              setState(() {
+                                pecaEstoqueController.paginaModel.atual =
+                                    pecaEstoqueController.paginaModel.total;
+                              });
+                              consultarEstoque();
+                              //buscarTodas();
+                            }),
+                      ],
+                    )
+                  ],
                 ),
               )
             ])
@@ -651,5 +769,29 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
         ),
       ],
     );
+  }
+
+  consultarEstoque() async {
+    setState(() {
+      pecaEstoqueController.isLoading = true;
+    });
+    await pecaEstoqueController
+        .consultarEstoque(
+            pecaEstoqueController.paginaModel.atual,
+            _controllerIdFilial.text,
+            _controllerIdPeca.text,
+            _controllerIdProduto.text,
+            _controllerIdFornecedor.text,
+            endereco,
+            disponivel,
+            reservado,
+            transferencia,
+            _controllerCorredor.text,
+            _controllerEstante.text,
+            _controllerPrateleira.text,
+            _controllerBox.text)
+        .then((value) => setState(() {
+              pecaEstoqueController.isLoading = false;
+            }));
   }
 }
