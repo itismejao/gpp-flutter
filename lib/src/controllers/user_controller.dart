@@ -46,6 +46,9 @@ class UsuarioController {
     user.id = authenticateUser!.id;
 
     funcionalities = await repository.buscarFuncionalidades(user);
+
+
+
   }
 
   void searchFuncionalities(String value) {
