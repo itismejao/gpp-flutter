@@ -14,6 +14,8 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
+import '../../shared/components/PaginacaoComponent.dart';
+
 class Situacao {
   int? id;
   String? descricao;
@@ -535,62 +537,33 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
               ),
             ),
           ),
-          Container(
-            height: media.height * 0.7,
+          Expanded(
             child:
                 pedidoController.carregado ? _buildList() : LoadingComponent(),
           ),
-          Container(
-            height: media.height * 0.10,
-            width: media.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextComponent('Total de páginas: ' +
-                    pedidoController.pagina.total.toString()),
-                Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.first_page),
-                        onPressed: () {
-                          pedidoController.pagina.atual = 1;
-                          buscarTodas();
-                        }),
-                    IconButton(
-                        icon: const Icon(
-                          Icons.navigate_before_rounded,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          if (pedidoController.pagina.atual > 0) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual - 1;
-                            buscarTodas();
-                          }
-                        }),
-                    TextComponent(pedidoController.pagina.atual.toString()),
-                    IconButton(
-                        icon: Icon(Icons.navigate_next_rounded),
-                        onPressed: () {
-                          if (pedidoController.pagina.atual !=
-                              pedidoController.pagina.total) {
-                            pedidoController.pagina.atual =
-                                pedidoController.pagina.atual + 1;
-                          }
-
-                          buscarTodas();
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.last_page),
-                        onPressed: () {
-                          pedidoController.pagina.atual =
-                              pedidoController.pagina.total;
-                          buscarTodas();
-                        }),
-                  ],
-                )
-              ],
-            ),
+          PaginacaoComponent(
+            total: pedidoController.pagina.total,
+            atual: pedidoController.pagina.atual,
+            primeiraPagina: () {
+              pedidoController.pagina.primeira();
+              buscarTodas();
+              setState(() {});
+            },
+            anteriorPagina: () {
+              pedidoController.pagina.anterior();
+              buscarTodas();
+              setState(() {});
+            },
+            proximaPagina: () {
+              pedidoController.pagina.proxima();
+              buscarTodas();
+              setState(() {});
+            },
+            ultimaPagina: () {
+              pedidoController.pagina.ultima();
+              buscarTodas();
+              setState(() {});
+            },
           )
         ],
       ),

@@ -795,13 +795,46 @@ class _PecasListViewState extends State<PecasListView> {
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TitleComponent('Peças'),
+                Expanded(child: TitleComponent('Peças')),
+                Expanded(
+                  child: Form(
+                    //    key: pedidoController.filtroFormKey,
+                    child: InputComponent(
+                      maxLines: 1,
+                      onFieldSubmitted: (value) {
+                        //     pedidoController.idPedido = int.tryParse(value);
+                        //Limpa o formúlario
+                        //   pedidoController.filtroFormKey.currentState!.reset();
+                        //    buscarTodas();
+                      },
+                      prefixIcon: Icon(
+                        Icons.search,
+                      ),
+                      hintText: 'Buscar',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                ButtonComponent(
+                    icon: Icon(Icons.tune_rounded, color: Colors.white),
+                    color: secundaryColor,
+                    onPressed: () {
+                      setState(() {
+                        // pedidoController.abrirFiltro =
+                        //     !(pedidoController.abrirFiltro);
+                      });
+                    },
+                    text: 'Adicionar filtro'),
+                SizedBox(
+                  width: 8,
+                ),
                 ButtonComponent(
                   onPressed: () => importCSV(),
                   text: 'Importar peças',
@@ -811,8 +844,139 @@ class _PecasListViewState extends State<PecasListView> {
                   ),
                 )
               ],
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return ItemList();
+                },
+              ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ItemList extends StatelessWidget {
+  const ItemList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigator.pushNamed(context,
+        //     '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 0,
+                blurRadius: 9,
+                offset: Offset(0, 5), // changes position of shadow
+              ),
+            ],
+            border: Border(
+              left: BorderSide(
+                //color:
+                //     situacao(controller.pedidosEntrada[index].dataEmissao!),
+                width: 7.0,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          TextComponent(
+                            'ID',
+                            fontWeight: FontWeight.bold,
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                        child: TextComponent(
+                      'Nome',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Data de abertura',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'CPF/CNPJ',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Situação',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    ))
+                  ],
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    )),
+                    Expanded(
+                        child: TextComponent(
+                      'Valor total',
+                      fontWeight: FontWeight.bold,
+                    ))
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

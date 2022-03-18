@@ -7,12 +7,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class PecasController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  List<PecasModel> pecas = [];
   late final PecasRepository pecasRepository = PecasRepository(api: gppApi);
 
   PecasModel pecasModel = PecasModel();
   List<PecasModel> listaPecas = [];
-  PecasPaginaModel pecasPagina = PecasPaginaModel(paginaAtual: 1, paginaTotal: 0);
+  PecasPaginaModel pecasPagina =
+      PecasPaginaModel(paginaAtual: 1, paginaTotal: 0);
 
   bool carregado = false;
 

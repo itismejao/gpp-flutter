@@ -76,10 +76,8 @@ class UsuarioRepository {
     }
   }
 
-  Future<List<FuncionalidadeModel>> buscarFuncionalidades(
-      UsuarioModel user) async {
-    Response response =
-        await api.get(path + '/' + user.id.toString() + '/funcionalidades');
+  Future<List<FuncionalidadeModel>> buscarFuncionalidades(String id) async {
+    Response response = await api.get('/usuarios/${id}/funcionalidades');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);

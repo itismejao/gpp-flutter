@@ -881,7 +881,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               ButtonComponent(
                                   color: Colors.red,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/astecas');
+                                    Navigator.pop(context);
                                   },
                                   text: 'Fechar')
                             ],
