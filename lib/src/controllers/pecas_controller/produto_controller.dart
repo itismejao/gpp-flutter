@@ -8,6 +8,7 @@ class ProdutoController {
 
   late final ProdutoRepository produtoRepository =
       ProdutoRepository(api: gppApi);
+
   ProdutoModel produtoModel = ProdutoModel();
 
   List<ProdutoModel> listaProdutos = [];

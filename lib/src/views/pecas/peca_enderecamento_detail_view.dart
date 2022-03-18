@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_enderecamento_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
@@ -174,7 +175,13 @@ class _PecaEnderecamentoDetailViewState
                         contentPadding:
                             EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
-                          onPressed: () async {},
+                          onPressed: () async {
+                            if (_controllerIdFornecedor.text == '') {
+                              limparFieldsPeca();
+                            } else {
+                              buscarFornecedor(_controllerIdFornecedor.text);
+                            }
+                          },
                           icon: Icon(Icons.search),
                         )),
                   ),
@@ -1067,11 +1074,13 @@ class _PecaEnderecamentoDetailViewState
         _produtoController.produtoModel.resumida ?? '';
     _controllerIdProduto.text =
         _produtoController.produtoModel.id_produto.toString();
-    _controllerNomeFornecedor.text =
-        _produtoController.produtoModel.fornecedor?[0].cliente!.nome ?? '';
-    _controllerIdFornecedor.text =
-        _produtoController.produtoModel.id_fornecedor.toString();
+    buscarFornecedor(_produtoController.produtoModel.id_fornecedor.toString());
   }
 
-  buscarFornecedor(String id) {}
+  buscarFornecedor(String id) async {
+    FornecedorController _fornecedorController = FornecedorController();
+    await _fornecedorController.buscar(id);
+    _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
+    _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
+  }
 }
