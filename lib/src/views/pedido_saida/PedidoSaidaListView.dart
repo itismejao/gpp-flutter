@@ -415,7 +415,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
                       prefixIcon: Icon(
                         Icons.search,
                       ),
-                      hintText: 'Digite o número de identificação do pedido',
+                      hintText: 'Buscar',
                     ),
                   ),
                 ),

@@ -1,11 +1,11 @@
-import 'package:gpp/src/models/PecaModel.dart';
+import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 
 class ItemPedidoSaidaModel {
   int? idItemPedidoSaida;
   int quantidade = 0;
   double valor = 0.0;
-  PecaModel? peca;
+  PecasModel? peca;
   MotivoTrocaPecaModel? motivoTrocaPeca;
   ItemPedidoSaidaModel({
     this.idItemPedidoSaida,
@@ -23,7 +23,7 @@ class ItemPedidoSaidaModel {
         motivoTrocaPeca: json['motivo_troca_peca'] != null
             ? MotivoTrocaPecaModel.fromJson(json['motivo_troca_peca'])
             : null,
-        peca: json['peca'] != null ? PecaModel.fromJson(json['peca']) : null);
+        peca: json['peca'] != null ? PecasModel.fromJson(json['peca']) : null);
   }
 
   Map<String, dynamic> toJson() {

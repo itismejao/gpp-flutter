@@ -38,7 +38,7 @@ class PedidoSaidaModel {
       filialVenda: json['filial_venda'],
       numDocFiscal: json['num_doc_fiscal'],
       serieDocFiscal: json['serie_doc_fiscal'],
-      dataEmissao: DateTime.parse(json['data_emissao']),
+      dataEmissao: DateTime.tryParse(json['data_emissao']),
       situacao: json['situacao'],
       valorTotal: json['valor_total'],
       funcionario: json['funcionario'] != null

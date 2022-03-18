@@ -453,7 +453,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                       prefixIcon: Icon(
                         Icons.search,
                       ),
-                      hintText: 'Digite o número de identificação do pedido',
+                      hintText: 'Buscar',
                     ),
                   ),
                 ),

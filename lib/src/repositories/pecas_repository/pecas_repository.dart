@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 import 'package:gpp/src/models/pecas_model/pecas_pagina_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';

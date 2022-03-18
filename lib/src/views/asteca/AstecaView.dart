@@ -162,7 +162,7 @@ class _AstecaViewState extends State<AstecaView> {
                       prefixIcon: Icon(
                         Icons.search,
                       ),
-                      hintText: 'Digite o número de identificação da asteca',
+                      hintText: 'Buscar',
                     ),
                   ),
                 ),

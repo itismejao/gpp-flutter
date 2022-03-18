@@ -8,12 +8,12 @@ class ProdutoController {
 
   late final ProdutoRepository produtoRepository =
       ProdutoRepository(api: gppApi);
-  ProdutoModel produtoModel = ProdutoModel();
+  ProdutoModel produto = ProdutoModel();
 
   List<ProdutoModel> listaProdutos = [];
 
   Future<void> buscar(String id) async {
-    produtoModel = await produtoRepository.buscar(id);
+    produto = await produtoRepository.buscar(id);
   }
 
   Future<ProdutoModel> buscar2(String id) async {

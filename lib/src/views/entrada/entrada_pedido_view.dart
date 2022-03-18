@@ -297,7 +297,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                             Expanded(
                               child: TextComponent(
                                 movimentoEntradaController
-                                        .listaItensSomados[index].peca?.idPeca
+                                        .listaItensSomados[index].peca?.id_peca
                                         .toString() ??
                                     '-',
                                 textAlign: TextAlign.center,

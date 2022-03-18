@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/ProdutoPecaModel.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
+
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
@@ -46,12 +48,31 @@ class ProdutoRepository {
   }
 
   Future<void> inserirPecasProduto(String id, ProdutoModel produto) async {
+    print(json.encode(produto.toJson()));
+
     Response response =
         await api.post('/produtos/${id}/pecas', produto.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       //var data = jsonDecode(response.body);
 
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<List<ProdutoPecaModel>> buscarProdutoPecas(String id) async {
+    Response response = await api.get('/produtos/${id}/pecas');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      List<ProdutoPecaModel> produtoPecas = data
+          .map<ProdutoPecaModel>((data) => ProdutoPecaModel.fromJson(data))
+          .toList();
+
+      return produtoPecas;
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;

@@ -1,8 +1,6 @@
+import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 
-import 'package:gpp/src/models/PecaModel.dart';
-
-class ItemMovimentoEntradaModel{
-
+class ItemMovimentoEntradaModel {
   int? id_item_movimento_entrada;
   int? id_movimento_entrada;
   int? quantidade;
@@ -10,7 +8,7 @@ class ItemMovimentoEntradaModel{
   int? movimento_entrada;
   int? id_peca;
   double? valor_unitario;
-  PecaModel? pecaModel;
+  PecasModel? pecaModel;
 
   ItemMovimentoEntradaModel({
     this.id_item_movimento_entrada,
@@ -21,18 +19,18 @@ class ItemMovimentoEntradaModel{
     this.id_peca,
     this.valor_unitario,
     this.pecaModel,
-});
+  });
 
   factory ItemMovimentoEntradaModel.fromJson(Map<String, dynamic> json) {
     return ItemMovimentoEntradaModel(
-      id_item_movimento_entrada: json['id_item_movimento_entrada'],
-      id_movimento_entrada: json['id_movimento_entrada'],
-      quantidade: json['quantidade'],
-      movimento_entrada: json['movimento_entrada'],
-      id_peca: json['id_peca'],
-      valor_unitario: json['valor_unitario'],
-      pecaModel: json['peca'] == null ? null : PecaModel.fromJson(json['peca'])
-    );
+        id_item_movimento_entrada: json['id_item_movimento_entrada'],
+        id_movimento_entrada: json['id_movimento_entrada'],
+        quantidade: json['quantidade'],
+        movimento_entrada: json['movimento_entrada'],
+        id_peca: json['id_peca'],
+        valor_unitario: json['valor_unitario'],
+        pecaModel:
+            json['peca'] == null ? null : PecasModel.fromJson(json['peca']));
   }
 
   Map<String, dynamic> toJson() {
@@ -47,5 +45,4 @@ class ItemMovimentoEntradaModel{
 
     return data;
   }
-
 }
