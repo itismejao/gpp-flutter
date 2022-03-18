@@ -4,11 +4,13 @@ import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart'
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
+import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 class EstoqueConsultaView extends StatefulWidget {
   const EstoqueConsultaView({Key? key}) : super(key: key);
@@ -34,6 +36,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   TextEditingController _controllerPrateleira = new TextEditingController();
   TextEditingController _controllerEstante = new TextEditingController();
   TextEditingController _controllerBox = new TextEditingController();
+  FilialModel? filialModel;
 
   bool disponivel = false;
   bool reservado = false;
@@ -43,10 +46,18 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   PecaEstoqueController pecaEstoqueController = PecaEstoqueController();
 
   @override
+  void initState() {
+    filialModel = getFilial().filial;
+    _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
+    _controllerNomeFilial.text = filialModel?.sigla ?? '';
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Size media = MediaQuery
-        .of(context)
-        .size;
+    Size media = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,12 +74,19 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
           ),
         ),
         const Divider(),
-        const Padding(padding: EdgeInsets.only(bottom: 20)),
         Container(
-          child: Column(children: [
-            Row(
+          padding: EdgeInsets.only(left: 5, right: 5, top: 10),
+            child: InputDecorator(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical:  15, horizontal: 10),
+                labelText: 'Informação de Peças',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              child: Column(children: [
+          Row(
               children: [
-                const Padding(padding: EdgeInsets.only(left: 5)),
                 Flexible(
                   flex: 2,
                   child: Container(
@@ -88,7 +106,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Filial',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {},
                           icon: Icon(Icons.search),
@@ -117,12 +135,12 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Nome Filial',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(right: 30)),
+                const Padding(padding: EdgeInsets.only(right: 20)),
                 Flexible(
                   flex: 2,
                   child: Container(
@@ -142,7 +160,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           labelText: 'ID',
                           border: InputBorder.none,
                           contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              EdgeInsets.only(top: 15, bottom: 10, left: 10),
                           suffixIcon: IconButton(
                             onPressed: () async {
                               if (_controllerIdFornecedor.text == '') {
@@ -175,19 +193,17 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         labelText: 'Nome Fornecedor',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
                 // Fim Fornecedor
-                const Padding(padding: EdgeInsets.only(right: 5)),
               ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
-            Row(
+          ),
+          const Padding(padding: EdgeInsets.only(top: 10)),
+          Row(
               children: [
-                const Padding(padding: EdgeInsets.only(left: 5)),
                 Flexible(
                   flex: 2,
                   child: Container(
@@ -206,8 +222,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'ID',
                         labelText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             if (_controllerIdProduto.text == '') {
@@ -241,13 +257,13 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'Nome Produto',
                         labelText: 'Nome Produto',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.only(right: 30)),
+                const Padding(padding: EdgeInsets.only(right: 20)),
                 Flexible(
                   flex: 2,
                   child: Container(
@@ -299,216 +315,274 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         hintText: 'Nome Peça',
                         labelText: 'Nome Peça',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
+                        contentPadding:
+                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       ),
                     ),
                   ),
                 ),
                 // Fim Fornecedor
-                const Padding(padding: EdgeInsets.only(right: 5)),
               ],
-            ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
+          ),
+        ]),
+            )),
+        Container(
+          padding: EdgeInsets.only(left: 5, right: 5, top: 10),
+          child: Column(children: [
             Row(
               children: [
-                const Padding(padding: EdgeInsets.only(left: 5)),
                 Flexible(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
+                  flex: 2,
+                  //width: 300,
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      labelText: 'Endereço Resumido',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
-                    child: TextFormField(
-                        controller: _controllerCorredor,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
+                    child: Row(children: [
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                              controller: _controllerCorredor,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_controllerCorredor.text == '')
+                                    _controllerEstante.text = '';
+                                });
+                              }),
                         ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 5)),
+                      Text('-'),
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                              enabled:
+                                  _controllerCorredor.text == '' ? false : true,
+                              controller: _controllerEstante,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_controllerEstante.text == '')
+                                    _controllerPrateleira.text = '';
+                                });
+                              }),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 5)),
+                      Text('-'),
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                              enabled:
+                                  _controllerEstante.text == '' ? false : true,
+                              controller: _controllerPrateleira,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (_controllerPrateleira.text == '')
+                                    _controllerBox.text = '';
+                                });
+                              }),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 5)),
+                      Text('-'),
+                      const Padding(padding: EdgeInsets.only(left: 5)),
+                      Flexible(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                              enabled: _controllerPrateleira.text == ''
+                                  ? false
+                                  : true,
+                              controller: _controllerBox,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                setState(() {});
+                              }),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.only(right: 5)),
+                Flexible(
+                  flex: 4,
+                  //width: 900,
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                      labelText: 'Disponibilidade',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          flex: 3,
+                          child: ListTile(
+                            title: const Text('Disponível'),
+                            leading: Checkbox(
+                              value: disponivel,
+                              onChanged: (value) {
+                                setState(() {
+                                  disponivel = value!;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            if (_controllerCorredor.text == '')
-                              _controllerEstante.text = '';
-                          });
-                        }),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 5)),
-                Text('-'),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                        enabled: _controllerCorredor.text == '' ? false : true,
-                        controller: _controllerEstante,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding:
-                          const EdgeInsets.only(top: 10, bottom: 10),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            if (_controllerEstante.text == '')
-                              _controllerPrateleira.text = '';
-                          });
-                        }),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 5)),
-                Text('-'),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                        enabled: _controllerEstante.text == '' ? false : true,
-                        controller: _controllerPrateleira,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
+                        Flexible(
+                          flex: 3,
+                          child: ListTile(
+                            title: const Text('Reservado'),
+                            leading: Checkbox(
+                              value: reservado,
+                              onChanged: (value) {
+                                setState(() {
+                                  reservado = value!;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            if (_controllerPrateleira.text == '')
-                              _controllerBox.text = '';
-                          });
-                        }),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 5)),
-                Text('-'),
-                const Padding(padding: EdgeInsets.only(left: 5)),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                        enabled:
-                        _controllerPrateleira.text == '' ? false : true,
-                        controller: _controllerBox,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
+                        Flexible(
+                          flex: 3,
+                          child: ListTile(
+                            title: const Text('Transferência'),
+                            leading: Checkbox(
+                              value: transferencia,
+                              onChanged: (value) {
+                                setState(() {
+                                  transferencia = value!;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                        onChanged: (value) {
-                          setState(() {});
-                        }),
+                      ],
+                    ),
                   ),
                 ),
                 const Padding(padding: EdgeInsets.only(right: 5)),
                 Flexible(
-                  flex: 3,
-                  child: ListTile(
-                    title: const Text('Disponível'),
-                    leading: Checkbox(
-                      value: disponivel,
-                      onChanged: (value) {
-                        setState(() {
-                          disponivel = value!;
-                        });
-                      },
+                  flex: 2,
+                  //width: 900,
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                      labelText: 'Endereçado?',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: ListTile(
-                    title: const Text('Reservado'),
-                    leading: Checkbox(
-                      value: reservado,
-                      onChanged: (value) {
-                        setState(() {
-                          reservado = value!;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: ListTile(
-                    title: const Text('Transferência'),
-                    leading: Checkbox(
-                      value: transferencia,
-                      onChanged: (value) {
-                        setState(() {
-                          transferencia = value!;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: ListTile(
-                    title: const Text('Endereçado'),
-                    leading: Radio(
-                      groupValue: endereco,
-                      value: true,
-                      onChanged: (value) {
-                        setState(() {
-                          endereco = true;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: ListTile(
-                    title: const Text('Sem endereço'),
-                    leading: Radio(
-                      groupValue: endereco,
-                      value: false,
-                      onChanged: (value) {
-                        setState(() {
-                          endereco = false;
-                        });
-                      },
+                    child: Row(
+                      children: [
+                        Flexible(
+                          flex: 3,
+                          child: ListTile(
+                            title: const Text('Sim'),
+                            leading: Radio(
+                              groupValue: endereco,
+                              value: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  endereco = true;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 3,
+                          child: ListTile(
+                            title: const Text('Não'),
+                            leading: Radio(
+                              groupValue: endereco,
+                              value: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  endereco = false;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-            const Padding(padding: EdgeInsets.only(top: 20)),
+            const Padding(padding: EdgeInsets.only(top: 10)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -558,7 +632,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
               const Divider(),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -639,7 +713,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 Expanded(
                                   child: Text(
                                     pecaEstoqueController.pecas_estoque[index]!
-                                        .enderecamento?.endereco ??
+                                            .enderecamento?.endereco ??
                                         '-',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -657,15 +731,15 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 Expanded(
                                   flex: 3,
                                   child: Text(pecaEstoqueController
-                                      .pecas_estoque[index]!
-                                      .pecasModel
-                                      ?.descricao ??
+                                          .pecas_estoque[index]!
+                                          .pecasModel
+                                          ?.descricao ??
                                       ''),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: Text(pecaEstoqueController
-                                      .pecas_estoque[index]!.fornecedor ??
+                                          .pecas_estoque[index]!.fornecedor ??
                                       '-'),
                                 ),
                                 Expanded(
@@ -686,8 +760,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 ),
                                 Expanded(
                                   child: Text(
-                                    pecaEstoqueController
-                                        .pecas_estoque[index]!
+                                    pecaEstoqueController.pecas_estoque[index]!
                                         .quantidade_transferencia
                                         .toString(),
                                     textAlign: TextAlign.center,
@@ -713,8 +786,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                             Icons.local_offer_outlined,
                                             color: Colors.grey.shade400,
                                           ),
-                                          onPressed: () =>
-                                          {
+                                          onPressed: () => {
                                             //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
                                           },
                                         ),
@@ -729,8 +801,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                       ),
                       pecaEstoqueController.isLoading
                           ? Center(
-                        child: CircularProgressIndicator(),
-                      )
+                              child: CircularProgressIndicator(),
+                            )
                           : Container(),
                     ],
                   ),
@@ -816,23 +888,22 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     });
     await pecaEstoqueController
         .consultarEstoque(
-        pecaEstoqueController.paginaModel.atual,
-        _controllerIdFilial.text,
-        _controllerIdPeca.text,
-        _controllerIdProduto.text,
-        _controllerIdFornecedor.text,
-        endereco,
-        disponivel,
-        reservado,
-        transferencia,
-        _controllerCorredor.text,
-        _controllerEstante.text,
-        _controllerPrateleira.text,
-        _controllerBox.text)
-        .then((value) =>
-        setState(() {
-          pecaEstoqueController.isLoading = false;
-        }));
+            pecaEstoqueController.paginaModel.atual,
+            _controllerIdFilial.text,
+            _controllerIdPeca.text,
+            _controllerIdProduto.text,
+            _controllerIdFornecedor.text,
+            endereco,
+            disponivel,
+            reservado,
+            transferencia,
+            _controllerCorredor.text,
+            _controllerEstante.text,
+            _controllerPrateleira.text,
+            _controllerBox.text)
+        .then((value) => setState(() {
+              pecaEstoqueController.isLoading = false;
+            }));
   }
 
   limparFields() {
@@ -887,8 +958,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   buscarFornecedor(String id) async {
     FornecedorController _fornecedorController = FornecedorController();
     await _fornecedorController.buscar(id);
-    _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
-    _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
+    _controllerNomeFornecedor.text =
+        _fornecedorController.fornecedorModel.cliente?.nome ?? '';
+    _controllerIdFornecedor.text =
+        _fornecedorController.fornecedorModel.idFornecedor.toString();
   }
-
 }
