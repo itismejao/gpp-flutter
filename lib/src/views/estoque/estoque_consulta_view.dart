@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
-import 'package:gpp/src/models/PecaModel.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -144,7 +144,13 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           contentPadding:
                           EdgeInsets.only(top: 15, bottom: 10, left: 10),
                           suffixIcon: IconButton(
-                            onPressed: () async {},
+                            onPressed: () async {
+                              if (_controllerIdFornecedor.text == '') {
+                                limparFieldsPeca();
+                              } else {
+                                buscarFornecedor(_controllerIdFornecedor.text);
+                              }
+                            },
                             icon: Icon(Icons.search),
                           )),
                     ),
@@ -205,9 +211,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         suffixIcon: IconButton(
                           onPressed: () async {
                             if (_controllerIdProduto.text == '') {
-                              //limparFieldsPeca();
+                              limparFieldsPeca();
                             } else {
-                              //buscarProduto(_controllerIdProduto.text);
+                              buscarProduto(_controllerIdProduto.text);
                             }
                           },
                           icon: const Icon(Icons.search),
@@ -875,10 +881,14 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
         _produtoController.produtoModel.resumida ?? '';
     _controllerIdProduto.text =
         _produtoController.produtoModel.id_produto.toString();
-    _controllerNomeFornecedor.text =
-        _produtoController.produtoModel.fornecedor?[0].cliente!.nome ?? '';
-    _controllerIdFornecedor.text =
-        _produtoController.produtoModel.id_fornecedor.toString();
+    buscarFornecedor(_produtoController.produtoModel.id_fornecedor.toString());
+  }
+
+  buscarFornecedor(String id) async {
+    FornecedorController _fornecedorController = FornecedorController();
+    await _fornecedorController.buscar(id);
+    _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
+    _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
   }
 
 }
