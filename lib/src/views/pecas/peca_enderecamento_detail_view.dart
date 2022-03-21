@@ -10,7 +10,7 @@ import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/models/estante_enderecamento_model.dart';
-import 'package:gpp/src/models/pecas_model/peca_enderecamento_model.dart';
+import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
@@ -19,6 +19,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/pecas/endereco_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
@@ -49,6 +50,17 @@ class _PecaEnderecamentoDetailViewState
 
   TextEditingController _controllerIdPeca = new TextEditingController();
   TextEditingController _controllerNomePeca = new TextEditingController();
+
+  TextEditingController _controllerCorredor = new TextEditingController();
+  TextEditingController _controllerPrateleira = new TextEditingController();
+  TextEditingController _controllerEstante = new TextEditingController();
+  TextEditingController _controllerBox = new TextEditingController();
+  FilialModel? filialModel;
+
+  bool disponivel = false;
+  bool reservado = false;
+  bool transferencia = false;
+  bool? endereco;
 
   int? id_filial, id_fornecedor, id_produto, id_peca;
 
@@ -87,260 +99,534 @@ class _PecaEnderecamentoDetailViewState
         ),
       ),
       const Divider(),
-      const Padding(padding: EdgeInsets.only(bottom: 20)),
+      const Padding(padding: EdgeInsets.only(bottom: 10)),
       Container(
         height: abrirFiltro ? null : 0,
         child: Column(children: [
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.only(left: 5)),
-              Flexible(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
+          Container(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  labelText: 'Informação de Peças',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: TextFormField(
-                    controller: _controllerIdFilial,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Filial',
-                      labelText: 'Filial',
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          //await buscaProduto(txtIdProduto.text);
-
-                          //txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
-                          //txtIdFornecedor.text = _produtoController.produtoModel.id_fornecedor.toString();
-                          // txtNomeFornecedor.text = _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
-                        },
-                        icon: Icon(Icons.search),
+                ),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerIdFilial,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Filial',
+                              labelText: 'Filial',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                              suffixIcon: IconButton(
+                                onPressed: () async {},
+                                icon: Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+                      // Fim Produto
+                      Flexible(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerNomeFilial,
+                            enabled: false,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Nome Filial',
+                              labelText: 'Nome Filial',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 20)),
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerIdFornecedor,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                                hintText: 'ID',
+                                labelText: 'ID',
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(
+                                    top: 15, bottom: 10, left: 10),
+                                suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    if (_controllerIdFornecedor.text == '') {
+                                      limparFieldsPeca();
+                                    } else {
+                                      buscarFornecedor(
+                                          _controllerIdFornecedor.text);
+                                    }
+                                  },
+                                  icon: Icon(Icons.search),
+                                )),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+                      Flexible(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerNomeFornecedor,
+                            enabled: false,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Nome Fornecedor',
+                              labelText: 'Nome Fornecedor',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Fim Fornecedor
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerIdProduto,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'ID',
+                              labelText: 'ID',
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                              suffixIcon: IconButton(
+                                onPressed: () async {
+                                  if (_controllerIdProduto.text == '') {
+                                    limparFieldsPeca();
+                                  } else {
+                                    buscarProduto(_controllerIdProduto.text);
+                                  }
+                                },
+                                icon: const Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+                      // Fim Produto
+                      Flexible(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerNomeProduto,
+                            enabled: false,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Nome Produto',
+                              labelText: 'Nome Produto',
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 20)),
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerIdPeca,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                                hintText: 'ID',
+                                labelText: 'ID',
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.only(
+                                    top: 15, bottom: 10, left: 10),
+                                suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    if (_controllerIdPeca.text == '') {
+                                      limparFieldsPeca();
+                                    } else {
+                                      buscarPeca(_controllerIdPeca.text);
+                                    }
+                                  },
+                                  icon: const Icon(Icons.search),
+                                )),
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.only(right: 10)),
+                      Flexible(
+                        flex: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextFormField(
+                            controller: _controllerNomePeca,
+                            enabled: false,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Nome Peça',
+                              labelText: 'Nome Peça',
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Fim Fornecedor
+                    ],
+                  ),
+                ]),
+              )),
+          Container(
+            padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      //width: 300,
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          labelText: 'Endereço Resumido',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: Row(children: [
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                  controller: _controllerCorredor,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (_controllerCorredor.text == '')
+                                        _controllerEstante.text = '';
+                                    });
+                                  }),
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 5)),
+                          Text('-'),
+                          const Padding(padding: EdgeInsets.only(left: 5)),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                  enabled: _controllerCorredor.text == ''
+                                      ? false
+                                      : true,
+                                  controller: _controllerEstante,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                        top: 10, bottom: 10),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (_controllerEstante.text == '')
+                                        _controllerPrateleira.text = '';
+                                    });
+                                  }),
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 5)),
+                          Text('-'),
+                          const Padding(padding: EdgeInsets.only(left: 5)),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                  enabled: _controllerEstante.text == ''
+                                      ? false
+                                      : true,
+                                  controller: _controllerPrateleira,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (_controllerPrateleira.text == '')
+                                        _controllerBox.text = '';
+                                    });
+                                  }),
+                            ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(right: 5)),
+                          Text('-'),
+                          const Padding(padding: EdgeInsets.only(left: 5)),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: TextFormField(
+                                  enabled: _controllerPrateleira.text == ''
+                                      ? false
+                                      : true,
+                                  controller: _controllerBox,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {});
+                                  }),
+                            ),
+                          ),
+                        ]),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-              // Fim Produto
-              Flexible(
-                flex: 5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerNomeFilial,
-                    enabled: false,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Nome Filial',
-                      labelText: 'Nome Filial',
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 30)),
-              Flexible(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerIdFornecedor,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                        hintText: 'ID',
-                        labelText: 'ID',
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                        suffixIcon: IconButton(
-                          onPressed: () async {
-                            if (_controllerIdFornecedor.text == '') {
-                              limparFieldsPeca();
-                            } else {
-                              buscarFornecedor(_controllerIdFornecedor.text);
-                            }
-                          },
-                          icon: Icon(Icons.search),
-                        )),
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-              Flexible(
-                flex: 5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerNomeFornecedor,
-                    enabled: false,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Nome Fornecedor',
-                      labelText: 'Nome Fornecedor',
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                    ),
-                  ),
-                ),
-              ),
-              // Fim Fornecedor
-              const Padding(padding: EdgeInsets.only(right: 5)),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
-          Row(
-            children: [
-              const Padding(padding: EdgeInsets.only(left: 5)),
-              Flexible(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerIdProduto,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'ID',
-                      labelText: 'ID',
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          if (_controllerIdProduto.text == '') {
-                            limparFieldsPeca();
-                          } else {
-                            buscarProduto(_controllerIdProduto.text);
-                          }
-                        },
-                        icon: const Icon(Icons.search),
+                    const Padding(padding: EdgeInsets.only(right: 5)),
+                    Flexible(
+                      flex: 4,
+                      //width: 900,
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                          labelText: 'Disponibilidade',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 3,
+                              child: ListTile(
+                                title: const Text('Disponível'),
+                                leading: Checkbox(
+                                  value: disponivel,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      disponivel = value!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 3,
+                              child: ListTile(
+                                title: const Text('Reservado'),
+                                leading: Checkbox(
+                                  value: reservado,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      reservado = value!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 3,
+                              child: ListTile(
+                                title: const Text('Transferência'),
+                                leading: Checkbox(
+                                  value: transferencia,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      transferencia = value!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                    const Padding(padding: EdgeInsets.only(right: 5)),
+                    Flexible(
+                      flex: 2,
+                      //width: 900,
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                          labelText: 'Endereçado?',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 3,
+                              child: ListTile(
+                                title: const Text('Sim'),
+                                leading: Radio(
+                                  groupValue: endereco,
+                                  value: true,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      endereco = true;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 3,
+                              child: ListTile(
+                                title: const Text('Não'),
+                                leading: Radio(
+                                  groupValue: endereco,
+                                  value: false,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      endereco = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-              // Fim Produto
-              Flexible(
-                flex: 5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerNomeProduto,
-                    enabled: false,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Nome Produto',
-                      labelText: 'Nome Produto',
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 30)),
-              Flexible(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerIdPeca,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                        hintText: 'ID',
-                        labelText: 'ID',
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
-                        suffixIcon: IconButton(
-                          onPressed: () async {
-                            if (_controllerIdPeca.text == '') {
-                              limparFieldsPeca();
-                            } else {
-                              buscarPeca(_controllerIdPeca.text);
-                            }
-                          },
-                          icon: const Icon(Icons.search),
-                        )),
-                  ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(right: 10)),
-              Flexible(
-                flex: 5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: TextFormField(
-                    controller: _controllerNomePeca,
-                    enabled: false,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Nome Peça',
-                      labelText: 'Nome Peça',
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                    ),
-                  ),
-                ),
-              ),
-              // Fim Fornecedor
-              const Padding(padding: EdgeInsets.only(right: 5)),
-            ],
+              ],
+            ),
           ),
-          const Padding(padding: EdgeInsets.only(top: 20)),
         ]),
       ),
       Column(
@@ -350,60 +636,53 @@ class _PecaEnderecamentoDetailViewState
               const Padding(padding: EdgeInsets.only(left: 5)),
               Flexible(
                   flex: 1,
-                  child: FutureBuilder(
-                    future: enderecamentoController.buscarTodos(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    return Text("Sem conexão!");
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                    return Center(
-                    child:
-                    new CircularProgressIndicator());
-                    case ConnectionState.done:
-                        return Container(
-                          padding: const EdgeInsets.only(
-                              left: 12, right: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius:
-                            BorderRadius.circular(5),
-                          ),
-                          child: DropdownSearch<PisoEnderecamentoModel>(
-                          mode: Mode.MENU,
-                          showSearchBox: true,
-                          items: snapshot.data,
-                          itemAsString:
-                              (PisoEnderecamentoModel? value) =>
-                              value?.id_filial == null ? value!.desc_piso!.toUpperCase() :
-                              value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
-                            onChanged: (value) {
-                              setState(() {
-                                limparCorredor();
-                                _pisoSelected = value!;
-                              });
-                            },
-                            dropdownSearchDecoration:
-                            InputDecoration(
-                              enabledBorder: InputBorder.none,
-                                hintText: "Selecione o Piso:",
-                                labelText: "Piso"
-                            ),
-                            dropDownButton: Icon(
-                              Icons.arrow_drop_down_rounded,
-                              color: Colors.black,
-                            ),
-                            showAsSuffixIcons: true,
-                            selectedItem: _pisoSelected,
-                            showClearButton: true,
-                            clearButton: IconButton(icon: Icon(Icons.clear),onPressed: (){
-                               limparFieldsLoc();
-                            },),
-                            emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
-                      ),
-                        );}})
-                  ),
+                  child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PisoEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: enderecamentoController.listaPiso,
+                                itemAsString: (PisoEnderecamentoModel? value) =>
+                                    value?.id_filial == null
+                                        ? value!.desc_piso!.toUpperCase()
+                                        : value!.desc_piso!.toUpperCase() +
+                                            " (" +
+                                            value.id_filial.toString() +
+                                            ")",
+                                onChanged: (value) {
+                                  setState(() {
+                                    limparCorredor();
+                                    _pisoSelected = value!;
+                                    buscarCorredor();
+                                  });
+                                },
+                                dropdownSearchDecoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Piso:",
+                                    labelText: "Piso"),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _pisoSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: () {
+                                    limparFieldsLoc();
+                                  },
+                                ),
+                                emptyBuilder: (context, searchEntry) => Center(
+                                    child: Text('Nenhum piso encontrado!')),
+                              ),
+                            ),),
+
 
               const Padding(padding: EdgeInsets.only(right: 10)),
               Flexible(
@@ -652,7 +931,7 @@ class _PecaEnderecamentoDetailViewState
           const Padding(padding: EdgeInsets.only(left: 5)),
           Flexible(
             child: ButtonComponent(
-                onPressed: () {
+                onPressed: ()  async {
                   setState(() {
                     abrirFiltro = false;
                     id_filial = _controllerIdFilial.text != ''
@@ -668,6 +947,7 @@ class _PecaEnderecamentoDetailViewState
                         ? int.parse(_controllerIdPeca.text)
                         : null;
                   });
+                  consultarEnderecamento();
                 },
                 text: 'Pesquisar'),
           ),
@@ -769,39 +1049,11 @@ class _PecaEnderecamentoDetailViewState
           ),
         ),
         const Divider(),
-        FutureBuilder(
-          future: pecaEnderecamentoController.buscarTodos(
-              pecaEnderecamentoController.pagina.atual,
-              id_filial,
-              id_fornecedor,
-              id_produto,
-              id_peca,
-              _pisoSelected?.id_piso,
-              _corredorSelected?.id_corredor,
-              _estanteSelected?.id_estante,
-              _prateleiraSelected?.id_prateleira,
-              _boxSelected?.id_box),
-          builder:
-              (context, AsyncSnapshot<List<PecaEnderacamentoModel>> snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return Text('none');
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              case ConnectionState.active:
-                return Text('');
-              case ConnectionState.done:
-                if (snapshot.hasError) {
-                  return Text(
-                    '${snapshot.error}',
-                    style: const TextStyle(color: Colors.red),
-                  );
-                } else {
-                  return Container(
-                    height: media.height/2,
+        Container(
+                    height: media.height / 2,
                     child: ListView.builder(
                       primary: false,
-                      itemCount: snapshot.data?.length,
+                      itemCount: pecaEnderecamentoController.pecas_enderecamento.length,
                       itemBuilder: (context, index) {
                         return Container(
                           child: Row(
@@ -811,32 +1063,39 @@ class _PecaEnderecamentoDetailViewState
                               // CheckboxComponent(),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque == null ? snapshot.data![index].box!.prateleira!.estante!.corredor!.piso!.id_filial.toString() : snapshot.data![index].peca_estoque!.filial.toString(),
+                                  pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque == null
+                                      ? pecaEnderecamentoController.pecas_enderecamento[index].box!.prateleira!
+                                          .estante!.corredor!.piso!.id_filial
+                                          .toString()
+                                      : pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque!.filial
+                                          .toString(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].descPiso ?? '',
+                                  pecaEnderecamentoController.pecas_enderecamento[index].descPiso ?? '',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].endereco,
+                                  pecaEnderecamentoController.pecas_enderecamento[index].endereco,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16),
                                 ),
                               ),
                               Expanded(
-                                child: Text(snapshot.data![index].box?.calcularMedida() ?? '-',
+                                child: Text(
+                                  pecaEnderecamentoController.pecas_enderecamento[index].box?.calcularMedida() ??
+                                      '-',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque?.pecasModel
+                                  pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque?.pecasModel
                                           ?.id_peca
                                           .toString() ??
                                       '-',
@@ -845,19 +1104,19 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               Expanded(
                                 flex: 3,
-                                child: Text(snapshot.data![index].peca_estoque
+                                child: Text(pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque
                                         ?.pecasModel?.descricao ??
                                     '-'),
                               ),
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                    snapshot.data![index].nomeFornecedor ??
+                                    pecaEnderecamentoController.pecas_enderecamento[index].nomeFornecedor ??
                                         '-'),
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque
+                                  pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque
                                           ?.saldo_disponivel
                                           .toString() ??
                                       '-',
@@ -866,7 +1125,7 @@ class _PecaEnderecamentoDetailViewState
                               ),
                               Expanded(
                                 child: Text(
-                                  snapshot.data![index].peca_estoque
+                                  pecaEnderecamentoController.pecas_enderecamento[index].peca_estoque
                                           ?.saldo_reservado
                                           .toString() ??
                                       '-',
@@ -879,13 +1138,13 @@ class _PecaEnderecamentoDetailViewState
                                   children: [
                                     Expanded(
                                       child: IconButton(
-                                        tooltip: snapshot.data![index]
+                                        tooltip: pecaEnderecamentoController.pecas_enderecamento[index]
                                                     .id_peca_estoque ==
                                                 null
                                             ? 'Endereçar Peça'
                                             : 'Transferir Peça',
                                         icon: Icon(
-                                          snapshot.data![index]
+                                          pecaEnderecamentoController.pecas_enderecamento[index]
                                                       .id_peca_estoque ==
                                                   null
                                               ? Icons.location_on_outlined
@@ -897,7 +1156,7 @@ class _PecaEnderecamentoDetailViewState
                                               context,
                                               EnderecoDetailView(
                                                   pecaEnderecamento:
-                                                      snapshot.data![index]));
+                                                      pecaEnderecamentoController.pecas_enderecamento[index]));
                                           setState(() {});
                                         },
                                       ),
@@ -910,7 +1169,7 @@ class _PecaEnderecamentoDetailViewState
                                           color: Colors.grey.shade400,
                                         ),
                                         onPressed: () => {
-                                          //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: snapshot.data![index]))
+                                          //PopUpEditar.popUpPeca(context,EnderecoDetailView(pecaEnderecamento: pecaEnderecamentoController.pecas_enderecamento[index]))
                                         },
                                       ),
                                     ),
@@ -922,11 +1181,8 @@ class _PecaEnderecamentoDetailViewState
                         );
                       },
                     ),
-                  );
-                }
-            }
-          },
-        ),
+                  ),
+                
         Container(
           height: media.height * 0.10,
           width: media.width,
@@ -996,16 +1252,26 @@ class _PecaEnderecamentoDetailViewState
 
   @override
   void initState() {
+    filialModel = getFilial().filial;
+    _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
+    _controllerNomeFilial.text = filialModel?.sigla ?? '';
+
     pecaEnderecamentoController = PecaEnderecamentoController();
     enderecamentoController = EnderecamentoController();
     _pecasController = PecasController();
     _produtoController = ProdutoController();
+
+    buscarPisos();
     // ignore: todo
     // TODO: implement initState
     super.initState();
   }
 
   limparFieldsLoc() {
+    _controllerCorredor.clear();
+    _controllerEstante.clear();
+    _controllerPrateleira.clear();
+    _controllerBox.clear();
     setState(() {
       _pisoSelected = null;
     });
@@ -1015,6 +1281,7 @@ class _PecaEnderecamentoDetailViewState
   limparCorredor() {
     setState(() {
       _corredorSelected = null;
+      enderecamentoController.listaCorredor = [];
     });
     limparEstante();
   }
@@ -1022,6 +1289,7 @@ class _PecaEnderecamentoDetailViewState
   limparEstante() {
     setState(() {
       _estanteSelected = null;
+      enderecamentoController.listaEstante = [];
     });
 
     limparPrateleira();
@@ -1030,6 +1298,7 @@ class _PecaEnderecamentoDetailViewState
   limparPrateleira() {
     setState(() {
       _prateleiraSelected = null;
+      enderecamentoController.listaPrateleira = [];
     });
     limparBox();
   }
@@ -1037,6 +1306,7 @@ class _PecaEnderecamentoDetailViewState
   limparBox() {
     setState(() {
       _boxSelected = null;
+      enderecamentoController.listaBox = [];
     });
   }
 
@@ -1053,7 +1323,6 @@ class _PecaEnderecamentoDetailViewState
     id_fornecedor = null;
     id_produto = null;
     id_peca = null;
-
   }
 
   limparFields() {
@@ -1080,7 +1349,42 @@ class _PecaEnderecamentoDetailViewState
   buscarFornecedor(String id) async {
     FornecedorController _fornecedorController = FornecedorController();
     await _fornecedorController.buscar(id);
-    _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
-    _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
+    _controllerNomeFornecedor.text =
+        _fornecedorController.fornecedorModel.cliente?.nome ?? '';
+    _controllerIdFornecedor.text =
+        _fornecedorController.fornecedorModel.idFornecedor.toString();
   }
+  
+  consultarEnderecamento() async {
+    setState(() {
+      pecaEnderecamentoController.isLoading = true;
+    });
+    await pecaEnderecamentoController.buscarTodos(pecaEnderecamentoController.pagina.atual, id_filial, id_fornecedor, id_produto, id_peca, _pisoSelected?.id_piso, _corredorSelected?.id_corredor, _estanteSelected?.id_estante, _prateleiraSelected?.id_prateleira, _boxSelected?.id_box).then((value) => setState(() {
+      pecaEnderecamentoController.isLoading = false;
+    }));
+  }
+
+   buscarPisos() async {
+
+    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
+
+      setState(() {
+
+      });
+    }
+
+  buscarCorredor() async {
+    setState(() {
+      enderecamentoController.isLoaded = true;
+    });
+    enderecamentoController.listaCorredor = await enderecamentoController.buscarCorredor(_pisoSelected!.id_piso.toString());
+    setState(() {
+      enderecamentoController.isLoaded = false;
+    });
+
+
+  }
+  
+  
+
 }
