@@ -204,7 +204,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => PecaEnderecamentoDetailView();
+      builder = (BuildContext context) => EstoqueConsultaView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -230,6 +230,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => PedidoSaidaListView();
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         pagina = MenuEntradaView();
+      } else if (uri.pathSegments.first == 'estoque-consulta') {
+        pagina = EstoqueConsultaView();
       }
 
       //Se existe 2 parâmetros da url
