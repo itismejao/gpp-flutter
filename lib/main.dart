@@ -73,6 +73,7 @@ import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
+import 'package:gpp/src/views/home/filial_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pecas/PecasListView.dart';
@@ -175,8 +176,7 @@ class _GppAppState extends State<GppApp> {
             fontFamily: 'Mada',
             inputDecorationTheme: const InputDecorationTheme(
               iconColor: Colors.grey,
-              floatingLabelStyle:
-                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+              floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
             )),
         onGenerateRoute: (settings) {
           // Handle '/'
@@ -268,11 +268,15 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         ),
         actions: [
           Padding(
+            padding: const EdgeInsets.only(left: 8, right: 4),
+            child: FilialView(),
+          ),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: Image.network(
-                  'https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
+              child:
+                  Image.network('https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
             ),
           ),
           Padding(
@@ -343,10 +347,7 @@ class _SidebarState extends State<Sidebar> {
                 child: Column(
                   children: controller.funcionalities
                       .map((e) => ItemSideBar(
-                          e.nome ?? '',
-                          IconData(int.parse(e.icone!),
-                              fontFamily: 'MaterialIcons'),
-                          e.subFuncionalidades ?? []))
+                          e.nome ?? '', IconData(int.parse(e.icone!), fontFamily: 'MaterialIcons'), e.subFuncionalidades ?? []))
                       .toList(),
                 ),
               ),
@@ -375,10 +376,7 @@ class FooterSidebar extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           IconButton(
-              onPressed: () => {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushReplacementNamed('/logout')
-                  },
+              onPressed: () => {Navigator.of(context, rootNavigator: true).pushReplacementNamed('/logout')},
               icon: Icon(Icons.logout_rounded))
         ],
       ),
@@ -437,9 +435,7 @@ class _ItemSideBarState extends State<ItemSideBar> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
-                children: widget.subFuncionalidades
-                    .map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? ''))
-                    .toList(),
+                children: widget.subFuncionalidades.map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? '')).toList(),
               ),
             ),
           ),
@@ -477,9 +473,8 @@ class _SubItemSidebarState extends State<SubItemSidebar> {
           onHover = false;
         }),
         child: Container(
-          decoration: BoxDecoration(
-              color: onHover ? Colors.grey.shade200 : Colors.transparent,
-              borderRadius: BorderRadius.circular(5)),
+          decoration:
+              BoxDecoration(color: onHover ? Colors.grey.shade200 : Colors.transparent, borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32),
             child: Row(
