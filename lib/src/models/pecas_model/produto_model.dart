@@ -1,6 +1,6 @@
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/pecas_model/fornecedor_pecas_model.dart';
-import 'package:gpp/src/models/pecas_model/PecaModel.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 
 class ProdutoModel {
   int? id_produto;

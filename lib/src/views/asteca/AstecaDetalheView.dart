@@ -8,7 +8,7 @@ import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoEntradaPDF.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class FilialModel {
   int? id_filial;
   String? sigla;

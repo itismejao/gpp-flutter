@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/notify_controller.dart';
 
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
-import 'package:gpp/src/models/pecas_model/PecaModel.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
 
 import 'package:gpp/src/shared/components/ButtonComponent.dart';

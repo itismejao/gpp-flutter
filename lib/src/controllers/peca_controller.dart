@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/pecas_model/PecaModel.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 
-import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 
 import 'package:gpp/src/repositories/pecas_repository/produto_repositoy.dart';
 
@@ -30,27 +30,27 @@ class PecaController {
   }
 
   // Future<PecasModel> criarPeca() async {
-  //   return await pecasRepository.criarPeca(pecasModel);
+  //   return await pecaRepository.criarPeca(pecasModel);
   // }
 
   // Future<bool> criarProdutoPeca() async {
-  //   return await pecasRepository.criarProdutoPeca(produtoPecaModel);
+  //   return await pecaRepository.criarProdutoPeca(produtoPecaModel);
   // }
 
   // Future<List> buscarTodos(int pagina) async {
-  //   return await pecasRepository.buscarTodos(pagina);
+  //   return await pecaRepository.buscarTodos(pagina);
   // }
 
   // Future<PecasModel> buscar(String codigo) async {
-  //   return await pecasRepository.buscar(codigo);
+  //   return await pecaRepository.buscar(codigo);
   // }
 
   // Future<bool> excluir(PecasModel pecasModel) async {
-  //   return await pecasRepository.excluir(pecasModel);
+  //   return await pecaRepository.excluir(pecasModel);
   // }
 
   // Future<bool> editar() async {
-  //   return await pecasRepository.editar(pecasModel);
+  //   return await pecaRepository.editar(pecasModel);
   // }
 
   // Future<bool> editarProdutoPeca() async {

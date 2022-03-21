@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
-import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
@@ -51,7 +51,6 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
     _controllerNomeFilial.text = filialModel?.sigla ?? '';
 
-    // TODO: implement initState
     super.initState();
   }
 
@@ -75,256 +74,266 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
         ),
         const Divider(),
         Container(
-          padding: EdgeInsets.only(left: 5, right: 5, top: 10),
+            padding: EdgeInsets.only(left: 5, right: 5, top: 10),
             child: InputDecorator(
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical:  15, horizontal: 10),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                 labelText: 'Informação de Peças',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
               child: Column(children: [
-          Row(
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerIdFilial,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Filial',
-                        labelText: 'Filial',
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                        suffixIcon: IconButton(
-                          onPressed: () async {},
-                          icon: Icon(Icons.search),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerIdFilial,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Filial',
+                            labelText: 'Filial',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                            suffixIcon: IconButton(
+                              onPressed: () async {},
+                              icon: Icon(Icons.search),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                // Fim Produto
-                Flexible(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerNomeFilial,
-                      enabled: false,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Nome Filial',
-                        labelText: 'Nome Filial',
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 20)),
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerIdFornecedor,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                          hintText: 'ID',
-                          labelText: 'ID',
-                          border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              if (_controllerIdFornecedor.text == '') {
-                                limparFieldsPeca();
-                              } else {
-                                buscarFornecedor(_controllerIdFornecedor.text);
-                              }
-                            },
-                            icon: Icon(Icons.search),
-                          )),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                Flexible(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerNomeFornecedor,
-                      enabled: false,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Nome Fornecedor',
-                        labelText: 'Nome Fornecedor',
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
-                  ),
-                ),
-                // Fim Fornecedor
-              ],
-          ),
-          const Padding(padding: EdgeInsets.only(top: 10)),
-          Row(
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerIdProduto,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'ID',
-                        labelText: 'ID',
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                        suffixIcon: IconButton(
-                          onPressed: () async {
-                            if (_controllerIdProduto.text == '') {
-                              limparFieldsPeca();
-                            } else {
-                              buscarProduto(_controllerIdProduto.text);
-                            }
-                          },
-                          icon: const Icon(Icons.search),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    // Fim Produto
+                    Flexible(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerNomeFilial,
+                          enabled: false,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Nome Filial',
+                            labelText: 'Nome Filial',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    const Padding(padding: EdgeInsets.only(right: 20)),
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerIdFornecedor,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                              hintText: 'ID',
+                              labelText: 'ID',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                              suffixIcon: IconButton(
+                                onPressed: () async {
+                                  if (_controllerIdFornecedor.text == '') {
+                                    limparFieldsPeca();
+                                  } else {
+                                    buscarFornecedor(
+                                        _controllerIdFornecedor.text);
+                                  }
+                                },
+                                icon: Icon(Icons.search),
+                              )),
+                        ),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    Flexible(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerNomeFornecedor,
+                          enabled: false,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Nome Fornecedor',
+                            labelText: 'Nome Fornecedor',
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Fim Fornecedor
+                  ],
                 ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                // Fim Produto
-                Flexible(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerNomeProduto,
-                      enabled: false,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                const Padding(padding: EdgeInsets.only(top: 10)),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerIdProduto,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'ID',
+                            labelText: 'ID',
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(
+                                top: 15, bottom: 10, left: 10),
+                            suffixIcon: IconButton(
+                              onPressed: () async {
+                                if (_controllerIdProduto.text == '') {
+                                  limparFieldsPeca();
+                                } else {
+                                  buscarProduto(_controllerIdProduto.text);
+                                }
+                              },
+                              icon: const Icon(Icons.search),
+                            ),
+                          ),
+                        ),
                       ),
-                      decoration: InputDecoration(
-                        hintText: 'Nome Produto',
-                        labelText: 'Nome Produto',
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    // Fim Produto
+                    Flexible(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerNomeProduto,
+                          enabled: false,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Nome Produto',
+                            labelText: 'Nome Produto',
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(
+                                top: 15, bottom: 10, left: 10),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    const Padding(padding: EdgeInsets.only(right: 20)),
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerIdPeca,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                              hintText: 'ID',
+                              labelText: 'ID',
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
+                              suffixIcon: IconButton(
+                                onPressed: () async {
+                                  if (_controllerIdPeca.text == '') {
+                                    limparFieldsPeca();
+                                  } else {
+                                    buscarPeca(_controllerIdPeca.text);
+                                  }
+                                },
+                                icon: const Icon(Icons.search),
+                              )),
+                        ),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(right: 10)),
+                    Flexible(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: TextFormField(
+                          controller: _controllerNomePeca,
+                          enabled: false,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Nome Peça',
+                            labelText: 'Nome Peça',
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(
+                                top: 15, bottom: 10, left: 10),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Fim Fornecedor
+                  ],
                 ),
-                const Padding(padding: EdgeInsets.only(right: 20)),
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerIdPeca,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                          hintText: 'ID',
-                          labelText: 'ID',
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                              top: 15, bottom: 10, left: 10),
-                          suffixIcon: IconButton(
-                            onPressed: () async {
-                              if (_controllerIdPeca.text == '') {
-                                limparFieldsPeca();
-                              } else {
-                                buscarPeca(_controllerIdPeca.text);
-                              }
-                            },
-                            icon: const Icon(Icons.search),
-                          )),
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.only(right: 10)),
-                Flexible(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: TextFormField(
-                      controller: _controllerNomePeca,
-                      enabled: false,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Nome Peça',
-                        labelText: 'Nome Peça',
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(top: 15, bottom: 10, left: 10),
-                      ),
-                    ),
-                  ),
-                ),
-                // Fim Fornecedor
-              ],
-          ),
-        ]),
+              ]),
             )),
         Container(
           padding: EdgeInsets.only(left: 5, right: 5, top: 10),
@@ -938,21 +947,20 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
 
   buscarPeca(String id) async {
     PecasModel? peca;
-    PecasController pecasController = PecasController();
+    PecaController pecasController = PecaController();
     peca = await pecasController.buscar(id);
     _controllerNomePeca.text = peca.descricao ?? '';
-    if (peca.produto_peca?[0].id_produto != null)
-      buscarProduto(peca.produto_peca![0].id_produto.toString());
+    if (peca.produto_peca?[0].idProdutoPeca != null)
+      buscarProduto(peca.produto_peca![0].idProdutoPeca.toString());
   }
 
   buscarProduto(String id) async {
     ProdutoController _produtoController = ProdutoController();
     await _produtoController.buscar(id);
-    _controllerNomeProduto.text =
-        _produtoController.produtoModel.resumida ?? '';
+    _controllerNomeProduto.text = _produtoController.produto.resumida ?? '';
     _controllerIdProduto.text =
-        _produtoController.produtoModel.id_produto.toString();
-    buscarFornecedor(_produtoController.produtoModel.id_fornecedor.toString());
+        _produtoController.produto.id_produto.toString();
+    buscarFornecedor(_produtoController.produto.id_fornecedor.toString());
   }
 
   buscarFornecedor(String id) async {

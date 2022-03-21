@@ -2,7 +2,7 @@ import 'package:gpp/src/models/PecaEstoqueModel.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
-import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 
 class PecasModel {
   // Teste
