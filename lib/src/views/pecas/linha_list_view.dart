@@ -21,7 +21,7 @@ class _LinhaListViewState extends State<LinhaListView> {
   Future<bool> excluir(context, PecasLinhaModel pecasLinhaModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           'Deseja excluir a linha (${pecasLinhaModel.id_peca_linha} - ${pecasLinhaModel.linha})?')) {
         if (await _pecasLinhaController.excluir(pecasLinhaModel)) {
           notify.sucess("Linha excluída com sucesso!");

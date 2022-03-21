@@ -21,7 +21,7 @@ class _GrupoListViewState extends State<GrupoListView> {
   Future<bool> excluir(context, PecasGrupoModel pecasGrupoModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           'Deseja excluir o grupo (${pecasGrupoModel.id_peca_grupo_material} - ${pecasGrupoModel.grupo})?')) {
         if (await _pecasGrupoController.excluir(pecasGrupoModel)) {
           notify.sucess("Linha excluída com sucesso!");

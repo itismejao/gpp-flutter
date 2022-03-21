@@ -35,7 +35,50 @@ class NotifyController {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<bool> alert(String message) async {
+  Future<bool> alerta(String message) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        final media = MediaQuery.of(context);
+
+        return AlertDialog(
+          title: TextComponent(
+            'Aviso',
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+          content: TextComponent(
+            message,
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.normal,
+          ),
+          actions: <Widget>[
+            Container(
+              width: media.size.width * 0.40,
+              height: media.size.height * 0.05,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButtonComponent(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop(true);
+                          },
+                          text: 'Ok')
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> confirmacao(String message) async {
     return await showDialog(
       context: context,
       builder: (context) {

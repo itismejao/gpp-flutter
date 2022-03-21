@@ -21,7 +21,7 @@ class _MaterialListViewState extends State<MaterialListView> {
   Future<bool> excluir(context, PecasMaterialModel pecasMaterialModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           'Deseja excluir o Material (${pecasMaterialModel.id_peca_material_fabricacao} - ${pecasMaterialModel.material})?')) {
         if (await _pecasMaterialController.excluir(pecasMaterialModel)) {
           notify.sucess("Material excluído com sucesso!");

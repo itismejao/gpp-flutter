@@ -38,7 +38,7 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await notify
-          .alert("você deseja excluir o motivo de troca de peça ?")) {
+          .confirmacao("você deseja excluir o motivo de troca de peça ?")) {
         if (await controller.repository.excluir(reasonPartsReplacement)) {
           notify.sucess("Funcionalidade excluída!");
           //Atualiza a lista de motivos

@@ -409,7 +409,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                       NotifyController notify =
                                           NotifyController(context: context);
                                       try {
-                                        if (await notify.alert(
+                                        if (await notify.confirmacao(
                                             'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
                                           setState(() {
                                             movimentoEntradaController

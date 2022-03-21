@@ -98,7 +98,7 @@ class _UserDetailViewState extends State<UserDetailView> {
   fetchDepartamentsSubfuncionalities(DepartamentoModel departament) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           "As funcionalidades serão alteradas, deseja concluir a operação?")) {
         await _departamentController
             .changeDepartamentSubFuncionalities(departament);

@@ -21,7 +21,7 @@ class _EspecieListViewState extends State<EspecieListView> {
   Future<bool> excluir(context, PecasEspecieModel pecasEspecieModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           'Deseja excluir a espécie (${pecasEspecieModel.id_peca_especie} - ${pecasEspecieModel.especie})?')) {
         if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
           notify.sucess("Espécie excluída com sucesso!");
