@@ -7,6 +7,7 @@ import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
+import 'package:gpp/src/shared/components/ButtonComponentExpanded.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
@@ -598,7 +599,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                 children: [
                   const Padding(padding: EdgeInsets.only(left: 5)),
                   Flexible(
-                    child: ButtonComponent(
+                    child: ButtonComponentExpanded(
                         onPressed: () async {
                           consultarEstoque();
                         },

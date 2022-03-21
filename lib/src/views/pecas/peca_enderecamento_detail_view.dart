@@ -14,6 +14,7 @@ import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
+import 'package:gpp/src/shared/components/ButtonComponentExpanded.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -929,7 +930,7 @@ class _PecaEnderecamentoDetailViewState
           children: [
             const Padding(padding: EdgeInsets.only(left: 5)),
             Flexible(
-              child: ButtonComponent(
+              child: ButtonComponentExpanded(
                   onPressed: () async {
                     setState(() {
                       abrirFiltro = false;
@@ -1395,7 +1396,7 @@ class _PecaEnderecamentoDetailViewState
 
   buscarPisos() async {
     enderecamentoController.listaPiso =
-        await enderecamentoController.buscarTodos();
+        await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     setState(() {});
   }
