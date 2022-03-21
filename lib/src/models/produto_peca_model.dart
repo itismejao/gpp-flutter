@@ -4,17 +4,20 @@ class ProdutoPecaModel {
   int? idProdutoPeca;
   int? quantidadePorProduto;
   PecasModel? peca;
+  int? id_produto;
 
   ProdutoPecaModel({
     this.idProdutoPeca,
     this.quantidadePorProduto,
     this.peca,
+    this.id_produto
   });
 
   factory ProdutoPecaModel.fromJson(Map<String, dynamic> json) {
     return ProdutoPecaModel(
         idProdutoPeca: json['id_produto_peca'],
         quantidadePorProduto: json['quantidade_por_produto'],
+        id_produto: json['id_produto'],
         peca: PecasModel.fromJson(json['peca']));
   }
 

@@ -76,6 +76,9 @@ import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pecas/PecasListView.dart';
+import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
+import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
@@ -106,7 +109,7 @@ class _GppAppState extends State<GppApp> {
 
 //Se existe 1 parâmetros da url
       if (uri.pathSegments.length == 0) {
-        pagina = PecasListView();
+        pagina = EstoqueConsultaView();
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaView();
@@ -119,11 +122,11 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'logout') {
           pagina = AutenticacaoView();
         } else if (uri.pathSegments.first == 'pecas-cadastrar') {
-          //  pagina = MenuCadastrarView();
+          pagina = MenuCadastrarView();
         } else if (uri.pathSegments.first == 'pecas-consultar') {
-          //       pagina = MenuConsultarView();
+          pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          //     pagina = PecaEnderecamentoDetailView();
+          pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = AddressingListView();
         } else if (uri.pathSegments.first == 'pedidos-entrada') {
@@ -201,7 +204,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => PecasListView();
+      builder = (BuildContext context) => PecaEnderecamentoDetailView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -214,11 +217,11 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'logout') {
         pagina = AutenticacaoView();
       } else if (uri.pathSegments.first == 'pecas-cadastrar') {
-        //      pagina = MenuCadastrarView();
+        pagina = MenuCadastrarView();
       } else if (uri.pathSegments.first == 'pecas-consultar') {
         builder = (BuildContext context) => PecasListView();
       } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-        //       builder = (BuildContext context) => PecaEnderecamentoDetailView();
+        builder = (BuildContext context) => PecaEnderecamentoDetailView();
       } else if (uri.pathSegments.first == 'enderecamentos') {
         pagina = AddressingListView();
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
