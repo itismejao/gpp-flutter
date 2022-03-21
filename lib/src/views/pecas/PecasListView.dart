@@ -6,7 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/PecasController.dart';
+
 import 'package:gpp/src/models/ProdutoPecaModel.dart';
 import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 import 'package:gpp/src/models/pecas_model/produto_model.dart';
@@ -20,7 +20,8 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
-import '../../controllers/pecas_controller/produto_controller.dart';
+import '../../controllers/peca_controller.dart';
+
 import '../../shared/components/CheckboxComponent.dart';
 
 class ItemPeca {
@@ -45,8 +46,7 @@ class _PecasListViewState extends State<PecasListView> {
   late MaskFormatter maskFormatter;
   late GlobalKey<FormState> formKey;
 
-  late PecasController pecaController;
-  late ProdutoController produtoController;
+  late PecaController pecaController;
 
   selecionarTodos(bool value) {
     if (value) {
@@ -164,12 +164,12 @@ class _PecasListViewState extends State<PecasListView> {
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
         adicionarProdutoPecas();
         //Chama o endpoint
-        await produtoController.produtoRepository.inserirPecasProduto(
-            produtoController.produto.id_produto.toString(),
-            produtoController.produto);
+        await pecaController.produtoRepository.inserirPecasProduto(
+            pecaController.produto.id_produto.toString(),
+            pecaController.produto);
 
         //Limpa
-        produtoController.produto = ProdutoModel();
+        pecaController.produto = ProdutoModel();
 
         //Fecha a caixa de dialogo
         Navigator.pop(context);
@@ -184,11 +184,11 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   adicionarProdutoPecas() {
-    produtoController.produto.produtoPecas = [];
+    pecaController.produto.produtoPecas = [];
     itemsPeca.forEach((itemPeca) async {
       //Se o item estiver marcado, realiza a inserção
       if (itemPeca.marcado) {
-        produtoController.produto.produtoPecas!.add(itemPeca.produtoPeca);
+        pecaController.produto.produtoPecas!.add(itemPeca.produtoPeca);
       }
     });
   }
@@ -232,8 +232,8 @@ class _PecasListViewState extends State<PecasListView> {
                                           label: 'Código do produto',
                                           hintText: '4584544',
                                           onFieldSubmitted: (value) {
-                                            carregarProduto(value);
-                                            print(produtoController
+                                            buscarProduto(value);
+                                            print(pecaController
                                                 .produto.resumida);
                                             setState(() {});
                                           },
@@ -245,8 +245,8 @@ class _PecasListViewState extends State<PecasListView> {
                                       Expanded(
                                         child: InputComponent(
                                           key: UniqueKey(),
-                                          initialValue: produtoController
-                                              .produto.resumida,
+                                          initialValue:
+                                              pecaController.produto.resumida,
                                           label: 'Descrição',
                                           hintText: 'Guarda roupa',
                                         ),
@@ -257,7 +257,7 @@ class _PecasListViewState extends State<PecasListView> {
                                       Expanded(
                                         child: InputComponent(
                                           key: UniqueKey(),
-                                          initialValue: produtoController
+                                          initialValue: pecaController
                                                   .produto
                                                   .fornecedor
                                                   ?.first
@@ -741,10 +741,14 @@ class _PecasListViewState extends State<PecasListView> {
     );
   }
 
-  carregarProduto(value) async {
-//busca o produto
-    produtoController.produto =
-        await produtoController.produtoRepository.buscar(value);
+  buscarProduto(value) async {
+    NotifyController notify = NotifyController(context: context);
+    try {
+      pecaController.produto =
+          await pecaController.produtoRepository.buscar(value);
+    } catch (e) {
+      notify.alert(e.toString());
+    }
   }
 
   buscarTodas() async {
@@ -754,7 +758,7 @@ class _PecasListViewState extends State<PecasListView> {
         pecaController.carregado = false;
       });
       //parei aqui
-      List retorno = await pecaController.repository
+      List retorno = await pecaController.pecaRepository
           .buscarTodos(pecaController.pagina.atual);
 
       pecaController.pecas = retorno[0];
@@ -781,10 +785,7 @@ class _PecasListViewState extends State<PecasListView> {
     super.initState();
 
     //Inicializa o controlador de peça
-    pecaController = new PecasController();
-
-    //Inicializa o controlador de produto
-    produtoController = new ProdutoController();
+    pecaController = new PecaController();
 
     //Inicializa maskFormatter
     maskFormatter = new MaskFormatter();

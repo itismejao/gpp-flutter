@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/AstecaController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/responsive_controller.dart';
+
 import 'package:gpp/src/models/AstecaModel.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -29,8 +29,6 @@ class AstecaView extends StatefulWidget {
 }
 
 class _AstecaViewState extends State<AstecaView> {
-  final ResponsiveController _responsive = ResponsiveController();
-
   late final AstecaController astecaController;
   late MaskFormatter maskFormatter;
   late Validator validator;
@@ -137,7 +135,6 @@ class _AstecaViewState extends State<AstecaView> {
 
   @override
   Widget build(BuildContext context) {
-    Size media = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
+
 import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 
 import 'package:gpp/src/shared/repositories/status_code.dart';

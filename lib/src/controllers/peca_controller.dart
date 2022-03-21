@@ -4,14 +4,18 @@ import 'package:gpp/src/models/pecas_model/PecaModel.dart';
 
 import 'package:gpp/src/models/pecas_model/produto_peca_model.dart';
 
-import '../../repositories/PecaRepository.dart';
-import '../../repositories/pecas_repository/produto_repositoy.dart';
+import 'package:gpp/src/repositories/pecas_repository/produto_repositoy.dart';
+
+import '../models/pecas_model/produto_model.dart';
+import '../repositories/PecaRepository.dart';
 
 class PecaController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   List<PecasModel> pecas = [];
   late final PecaRepository pecaRepository;
   late final ProdutoRepository produtoRepository;
+  ProdutoModel produto = ProdutoModel();
+
   PecasModel pecasModel = PecasModel();
   List<PecasModel> listaPecas = [];
   PaginaModel pagina = PaginaModel(total: 0, atual: 1);

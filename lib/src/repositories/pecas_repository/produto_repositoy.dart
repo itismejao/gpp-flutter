@@ -8,11 +8,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class ProdutoRepository {
-  ApiService api;
+  late ApiService api;
 
-  ProdutoRepository({
-    required this.api,
-  });
+  ProdutoRepository() {
+    api = ApiService();
+  }
 
   Future<List<ProdutoModel>> buscarTodos(String codigo) async {
     int codigo2 = 14634;

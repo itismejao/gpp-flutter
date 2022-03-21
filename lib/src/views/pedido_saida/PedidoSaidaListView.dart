@@ -391,7 +391,6 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
 
   @override
   Widget build(BuildContext context) {
-    Size media = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(

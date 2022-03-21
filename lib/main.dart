@@ -75,9 +75,6 @@ import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pecas/PecasListView.dart';
-import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
-import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
-import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
@@ -201,7 +198,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => AstecaView();
+      builder = (BuildContext context) => PecasListView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -318,7 +315,6 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     buscarFuncionalidades();
