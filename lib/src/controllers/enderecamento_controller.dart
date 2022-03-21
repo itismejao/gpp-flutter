@@ -27,8 +27,8 @@ class EnderecamentoController {
   late BoxEnderecamentoModel boxModel = BoxEnderecamentoModel();
   late List<BoxEnderecamentoModel> listaBox = [];
 
-  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
-    return await repository.buscarTodos();
+  Future<List<PisoEnderecamentoModel>> buscarTodos(int idFilial) async {
+    return await repository.buscarTodos(idFilial);
   }
 
   Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {
