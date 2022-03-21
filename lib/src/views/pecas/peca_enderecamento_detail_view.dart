@@ -698,6 +698,68 @@ class _PecaEnderecamentoDetailViewState
                                 child: new CircularProgressIndicator());
                           case ConnectionState.done:
                             return Container(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: DropdownSearch<PisoEnderecamentoModel>(
+                                mode: Mode.MENU,
+                                showSearchBox: true,
+                                items: snapshot.data,
+                                itemAsString: (PisoEnderecamentoModel? value) =>
+                                    value?.id_filial == null
+                                        ? value!.desc_piso!.toUpperCase()
+                                        : value!.desc_piso!.toUpperCase() +
+                                            " (" +
+                                            value.id_filial.toString() +
+                                            ")",
+                                onChanged: (value) {
+                                  setState(() {
+                                    limparCorredor();
+                                    _pisoSelected = value!;
+                                  });
+                                },
+                                dropdownSearchDecoration: InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    hintText: "Selecione o Piso:",
+                                    labelText: "Piso"),
+                                dropDownButton: Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: Colors.black,
+                                ),
+                                showAsSuffixIcons: true,
+                                selectedItem: _pisoSelected,
+                                showClearButton: true,
+                                clearButton: IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: () {
+                                    limparFieldsLoc();
+                                  },
+                                ),
+                                emptyBuilder: (context, searchEntry) => Center(
+                                    child: Text('Nenhum piso encontrado!')),
+                              ),
+                            );
+                        }
+                      })),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              Flexible(
+                  flex: 1,
+                  child: FutureBuilder(
+                      future: enderecamentoController.buscarCorredor(
+                          _pisoSelected?.id_piso.toString() ?? ''),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("Sem conexão!");
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Center(
+                                child: new CircularProgressIndicator());
+                          case ConnectionState.done:
+                            return Container(
                               padding: EdgeInsets.only(left: 12, right: 12),
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade200,
@@ -1393,7 +1455,7 @@ class _PecaEnderecamentoDetailViewState
 
   buscarPisos() async {
     enderecamentoController.listaPiso =
-        await enderecamentoController.buscarTodos();
+        await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     setState(() {});
   }

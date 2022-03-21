@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
@@ -25,7 +26,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
+    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 
@@ -37,6 +38,11 @@ class _AddressingListViewState extends State<AddressingListView> {
 
   handleCreate(context, PisoEnderecamentoModel piso) async {
     NotifyController notify = NotifyController(context: context);
+
+    if (piso.id_filial == null) {
+      piso.id_filial = getFilial().id_filial;
+    }
+
     try {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
@@ -114,6 +120,7 @@ class _AddressingListViewState extends State<AddressingListView> {
                       InputComponent(
                         label: 'Filial',
                         hintText: 'Digite a filial',
+                        initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
                             pisoEnderecamentoReplacement.id_filial = int.parse(value);
