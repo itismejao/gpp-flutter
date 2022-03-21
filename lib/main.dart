@@ -73,6 +73,7 @@ import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
+import 'package:gpp/src/views/home/filial_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pecas/PecasListView.dart';
@@ -230,6 +231,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => PedidoSaidaListView();
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         pagina = MenuEntradaView();
+      } else if (uri.pathSegments.first == 'estoque-consulta') {
+        pagina = EstoqueConsultaView();
       }
 
       //Se existe 2 parâmetros da url
@@ -265,6 +268,10 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
           fontSize: 16,
         ),
         actions: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 4),
+            child: FilialView(),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: ClipRRect(
