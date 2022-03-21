@@ -72,6 +72,7 @@ import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
+import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/pecas/PecasListView.dart';
@@ -131,6 +132,8 @@ class _GppAppState extends State<GppApp> {
           pagina = PedidoSaidaListView();
         } else if (uri.pathSegments.first == 'estoque-entrada') {
           pagina = MenuEntradaView();
+        } else if (uri.pathSegments.first == 'estoque-consulta') {
+          pagina = EstoqueConsultaView();
         }
 
         //Se existe 2 parâmetros da url
