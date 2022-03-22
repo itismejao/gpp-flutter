@@ -168,8 +168,8 @@ class _PecasListViewState extends State<PecasListView> {
         adicionarProdutoPecas();
         //Chama o endpoint
         await pecaController.produtoRepository.inserirPecasProduto(
-            pecaController.produto!.id_produto.toString(),
-            pecaController.produto!);
+            pecaController.produto.id_produto.toString(),
+            pecaController.produto);
 
         //Limpa
         pecaController.produto = ProdutoModel();
@@ -187,11 +187,11 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   adicionarProdutoPecas() {
-    pecaController.produto!.produtoPecas = [];
+    pecaController.produto.produtoPecas = [];
     itemsPeca.forEach((itemPeca) async {
       //Se o item estiver marcado, realiza a inserção
       if (itemPeca.marcado) {
-        pecaController.produto!.produtoPecas!.add(itemPeca.produtoPeca);
+        pecaController.produto.produtoPecas!.add(itemPeca.produtoPeca);
       }
     });
   }
@@ -237,7 +237,7 @@ class _PecasListViewState extends State<PecasListView> {
                                           onFieldSubmitted: (value) {
                                             buscarProduto(value);
                                             print(pecaController
-                                                .produto!.resumida);
+                                                .produto.resumida);
                                             setState(() {});
                                           },
                                         ),
@@ -249,7 +249,7 @@ class _PecasListViewState extends State<PecasListView> {
                                         child: InputComponent(
                                           key: UniqueKey(),
                                           initialValue:
-                                              pecaController.produto!.resumida,
+                                              pecaController.produto.resumida,
                                           label: 'Descrição',
                                           hintText: 'Guarda roupa',
                                         ),
@@ -261,7 +261,7 @@ class _PecasListViewState extends State<PecasListView> {
                                         child: InputComponent(
                                           key: UniqueKey(),
                                           initialValue: pecaController
-                                                  .produto!
+                                                  .produto
                                                   .fornecedor
                                                   ?.first
                                                   .cliente
