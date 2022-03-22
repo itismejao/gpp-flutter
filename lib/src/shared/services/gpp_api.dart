@@ -9,11 +9,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 
 class ApiService {
-  String? baseUrl = dotenv.env['API_URL'];
-  Map<String, String> headers = {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-  };
+  late String? baseUrl;
+  late Map<String, String> headers;
+
+  ApiService() {
+    baseUrl = dotenv.env['API_URL'];
+    headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+    };
+  }
 
   String? getBaseUrl() {
     return baseUrl;

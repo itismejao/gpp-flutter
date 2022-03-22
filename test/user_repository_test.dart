@@ -209,8 +209,7 @@ void main() {
     test('Valida busca funcionalidades relacionadas ao usuário', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final response =
-          await repository.buscarFuncionalidades(UsuarioModel(uid: 1));
+      final response = await repository.buscarFuncionalidades('1');
       expect(response, isA<List<FuncionalidadeModel>>());
     });
   });

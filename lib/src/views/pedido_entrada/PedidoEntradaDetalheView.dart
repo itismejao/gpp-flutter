@@ -79,7 +79,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                             Expanded(
                                 flex: 4,
                                 child: TextComponent(
-                                  itensPedido[index].peca!.descricao,
+                                  itensPedido[index].peca!.descricao!,
                                 )),
                             Expanded(
                                 child: TextComponent(

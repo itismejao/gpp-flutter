@@ -45,10 +45,7 @@ class UsuarioController {
     UsuarioModel user = UsuarioModel();
     user.id = authenticateUser!.id;
 
-    funcionalities = await repository.buscarFuncionalidades(user);
-
-
-
+    funcionalities = await repository.buscarFuncionalidades(user.id.toString());
   }
 
   void searchFuncionalities(String value) {
@@ -72,5 +69,14 @@ class UsuarioController {
 
   Future<bool> update(UsuarioModel user) async {
     return await repository.update(user);
+  }
+
+/***
+ * 
+ * Função responsável por buscar as funcionalidades do usuário
+ */
+
+  buscarFuncionalidades(String id) async {
+    this.funcionalities = await repository.buscarFuncionalidades(id);
   }
 }

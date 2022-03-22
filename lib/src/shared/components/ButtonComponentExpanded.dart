@@ -3,13 +3,13 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 
-class ButtonComponent extends StatefulWidget {
+class ButtonComponentExpanded extends StatefulWidget {
   final Function onPressed;
   final String text;
   final Color? color;
   final Icon? icon;
 
-  ButtonComponent({
+  ButtonComponentExpanded({
     Key? key,
     required this.onPressed,
     required this.text,
@@ -18,10 +18,10 @@ class ButtonComponent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ButtonComponent> createState() => _ButtonComponentState();
+  State<ButtonComponentExpanded> createState() => _ButtonComponentExpandedState();
 }
 
-class _ButtonComponentState extends State<ButtonComponent> {
+class _ButtonComponentExpandedState extends State<ButtonComponentExpanded> {
   bool _onHover = false;
 
   @override
@@ -42,10 +42,9 @@ class _ButtonComponentState extends State<ButtonComponent> {
         child: AnimatedContainer(
           duration: Duration(milliseconds: 100),
           height: _onHover ? 42 : 40,
-          width: _onHover ? 182 : 180,
           curve: Curves.easeIn,
           decoration: BoxDecoration(
-              color: widget.color ?? secundaryColor,
+              color: (widget.color ?? secundaryColor),
               borderRadius: BorderRadius.circular(5)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,

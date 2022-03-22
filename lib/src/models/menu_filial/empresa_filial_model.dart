@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
 
 class EmpresaFilialModel {
@@ -19,7 +18,8 @@ class EmpresaFilialModel {
     return EmpresaFilialModel(
       id_empresa: json['id_empresa'],
       id_filial: json['id_filial'],
-      filial: json['filial'] != null ? FilialModel.fromJson(json['filial']) : null,
+      filial:
+          json['filial'] != null ? FilialModel.fromJson(json['filial']) : null,
     );
   }
 

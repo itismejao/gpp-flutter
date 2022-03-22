@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
-import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/views/pecas/pecas_edit_view.dart';
@@ -15,7 +15,7 @@ class PecasListView extends StatefulWidget {
 }
 
 class _PecasListViewState extends State<PecasListView> {
-  PecasController _pecasController = PecasController();
+  PecaController _pecasController = PecaController();
 
   excluir(PecasModel pecasModel) async {
     NotifyController notify = NotifyController(context: context);
@@ -40,15 +40,16 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   buscarTodasPecas() async {
-    List pecasRetornadas = await _pecasController.buscarTodos(_pecasController.pecasPagina.paginaAtual!);
+    // List pecasRetornadas = await _pecasController
+    //     .buscarTodos(_pecasController.pecasPagina.paginaAtual!);
 
-    _pecasController.listaPecas = pecasRetornadas[0];
-    _pecasController.pecasPagina = pecasRetornadas[1];
+    // _pecasController.listaPecas = pecasRetornadas[0];
+    // _pecasController.pecasPagina = pecasRetornadas[1];
 
-    setState(() {
-      _pecasController.carregado = true;
-      _pecasController.listaPecas;
-    });
+    // setState(() {
+    //   _pecasController.carregado = true;
+    //   _pecasController.listaPecas;
+    // });
   }
 
   @override
@@ -128,21 +129,32 @@ class _PecasListViewState extends State<PecasListView> {
                               // CheckboxComponent(),
                               Expanded(
                                 child: Text(
-                                  _pecasController.listaPecas[index].id_peca.toString(),
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                  _pecasController.listaPecas[index].id_peca
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16),
                                   // textAlign: TextAlign.start,
                                 ),
                               ),
                               Expanded(
-                                child: Text(_pecasController.listaPecas[index].id_peca.toString()),
+                                child: Text(_pecasController
+                                    .listaPecas[index].id_peca
+                                    .toString()),
                               ),
                               Expanded(
-                                child: Text(_pecasController.listaPecas[index].codigo_fabrica == null
+                                child: Text(_pecasController
+                                            .listaPecas[index].codigo_fabrica ==
+                                        null
                                     ? ''
-                                    : _pecasController.listaPecas[index].codigo_fabrica.toString()),
+                                    : _pecasController
+                                        .listaPecas[index].codigo_fabrica
+                                        .toString()),
                               ),
                               Expanded(
-                                child: Text(_pecasController.listaPecas[index].descricao.toString()),
+                                child: Text(_pecasController
+                                    .listaPecas[index].descricao
+                                    .toString()),
                               ),
 
                               Expanded(
@@ -156,7 +168,10 @@ class _PecasListViewState extends State<PecasListView> {
                                         PopUpEditar.popUpPeca(
                                                 context,
                                                 PecasEditAndView(
-                                                    pecasEditPopup: _pecasController.listaPecas[index], enabled: false))
+                                                    pecasEditPopup:
+                                                        _pecasController
+                                                            .listaPecas[index],
+                                                    enabled: false))
                                             .then((value) => setState(() {}));
                                       },
                                     ),
@@ -170,7 +185,10 @@ class _PecasListViewState extends State<PecasListView> {
                                         PopUpEditar.popUpPeca(
                                                 context,
                                                 PecasEditAndView(
-                                                    pecasEditPopup: _pecasController.listaPecas[index], enabled: true))
+                                                    pecasEditPopup:
+                                                        _pecasController
+                                                            .listaPecas[index],
+                                                    enabled: true))
                                             .then((value) => setState(() {
                                                   buscarTodasPecas();
                                                 }));
@@ -203,14 +221,16 @@ class _PecasListViewState extends State<PecasListView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextComponent('Total de páginas: ' + _pecasController.pecasPagina.paginaTotal.toString()),
+                        TextComponent('Total de páginas: ' +
+                            _pecasController.pagina.total
+                                .toString()),
                         Row(
                           children: [
                             IconButton(
                                 icon: Icon(Icons.first_page),
                                 tooltip: 'Primeira Página',
                                 onPressed: () {
-                                  _pecasController.pecasPagina.paginaAtual = 1;
+                                  _pecasController.pagina.atual = 1;
                                   buscarTodasPecas();
                                 }),
                             IconButton(
@@ -220,18 +240,31 @@ class _PecasListViewState extends State<PecasListView> {
                                 ),
                                 tooltip: 'Página Anterior',
                                 onPressed: () {
-                                  if (_pecasController.pecasPagina.paginaAtual! > 0) {
-                                    _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! - 1;
+                                  if (_pecasController
+                                          .pagina.atual >
+                                      0) {
+                                    _pecasController.pagina.atual =
+                                        _pecasController
+                                                .pagina.atual -
+                                            1;
                                     buscarTodasPecas();
                                   }
                                 }),
-                            TextComponent(_pecasController.pecasPagina.paginaAtual.toString()),
+                            TextComponent(_pecasController
+                                .pagina.atual
+                                .toString()),
                             IconButton(
                                 icon: Icon(Icons.navigate_next_rounded),
                                 tooltip: 'Próxima Página',
                                 onPressed: () {
-                                  if (_pecasController.pecasPagina.paginaAtual != _pecasController.pecasPagina.paginaTotal) {
-                                    _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaAtual! + 1;
+                                  if (_pecasController
+                                          .pagina.atual !=
+                                      _pecasController
+                                          .pagina.atual) {
+                                    _pecasController.pagina.atual =
+                                        _pecasController
+                                                .pagina.atual +
+                                            1;
                                   }
 
                                   buscarTodasPecas();
@@ -240,7 +273,8 @@ class _PecasListViewState extends State<PecasListView> {
                                 icon: Icon(Icons.last_page),
                                 tooltip: 'Última Página',
                                 onPressed: () {
-                                  _pecasController.pecasPagina.paginaAtual = _pecasController.pecasPagina.paginaTotal;
+                                  _pecasController.pagina.atual =
+                                      _pecasController.pagina.total;
                                   buscarTodasPecas();
                                 }),
                           ],

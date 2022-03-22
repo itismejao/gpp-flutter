@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gpp/main.dart';
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
 import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/PedidoEntradaModel.dart';
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoEntradaPDF.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';
@@ -28,10 +30,10 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:gpp/src/views/asteca/components/item_menu.dart';
 
-class ItemPeca {
+class ItemProdutoPeca {
   bool marcado = false;
   late ProdutoPecaModel produtoPeca;
-  ItemPeca({
+  ItemProdutoPeca({
     required this.marcado,
     required this.produtoPeca,
   });
@@ -50,10 +52,11 @@ class AstecaDetalheView extends StatefulWidget {
 
 class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late AstecaController astecaController;
+  late ProdutoController produtoController;
   late PedidoEntradaController pedidoEntracaController;
   late EmailPedidoEntradaController emailPedidoEntracaController;
-  List<ItemPeca> itemsPeca = [];
-  List<ItemPeca> itemsPecaBusca = [];
+  List<ItemProdutoPeca> itemsProdutoPeca = [];
+  List<ItemProdutoPeca> itemsProdutoPecaBusca = [];
   int marcados = 0;
   bool abrirFiltro = false;
   late MotivoTrocaPecaController motivoTrocaPecaController;
@@ -106,11 +109,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     await buscar();
   }
 
-  gerarItemPeca() {
-    itemsPeca = astecaController.produtoPecas
-        .map<ItemPeca>(
-            (produtoPeca) => ItemPeca(marcado: false, produtoPeca: produtoPeca))
-        .toList();
+  gerarProdutoPeca() {
+    produtoController.produto.produtoPecas!.forEach((element) {
+      itemsProdutoPeca
+          .add(ItemProdutoPeca(marcado: false, produtoPeca: element));
+    });
   }
 
   /**
@@ -118,11 +121,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
    */
   marcarTodosCheckbox(bool value) {
     if (value) {
-      marcados = itemsPeca.length;
+      marcados = itemsProdutoPeca.length;
     } else {
       marcados = 0;
     }
-    for (var itemPeca in itemsPeca) {
+    for (var itemPeca in itemsProdutoPeca) {
       itemPeca.marcado = value;
     }
   }
@@ -134,7 +137,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     } else {
       marcados--;
     }
-    itemsPeca[index].marcado = value;
+    itemsProdutoPeca[index].marcado = value;
   }
 
   /**
@@ -143,25 +146,25 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   adicionarPeca() {
     setState(() {
-      for (var itemPeca in itemsPeca) {
+      for (var itemPeca in itemsProdutoPeca) {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
           //Verifica se já existe item com o mesmo id adicionado na lista
           int index = astecaController.pedidoSaida.itemsPedidoSaida!.indexWhere(
               (element) =>
-                  element.peca!.idPeca == itemPeca.produtoPeca.peca.idPeca);
+                  element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
           //Se não existe item adiciona na lista
           if (index < 0) {
             astecaController.pedidoSaida.itemsPedidoSaida!.add(
                 ItemPedidoSaidaModel(
                     peca: itemPeca.produtoPeca.peca,
-                    valor: itemPeca.produtoPeca.peca.custo,
+                    valor: itemPeca.produtoPeca.peca!.custo!,
                     quantidade: 1));
           } else {
             //Caso exista item na lista incrementa a quantidade;
             astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
             astecaController.pedidoSaida.itemsPedidoSaida![index].valor +=
-                itemPeca.produtoPeca.peca.custo;
+                itemPeca.produtoPeca.peca!.custo!;
             //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
           }
           //Soma o total
@@ -379,7 +382,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     color: primaryColor,
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacementNamed(context, '/pedidos-saida');
+                      navigatorKey2.currentState!
+                          .pushReplacementNamed('/pedidos-saida');
                     },
                     text: 'Ok'),
                 SizedBox(
@@ -440,8 +444,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     color: primaryColor,
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacementNamed(
-                          context, '/pedidos-entrada');
+                      navigatorKey2.currentState!
+                          .pushReplacementNamed('/pedidos-entrada');
                     },
                     text: 'Ok'),
                 SizedBox(
@@ -467,7 +471,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     ),
                     onPressed: () {
                       enviarEmailPedidoEntrada(pedidoConfirmacao);
-                      Navigator.pop(context);
+                      Navigator.of(context, rootNavigator: true).pop();
                     },
                     text: 'Enviar e-mail')
               ],
@@ -482,7 +486,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
           .criar(pedidoConfirmacao)) {
         myShowDialog('E-mail enviado com sucesso');
         await Future.delayed(Duration(seconds: 3));
-        Navigator.pushNamed(context, '/pedidos-entrada');
+        navigatorKey2.currentState!.pushReplacementNamed('/pedidos-entrada');
       }
     } catch (e) {
       print(e.toString());
@@ -566,13 +570,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   }
 
   pesquisarPecas(value) {
-    itemsPecaBusca = itemsPeca
+    itemsProdutoPecaBusca = itemsProdutoPeca
         .where((element) =>
-            element.produtoPeca.peca.descricao
+            element.produtoPeca.peca!.descricao!
                 .toLowerCase()
                 .contains(value.toString().toLowerCase()) ||
-            element.produtoPeca.peca.idPeca.toString().contains(value))
+            element.produtoPeca.peca!.id_peca.toString().contains(value))
         .toList();
+    print('as');
   }
 
   pesquisarPendencia(value) {
@@ -592,21 +597,26 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.carregaProdutoPeca = false;
     });
-    astecaController.produtoPecas = await astecaController.pecaRepository
-        .buscarTodos(astecaController.asteca.produto!.first.idProduto!);
+    produtoController.produto.produtoPecas =
+        await produtoController.produtoRepository.buscarProdutoPecas(
+            astecaController.asteca.produto!.first.idProduto!.toString());
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });
 
     //gerarItemPeca
-    gerarItemPeca();
+    gerarProdutoPeca();
   }
 
   @override
   void initState() {
     super.initState();
 
+    //Inicializa asteca controller
     astecaController = AstecaController();
+
+    //Inicializa produto controller
+    produtoController = new ProdutoController();
 
     //Pedido de entrada controller
     pedidoEntracaController = PedidoEntradaController();
@@ -881,7 +891,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               ButtonComponent(
                                   color: Colors.red,
                                   onPressed: () {
-                                    Navigator.pushNamed(context, '/astecas');
+                                    Navigator.pop(context);
                                   },
                                   text: 'Fechar')
                             ],
@@ -2536,7 +2546,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           children: [
                             Expanded(
                               child: TextComponent(astecaController.pedidoSaida
-                                  .itemsPedidoSaida![index].peca!.idPeca
+                                  .itemsPedidoSaida![index].peca!.id_peca
                                   .toString()),
                             ),
                             Expanded(
@@ -2802,8 +2812,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 prefixIcon: const Icon(
                                   Icons.search,
                                 ),
-                                hintText:
-                                    'Digite o número de identificação da peça ou o nome',
+                                hintText: 'Buscar',
                               ),
                             ),
                             const SizedBox(
@@ -2926,7 +2935,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       Row(
                         children: [
                           CheckboxComponent(
-                            value: marcados == itemsPeca.length,
+                            value: marcados == itemsProdutoPeca.length,
                             onChanged: (bool value) {
                               setState(() {
                                 marcarTodosCheckbox(value);
@@ -2940,10 +2949,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             child: const TextComponent('Nome'),
                           ),
                           Expanded(
-                            child: const TextComponent('Valor R\$',
-                                letterSpacing: 0.15,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
+                            child: const TextComponent(
+                              'Valor R\$',
+                            ),
                           ),
                           Expanded(
                             child: const TextComponent('Estoque disponível'),
@@ -2952,65 +2960,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                       ),
                       const Divider(),
                       Expanded(
-                        child: itemsPecaBusca.length == 0
+                        child: itemsProdutoPecaBusca.length == 0
                             ? ListView.builder(
-                                itemCount: itemsPeca.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    color: (index % 2) == 0
-                                        ? Colors.white
-                                        : Colors.grey.shade50,
-                                    child: Row(
-                                      children: [
-                                        CheckboxComponent(
-                                            value: itemsPeca[index].marcado,
-                                            onChanged: (bool value) => {
-                                                  setState(() {
-                                                    marcarCheckbox(
-                                                        index, value);
-                                                  })
-                                                }),
-                                        Expanded(
-                                          child: TextComponent(astecaController
-                                              .produtoPecas[index].peca.idPeca
-                                              .toString()),
-                                        ),
-                                        Expanded(
-                                          child: TextComponent(astecaController
-                                              .camelCaseFirst(astecaController
-                                                  .produtoPecas[index]
-                                                  .peca
-                                                  .descricao)),
-                                        ),
-                                        Expanded(
-                                            child: TextComponent(
-                                                astecaController.formatter
-                                                    .format(astecaController
-                                                        .produtoPecas[index]
-                                                        .peca
-                                                        .custo))),
-                                        Expanded(
-                                          child: astecaController
-                                                      .produtoPecas[index]
-                                                      .peca
-                                                      .estoque!
-                                                      .length !=
-                                                  0
-                                              ? TextComponent(astecaController
-                                                  .produtoPecas[index]
-                                                  .peca
-                                                  .estoque!
-                                                  .first
-                                                  .saldoDisponivel
-                                                  .toString())
-                                              : TextComponent('0'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                })
-                            : ListView.builder(
-                                itemCount: itemsPecaBusca.length,
+                                itemCount: itemsProdutoPeca.length,
                                 itemBuilder: (context, index) {
                                   return Container(
                                     color: (index % 2) == 0
@@ -3020,7 +2972,73 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                       children: [
                                         CheckboxComponent(
                                             value:
-                                                itemsPecaBusca[index].marcado,
+                                                itemsProdutoPeca[index].marcado,
+                                            onChanged: (bool value) => {
+                                                  setState(() {
+                                                    marcarCheckbox(
+                                                        index, value);
+                                                  })
+                                                }),
+                                        Expanded(
+                                          child: TextComponent(produtoController
+                                                  .produto
+                                                  .produtoPecas![index]
+                                                  .peca
+                                                  ?.id_peca
+                                                  .toString() ??
+                                              ''),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(produtoController
+                                                  .produto
+                                                  .produtoPecas?[index]
+                                                  .peca!
+                                                  .descricao! ??
+                                              ''),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(produtoController
+                                              .produto
+                                              .produtoPecas![index]
+                                              .peca!
+                                              .custo
+                                              .toString()),
+                                        ),
+                                        Expanded(
+                                            child: TextComponent(
+                                                produtoController
+                                                            .produto
+                                                            .produtoPecas![
+                                                                index]
+                                                            .peca!
+                                                            .estoque!
+                                                            .length !=
+                                                        0
+                                                    ? produtoController
+                                                        .produto
+                                                        .produtoPecas![index]
+                                                        .peca!
+                                                        .estoque!
+                                                        .first
+                                                        .saldoDisponivel
+                                                        .toString()
+                                                    : '')),
+                                      ],
+                                    ),
+                                  );
+                                })
+                            : ListView.builder(
+                                itemCount: itemsProdutoPecaBusca.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    color: (index % 2) == 0
+                                        ? Colors.white
+                                        : Colors.grey.shade50,
+                                    child: Row(
+                                      children: [
+                                        CheckboxComponent(
+                                            value: itemsProdutoPecaBusca[index]
+                                                .marcado,
                                             onChanged: (bool value) => {
                                                   setState(() {
                                                     marcarCheckbox(
@@ -3029,43 +3047,45 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                 }),
                                         Expanded(
                                           child: TextComponent(
-                                              itemsPecaBusca[index]
+                                              itemsProdutoPecaBusca[index]
                                                   .produtoPeca
-                                                  .peca
-                                                  .idPeca
+                                                  .peca!
+                                                  .id_peca
                                                   .toString()),
                                         ),
                                         Expanded(
                                           child: TextComponent(
-                                              itemsPecaBusca[index]
+                                              itemsProdutoPecaBusca[index]
                                                   .produtoPeca
-                                                  .peca
-                                                  .descricao),
+                                                  .peca!
+                                                  .descricao!),
                                         ),
                                         Expanded(
                                           child: TextComponent(
-                                              itemsPecaBusca[index]
+                                              itemsProdutoPecaBusca[index]
                                                   .produtoPeca
-                                                  .peca
+                                                  .peca!
                                                   .custo
                                                   .toString()),
                                         ),
                                         Expanded(
-                                          child: astecaController
-                                                      .produtoPecas[index]
-                                                      .peca
-                                                      .estoque!
-                                                      .length !=
-                                                  0
-                                              ? TextComponent(astecaController
-                                                  .produtoPecas[index]
-                                                  .peca
-                                                  .estoque!
-                                                  .first
-                                                  .saldoDisponivel
-                                                  .toString())
-                                              : TextComponent('0'),
-                                        ),
+                                            child: TextComponent(
+                                                itemsProdutoPecaBusca[index]
+                                                            .produtoPeca
+                                                            .peca!
+                                                            .estoque!
+                                                            .length !=
+                                                        0
+                                                    ? itemsProdutoPecaBusca[
+                                                            index]
+                                                        .produtoPeca
+                                                        .peca!
+                                                        .estoque!
+                                                        .first
+                                                        .saldoDisponivel
+                                                        .toString()
+                                                    : ''))
+                                        //   ),
                                       ],
                                     ),
                                   );

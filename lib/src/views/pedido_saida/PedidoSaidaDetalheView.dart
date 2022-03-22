@@ -131,7 +131,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                             Expanded(
                                 flex: 4,
                                 child: TextComponent(
-                                  itensPedido[index].peca!.descricao,
+                                  itensPedido[index].peca!.descricao!,
                                 )),
                             Expanded(
                                 child: TextComponent(

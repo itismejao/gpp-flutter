@@ -1,10 +1,10 @@
-import 'package:gpp/src/models/PecaModel.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 
 class ItemPedidoEntradaModel {
   int? idItemPedidoEntrada;
   int? quantidade;
   double? custo;
-  PecaModel? peca;
+  PecasModel? peca;
   int? quantidade_recebida;
 
   ItemPedidoEntradaModel({
@@ -19,7 +19,7 @@ class ItemPedidoEntradaModel {
         idItemPedidoEntrada: json['id_item_pedido_entrada'],
         quantidade: json['quantidade'],
         custo: json['custo'],
-        peca: PecaModel.fromJson(json['peca']));
+        peca: PecasModel.fromJson(json['peca']));
   }
 
   Map<String, dynamic> toJson() {

@@ -29,7 +29,7 @@ class _CoresListViewState extends State<CoresListView> {
   Future<bool> excluir(context, PecasCorModel pecasCorModel) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert(
+      if (await notify.confirmacao(
           'Deseja excluir a cor (${pecasCorModel.id_peca_cor} - ${pecasCorModel.cor})?')) {
         if (await _pecasCorController.excluir(pecasCorModel)) {
           notify.sucess("Cor excluída com sucesso!");

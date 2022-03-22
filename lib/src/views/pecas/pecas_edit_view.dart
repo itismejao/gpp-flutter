@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/controllers/pecas_controller/pecas_controller.dart';
+import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
@@ -8,7 +8,7 @@ import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_linha_model.dart';
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
-import 'package:gpp/src/models/pecas_model/pecas_model.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -30,7 +30,7 @@ class PecasEditAndView extends StatefulWidget {
 }
 
 class _PecasEditAndViewState extends State<PecasEditAndView> {
-  PecasController _pecasController = PecasController();
+  PecaController _pecasController = PecaController();
   PecasLinhaController _pecasLinhaController = PecasLinhaController();
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
   ProdutoController _produtoController = ProdutoController();
@@ -70,11 +70,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
   buscaProduto(String codigo) async {
     await _produtoController.buscar(codigo);
 
-    txtNomeProduto.text = _produtoController.produtoModel.resumida.toString();
+    txtNomeProduto.text = _produtoController.produto.resumida.toString();
     txtIdFornecedor.text =
-        _produtoController.produtoModel.id_fornecedor.toString();
+        _produtoController.produto.id_fornecedor.toString();
     txtNomeFornecedor.text =
-        _produtoController.produtoModel.fornecedor![0].cliente!.nome.toString();
+        _produtoController.produto.fornecedor![0].cliente!.nome.toString();
   }
 
   buscarLinhaEspecie(String codigo) async {
@@ -180,11 +180,11 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                       onChanged: (value) {
                         _pecasController.produtoPecaModel.id_produto =
                             int.parse(value);
-                        _pecasController.produtoPecaModel.id_produto_peca =
+                        _pecasController.produtoPecaModel.idProdutoPeca =
                             _pecasController
-                                .pecasModel.produto_peca![0].id_produto_peca;
+                                .pecasModel.produto_peca![0].idProdutoPeca;
 
-                        _pecasController.produtoPecaModel.id_peca =
+                        _pecasController.produtoPecaModel.peca?.id_peca =
                             _pecasController.pecasModel.id_peca;
                       },
                       decoration: InputDecoration(
@@ -312,10 +312,10 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
                         : _pecasController.pecasModel.produto_peca == null
                             ? ''
                             : _pecasController.pecasModel.produto_peca![0]
-                                .quantidade_por_produto
+                                .quantidadePorProduto
                                 .toString(),
                     onChanged: (value) {
-                      _pecasController.produtoPecaModel.quantidade_por_produto =
+                      _pecasController.produtoPecaModel.quantidadePorProduto =
                           int.parse(value);
                     },
                   ),

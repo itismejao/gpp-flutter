@@ -12,23 +12,23 @@ class EnderecamentoController {
 
   //pisos
   late PisoEnderecamentoModel pisoModel = PisoEnderecamentoModel();
-  late List<PisoEnderecamentoModel> listaPiso;
+  late List<PisoEnderecamentoModel> listaPiso = [];
 
   late CorredorEnderecamentoModel corredorModel = CorredorEnderecamentoModel();
-  late List<CorredorEnderecamentoModel> listaCorredor;
+  late List<CorredorEnderecamentoModel> listaCorredor = [];
 
   late EstanteEnderecamentoModel estanteModel = EstanteEnderecamentoModel();
-  late List<EstanteEnderecamentoModel> listaEstante;
+  late List<EstanteEnderecamentoModel> listaEstante = [];
 
   late PrateleiraEnderecamentoModel prateleiraModel =
       PrateleiraEnderecamentoModel();
-  late List<PrateleiraEnderecamentoModel> listaPrateleira;
+  late List<PrateleiraEnderecamentoModel> listaPrateleira = [];
 
   late BoxEnderecamentoModel boxModel = BoxEnderecamentoModel();
-  late List<BoxEnderecamentoModel> listaBox;
+  late List<BoxEnderecamentoModel> listaBox = [];
 
-  Future<List<PisoEnderecamentoModel>> buscarTodos() async {
-    return await repository.buscarTodos();
+  Future<List<PisoEnderecamentoModel>> buscarTodos(int idFilial) async {
+    return await repository.buscarTodos(idFilial);
   }
 
   Future<List<CorredorEnderecamentoModel>> buscarCorredor(String idPiso) async {

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:gpp/src/repositories/menu_filial/menu_filial_repository.dart';
@@ -10,7 +9,26 @@ class FilialController {
   late final FilialRepository filialRepository = FilialRepository(api: gppApi);
 
   static void filialLogin() {
-    List filiaisAsteca = [89, 101, 106, 116, 119, 210, 217, 451, 500, 516, 519, 520, 529, 541, 545, 547, 548, 901];
+    List filiaisAsteca = [
+      89,
+      101,
+      106,
+      116,
+      119,
+      210,
+      217,
+      451,
+      500,
+      516,
+      519,
+      520,
+      529,
+      541,
+      545,
+      547,
+      548,
+      901
+    ];
 
     if (filiaisAsteca.contains(usuario.idFilial)) {
       setFilial(filial: EmpresaFilialModel(id_filial: usuario.idFilial));

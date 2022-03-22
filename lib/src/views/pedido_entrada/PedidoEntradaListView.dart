@@ -14,6 +14,8 @@ import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 
+import '../../shared/components/PaginacaoComponent.dart';
+
 class Situacao {
   int? id;
   String? descricao;
@@ -427,7 +429,6 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
 
   @override
   Widget build(BuildContext context) {
-    Size media = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -451,7 +452,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                       prefixIcon: Icon(
                         Icons.search,
                       ),
-                      hintText: 'Digite o número de identificação do pedido',
+                      hintText: 'Buscar',
                     ),
                   ),
                 ),
@@ -571,60 +572,32 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
               ),
             ),
           ),
-          Container(
-            height: media.height * 0.7,
+          Expanded(
             child: controller.carregado ? _buildList() : LoadingComponent(),
           ),
-          Container(
-            height: media.height * 0.10,
-            width: media.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextComponent(
-                    'Total de páginas: ' + controller.pagina.total.toString()),
-                Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.first_page),
-                        onPressed: () {
-                          controller.pagina.atual = 1;
-                          buscarTodas();
-                        }),
-                    IconButton(
-                        icon: const Icon(
-                          Icons.navigate_before_rounded,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          if (controller.pagina.atual > 0) {
-                            controller.pagina.atual =
-                                controller.pagina.atual - 1;
-                            buscarTodas();
-                          }
-                        }),
-                    TextComponent(controller.pagina.atual.toString()),
-                    IconButton(
-                        icon: Icon(Icons.navigate_next_rounded),
-                        onPressed: () {
-                          if (controller.pagina.atual !=
-                              controller.pagina.total) {
-                            controller.pagina.atual =
-                                controller.pagina.atual + 1;
-                          }
-
-                          buscarTodas();
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.last_page),
-                        onPressed: () {
-                          controller.pagina.atual = controller.pagina.total;
-                          buscarTodas();
-                        }),
-                  ],
-                )
-              ],
-            ),
+          PaginacaoComponent(
+            total: controller.pagina.total,
+            atual: controller.pagina.atual,
+            primeiraPagina: () {
+              controller.pagina.primeira();
+              buscarTodas();
+              setState(() {});
+            },
+            anteriorPagina: () {
+              controller.pagina.anterior();
+              buscarTodas();
+              setState(() {});
+            },
+            proximaPagina: () {
+              controller.pagina.proxima();
+              buscarTodas();
+              setState(() {});
+            },
+            ultimaPagina: () {
+              controller.pagina.ultima();
+              buscarTodas();
+              setState(() {});
+            },
           )
         ],
       ),

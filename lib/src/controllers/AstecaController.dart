@@ -3,7 +3,7 @@ import 'package:gpp/src/models/PaginaModel.dart';
 
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/ProdutoPecaModel.dart';
+import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
@@ -100,22 +100,23 @@ class AstecaController {
   //   return null;
   // }
 
-
-  camelCaseAll(String? value){
+  camelCaseAll(String? value) {
     String? nome = '';
     value!.split(" ").forEach((element) {
-      if(element.length > 3){
-        nome = nome !+ " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+      if (element.length > 3) {
+        nome = nome! +
+            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
-         nome = nome !+ " ${element.toString().toLowerCase()}";
+        nome = nome! + " ${element.toString().toLowerCase()}";
       }
-      
-
     });
     return nome;
   }
 
-  camelCaseFirst(String? value){
+  camelCaseFirst(String? value) {
     return toBeginningOfSentenceCase(value.toString().toLowerCase());
   }
+
+  //
+
 }

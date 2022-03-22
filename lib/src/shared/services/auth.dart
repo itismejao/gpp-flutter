@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
 import 'package:universal_html/html.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final storage = window.localStorage;
 

@@ -1,23 +1,21 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
-import 'package:gpp/src/controllers/responsive_controller.dart';
+
 import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
 import 'package:gpp/src/models/menu_filial/filial_model.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 
-class AppBarView extends StatefulWidget {
-  const AppBarView({Key? key}) : super(key: key);
+class FilialView extends StatefulWidget {
+  const FilialView({Key? key}) : super(key: key);
 
   @override
-  State<AppBarView> createState() => _AppBarViewState();
+  State<FilialView> createState() => _FilialViewState();
 }
 
-class _AppBarViewState extends State<AppBarView> {
-  final ResponsiveController _responsive = ResponsiveController();
-
+class _FilialViewState extends State<FilialView> {
   FilialController _filialController = FilialController();
 
   @override
@@ -36,87 +34,6 @@ class _AppBarViewState extends State<AppBarView> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page = LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-      if (_responsive.isMobile(constraints.maxWidth)) {
-        return Container(
-          color: primaryColor,
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                    ),
-                    GestureDetector(
-                      child: Text(
-                        'gpp',
-                        style: textStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/');
-                      },
-                    )
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    //   handleLogout(context);
-                  },
-                  child: const Icon(
-                    Icons.logout,
-                    color: Colors.white, //The color which you want set.
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-
-      return Container(
-        color: primaryColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                child: Text(
-                  'gpp',
-                  style: textStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, '/');
-                },
-              ),
-              filial(context),
-            ],
-          ),
-        ),
-      );
-    });
-
-    return page;
-  }
-
-  filial(BuildContext context) {
     return Row(
       children: [
         Text(
@@ -140,7 +57,8 @@ class _AppBarViewState extends State<AppBarView> {
                 return Container(
                   width: 150,
                   // height: 40,
-                  padding: EdgeInsets.only(left: 12, right: 12),
+                  padding:
+                      EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 4),
                   decoration: BoxDecoration(
                     color: primaryColor,
                     borderRadius: BorderRadius.circular(25.0),

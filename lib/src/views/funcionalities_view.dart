@@ -8,7 +8,7 @@ import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/shared/utils/Usuario.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'package:gpp/src/controllers/user_controller.dart';
+import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 

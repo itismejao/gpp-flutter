@@ -61,7 +61,7 @@ class InputComponent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5)),
             child: TextFormField(
                 inputFormatters: inputFormatter,
-                maxLines: maxLines,
+                maxLines: maxLines ?? 1,
                 initialValue: initialValue,
                 enabled: enable,
                 obscureText: obscureText ?? false,
@@ -79,6 +79,7 @@ class InputComponent extends StatelessWidget {
                   if (validator != null) {
                     validator!(value);
                   }
+                  return null;
                 },
                 keyboardType: keyboardType,
                 style: TextStyle(
@@ -107,7 +108,7 @@ class InputComponent extends StatelessWidget {
         child: TextFormField(
             controller: controller,
             inputFormatters: inputFormatter,
-            maxLines: maxLines,
+            maxLines: maxLines ?? 1,
             initialValue: initialValue,
             enabled: enable,
             obscureText: obscureText ?? false,
@@ -125,6 +126,7 @@ class InputComponent extends StatelessWidget {
               if (validator != null) {
                 validator!(value);
               }
+              return null;
             },
             keyboardType: keyboardType,
             style: TextStyle(
