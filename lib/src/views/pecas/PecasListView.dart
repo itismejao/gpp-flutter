@@ -163,7 +163,7 @@ class _PecasListViewState extends State<PecasListView> {
       if (pecaController.produto.id_produto == null) {
         notificacao.alerta(
             'E necessário informa o produto para realizar a importação das peças');
-      } else if (await notificacao.alerta(
+      } else if (await notificacao.confirmacao(
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
         adicionarProdutoPecas();
         //Chama o endpoint
@@ -750,7 +750,7 @@ class _PecasListViewState extends State<PecasListView> {
       pecaController.produto =
           await pecaController.produtoRepository.buscar(value);
     } catch (e) {
-      notify.confirmacao(e.toString());
+      notify.alerta(e.toString());
     }
   }
 
