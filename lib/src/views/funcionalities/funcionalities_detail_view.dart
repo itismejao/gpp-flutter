@@ -49,7 +49,8 @@ class _FuncionalitiesDetailViewState extends State<FuncionalitiesDetailView> {
   handleDelete(SubFuncionalidadeModel subFuncionalities, context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert("você deseja excluir essa subfuncionalidade?")) {
+      if (await notify
+          .confirmacao("você deseja excluir essa subfuncionalidade?")) {
         if (await _controller.delete(
             _controllerFuncionalities.funcionalitie, subFuncionalities)) {
           notify.sucess("SubFuncionalidade excluída!");

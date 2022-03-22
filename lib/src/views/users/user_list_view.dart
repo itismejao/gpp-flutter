@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/controllers/user_controller.dart';
+import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/user_model.dart';
 
 import 'package:gpp/src/shared/components/InputComponent.dart';

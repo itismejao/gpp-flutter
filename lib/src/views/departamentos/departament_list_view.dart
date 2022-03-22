@@ -76,7 +76,8 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
   handleDelete(context, DepartamentoModel departament) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert("você deseja excluir essa funcionalidade?")) {
+      if (await notify
+          .confirmacao("você deseja excluir essa funcionalidade?")) {
         if (await _controller.delete(departament)) {
           notify.sucess("Funcionalidade excluída!");
           changeDepartaments();

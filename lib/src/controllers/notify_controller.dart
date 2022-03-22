@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/shared/components/TextButtonComponent.dart';
+import 'package:gpp/src/shared/components/TextComponent.dart';
 
 class NotifyController {
   BuildContext context;
@@ -34,61 +35,99 @@ class NotifyController {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<bool> alert(String message) async {
-    bool? result = await showDialog(
+  Future<bool> alerta(String message) async {
+    return await showDialog(
       context: context,
       builder: (context) {
+        final media = MediaQuery.of(context);
+
         return AlertDialog(
-          title: Text('Confirmação'),
-          content: Text(message),
+          title: TextComponent(
+            'Aviso',
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+          content: TextComponent(
+            message,
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.normal,
+          ),
           actions: <Widget>[
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).pop(false);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 15, left: 25, bottom: 15, right: 25),
-                  child: Text(
-                    "Não",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
+            Container(
+              width: media.size.width * 0.40,
+              height: media.size.height * 0.05,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButtonComponent(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop(true);
+                          },
+                          text: 'Ok')
+                    ],
+                  )
+                ],
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).pop(true);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: secundaryColor,
-                    borderRadius: BorderRadius.circular(5)),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 15, left: 25, bottom: 15, right: 25),
-                  child: Text(
-                    "Sim",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ),
+            )
           ],
         );
       },
     );
+  }
 
-    if (result == null) {
-      return false;
-    } else {
-      return result;
-    }
+  Future<bool> confirmacao(String message) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        final media = MediaQuery.of(context);
+
+        return AlertDialog(
+          title: TextComponent(
+            'Confirmação',
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+          content: TextComponent(
+            message,
+            color: Colors.grey.shade500,
+            fontWeight: FontWeight.normal,
+          ),
+          actions: <Widget>[
+            Container(
+              width: media.size.width * 0.40,
+              height: media.size.height * 0.05,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButtonComponent(
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).pop(false);
+                        },
+                        text: 'Não',
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      TextButtonComponent(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop(true);
+                          },
+                          text: 'Sim')
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 
   warning(String message) async {
@@ -122,5 +161,4 @@ class NotifyController {
       },
     );
   }
-
 }

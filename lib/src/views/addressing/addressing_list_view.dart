@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/services/auth.dart';
 
 import 'package:gpp/src/views/addressing/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
@@ -25,7 +26,8 @@ class _AddressingListViewState extends State<AddressingListView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos();
+    enderecamentoController.listaPiso =
+        await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 
@@ -37,6 +39,11 @@ class _AddressingListViewState extends State<AddressingListView> {
 
   handleCreate(context, PisoEnderecamentoModel piso) async {
     NotifyController notify = NotifyController(context: context);
+
+    if (piso.id_filial == null) {
+      piso.id_filial = getFilial().id_filial;
+    }
+
     try {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
@@ -51,7 +58,7 @@ class _AddressingListViewState extends State<AddressingListView> {
   handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert("você deseja excluir o piso?")) {
+      if (await notify.confirmacao("você deseja excluir o piso?")) {
         if (await enderecamentoController.repository.excluir(excluiPiso)) {
           notify.sucess("Piso excluído!");
           //Atualiza a lista de motivos
@@ -114,9 +121,11 @@ class _AddressingListViewState extends State<AddressingListView> {
                       InputComponent(
                         label: 'Filial',
                         hintText: 'Digite a filial',
+                        initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = int.parse(value);
+                            pisoEnderecamentoReplacement.id_filial =
+                                int.parse(value);
                           });
                         },
                       ),
@@ -131,7 +140,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(context, pisoEnderecamentoReplacement);
+                                  handleCreate(
+                                      context, pisoEnderecamentoReplacement);
                                 },
                                 text: 'Adicionar')
                           ],
@@ -176,7 +186,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
+                        initialValue:
+                            pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
@@ -195,7 +206,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context, pisoEnderecamentoReplacement);
+                                  handleEdit(
+                                      context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -272,14 +284,20 @@ class _AddressingListViewState extends State<AddressingListView> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                            color: (index % 2) == 0
+                                ? Colors.white
+                                : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].id_piso
+                                      .toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].desc_piso
+                                      .toString()),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -290,10 +308,17 @@ class _AddressingListViewState extends State<AddressingListView> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => HomeView(
-                                                    funcionalities: FuncionalitiesView(),
+                                                  builder: (context) =>
+                                                      HomeView(
+                                                    funcionalities:
+                                                        FuncionalitiesView(),
                                                     page: CadastroCorredorView(
-                                                        idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
+                                                        idPiso:
+                                                            enderecamentoController
+                                                                .listaPiso[
+                                                                    index]
+                                                                .id_piso
+                                                                .toString()),
                                                   ),
                                                 ));
                                           },
@@ -318,7 +343,8 @@ class _AddressingListViewState extends State<AddressingListView> {
                                         onPressed: () {
                                           handleDelete(
                                             context,
-                                            enderecamentoController.listaPiso[index],
+                                            enderecamentoController
+                                                .listaPiso[index],
                                           );
                                         },
                                       )

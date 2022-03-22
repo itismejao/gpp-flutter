@@ -108,11 +108,11 @@ class GerarPedidoSaidaPDF {
                         child: pw.Row(children: [
                           pw.Expanded(
                               child: pw.Text(pedido
-                                  .itemsPedidoSaida![index].peca!.idPeca
+                                  .itemsPedidoSaida![index].peca!.id_peca
                                   .toString())),
                           pw.Expanded(
                               child: pw.Text(pedido
-                                  .itemsPedidoSaida![index].peca!.descricao)),
+                                  .itemsPedidoSaida![index].peca!.descricao!)),
                           pw.Expanded(
                               child: pw.Text(pedido
                                   .itemsPedidoSaida![index].quantidade

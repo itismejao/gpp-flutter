@@ -187,9 +187,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: pedidoEntradaController.pedidosEntrada == null
-                      ? 0
-                      : pedidoEntradaController.pedidosEntrada.length,
+                  itemCount: pedidoEntradaController.pedidosEntrada.length,
                   itemBuilder: (context, index) {
                     return Container(
                       width: 80,
@@ -299,7 +297,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                             Expanded(
                               child: TextComponent(
                                 movimentoEntradaController
-                                        .listaItensSomados[index].peca?.idPeca
+                                        .listaItensSomados[index].peca?.id_peca
                                         .toString() ??
                                     '-',
                                 textAlign: TextAlign.center,
@@ -411,7 +409,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                       NotifyController notify =
                                           NotifyController(context: context);
                                       try {
-                                        if (await notify.alert(
+                                        if (await notify.confirmacao(
                                             'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
                                           setState(() {
                                             movimentoEntradaController

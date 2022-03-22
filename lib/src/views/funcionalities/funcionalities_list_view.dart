@@ -38,7 +38,8 @@ class _FuncionalitiesListViewState extends State<FuncionalitiesListView> {
   handleDelete(context, FuncionalidadeModel funcionalitie) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.alert("você deseja excluir essa funcionalidade?")) {
+      if (await notify
+          .confirmacao("você deseja excluir essa funcionalidade?")) {
         if (await _controlller.delete(funcionalitie)) {
           notify.sucess("Funcionalidade excluída!");
           fetchFuncionalities();

@@ -53,7 +53,7 @@ class MovimentoEntradaController {
         ItemMovimentoEntradaModel itemEntrada = ItemMovimentoEntradaModel(
             quantidade: element.quantidade_recebida,
             quantidade_pedido: element.quantidade,
-            id_peca: element.peca!.idPeca,
+            id_peca: element.peca!.id_peca,
             pecaModel: element.peca,
             valor_unitario: element.custo);
         listaItens.add(itemEntrada);

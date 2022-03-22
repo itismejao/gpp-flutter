@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/models/AutenticacaoModel.dart';
 import 'package:gpp/src/models/user_model.dart';
 
@@ -22,6 +23,7 @@ class AutenticacaoRepository {
 
       //Seta token
       setToken(usuario.accessToken!);
+      FilialController.filialLogin();
       // authenticateUser = authenticate;
 
       return true;
