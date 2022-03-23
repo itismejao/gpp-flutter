@@ -6,11 +6,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class FornecedorRepository {
-  ApiService api;
+  late ApiService api;
 
-  FornecedorRepository({
-    required this.api,
-  });
+  FornecedorRepository() {
+    this.api = ApiService();
+  }
 
   Future<FornecedorModel> buscar(String id) async {
     Response response = await api.get('/fornecedor' + '/' + id);
