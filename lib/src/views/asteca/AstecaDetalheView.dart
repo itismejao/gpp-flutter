@@ -1637,9 +1637,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'RE',
-                  initialValue: astecaController.camelCaseAll(astecaController.asteca.funcionario!.idFuncionario == null
+                  initialValue: astecaController.asteca.funcionario!.idFuncionario == null
                       ? ''
-                      : astecaController.asteca.funcionario!.idFuncionario.toString()),
+                      : astecaController.asteca.funcionario!.idFuncionario.toString(),
                 ),
               ),
               SizedBox(
