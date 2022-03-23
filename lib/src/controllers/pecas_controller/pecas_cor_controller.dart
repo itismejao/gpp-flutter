@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class PecasCorController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final PecasCorRepository pecasCorRepository = PecasCorRepository(api: gppApi);
+  late final PecasCorRepository pecasCorRepository = PecasCorRepository();
   PecasCorModel pecasCorModel = PecasCorModel();
 
   List<PecasCorModel> listaPecasCorModel = [];

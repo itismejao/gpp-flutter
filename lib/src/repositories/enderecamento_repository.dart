@@ -11,11 +11,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class EnderecamentoRepository {
-  ApiService api;
+  late ApiService api;
 
-  EnderecamentoRepository({
-    required this.api,
-  });
+  EnderecamentoRepository() {
+    this.api = ApiService();
+  }
 
   Future<List<PisoEnderecamentoModel>> buscarTodos(int? idFilial) async {
     Map<String, String> queryParameters = {

@@ -6,12 +6,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PrateleiraEnderecamentoRepository {
-  ApiService api;
-  String path = '/enderecamento-prateleira';
+  late ApiService api;
+  late String path;
 
-  PrateleiraEnderecamentoRepository({
-    required this.api,
-  });
+  PrateleiraEnderecamentoRepository() {
+    this.api = ApiService();
+    this.path = '/enderecamento-prateleira';
+  }
 
   Future<List<PrateleiraEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);
@@ -19,10 +20,8 @@ class PrateleiraEnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PrateleiraEnderecamentoModel> enderecamentoCorredor = data
-          .map<PrateleiraEnderecamentoModel>(
-              (data) => PrateleiraEnderecamentoModel.fromJson(data))
-          .toList();
+      List<PrateleiraEnderecamentoModel> enderecamentoCorredor =
+          data.map<PrateleiraEnderecamentoModel>((data) => PrateleiraEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoCorredor;
     } else {
@@ -31,8 +30,7 @@ class PrateleiraEnderecamentoRepository {
     }
   }
 
-  Future<bool> create(
-      PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
+  Future<bool> create(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
     Response response = await api.post(path, enderecamentoPrateleira.toJson());
 
     if (response.statusCode == StatusCode.OK) {
@@ -56,8 +54,7 @@ class PrateleiraEnderecamentoRepository {
   //   }
   // }
 
-  Future<bool> excluir(
-      PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
+  Future<bool> excluir(PrateleiraEnderecamentoModel enderecamentoPrateleira) async {
     Response response = await api.delete(
       path + '/' + enderecamentoPrateleira.id_estante.toString(),
     );

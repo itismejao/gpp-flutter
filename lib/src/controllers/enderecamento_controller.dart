@@ -7,7 +7,7 @@ import 'package:gpp/src/repositories/enderecamento_repository.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class EnderecamentoController {
-  EnderecamentoRepository repository = EnderecamentoRepository(api: gppApi);
+  EnderecamentoRepository repository = EnderecamentoRepository();
   bool isLoaded = false;
 
   //pisos
@@ -20,8 +20,7 @@ class EnderecamentoController {
   late EstanteEnderecamentoModel estanteModel = EstanteEnderecamentoModel();
   late List<EstanteEnderecamentoModel> listaEstante = [];
 
-  late PrateleiraEnderecamentoModel prateleiraModel =
-      PrateleiraEnderecamentoModel();
+  late PrateleiraEnderecamentoModel prateleiraModel = PrateleiraEnderecamentoModel();
   late List<PrateleiraEnderecamentoModel> listaPrateleira = [];
 
   late BoxEnderecamentoModel boxModel = BoxEnderecamentoModel();
@@ -35,13 +34,11 @@ class EnderecamentoController {
     return await repository.buscarCorredor(idPiso);
   }
 
-  Future<List<EstanteEnderecamentoModel>> buscarEstante(
-      String idCorredor) async {
+  Future<List<EstanteEnderecamentoModel>> buscarEstante(String idCorredor) async {
     return await repository.buscarEstante(idCorredor);
   }
 
-  Future<List<PrateleiraEnderecamentoModel>> buscarPrateleira(
-      String idEstante) async {
+  Future<List<PrateleiraEnderecamentoModel>> buscarPrateleira(String idEstante) async {
     return await repository.buscarPrateleira(idEstante);
   }
 
@@ -67,8 +64,7 @@ class EnderecamentoController {
     return await repository.excluirCorredor(corredorModel);
   }
 
-  Future<bool> criarCorredor(
-      CorredorEnderecamentoModel corredor, String idPiso) async {
+  Future<bool> criarCorredor(CorredorEnderecamentoModel corredor, String idPiso) async {
     return await repository.criarCorredor(corredor, idPiso);
   }
 
@@ -77,13 +73,11 @@ class EnderecamentoController {
   }
 
   // Estante
-  Future<bool> excluirEstante(
-      EstanteEnderecamentoModel estanteEnderecamentoModel) async {
+  Future<bool> excluirEstante(EstanteEnderecamentoModel estanteEnderecamentoModel) async {
     return await repository.excluirEstate(estanteEnderecamentoModel);
   }
 
-  Future<bool> criarEstante(EstanteEnderecamentoModel estanteEnderecamentoModel,
-      String IdCorredor) async {
+  Future<bool> criarEstante(EstanteEnderecamentoModel estanteEnderecamentoModel, String IdCorredor) async {
     return await repository.criarEstante(estanteEnderecamentoModel, IdCorredor);
   }
 
@@ -92,16 +86,12 @@ class EnderecamentoController {
   }
 
   //Prateleira
-  Future<bool> excluirPrateleira(
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
+  Future<bool> excluirPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
     return await repository.excluirPrateleira(prateleiraEnderecamentoModel);
   }
 
-  Future<bool> criarPrateleira(
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel,
-      String idEstante) async {
-    return await repository.criarPrateleira(
-        prateleiraEnderecamentoModel, idEstante);
+  Future<bool> criarPrateleira(PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
+    return await repository.criarPrateleira(prateleiraEnderecamentoModel, idEstante);
   }
 
   Future<bool> editarPrateleira() async {
@@ -113,8 +103,7 @@ class EnderecamentoController {
     return await repository.excluirBox(boxEnderecamentoModel);
   }
 
-  Future<bool> criarBox(
-      BoxEnderecamentoModel boxEnderecamentoModel, String idPrateleira) async {
+  Future<bool> criarBox(BoxEnderecamentoModel boxEnderecamentoModel, String idPrateleira) async {
     return await repository.criarBox(boxEnderecamentoModel, idPrateleira);
   }
 

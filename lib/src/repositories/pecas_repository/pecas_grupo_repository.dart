@@ -6,11 +6,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PecasGrupoRepository {
-  ApiService api;
+  late ApiService api;
 
-  PecasGrupoRepository({
-    required this.api,
-  });
+  PecasGrupoRepository() {
+    this.api = ApiService();
+  }
 
   Future<List<PecasGrupoModel>> buscarTodos() async {
     Response response = await api.get('/peca-grupo-material');
@@ -18,9 +18,7 @@ class PecasGrupoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PecasGrupoModel> pecasGrupo = data
-          .map<PecasGrupoModel>((data) => PecasGrupoModel.fromJson(data))
-          .toList();
+      List<PecasGrupoModel> pecasGrupo = data.map<PecasGrupoModel>((data) => PecasGrupoModel.fromJson(data)).toList();
 
       return pecasGrupo;
     } else {
@@ -32,8 +30,7 @@ class PecasGrupoRepository {
   Future<bool> create(PecasGrupoModel pecasGrupoModel) async {
     print(jsonEncode(pecasGrupoModel.toJson()));
 
-    Response response =
-        await api.post('/peca-grupo-material', pecasGrupoModel.toJson());
+    Response response = await api.post('/peca-grupo-material', pecasGrupoModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -43,8 +40,7 @@ class PecasGrupoRepository {
   }
 
   Future<bool> excluir(PecasGrupoModel pecasGrupoModel) async {
-    Response response = await api.delete('/peca-grupo-material/' +
-        pecasGrupoModel.id_peca_grupo_material.toString());
+    Response response = await api.delete('/peca-grupo-material/' + pecasGrupoModel.id_peca_grupo_material.toString());
 
     if (response.statusCode == StatusCode.OK) {
       print(response.body);
@@ -58,9 +54,7 @@ class PecasGrupoRepository {
   Future<bool> editar(PecasGrupoModel pecasGrupoModel) async {
     print(jsonEncode(pecasGrupoModel.toJson()));
 
-    Response response = await api.put(
-        '/peca-grupo-material/${pecasGrupoModel.id_peca_grupo_material}',
-        pecasGrupoModel.toJson());
+    Response response = await api.put('/peca-grupo-material/${pecasGrupoModel.id_peca_grupo_material}', pecasGrupoModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
