@@ -21,7 +21,8 @@ class EntradaPedidoView extends StatefulWidget {
 class _EntradaPedidoViewState extends State<EntradaPedidoView> {
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   PedidoEntradaController pedidoEntradaController = PedidoEntradaController();
-  MovimentoEntradaController movimentoEntradaController = MovimentoEntradaController();
+  MovimentoEntradaController movimentoEntradaController =
+      MovimentoEntradaController();
 
   final ScrollController _scrollController = ScrollController();
   TextEditingController _controllerNumPedido = TextEditingController();
@@ -67,7 +68,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                     hintText: 'Nota Fiscal',
                     labelText: 'Nota Fiscal',
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    contentPadding:
+                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   ),
                 ),
               ),
@@ -91,7 +93,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                     hintText: 'Série',
                     labelText: 'Série',
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    contentPadding:
+                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   ),
                 ),
               ),
@@ -131,7 +134,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                       hintText: 'Pedido',
                       labelText: 'Digite o número do pedido',
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding:
+                          EdgeInsets.only(top: 15, bottom: 10, left: 10),
                       suffixIcon: IconButton(
                         tooltip: 'Buscar',
                         onPressed: () {
@@ -165,7 +169,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                     hintText: 'Fornecedor',
                     labelText: 'Fornecedor',
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                    contentPadding:
+                        EdgeInsets.only(top: 15, bottom: 10, left: 10),
                   ),
                 ),
               ),
@@ -190,7 +195,10 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                         color: secundaryColor,
                         child: Expanded(
                           child: Text(
-                            'Pedido\n' + pedidoEntradaController.pedidosEntrada[index].idPedidoEntrada.toString(),
+                            'Pedido\n' +
+                                pedidoEntradaController
+                                    .pedidosEntrada[index].idPedidoEntrada
+                                    .toString(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -225,7 +233,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
             ),
             const Divider(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -275,29 +284,40 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                 child: ListView.builder(
                   controller: _scrollController,
                   primary: false,
-                  itemCount: movimentoEntradaController.listaItensSomados.length,
+                  itemCount:
+                      movimentoEntradaController.listaItensSomados.length,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: TextComponent(
-                                movimentoEntradaController.listaItensSomados[index].peca?.id_peca.toString() ?? '-',
+                                movimentoEntradaController
+                                        .listaItensSomados[index].peca?.id_peca
+                                        .toString() ??
+                                    '-',
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             Expanded(
                               flex: 3,
                               child: TextComponent(
-                                movimentoEntradaController.listaItensSomados[index].peca?.descricao ?? '-',
+                                movimentoEntradaController
+                                        .listaItensSomados[index]
+                                        .peca
+                                        ?.descricao ??
+                                    '-',
                               ),
                             ),
                             Expanded(
                               child: TextComponent(
-                                movimentoEntradaController.listaItensSomados[index].quantidade.toString(),
+                                movimentoEntradaController
+                                    .listaItensSomados[index].quantidade
+                                    .toString(),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -310,20 +330,28 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                   ),
                                   decoration: InputDecoration(
                                     hintText: 'Qtd',
                                     border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                                    contentPadding: EdgeInsets.only(
+                                        top: 5, bottom: 5, left: 5, right: 5),
                                   ),
                                   onChanged: (value) {
                                     if (value == '')
-                                      movimentoEntradaController.listaItensSomados[index].quantidade_recebida = null;
+                                      movimentoEntradaController
+                                          .listaItensSomados[index]
+                                          .quantidade_recebida = null;
                                     else
-                                      movimentoEntradaController.listaItensSomados[index].quantidade_recebida = int.parse(value);
+                                      movimentoEntradaController
+                                              .listaItensSomados[index]
+                                              .quantidade_recebida =
+                                          int.parse(value);
                                   },
                                 ),
                               ),
@@ -338,22 +366,30 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly, CurrencyPtBrInputFormatter()],
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    CurrencyPtBrInputFormatter()
+                                  ],
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                   ),
                                   decoration: InputDecoration(
                                     hintText: '0,00',
                                     border: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                                    contentPadding: EdgeInsets.only(
+                                        top: 5, bottom: 5, left: 5, right: 5),
                                     prefixText: 'R\$ ',
                                   ),
                                   onChanged: (value) {
                                     if (value == '')
-                                      movimentoEntradaController.listaItensSomados[index].custo = 0;
+                                      movimentoEntradaController
+                                          .listaItensSomados[index].custo = 0;
                                     else
-                                      movimentoEntradaController.listaItensSomados[index].custo =
-                                          (double.parse(value.replaceAll('.', '').replaceAll(',', '.')));
+                                      movimentoEntradaController
+                                              .listaItensSomados[index].custo =
+                                          (double.parse(value
+                                              .replaceAll('.', '')
+                                              .replaceAll(',', '.')));
                                   },
                                 ),
                               ),
@@ -370,14 +406,18 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () async {
-                                      NotifyController notify = NotifyController(context: context);
+                                      NotifyController notify =
+                                          NotifyController(context: context);
                                       try {
                                         if (await notify.confirmacao(
                                             'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
                                           setState(() {
-                                            movimentoEntradaController.listaItensSomados.removeAt(index);
+                                            movimentoEntradaController
+                                                .listaItensSomados
+                                                .removeAt(index);
                                           });
-                                          notify.sucess('Item removido com sucesso!');
+                                          notify.sucess(
+                                              'Item removido com sucesso!');
                                         }
                                       } catch (e) {
                                         notify.error(e.toString());
@@ -426,33 +466,40 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
     PedidoEntradaModel pedidoEntradaBusca;
 
     try {
-      pedidoEntradaBusca = await pedidoEntradaController.repository.buscar(int.parse(numPedido));
+      pedidoEntradaBusca =
+          await pedidoEntradaController.repository.buscar(int.parse(numPedido));
 
       //Testa se fornecedor ja foi carregado e o carrrega caso não
       if (movimentoEntradaController.id_fornecedor == null) {
-        movimentoEntradaController.id_fornecedor =
-            pedidoEntradaBusca.asteca?.compEstProd!.produto?.fornecedores!.first.idFornecedor;
+        movimentoEntradaController.id_fornecedor = pedidoEntradaBusca.asteca
+            ?.compEstProd!.first.produto!.fornecedores!.first.idFornecedor;
         setState(() {
-          _controllerFornecedor.text = pedidoEntradaBusca.asteca?.compEstProd!.produto?.fornecedores!.first.cliente?.nome ?? '';
+          _controllerFornecedor.text = pedidoEntradaBusca.asteca?.compEstProd!
+                  .first.produto!.fornecedores!.first.cliente?.nome ??
+              '';
         });
       }
 
       //Testa se o fornecedor do pedido buscado é o mesmo do jaá indexado
       if (movimentoEntradaController.id_fornecedor ==
-          pedidoEntradaBusca.asteca?.compEstProd!.produto?.fornecedores!.first.idFornecedor) {
+          pedidoEntradaBusca.asteca?.compEstProd!.first.produto!.fornecedores!
+              .first.idFornecedor) {
         //Testa se o pedido ja foi adicionado
-        if (pedidoEntradaController.pedidosEntrada
-            .any((element) => element.idPedidoEntrada == pedidoEntradaBusca.idPedidoEntrada)) {
+        if (pedidoEntradaController.pedidosEntrada.any((element) =>
+            element.idPedidoEntrada == pedidoEntradaBusca.idPedidoEntrada)) {
           notify.warning('Pedido já adicionado!');
         } else {
           setState(() {
             pedidoEntradaController.pedidosEntrada.add(pedidoEntradaBusca);
-            movimentoEntradaController.somarLista(pedidoEntradaBusca.itensPedidoEntrada);
+            movimentoEntradaController
+                .somarLista(pedidoEntradaBusca.itensPedidoEntrada);
           });
-          movimentoEntradaController.movimentoEntradaModel?.id_pedido_entrada!.add(pedidoEntradaBusca.idPedidoEntrada!);
+          movimentoEntradaController.movimentoEntradaModel?.id_pedido_entrada!
+              .add(pedidoEntradaBusca.idPedidoEntrada!);
         }
       } else {
-        notify.warning('Pedido não adicionado pois não pertence ao mesmo fornecedor!');
+        notify.warning(
+            'Pedido não adicionado pois não pertence ao mesmo fornecedor!');
       }
     } catch (e) {
       notify.warning(e.toString());
@@ -466,8 +513,10 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
     } else if (movimentoEntradaController.listaItensSomados.isEmpty) {
       notify.warning('É necessário adionar as peças para dar a entrada!');
     } else {
-      movimentoEntradaController.movimentoEntradaModel?.num_nota_fiscal = int.parse(_controllerNotaFiscal.text);
-      movimentoEntradaController.movimentoEntradaModel?.serie = _controllerNotaFiscal.text;
+      movimentoEntradaController.movimentoEntradaModel?.num_nota_fiscal =
+          int.parse(_controllerNotaFiscal.text);
+      movimentoEntradaController.movimentoEntradaModel?.serie =
+          _controllerNotaFiscal.text;
       bool success = movimentoEntradaController.ItensPedidoToItensEntrada();
       if (success) {
         try {
@@ -479,7 +528,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
           notify.error2(e.toString());
         }
       } else {
-        notify.warning('Existem items com a quantidade recebida não informada!');
+        notify
+            .warning('Existem items com a quantidade recebida não informada!');
       }
     }
   }

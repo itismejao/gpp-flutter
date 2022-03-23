@@ -1,6 +1,7 @@
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
 import 'package:gpp/src/models/asteca/asteca_end_cliente_model.dart';
 import 'package:gpp/src/models/asteca/asteca_motivo_model.dart';
+import 'package:gpp/src/models/asteca/asteca_pendencia_model.dart';
 import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
@@ -17,13 +18,12 @@ class AstecaModel {
   DateTime? dataEmissao;
   AstecaEndClienteModel? astecaEndCliente;
   DocumentoFiscalModel? documentoFiscal;
-  CompEstProd? compEstProd;
+  List<CompEstProdModel>? compEstProd;
   //List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
   PedidoSaidaModel? pedidoSaida;
 
-  //Tabela pivot
-  List<AstecaTipoPendenciaModel>? astecaTipoPendencias;
+  List<AstecaPendenciaModel>? astecaPendencias;
 
   AstecaModel({
     this.idAsteca,
@@ -32,7 +32,7 @@ class AstecaModel {
     this.observacao,
     this.defeitoEstadoProd,
     this.dataEmissao,
-    this.astecaTipoPendencias,
+    this.astecaPendencias,
     this.astecaEndCliente,
     this.astecaMotivo,
     this.documentoFiscal,
@@ -59,7 +59,9 @@ class AstecaModel {
             ? DocumentoFiscalModel.fromJson(json['documento_fiscal'])
             : null,
         compEstProd: json['comp_est_prod'] != null
-            ? CompEstProd.fromJson(json['comp_est_prod'])
+            ? json['comp_est_prod'].map<CompEstProdModel>((data) {
+                return CompEstProdModel.fromJson(data);
+              }).toList()
             : null,
         // produto: json['produto'] != null
         //     ? json['produto'].map<ProdutoModel>((data) {
@@ -69,9 +71,9 @@ class AstecaModel {
         funcionario: json['funcionario'] != null
             ? FuncionarioModel.fromJson(json['funcionario'].first)
             : null,
-        astecaTipoPendencias: json['pendencia'] != null
-            ? json['pendencia'].map<AstecaTipoPendenciaModel>((data) {
-                return AstecaTipoPendenciaModel.fromJson(data);
+        astecaPendencias: json['asteca_pendencias'] != null
+            ? json['asteca_pendencias'].map<AstecaPendenciaModel>((data) {
+                return AstecaPendenciaModel.fromJson(data);
               }).toList()
             : null,
         pedidoSaida: json['pedido_saida'] != null
@@ -91,8 +93,9 @@ class AstecaModel {
     }
     data['asteca_motivo'] = this.astecaMotivo;
     data['documento_fiscal'] = this.documentoFiscal;
-    data['comp_est_prod'] =
-        this.compEstProd != null ? this.compEstProd!.toJson() : null;
+    data['comp_est_prod'] = this.compEstProd != null
+        ? this.compEstProd!.map((e) => e.toJson()).toList()
+        : null;
     if (this.funcionario != null) {
       data['funcionario'] = this.funcionario;
     }

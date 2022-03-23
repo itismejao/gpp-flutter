@@ -118,7 +118,7 @@ class _AstecaViewState extends State<AstecaView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                AstecaDetalheView(id: int.tryParse(id)!),
+                //     AstecaDetalheView(id: int.tryParse(id)!),
               ],
             ),
           )),
@@ -493,10 +493,10 @@ class ItemList extends StatelessWidget {
                     )),
                     Expanded(
                         flex: 2,
-                        child: asteca.astecaTipoPendencias!.isNotEmpty
-                            ? TextComponent(
-                                asteca.astecaTipoPendencias!.last.descricao ??
-                                    '')
+                        child: asteca.astecaPendencias != null
+                            ? TextComponent(asteca.astecaPendencias!.first
+                                    .astecaTipoPendencia!.descricao ??
+                                '')
                             : TextComponent('Aguardando pendência')),
                   ],
                 ),

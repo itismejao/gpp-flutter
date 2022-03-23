@@ -1,13 +1,13 @@
 import 'package:gpp/src/models/produto/produto_model.dart';
 
-class CompEstProd {
+class CompEstProdModel {
   int? idCompEst;
   ProdutoModel? produto;
 
-  CompEstProd({this.idCompEst, this.produto});
+  CompEstProdModel({this.idCompEst, this.produto});
 
-  factory CompEstProd.fromJson(Map<String, dynamic> json) {
-    return CompEstProd(
+  factory CompEstProdModel.fromJson(Map<String, dynamic> json) {
+    return CompEstProdModel(
         idCompEst: json['id_comp_est'] != null ? json['id_comp_est'] : null,
         produto: json['produto'] != null
             ? ProdutoModel.fromJson(json['produto'])

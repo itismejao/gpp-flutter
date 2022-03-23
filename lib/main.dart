@@ -239,7 +239,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
     } else if (uri.pathSegments.length == 2) {
       var id = int.parse(uri.pathSegments[1]);
       if (uri.pathSegments.first == 'astecas') {
-        builder = (BuildContext context) => AstecaDetalheView(id: id);
+        //      builder = (BuildContext context) => AstecaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-saida') {
         builder = (BuildContext context) => PedidoSaidaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
