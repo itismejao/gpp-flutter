@@ -45,8 +45,8 @@ class PedidoSaidaRepository {
     }
   }
 
-  Future<PedidoSaidaModel> buscar(int id) async {
-    Response response = await api.get('/pedido-saida/${id}');
+  Future<PedidoSaidaModel> buscarPedidoSaida(int id) async {
+    Response response = await api.get('/pedidos-saida/${id.toString()}');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);

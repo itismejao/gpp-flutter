@@ -30,7 +30,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       pedidoController.carregado = false;
     });
     pedidoController.pedido =
-        await pedidoController.pedidoRepository.buscar(widget.id);
+        await pedidoController.pedidoRepository.buscarPedidoSaida(widget.id);
 
     setState(() {
       pedidoController.carregado = true;

@@ -118,7 +118,7 @@ class _AstecaViewState extends State<AstecaView> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                //     AstecaDetalheView(id: int.tryParse(id)!),
+                AstecaDetalheView(id: int.tryParse(id)!),
               ],
             ),
           )),
