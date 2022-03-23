@@ -823,21 +823,24 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                   bottom: 12),
                                               child: astecaController
                                                       .asteca
-                                                      .astecaTipoPendencias!
+                                                      .astecaPendencias!
                                                       .isNotEmpty
                                                   ? TextComponent(
                                                       astecaController
                                                               .asteca
-                                                              .astecaTipoPendencias!
+                                                              .astecaPendencias!
                                                               .last
+                                                              .astecaTipoPendencia!
                                                               .idTipoPendencia
                                                               .toString() +
                                                           ' - ' +
                                                           astecaController
                                                               .asteca
-                                                              .astecaTipoPendencias!
+                                                              .astecaPendencias!
                                                               .last
-                                                              .descricao!,
+                                                              .astecaTipoPendencia!
+                                                              .descricao
+                                                              .toString(),
                                                       color: Colors.white)
                                                   : const TextComponent(
                                                       'Aguardando Pendência',
@@ -1368,8 +1371,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ? Container(
                   height: 700,
                   child: ListView.builder(
-                    itemCount:
-                        astecaController.asteca.astecaTipoPendencias!.length,
+                    itemCount: astecaController.asteca.astecaPendencias!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -1390,7 +1392,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     TextComponent(
-                                      'Pendência:  ${astecaController.asteca.astecaTipoPendencias![index].idTipoPendencia} - ${astecaController.asteca.astecaTipoPendencias![index].descricao}',
+                                      'Pendência:  ${astecaController.asteca.astecaPendencias![index].astecaTipoPendencia!.idTipoPendencia} - ${astecaController.asteca.astecaPendencias![index].astecaTipoPendencia!.descricao}',
                                       fontSize: 10,
                                       fontWeight: FontWeight.normal,
                                       fontStyle: FontStyle.italic,
