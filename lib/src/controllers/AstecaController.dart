@@ -13,7 +13,7 @@ import 'package:gpp/src/repositories/PedidoRepository.dart';
 import 'package:intl/intl.dart';
 
 class AstecaController {
-  late PedidoRepository pedidoRepository = PedidoRepository();
+  late PedidoSaidaRepository pedidoSaidaRepository = PedidoSaidaRepository();
   bool carregaProdutoPeca = false;
   late PecaRepository pecaRepository = PecaRepository();
   late List<ProdutoPecaModel> produtoPecas;

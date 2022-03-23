@@ -9,7 +9,7 @@ class PedidoController {
   DateTime? dataInicio;
   DateTime? dataFim;
   int? situacao;
-  PedidoRepository pedidoRepository = PedidoRepository();
+  PedidoSaidaRepository pedidoRepository = PedidoSaidaRepository();
   bool carregado = false;
   List<PedidoSaidaModel> pedidos = [];
   PedidoSaidaModel pedido = PedidoSaidaModel();
@@ -19,24 +19,20 @@ class PedidoController {
   PaginaModel pagina = PaginaModel(total: 0, atual: 1);
   NumberFormat formatter = NumberFormat.simpleCurrency(locale: 'pt_BR');
 
-
-  camelCaseAll(String? value){
+  camelCaseAll(String? value) {
     String? nome = '';
     value!.split(" ").forEach((element) {
-      if(element.length > 3){
-        nome = nome !+ " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+      if (element.length > 3) {
+        nome = nome! +
+            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
-         nome = nome !+ " ${element.toString().toLowerCase()}";
+        nome = nome! + " ${element.toString().toLowerCase()}";
       }
-      
-
     });
     return nome;
   }
 
-  camelCaseFirst(String? value){
+  camelCaseFirst(String? value) {
     return toBeginningOfSentenceCase(value.toString().toLowerCase());
   }
-
-
 }

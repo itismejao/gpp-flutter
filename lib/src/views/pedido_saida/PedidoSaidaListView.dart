@@ -45,7 +45,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
         pedidoController.carregado = false;
       });
       //parei aqui
-      List retorno = await pedidoController.pedidoRepository.buscarTodos(
+      List retorno = await pedidoController.pedidoRepository.buscarPedidosSaida(
           pedidoController.pagina.atual,
           idPedido: pedidoController.idPedido,
           dataInicio: pedidoController.dataInicio,
