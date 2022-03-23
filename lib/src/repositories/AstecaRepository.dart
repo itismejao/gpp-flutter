@@ -54,7 +54,7 @@ class AstecaRepository {
     }
   }
 
-  Future<AstecaModel> buscar(int id) async {
+  Future<AstecaModel> buscarAsteca(int id) async {
     Response response = await api.get('/astecas/${id.toString()}');
 
     if (response.statusCode == StatusCode.OK) {
