@@ -29,8 +29,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
     setState(() {
       pedidoController.carregado = false;
     });
-    pedidoController.pedido =
-        await pedidoController.pedidoRepository.buscar(widget.id);
+    pedidoController.pedido = await pedidoController.pedidoRepository.buscar(widget.id);
 
     setState(() {
       pedidoController.carregado = true;
@@ -51,8 +50,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
   _buildSituacaoPedido(value) {
     if (value == 1) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -63,8 +61,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       );
     } else if (value == 2) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.orange, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -75,8 +72,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       );
     } else if (value == 3) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.green, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -87,8 +83,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       );
     } else if (value == 4) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.red, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -100,8 +95,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
     }
   }
 
-  Widget _buildListItem(
-      List<ItemPedidoSaidaModel> itensPedido, int index, BuildContext context) {
+  Widget _buildListItem(List<ItemPedidoSaidaModel> itensPedido, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -112,8 +106,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Container(
-                    color:
-                        (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                    color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Column(children: [
@@ -122,10 +115,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           children: [
                             Expanded(
                               child: TextComponent(
-                                '#' +
-                                    itensPedido[index]
-                                        .idItemPedidoSaida
-                                        .toString(),
+                                '#' + itensPedido[index].idItemPedidoSaida.toString(),
                               ),
                             ),
                             Expanded(
@@ -138,14 +128,11 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                               itensPedido[index].quantidade.toString(),
                             )),
                             Expanded(
-                              child: TextComponent(pedidoController.formatter
-                                  .format(itensPedido[index].valor)),
+                              child: TextComponent(pedidoController.formatter.format(itensPedido[index].valor)),
                             ),
                             Expanded(
                                 child: TextComponent(
-                              pedidoController.formatter.format(
-                                  (itensPedido[index].valor *
-                                      itensPedido[index].quantidade)),
+                              pedidoController.formatter.format((itensPedido[index].valor * itensPedido[index].quantidade)),
                             )),
                           ],
                         ),
@@ -175,10 +162,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TitleComponent('Pedido de saída'),
-                        _buildSituacaoPedido(pedidoController.pedido.situacao)
-                      ],
+                      children: [TitleComponent('Pedido de saída'), _buildSituacaoPedido(pedidoController.pedido.situacao)],
                     ),
                     SizedBox(
                       height: 16,
@@ -189,8 +173,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                             enable: false,
                             label: 'ID',
-                            initialValue: pedidoController.pedido.idPedidoSaida
-                                .toString(),
+                            initialValue: pedidoController.pedido.idPedidoSaida.toString(),
                           ),
                         ),
                         SizedBox(
@@ -200,8 +183,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                             enable: false,
                             label: 'CPF/CNPJ',
-                            initialValue:
-                                pedidoController.pedido.cpfCnpj.toString(),
+                            initialValue: pedidoController.pedido.cpfCnpj.toString(),
                           ),
                         ),
                         SizedBox(
@@ -211,8 +193,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                             enable: false,
                             label: 'Filial de venda',
-                            initialValue:
-                                pedidoController.pedido.filialVenda.toString(),
+                            initialValue: pedidoController.pedido.filialVenda.toString(),
                           ),
                         ),
                       ],
@@ -226,8 +207,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                             enable: false,
                             label: 'Nº Documento Fiscal',
-                            initialValue:
-                                pedidoController.pedido.numDocFiscal.toString(),
+                            initialValue: pedidoController.pedido.numDocFiscal.toString(),
                           ),
                         ),
                         SizedBox(
@@ -237,8 +217,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                             enable: false,
                             label: 'Série Documento Fiscal',
-                            initialValue:
-                                pedidoController.pedido.serieDocFiscal,
+                            initialValue: pedidoController.pedido.serieDocFiscal,
                           ),
                         ),
                         SizedBox(
@@ -249,9 +228,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                             enable: false,
                             label: 'Data de emissão',
                             initialValue: maskFormatter
-                                .dataFormatter(
-                                    value: pedidoController.pedido.dataEmissao
-                                        .toString())
+                                .dataFormatter(value: pedidoController.pedido.dataEmissao.toString())
                                 .getMaskedText(),
                           ),
                         ),
@@ -266,8 +243,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                               enable: false,
                               label: 'Valor total R\$',
-                              initialValue: pedidoController.formatter
-                                  .format(pedidoController.pedido.valorTotal)),
+                              initialValue: pedidoController.formatter.format(pedidoController.pedido.valorTotal)),
                         ),
                       ],
                     ),
@@ -286,12 +262,9 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                               enable: false,
                               label: 'ID',
-                              initialValue:
-                                  pedidoController.pedido.asteca!.idAsteca ==
-                                          null
-                                      ? ''
-                                      : pedidoController.pedido.asteca!.idAsteca
-                                          .toString()),
+                              initialValue: pedidoController.pedido.asteca!.idAsteca == null
+                                  ? ''
+                                  : pedidoController.pedido.asteca!.idAsteca.toString()),
                         ),
                         SizedBox(
                           width: 8,
@@ -300,11 +273,9 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           child: InputComponent(
                               enable: false,
                               label: 'Cliente',
-                              initialValue: pedidoController.camelCaseAll(
-                                  pedidoController.pedido.cliente!.nome == null
-                                      ? ''
-                                      : pedidoController.pedido.cliente!.nome
-                                          .toString())),
+                              initialValue: pedidoController.camelCaseAll(pedidoController.pedido.cliente!.nome == null
+                                  ? ''
+                                  : pedidoController.pedido.cliente!.nome.toString())),
                         ),
                       ],
                     ),
@@ -318,13 +289,9 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                               enable: false,
                               label: 'Produto',
                               initialValue: pedidoController.camelCaseFirst(
-                                  pedidoController.pedido.asteca!.produto?[0]
-                                              .resumida ==
-                                          null
+                                  pedidoController.pedido.asteca!.compEstProd!.produto!.resumida == null
                                       ? ''
-                                      : pedidoController
-                                          .pedido.asteca!.produto?[0].resumida
-                                          .toString())),
+                                      : pedidoController.pedido.asteca!.compEstProd!.produto!.resumida.toString())),
                         ),
                       ],
                     ),
@@ -341,8 +308,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           ),
                           color: secundaryColor,
                           onPressed: () {
-                            Navigator.pushNamed(context,
-                                "/astecas/${pedidoController.pedido.asteca!.idAsteca}");
+                            Navigator.pushNamed(context, "/astecas/${pedidoController.pedido.asteca!.idAsteca}");
                           },
                           text: 'Ver mais',
                         ),
@@ -400,13 +366,9 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
                           Divider(),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: pedidoController
-                                  .pedido.itemsPedidoSaida!.length,
+                              itemCount: pedidoController.pedido.itemsPedidoSaida!.length,
                               itemBuilder: (context, index) {
-                                return _buildListItem(
-                                    pedidoController.pedido.itemsPedidoSaida!,
-                                    index,
-                                    context);
+                                return _buildListItem(pedidoController.pedido.itemsPedidoSaida!, index, context);
                               },
                             ),
                           ),
