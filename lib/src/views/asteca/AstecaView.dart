@@ -39,8 +39,7 @@ class _AstecaViewState extends State<AstecaView> {
       setState(() {
         astecaController.carregado = false;
       });
-      var retorno = await astecaController.repository.buscarAstecas(
-          astecaController.pagina.atual,
+      var retorno = await astecaController.repository.buscarAstecas(astecaController.pagina.atual,
           filtroAsteca: astecaController.filtroAsteca,
           pendencia: astecaController.pendenciaFiltro,
           dataInicio: astecaController.dataInicio,
@@ -79,8 +78,7 @@ class _AstecaViewState extends State<AstecaView> {
       astecaController.carregado = false;
     });
 
-    astecaController.astecaTipoPendencias =
-        await astecaController.repository.pendencia.buscarPendencias();
+    astecaController.astecaTipoPendencias = await astecaController.repository.pendencia.buscarPendencias();
 
     setState(() {
       astecaController.carregado = true;
@@ -150,8 +148,7 @@ class _AstecaViewState extends State<AstecaView> {
                     child: InputComponent(
                       maxLines: 1,
                       onFieldSubmitted: (value) {
-                        astecaController.filtroAsteca.idAsteca =
-                            int.tryParse(value);
+                        astecaController.filtroAsteca.idAsteca = int.tryParse(value);
                         //Limpa o formúlario
                         astecaController.filtroFormKey.currentState!.reset();
                         buscarTodas();
@@ -171,8 +168,7 @@ class _AstecaViewState extends State<AstecaView> {
                     color: secundaryColor,
                     onPressed: () {
                       setState(() {
-                        astecaController.abrirFiltro =
-                            !(astecaController.abrirFiltro);
+                        astecaController.abrirFiltro = !(astecaController.abrirFiltro);
                       });
                     },
                     text: 'Adicionar filtro')
@@ -202,21 +198,15 @@ class _AstecaViewState extends State<AstecaView> {
                               DropdownButtonFormFieldComponent(
                                 hintText: '651 - Peça solicitada ao fornecedor',
                                 onChanged: (AstecaTipoPendenciaModel value) {
-                                  astecaController.pendenciaFiltro =
-                                      value.idTipoPendencia.toString();
+                                  astecaController.pendenciaFiltro = value.idTipoPendencia.toString();
                                 },
                                 items: astecaController.astecaTipoPendencias
-                                    .map<
-                                        DropdownMenuItem<
-                                            AstecaTipoPendenciaModel>>((value) {
-                                  return DropdownMenuItem<
-                                      AstecaTipoPendenciaModel>(
+                                    .map<DropdownMenuItem<AstecaTipoPendenciaModel>>((value) {
+                                  return DropdownMenuItem<AstecaTipoPendenciaModel>(
                                     value: value,
-                                    child: TextComponent(value.idTipoPendencia
-                                            .toString() +
+                                    child: TextComponent(value.idTipoPendencia.toString() +
                                         ' - ' +
-                                        astecaController
-                                            .camelCaseFirst(value.descricao)!),
+                                        astecaController.camelCaseFirst(value.descricao)!),
                                   );
                                 }).toList(),
                               ),
@@ -233,14 +223,11 @@ class _AstecaViewState extends State<AstecaView> {
                             label: 'CPF ou CNPJ:',
                             maxLines: 1,
                             validator: (value) {
-                              validator.cpfOuCnpj(
-                                  UtilBrasilFields.removeCaracteres(value));
+                              validator.cpfOuCnpj(UtilBrasilFields.removeCaracteres(value));
                             },
                             onSaved: (value) {
                               if (value.toString().isNotEmpty) {
-                                astecaController
-                                        .filtroAsteca.documentoFiscal!.cpfCnpj =
-                                    UtilBrasilFields.removeCaracteres(value);
+                                astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = UtilBrasilFields.removeCaracteres(value);
                               }
                             },
                             hintText: 'Digite o CPF ou CNPJ',
@@ -258,8 +245,7 @@ class _AstecaViewState extends State<AstecaView> {
                             label: 'Número da nota fiscal:',
                             maxLines: 1,
                             onSaved: (value) {
-                              astecaController.filtroAsteca.documentoFiscal!
-                                  .numDocFiscal = int.tryParse(value);
+                              astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = int.tryParse(value);
                             },
                             hintText: 'Digite o número da nota fiscal',
                           ),
@@ -274,8 +260,7 @@ class _AstecaViewState extends State<AstecaView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                astecaController.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                astecaController.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '24/02/2022',
@@ -289,8 +274,7 @@ class _AstecaViewState extends State<AstecaView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                astecaController.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                astecaController.dataFim = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '25/02/2022',
@@ -306,12 +290,8 @@ class _AstecaViewState extends State<AstecaView> {
                           ButtonComponent(
                               onPressed: () {
                                 // if (astecaController.filtroExpandidoFormKey.currentState!.validate()) {
-                                astecaController
-                                    .filtroExpandidoFormKey.currentState!
-                                    .save();
-                                astecaController
-                                    .filtroExpandidoFormKey.currentState!
-                                    .reset();
+                                astecaController.filtroExpandidoFormKey.currentState!.save();
+                                astecaController.filtroExpandidoFormKey.currentState!.reset();
                                 buscarTodas();
 
                                 setState(() {
@@ -333,8 +313,7 @@ class _AstecaViewState extends State<AstecaView> {
                   ? ListView.builder(
                       itemCount: astecaController.astecas.length,
                       itemBuilder: (context, index) {
-                        return ItemList(
-                            astecaController.astecas[index], exibirDetalhe);
+                        return ItemList(astecaController.astecas[index], exibirDetalhe);
                       })
                   : LoadingComponent()),
           PaginacaoComponent(
@@ -404,6 +383,7 @@ class ItemList extends StatelessWidget {
         onTap: () {
           // Navigator.pushNamed(
           //     context, '/astecas/' + asteca[index].idAsteca.toString());
+
           astecaDetalhe(asteca.idAsteca.toString());
         },
         child: Padding(
@@ -494,9 +474,7 @@ class ItemList extends StatelessWidget {
                     Expanded(
                         flex: 2,
                         child: asteca.astecaPendencias != null
-                            ? TextComponent(asteca.astecaPendencias!.first
-                                    .astecaTipoPendencia!.descricao ??
-                                '')
+                            ? TextComponent(asteca.astecaPendencias!.first.astecaTipoPendencia!.descricao ?? '')
                             : TextComponent('Aguardando pendência')),
                   ],
                 ),
