@@ -9,7 +9,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
-import 'package:gpp/src/models/produto_model.dart';
+import 'package:gpp/src/models/produto/produto_model.dart';
 
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';

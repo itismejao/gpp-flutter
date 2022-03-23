@@ -4,7 +4,8 @@ import 'package:gpp/src/models/asteca/asteca_motivo_model.dart';
 import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
-import 'package:gpp/src/models/produto_model.dart';
+import 'package:gpp/src/models/produto/comp_est_prod_model.dart';
+import 'package:gpp/src/models/produto/produto_model.dart';
 
 class AstecaModel {
   int? idAsteca;
@@ -16,7 +17,8 @@ class AstecaModel {
   DateTime? dataEmissao;
   AstecaEndClienteModel? astecaEndCliente;
   DocumentoFiscalModel? documentoFiscal;
-  List<ProdutoModel>? produto;
+  CompEstProd? compEstProd;
+  //List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
   PedidoSaidaModel? pedidoSaida;
 
@@ -34,7 +36,7 @@ class AstecaModel {
     this.astecaEndCliente,
     this.astecaMotivo,
     this.documentoFiscal,
-    this.produto,
+    this.compEstProd,
     this.funcionario,
     this.pedidoSaida,
   });
@@ -56,11 +58,14 @@ class AstecaModel {
         documentoFiscal: json['documento_fiscal'] != null
             ? DocumentoFiscalModel.fromJson(json['documento_fiscal'])
             : null,
-        produto: json['produto'] != null
-            ? json['produto'].map<ProdutoModel>((data) {
-                return ProdutoModel.fromJson(data);
-              }).toList()
+        compEstProd: json['comp_est_prod'] != null
+            ? CompEstProd.fromJson(json['comp_est_prod'])
             : null,
+        // produto: json['produto'] != null
+        //     ? json['produto'].map<ProdutoModel>((data) {
+        //         return ProdutoModel.fromJson(data);
+        //       }).toList()
+        //     : null,
         funcionario: json['funcionario'] != null
             ? FuncionarioModel.fromJson(json['funcionario'].first)
             : null,
@@ -86,9 +91,8 @@ class AstecaModel {
     }
     data['asteca_motivo'] = this.astecaMotivo;
     data['documento_fiscal'] = this.documentoFiscal;
-    if (this.produto != null) {
-      data['produto'] = this.produto!.map((v) => v.toJson()).toList();
-    }
+    data['comp_est_prod'] =
+        this.compEstProd != null ? this.compEstProd!.toJson() : null;
     if (this.funcionario != null) {
       data['funcionario'] = this.funcionario;
     }

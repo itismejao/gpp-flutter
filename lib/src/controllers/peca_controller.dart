@@ -6,7 +6,7 @@ import 'package:gpp/src/models/produto_peca_model.dart';
 
 import 'package:gpp/src/repositories/pecas_repository/produto_repositoy.dart';
 
-import '../models/produto_model.dart';
+import '../models/produto/produto_model.dart';
 import '../repositories/PecaRepository.dart';
 
 class PecaController {

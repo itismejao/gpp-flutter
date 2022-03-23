@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/fornecedor_model.dart';
+import 'package:gpp/src/models/produto/fornecedor_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
 
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
@@ -6,10 +6,10 @@ import 'package:gpp/src/models/pecas_model/peca_model.dart';
 class ProdutoModel {
   int? idProduto;
   String? resumida;
-  String? situacao;
-  String? cod_barra;
-  String? marca;
-  String? data_cadastro;
+  // String? situacao;
+  // String? codBarra;
+  // String? marca;
+  // String? data_cadastro;
 
   List<FornecedorModel>? fornecedores;
 
@@ -17,11 +17,11 @@ class ProdutoModel {
 
   ProdutoModel(
       {this.idProduto,
-      this.situacao,
-      this.cod_barra,
+      // this.situacao,
+      // this.codBarra,
       this.resumida,
-      this.marca,
-      this.data_cadastro,
+      // // this.marca,
+      // // this.data_cadastro,
       this.fornecedores,
       this.produtoPecas});
 

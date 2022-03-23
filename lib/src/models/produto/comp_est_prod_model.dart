@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/produto_model.dart';
+import 'package:gpp/src/models/produto/produto_model.dart';
 
 class CompEstProd {
   int? idCompEst;
