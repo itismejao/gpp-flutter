@@ -6,14 +6,14 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class PedidoRepository {
+class PedidoSaidaRepository {
   late ApiService api;
 
-  PedidoRepository() {
+  PedidoSaidaRepository() {
     api = ApiService();
   }
 
-  Future<List> buscarTodos(int pagina,
+  Future<List> buscarPedidosSaida(int pagina,
       {int? idPedido,
       DateTime? dataInicio,
       DateTime? dataFim,
@@ -27,7 +27,7 @@ class PedidoRepository {
     };
 
     Response response =
-        await api.get('/pedido-saida', queryParameters: queryParameters);
+        await api.get('/pedidos-saida', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -45,8 +45,8 @@ class PedidoRepository {
     }
   }
 
-  Future<PedidoSaidaModel> buscar(int id) async {
-    Response response = await api.get('/pedido-saida/${id}');
+  Future<PedidoSaidaModel> buscarPedidoSaida(int id) async {
+    Response response = await api.get('/pedidos-saida/${id.toString()}');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);

@@ -306,7 +306,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         astecaController.pedidoSaida.funcionario = astecaController.asteca.funcionario;
         astecaController.pedidoSaida.cliente = astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
-        PedidoSaidaModel pedidoComprovante = await astecaController.pedidoRepository.criar(astecaController.pedidoSaida);
+        PedidoSaidaModel pedidoComprovante = await astecaController.pedidoSaidaRepository.criar(astecaController.pedidoSaida);
 
         exibirComprovantePedidoSaida(pedidoComprovante);
       } else {
