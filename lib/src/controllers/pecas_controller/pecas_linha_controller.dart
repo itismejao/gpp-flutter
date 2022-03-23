@@ -6,8 +6,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class PecasLinhaController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final PecasLinhaRepository pecasLinhaRepository =
-      PecasLinhaRepository(api: gppApi);
+  late final PecasLinhaRepository pecasLinhaRepository = PecasLinhaRepository();
   PecasLinhaModel pecasLinhaModel = PecasLinhaModel();
 
   List<PecasLinhaModel>? listaPecasLinhaModel;

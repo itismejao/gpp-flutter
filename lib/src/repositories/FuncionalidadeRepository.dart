@@ -7,11 +7,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class FuncionalitiesRepository {
-  ApiService api;
+  late ApiService api;
 
-  FuncionalitiesRepository({
-    required this.api,
-  });
+  FuncionalitiesRepository() {
+    this.api = ApiService();
+  }
 
   Future<FuncionalidadeModel> fetch(String id) async {
     Response response = await api.get('/funcionalidades/' + id);
@@ -31,10 +31,8 @@ class FuncionalitiesRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<FuncionalidadeModel> funcionalidades = data
-          .map<FuncionalidadeModel>(
-              (data) => FuncionalidadeModel.fromJson(data))
-          .toList();
+      List<FuncionalidadeModel> funcionalidades =
+          data.map<FuncionalidadeModel>((data) => FuncionalidadeModel.fromJson(data)).toList();
 
       return funcionalidades;
     } else {
@@ -43,8 +41,7 @@ class FuncionalitiesRepository {
   }
 
   Future<bool> create(FuncionalidadeModel funcionalitie) async {
-    Response response =
-        await api.post('/funcionalidades', funcionalitie.toJson()); // alteração
+    Response response = await api.post('/funcionalidades', funcionalitie.toJson()); // alteração
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -54,9 +51,7 @@ class FuncionalitiesRepository {
   }
 
   Future<bool> update(FuncionalidadeModel funcionalitie) async {
-    Response response = await api.put(
-        '/funcionalidades/' + funcionalitie.idFuncionalidade.toString(),
-        funcionalitie.toJson());
+    Response response = await api.put('/funcionalidades/' + funcionalitie.idFuncionalidade.toString(), funcionalitie.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

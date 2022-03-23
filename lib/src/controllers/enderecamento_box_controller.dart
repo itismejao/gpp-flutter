@@ -3,7 +3,7 @@ import 'package:gpp/src/repositories/box_enderecamento_repository.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class EnderecamentoBoxController {
-  BoxEnderecamentoRepository repository = BoxEnderecamentoRepository(api: gppApi);
+  BoxEnderecamentoRepository repository = BoxEnderecamentoRepository();
   bool isLoaded = false;
 
   late BoxEnderecamentoModel boxEnderecamentoReplacement = BoxEnderecamentoModel();

@@ -6,12 +6,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class CorredorEnderecamentoRepository {
-  ApiService api;
-  String path = '/enderecamento-corredor';
+  late ApiService api;
+  late String path;
 
-  CorredorEnderecamentoRepository({
-    required this.api,
-  });
+  CorredorEnderecamentoRepository() {
+    this.api = ApiService();
+    this.path = '/enderecamento-corredor';
+  }
 
   Future<List<CorredorEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);
@@ -19,10 +20,8 @@ class CorredorEnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<CorredorEnderecamentoModel> enderecamentoCorredor = data
-          .map<CorredorEnderecamentoModel>(
-              (data) => CorredorEnderecamentoModel.fromJson(data))
-          .toList();
+      List<CorredorEnderecamentoModel> enderecamentoCorredor =
+          data.map<CorredorEnderecamentoModel>((data) => CorredorEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoCorredor;
     } else {

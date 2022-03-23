@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class PecasGrupoController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final PecasGrupoRepository pecasGrupoRepository = PecasGrupoRepository(api: gppApi);
+  late final PecasGrupoRepository pecasGrupoRepository = PecasGrupoRepository();
   PecasGrupoModel pecasGrupoModel = PecasGrupoModel();
 
   Future<bool> create() async {

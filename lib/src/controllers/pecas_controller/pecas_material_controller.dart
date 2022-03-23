@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class PecasMaterialController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final PecasMaterialRepository pecasMaterialRepository = PecasMaterialRepository(api: gppApi);
+  late final PecasMaterialRepository pecasMaterialRepository = PecasMaterialRepository();
   PecasMaterialModel pecasMaterialModel = PecasMaterialModel();
 
   Future<bool> inserir() async {

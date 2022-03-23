@@ -6,12 +6,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class MotivoTrocaPecaRepository {
-  ApiService api;
-  String path = '/motivos-troca-peca';
+  late ApiService api;
+  late String path;
 
-  MotivoTrocaPecaRepository({
-    required this.api,
-  });
+  MotivoTrocaPecaRepository() {
+    this.api = ApiService();
+    this.path = '/motivos-troca-peca';
+  }
 
   Future<List<MotivoTrocaPecaModel>> buscarTodos() async {
     Response response = await api.get(path);
@@ -19,10 +20,8 @@ class MotivoTrocaPecaRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<MotivoTrocaPecaModel> reasonPartsReplacement = data
-          .map<MotivoTrocaPecaModel>(
-              (data) => MotivoTrocaPecaModel.fromJson(data))
-          .toList();
+      List<MotivoTrocaPecaModel> reasonPartsReplacement =
+          data.map<MotivoTrocaPecaModel>((data) => MotivoTrocaPecaModel.fromJson(data)).toList();
 
       return reasonPartsReplacement;
     } else {
@@ -43,9 +42,8 @@ class MotivoTrocaPecaRepository {
   }
 
   Future<bool> update(MotivoTrocaPecaModel reasonPartsReplacement) async {
-    Response response = await api.put(
-        path + '/' + reasonPartsReplacement.idMotivoTrocaPeca.toString(),
-        reasonPartsReplacement.toJson());
+    Response response =
+        await api.put(path + '/' + reasonPartsReplacement.idMotivoTrocaPeca.toString(), reasonPartsReplacement.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

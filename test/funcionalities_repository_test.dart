@@ -26,7 +26,7 @@ void main() {
   dotenv.testLoad(fileInput: File("env").readAsStringSync());
 
   final api = MockApiService();
-  final repository = FuncionalitiesRepository(api: api);
+  final repository = FuncionalitiesRepository();
 
   group('Funcionalidades - Buscar: ', () {
     String dataReceived = '''[
@@ -77,58 +77,47 @@ void main() {
 ]''';
 
     test('Valida a busca de funcionalidades', () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      when(api.get(any)).thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final funcionalities = await repository.fetchAll();
       expect(funcionalities, isA<List<FuncionalidadeModel>>());
     });
 
     test('Valida se as funcionalidades não foram encontradas', () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response('', 404));
+      when(api.get(any)).thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.fetchAll(),
-          throwsA(isA<FuncionalitiesException>()));
+      expect(() async => await repository.fetchAll(), throwsA(isA<FuncionalitiesException>()));
     });
   });
 
   group('Funcionalidades - Criação: ', () {
-    FuncionalidadeModel funcionalitie =
-        FuncionalidadeModel(nome: "Teste", situacao: true, icone: "icon_teste");
+    FuncionalidadeModel funcionalitie = FuncionalidadeModel(nome: "Teste", situacao: true, icone: "icon_teste");
 
     test('Valida a criação de funcionalidade', () async {
-      when(api.post(any, any))
-          .thenAnswer((realInvocation) async => Response('', 200));
+      when(api.post(any, any)).thenAnswer((realInvocation) async => Response('', 200));
 
       expect(await repository.create(funcionalitie), true);
     });
 
     test('Valida se a funcionalidade não foi cadastrada', () async {
-      when(api.post(any, any))
-          .thenAnswer((realInvocation) async => Response('', 404));
+      when(api.post(any, any)).thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.create(funcionalitie),
-          throwsA(isA<FuncionalitiesException>()));
+      expect(() async => await repository.create(funcionalitie), throwsA(isA<FuncionalitiesException>()));
     });
   });
 
   group('Funcionalidades - Atualização: ', () {
-    FuncionalidadeModel funcionalitie =
-        FuncionalidadeModel(nome: "Teste", situacao: true, icone: "icon_teste");
+    FuncionalidadeModel funcionalitie = FuncionalidadeModel(nome: "Teste", situacao: true, icone: "icon_teste");
 
     test('Valida se a funcionalidade foi atualizada', () async {
-      when(api.put(any, any))
-          .thenAnswer((realInvocation) async => Response('', 200));
+      when(api.put(any, any)).thenAnswer((realInvocation) async => Response('', 200));
 
       expect(await repository.update(funcionalitie), true);
     });
 
     test('Valida se a funcionalidade não foi atualizada', () async {
-      when(api.put(any, any))
-          .thenAnswer((realInvocation) async => Response('', 404));
+      when(api.put(any, any)).thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.update(funcionalitie),
-          throwsA(isA<FuncionalitiesException>()));
+      expect(() async => await repository.update(funcionalitie), throwsA(isA<FuncionalitiesException>()));
     });
   });
 
@@ -141,22 +130,18 @@ void main() {
     "iduserresp": 1
 } ''';
 
-    FuncionalidadeModel funcionalitie =
-        FuncionalidadeModel.fromJson(json.decode(dataSend));
+    FuncionalidadeModel funcionalitie = FuncionalidadeModel.fromJson(json.decode(dataSend));
 
     test('Valida se a funcionalidade foi deletada', () async {
-      when(api.delete(any))
-          .thenAnswer((realInvocation) async => Response('', 200));
+      when(api.delete(any)).thenAnswer((realInvocation) async => Response('', 200));
 
       expect(await repository.delete(funcionalitie), true);
     });
 
     test('Valida se a funcionalidade não foi deletada', () async {
-      when(api.delete(any))
-          .thenAnswer((realInvocation) async => Response('', 404));
+      when(api.delete(any)).thenAnswer((realInvocation) async => Response('', 404));
 
-      expect(() async => await repository.delete(funcionalitie),
-          throwsA(isA<FuncionalitiesException>()));
+      expect(() async => await repository.delete(funcionalitie), throwsA(isA<FuncionalitiesException>()));
     });
   });
 }

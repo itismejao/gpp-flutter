@@ -3,12 +3,10 @@ import 'package:gpp/src/repositories/estante_enderacamento_repository.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class EnderecamentoEstanteController {
-  EstanteEnderecamentoRepository repository =
-      EstanteEnderecamentoRepository(api: gppApi);
+  EstanteEnderecamentoRepository repository = EstanteEnderecamentoRepository();
   bool isLoaded = false;
 
-  late EstanteEnderecamentoModel estanteEnderecamentoReplacement =
-      EstanteEnderecamentoModel();
+  late EstanteEnderecamentoModel estanteEnderecamentoReplacement = EstanteEnderecamentoModel();
 
   late List<EstanteEnderecamentoModel> estanteEnderecamentoReplacements;
 }
