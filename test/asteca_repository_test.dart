@@ -29,234 +29,147 @@ void main() {
 
   group('Astecas: ', () {
     String dataReceived = '''[
-    {
-        "id_asteca": 252,
-        "tipo_asteca": null,
-        "id_filial_registro": 505,
-        "observacao": "FAVOR LIGAR ANTES P/ MARIA RODRIGUES 32843476 P/ ABRIR A CS.CL ALEGA TER RECEBIDO O PRODT NO SABADO(03/11/05) C/ DEFEITO.",
-        "defeito_estado_prod": "TEM UM FERRO Q RASGA O TECIDO QUANDO SE ABRE A POLTRONA",
-        "data_emissao": "2005-12-07T00:00:00.000000Z",
-        "asteca_end_cliente": null,
-        "asteca_motivo": {
-            "id_asteca_motivo": 8,
-            "denominacao": "DEFEITO DE FABRICAÇÃO"
-        },
-        "documento_fiscal": {
-            "id_documento_fiscal": 9924867,
-            "id_filial_saida": 515,
-            "id_filial_venda": 505,
-            "nome": "EDNA TORRES DE LIMA",
-            "cpf_cnpj": 92840116120,
-            "num_doc_fiscal": 312228,
-            "serie_doc_fiscal": 0,
-            "data_emissao": "2005-11-30T14:09:48.000000Z",
-            "item_doc_fiscal": {
-                "id_ld": 2
-            }
-        },
-        "produto": [
-            {
-                "id_produto": 12304,
-                "resumida": "POLTRONA DIPLOMATA RECL TC GOB AZUL",
-                "fornecedor": {
-                    "id_fornecedor": 1296,
-                    "cliente": {
-                        "id_cliente": 12950,
-                        "nome": "ULTRA-FLEX COLCHOES IND BRAS LTDA"
+        {
+            "id_asteca": 687924,
+            "tipo_asteca": 1,
+            "id_filial_registro": 500,
+            "observacao": "PEÇA QUEBRADA",
+            "defeito_estado_prod": "CÓD.15520 - PUXADOR ALUMINIO",
+            "data_emissao": "2021-10-07T00:00:00.000000Z",
+            "asteca_end_cliente": {
+                "id_asteca_end_cli": 1044590,
+                "logradouro": "RUA GENERAL OSORIO NR 1 QD-Y1 LT-15",
+                "localidade": "GOIANIA",
+                "numero": 1,
+                "complemento": "QD-Y1 LT-15",
+                "bairro": "VILA CONCORDIA",
+                "uf": "GO",
+                "cep": 74770350,
+                "ponto_referencia_1": null,
+                "ponto_referencia_2": null,
+                "ddd": 62,
+                "telefone": 994907199
+            },
+            "asteca_motivo": null,
+            "documento_fiscal": {
+                "id_documento_fiscal": 62397354,
+                "id_filial_saida": 515,
+                "id_filial_venda": 1748,
+                "id_cliente": "13924252",
+                "nome": "LYLIAN TAVARES PEREIRA",
+                "cpf_cnpj": "70807959154",
+                "num_doc_fiscal": 4569496,
+                "serie_doc_fiscal": "10",
+                "data_emissao": "2020-02-13T13:35:43.000000Z",
+                "item_doc_fiscal": {
+                    "id_ld": 4
+                },
+                "cliente": {
+                    "id_cliente": 13924252,
+                    "cnpj_cpf": "70807959154",
+                    "nome": "LYLIAN TAVARES PEREIRA"
+                }
+            },
+            "produto": [
+                {
+                    "id_produto": 58414,
+                    "resumida": "G ROUPA GHAIA STATUS 2P C/ESP PES AME/BC",
+                    "id_fornecedor": "14584",
+                    "situacao": "1",
+                    "cod_barra": "7908051409731",
+                    "marca": null,
+                    "data_cadastro": "2019-04-30 10:39:43",
+                    "pivot": {
+                        "id_comp_est": "120088",
+                        "id_produto": "58414"
+                    },
+                    "fornecedores": [
+                        {
+                            "id_fornecedor": 14584,
+                            "enviado": "1",
+                            "cli_forn_principal": null,
+                            "cliente": {
+                                "id_cliente": 7433048,
+                                "nome": "MOVEIS BOM PASTOR LTDA",
+                                "e_mail": "nfe@bompastor.ind.br",
+                                "cnpj_cpf": "01610917000332"
+                            }
+                        },
+                        {
+                            "id_fornecedor": 14584,
+                            "enviado": "1",
+                            "cli_forn_principal": null,
+                            "cliente": {
+                                "id_cliente": 5580205,
+                                "nome": "MOVEIS BOM PASTOR LTDA",
+                                "e_mail": "nfe@bompastor.ind.br",
+                                "cnpj_cpf": "01610917000413"
+                            }
+                        },
+                        {
+                            "id_fornecedor": 14584,
+                            "enviado": "1",
+                            "cli_forn_principal": null,
+                            "cliente": {
+                                "id_cliente": 4668618,
+                                "nome": "MOVEIS BOM PASTOR LTDA",
+                                "e_mail": "nfe@bompastor.ind.br",
+                                "cnpj_cpf": "01610917000251"
+                            }
+                        },
+                        {
+                            "id_fornecedor": 14584,
+                            "enviado": "2",
+                            "cli_forn_principal": null,
+                            "cliente": {
+                                "id_cliente": 3543535,
+                                "nome": "MOVEIS BOM PASTOR LTDA",
+                                "e_mail": "nfe@bompastor.ind.br",
+                                "cnpj_cpf": "01610917000170"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "funcionario": [
+                {
+                    "id_funcionario": 1031386,
+                    "nome": "LYLIAN TAVARES PEREIRA"
+                }
+            ],
+            "pendencia": [
+                {
+                    "id_tipo_pendencia": 3622,
+                    "descricao": "PEDIDO DE PEÇAS AO PULMÃO",
+                    "situacao": "1",
+                    "usr_cria": "18000",
+                    "data_cria": "2016-06-13 09:18:48",
+                    "usr_alt": "18331",
+                    "data_alt": "2019-09-09 10:36:50",
+                    "tipo_registro": "1",
+                    "pivot": {
+                        "id_asteca": "687924",
+                        "id_tipo_pendencia": "3622"
+                    }
+                },
+                {
+                    "id_tipo_pendencia": 3622,
+                    "descricao": "PEDIDO DE PEÇAS AO PULMÃO",
+                    "situacao": "1",
+                    "usr_cria": "18000",
+                    "data_cria": "2016-06-13 09:18:48",
+                    "usr_alt": "18331",
+                    "data_alt": "2019-09-09 10:36:50",
+                    "tipo_registro": "1",
+                    "pivot": {
+                        "id_asteca": "687924",
+                        "id_tipo_pendencia": "3622"
                     }
                 }
-            }
-        ],
-        "funcionario": [
-            {
-                "id_funcionario": 10481,
-                "nome": "LUCIANA COELHO GUIMARAES"
-            }
-        ]
-    },
-    {
-        "id_asteca": 257,
-        "tipo_asteca": null,
-        "id_filial_registro": 11,
-        "observacao": null,
-        "defeito_estado_prod": "O VIDRO DA GAVETA FOI QUEBRADO,O MONTADOR DISSE QUE VOLTARIA P/TROCAR A PECA MAIS NAO VOLTOU",
-        "data_emissao": "2005-12-07T00:00:00.000000Z",
-        "asteca_end_cliente": null,
-        "asteca_motivo": {
-            "id_asteca_motivo": 7,
-            "denominacao": "MERC. DANIFICADA POR DEFICIÊNCIA DA EMB. / FALTA ACESSORIOS"
-        },
-        "documento_fiscal": {
-            "id_documento_fiscal": 9835714,
-            "id_filial_saida": 515,
-            "id_filial_venda": 11,
-            "nome": "NILSA LUCIA CASSIMIRO DE CASTRO",
-            "cpf_cnpj": 85405680125,
-            "num_doc_fiscal": 298681,
-            "serie_doc_fiscal": 0,
-            "data_emissao": "2005-11-09T11:44:13.000000Z",
-            "item_doc_fiscal": {
-                "id_ld": 0
-            }
-        },
-        "produto": [
-            {
-                "id_produto": 10608,
-                "resumida": "MESA TELEFONE 1003 P.MOGNO",
-                "fornecedor": {
-                    "id_fornecedor": 3074,
-                    "cliente": {
-                        "id_cliente": 2703469,
-                        "nome": "EDCLAU MOVEIS LTDA                 "
-                    }
-                }
-            }
-        ],
-        "funcionario": [
-            {
-                "id_funcionario": 1076,
-                "nome": "JUNIO CESAR DO NASCIMENTO"
-            }
-        ]
-    },
-    {
-        "id_asteca": 258,
-        "tipo_asteca": null,
-        "id_filial_registro": 500,
-        "observacao": null,
-        "defeito_estado_prod": "FALTOU 1 DOBRADIÇA",
-        "data_emissao": "2005-12-07T00:00:00.000000Z",
-        "asteca_end_cliente": null,
-        "asteca_motivo": {
-            "id_asteca_motivo": 11,
-            "denominacao": "FALTA ACESSORIO/PEÇA NA EMBALAGEM"
-        },
-        "documento_fiscal": {
-            "id_documento_fiscal": 9929132,
-            "id_filial_saida": 515,
-            "id_filial_venda": 1,
-            "nome": "RENIR CAMILO DE SOUZA",
-            "cpf_cnpj": 23429194172,
-            "num_doc_fiscal": 312930,
-            "serie_doc_fiscal": 0,
-            "data_emissao": "2005-12-01T09:03:50.000000Z",
-            "item_doc_fiscal": {
-                "id_ld": 0
-            }
-        },
-        "produto": [
-            {
-                "id_produto": 8489,
-                "resumida": "COZ MUNICH 3PCS (P6PV/MAP2P/AP3P) BC",
-                "fornecedor": {
-                    "id_fornecedor": 288,
-                    "cliente": {
-                        "id_cliente": 1583,
-                        "nome": "COLOR VISAO DO BRASIL INDUSTRIA ACRILICA LIMITADA"
-                    }
-                }
-            }
-        ],
-        "funcionario": [
-            {
-                "id_funcionario": 3539,
-                "nome": "SIRLEY DA SILVA OLIVEIRA"
-            }
-        ]
-    },
-    {
-        "id_asteca": 259,
-        "tipo_asteca": null,
-        "id_filial_registro": 500,
-        "observacao": null,
-        "defeito_estado_prod": "TROCAR 1 PORTA ESQUERDA DE BAIXO ( AMASSADA)",
-        "data_emissao": "2005-12-07T00:00:00.000000Z",
-        "asteca_end_cliente": null,
-        "asteca_motivo": {
-            "id_asteca_motivo": 2,
-            "denominacao": "MAU USO CONSUMIDOR"
-        },
-        "documento_fiscal": {
-            "id_documento_fiscal": 9943689,
-            "id_filial_saida": 515,
-            "id_filial_venda": 12,
-            "nome": "ALMIRA BRAZ MASCARENHAS",
-            "cpf_cnpj": 8316252104,
-            "num_doc_fiscal": 315083,
-            "serie_doc_fiscal": 0,
-            "data_emissao": "2005-12-04T15:46:45.000000Z",
-            "item_doc_fiscal": {
-                "id_ld": 2
-            }
-        },
-        "produto": [
-            {
-                "id_produto": 10371,
-                "resumida": "PANELEIRO DUP STILE TOP 4065 6PT VD BC97",
-                "fornecedor": {
-                    "id_fornecedor": 17,
-                    "cliente": {
-                        "id_cliente": 15779,
-                        "nome": "MOVEIS BERTOLINI S.A.              "
-                    }
-                }
-            }
-        ],
-        "funcionario": [
-            {
-                "id_funcionario": 3539,
-                "nome": "SIRLEY DA SILVA OLIVEIRA"
-            }
-        ]
-    },
-    {
-        "id_asteca": 260,
-        "tipo_asteca": null,
-        "id_filial_registro": 500,
-        "observacao": null,
-        "defeito_estado_prod": "FALTOU A LATERAL N. 9  ( REPETIU A N.10 ) ESTÁ MONTADO PARCILAMENTE",
-        "data_emissao": "2005-12-07T00:00:00.000000Z",
-        "asteca_end_cliente": null,
-        "asteca_motivo": {
-            "id_asteca_motivo": 8,
-            "denominacao": "DEFEITO DE FABRICAÇÃO"
-        },
-        "documento_fiscal": {
-            "id_documento_fiscal": 9943282,
-            "id_filial_saida": 515,
-            "id_filial_venda": 5,
-            "nome": "WELIO MOURA DO NASCIMENTO",
-            "cpf_cnpj": 47211474149,
-            "num_doc_fiscal": 314990,
-            "serie_doc_fiscal": 0,
-            "data_emissao": "2005-12-04T11:47:28.000000Z",
-            "item_doc_fiscal": {
-                "id_ld": 0
-            }
-        },
-        "produto": [
-            {
-                "id_produto": 12143,
-                "resumida": "MESA COMP PRATIKA 4030 P.TABACO",
-                "fornecedor": {
-                    "id_fornecedor": 212,
-                    "cliente": {
-                        "id_cliente": 1568,
-                        "nome": "MOVEIS PROVINCIA IND E COM LTDA    "
-                    }
-                }
-            }
-        ],
-        "funcionario": [
-            {
-                "id_funcionario": 3539,
-                "nome": "SIRLEY DA SILVA OLIVEIRA"
-            }
-        ]
-    }
-]''';
+            ]
+        },]''';
 
-    test('Verifica a busca de astecas', () async {
+    test('teste de busca de astecas', () async {
       when(api.get(any))
           .thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final resposta = await repository.buscar(1);
