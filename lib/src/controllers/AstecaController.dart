@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
 
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
@@ -104,8 +104,7 @@ class AstecaController {
     String? nome = '';
     value!.split(" ").forEach((element) {
       if (element.length > 3) {
-        nome = nome! +
-            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+        nome = nome! + " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
         nome = nome! + " ${element.toString().toLowerCase()}";
       }

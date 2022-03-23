@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/PedidoEntradaController.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
@@ -46,8 +46,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
       });
       //parei aqui
 
-      List retorno = await controller.repository.buscarTodos(
-          controller.pagina.atual,
+      List retorno = await controller.repository.buscarPedidosEntrada(controller.pagina.atual,
           idPedido: controller.idPedidoEntrada,
           dataInicio: controller.dataInicio,
           dataFim: controller.dataFim,
@@ -151,8 +150,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
           return ListView.builder(
               itemCount: controller.pedidosEntrada.length,
               itemBuilder: (context, index) {
-                return _buildListItem(
-                    controller.pedidosEntrada, index, context);
+                return _buildListItem(controller.pedidosEntrada, index, context);
               });
         }
 
@@ -167,8 +165,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(
-      List<PedidoEntradaModel> pedido, int index, BuildContext context) {
+  Widget _buildListItem(List<PedidoEntradaModel> pedido, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_responsive.isMobile(constraints.maxWidth)) {
@@ -263,8 +260,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
 
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context,
-                '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
+            Navigator.pushNamed(context, '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -281,8 +277,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                 ],
                 border: Border(
                   left: BorderSide(
-                    color:
-                        situacao(controller.pedidosEntrada[index].dataEmissao!),
+                    color: situacao(controller.pedidosEntrada[index].dataEmissao!),
                     width: 7.0,
                   ),
                 ),
@@ -345,10 +340,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             children: [
                               pedido[index].idPedidoEntrada != null
                                   ? TextComponent(
-                                      '#' +
-                                          pedido[index]
-                                              .idPedidoEntrada
-                                              .toString(),
+                                      '#' + pedido[index].idPedidoEntrada.toString(),
                                     )
                                   : Container()
                             ],
@@ -357,22 +349,13 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                         Expanded(
                             flex: 4,
                             child: TextComponent(
-                              pedido[index]
-                                  .asteca!
-                                  .compEstProd!
-                                  .first
-                                  .produto!
-                                  .fornecedores!
-                                  .first
-                                  .cliente!
-                                  .nome!,
+                              pedido[index].asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome!,
                             )),
                         Expanded(
                             flex: 2,
                             child: pedido[index].dataEmissao != null
                                 ? TextComponent(
-                                    DateFormat('dd/MM/yyyy')
-                                        .format(pedido[index].dataEmissao!),
+                                    DateFormat('dd/MM/yyyy').format(pedido[index].dataEmissao!),
                                   )
                                 : Container()),
                         Expanded(
@@ -407,17 +390,13 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             )),
                         Expanded(
                             flex: 2,
-                            child: _buildSituacaoPedido(
-                                        pedido[index].situacao) !=
-                                    null
+                            child: _buildSituacaoPedido(pedido[index].situacao) != null
                                 ? _buildSituacaoPedido(pedido[index].situacao)
                                 : Container()),
                         Expanded(
                             flex: 3,
-                            child: TextComponent(
-                                pedido[index].valorTotal != null
-                                    ? controller.formatter
-                                        .format(pedido[index].valorTotal)
+                            child: TextComponent(pedido[index].valorTotal != null
+                                    ? controller.formatter.format(pedido[index].valorTotal)
                                     : controller.formatter.format(0)
                                 // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
                                 ))
@@ -507,8 +486,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                   Situacao(id: 2, descricao: 'Pendente'),
                                   Situacao(id: 3, descricao: 'Concluído'),
                                   Situacao(id: 4, descricao: 'Cancelado')
-                                ].map<DropdownMenuItem<Situacao>>(
-                                    (Situacao value) {
+                                ].map<DropdownMenuItem<Situacao>>((Situacao value) {
                                   return DropdownMenuItem<Situacao>(
                                     value: value,
                                     child: TextComponent(value.descricao!),
@@ -528,8 +506,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                controller.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                controller.dataInicio = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '24/02/2022',
@@ -543,8 +520,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             maxLines: 1,
                             onSaved: (value) {
                               if (value.length == 10) {
-                                controller.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
+                                controller.dataFim = DateFormat("dd/MM/yyyy").parse(value);
                               }
                             },
                             hintText: '25/02/2022',
@@ -560,10 +536,8 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                       children: [
                         ButtonComponent(
                             onPressed: () {
-                              controller.filtroExpandidoFormKey.currentState!
-                                  .save();
-                              controller.filtroExpandidoFormKey.currentState!
-                                  .reset();
+                              controller.filtroExpandidoFormKey.currentState!.save();
+                              controller.filtroExpandidoFormKey.currentState!.reset();
                               buscarTodas();
 
                               setState(() {

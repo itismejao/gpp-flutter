@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
-import 'package:gpp/src/repositories/PedidoEntradaRepository.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
+import 'package:gpp/src/repositories/pedido_entrada_repository.dart';
 import 'package:intl/intl.dart';
 
 class PedidoEntradaController {

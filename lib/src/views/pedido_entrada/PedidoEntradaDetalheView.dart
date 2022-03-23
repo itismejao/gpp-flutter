@@ -18,8 +18,7 @@ class PedidoEntradaDetalheView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PedidoEntradaDetalheViewState createState() =>
-      _PedidoEntradaDetalheViewState();
+  _PedidoEntradaDetalheViewState createState() => _PedidoEntradaDetalheViewState();
 }
 
 class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
@@ -30,7 +29,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
     setState(() {
       controller.carregado = false;
     });
-    controller.pedidoEntrada = await controller.repository.buscar(widget.id);
+    controller.pedidoEntrada = await controller.repository.buscarPedidoEntrada(widget.id);
 
     setState(() {
       controller.carregado = true;
@@ -48,8 +47,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
     buscar();
   }
 
-  Widget _buildListItem(List<ItemPedidoEntradaModel> itensPedido, int index,
-      BuildContext context) {
+  Widget _buildListItem(List<ItemPedidoEntradaModel> itensPedido, int index, BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -60,8 +58,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Container(
-                    color:
-                        (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                    color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Column(children: [
@@ -70,10 +67,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                           children: [
                             Expanded(
                               child: TextComponent(
-                                '#' +
-                                    itensPedido[index]
-                                        .idItemPedidoEntrada
-                                        .toString(),
+                                '#' + itensPedido[index].idItemPedidoEntrada.toString(),
                               ),
                             ),
                             Expanded(
@@ -87,17 +81,12 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                             )),
                             Expanded(
                               child: TextComponent(
-                                  itensPedido[index].custo != null
-                                      ? controller.formatter
-                                          .format(itensPedido[index].custo)
-                                      : ''),
+                                  itensPedido[index].custo != null ? controller.formatter.format(itensPedido[index].custo) : ''),
                             ),
                             Expanded(
                                 child: TextComponent(
                               itensPedido[index].custo != null
-                                  ? controller.formatter.format(
-                                      (itensPedido[index].custo! *
-                                          itensPedido[index].quantidade!))
+                                  ? controller.formatter.format((itensPedido[index].custo! * itensPedido[index].quantidade!))
                                   : '',
                             )),
                           ],
@@ -119,8 +108,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
   _buildSituacaoPedido(value) {
     if (value == 1) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.blue, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -131,8 +119,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
       );
     } else if (value == 2) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.orange, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -143,8 +130,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
       );
     } else if (value == 3) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.green, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -155,8 +141,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
       );
     } else if (value == 4) {
       return Container(
-        decoration: BoxDecoration(
-            color: Colors.red, borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(5)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
           child: TextComponent(
@@ -175,227 +160,180 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
           ? Padding(
               padding: const EdgeInsets.all(24.0),
               child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [TitleComponent('Pedido de entrada'), _buildSituacaoPedido(controller.pedidoEntrada.situacao)],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TitleComponent('Pedido de entrada'),
-                          _buildSituacaoPedido(
-                              controller.pedidoEntrada.situacao)
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InputComponent(
-                              enable: false,
-                              label: 'ID',
-                              initialValue: controller
-                                  .pedidoEntrada.idPedidoEntrada
-                                  .toString(),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: InputComponent(
-                              enable: false,
-                              label: 'CPF/CNPJ',
-                              initialValue: controller
-                                      .pedidoEntrada
-                                      .asteca!
-                                      .compEstProd!
-                                      .first
-                                      .produto!
-                                      .fornecedores!
-                                      .first
-                                      .cliente!
-                                      .cpfCnpj ??
-                                  '',
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: InputComponent(
-                              enable: false,
-                              label: 'Fornecedor',
-                              initialValue: controller
-                                      .pedidoEntrada
-                                      .asteca!
-                                      .compEstProd!
-                                      .first
-                                      .produto!
-                                      .fornecedores!
-                                      .first
-                                      .cliente!
-                                      .nome ??
-                                  '',
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InputComponent(
-                                enable: false,
-                                label: 'Funcionário',
-                                initialValue: controller
-                                        .pedidoEntrada
-                                        .funcionario!
-                                        .clienteFunc!
-                                        .cliente!
-                                        .nome ??
-                                    ''),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: InputComponent(
-                              enable: false,
-                              label: 'Data de emissão',
-                              initialValue: maskFormatter
-                                  .dataFormatter(
-                                      value: controller
-                                          .pedidoEntrada.dataEmissao
-                                          .toString())
-                                  .getMaskedText(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InputComponent(
-                                enable: false,
-                                label: 'Valor total R\$',
-                                initialValue: controller.formatter.format(
-                                    controller.pedidoEntrada.valorTotal)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [TitleComponent('Asteca')],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: InputComponent(
-                                  enable: false,
-                                  label: 'ID',
-                                  initialValue: controller
-                                              .pedidoEntrada.asteca!.idAsteca ==
-                                          null
-                                      ? ''
-                                      : controller
-                                          .pedidoEntrada.asteca!.idAsteca
-                                          .toString()),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            ButtonComponent(
-                              icon: Icon(
-                                Icons.wysiwyg_outlined,
-                                color: Colors.white,
-                              ),
-                              color: secundaryColor,
-                              onPressed: () {
-                                Navigator.pushNamed(context,
-                                    "/astecas/${controller.pedidoEntrada.asteca!.idAsteca}");
-                              },
-                              text: 'Ver mais',
-                            )
-                          ]),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [TitleComponent('Itens do pedido')],
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextComponent(
-                              'ID',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Expanded(
-                              flex: 4,
-                              child: TextComponent(
-                                'Descrição',
-                                fontWeight: FontWeight.bold,
-                              )),
-                          Expanded(
-                              child: TextComponent(
-                            'Quantidade',
-                            fontWeight: FontWeight.bold,
-                          )),
-                          Expanded(
-                              child: TextComponent(
-                            'Valor R\$',
-                            fontWeight: FontWeight.bold,
-                          )),
-                          Expanded(
-                              child: TextComponent(
-                            'Subtotal R\$',
-                            fontWeight: FontWeight.bold,
-                          )),
-                        ],
-                      ),
-                      Divider(),
-                      Container(
-                        height: 400,
-                        child: ListView.builder(
-                          itemCount: controller
-                              .pedidoEntrada.itensPedidoEntrada!.length,
-                          itemBuilder: (context, index) {
-                            return _buildListItem(
-                                controller.pedidoEntrada.itensPedidoEntrada!,
-                                index,
-                                context);
-                          },
+                      Expanded(
+                        child: InputComponent(
+                          enable: false,
+                          label: 'ID',
+                          initialValue: controller.pedidoEntrada.idPedidoEntrada.toString(),
                         ),
                       ),
-                      Row(
-                        children: [
-                          ButtonComponent(
-                              color: primaryColor,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              text: 'Voltar')
-                        ],
-                      )
-                    ]),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                          enable: false,
+                          label: 'CPF/CNPJ',
+                          initialValue:
+                              controller.pedidoEntrada.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.cpfCnpj ??
+                                  '',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                          enable: false,
+                          label: 'Fornecedor',
+                          initialValue:
+                              controller.pedidoEntrada.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome ??
+                                  '',
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                            enable: false,
+                            label: 'Funcionário',
+                            initialValue: controller.pedidoEntrada.funcionario!.clienteFunc!.cliente!.nome ?? ''),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                          enable: false,
+                          label: 'Data de emissão',
+                          initialValue:
+                              maskFormatter.dataFormatter(value: controller.pedidoEntrada.dataEmissao.toString()).getMaskedText(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InputComponent(
+                            enable: false,
+                            label: 'Valor total R\$',
+                            initialValue: controller.formatter.format(controller.pedidoEntrada.valorTotal)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [TitleComponent('Asteca')],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.end, children: [
+                    Expanded(
+                      child: InputComponent(
+                          enable: false,
+                          label: 'ID',
+                          initialValue: controller.pedidoEntrada.asteca!.idAsteca == null
+                              ? ''
+                              : controller.pedidoEntrada.asteca!.idAsteca.toString()),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    ButtonComponent(
+                      icon: Icon(
+                        Icons.wysiwyg_outlined,
+                        color: Colors.white,
+                      ),
+                      color: secundaryColor,
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/astecas/${controller.pedidoEntrada.asteca!.idAsteca}");
+                      },
+                      text: 'Ver mais',
+                    )
+                  ]),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [TitleComponent('Itens do pedido')],
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextComponent(
+                          'ID',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: TextComponent(
+                            'Descrição',
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Expanded(
+                          child: TextComponent(
+                        'Quantidade',
+                        fontWeight: FontWeight.bold,
+                      )),
+                      Expanded(
+                          child: TextComponent(
+                        'Valor R\$',
+                        fontWeight: FontWeight.bold,
+                      )),
+                      Expanded(
+                          child: TextComponent(
+                        'Subtotal R\$',
+                        fontWeight: FontWeight.bold,
+                      )),
+                    ],
+                  ),
+                  Divider(),
+                  Container(
+                    height: 400,
+                    child: ListView.builder(
+                      itemCount: controller.pedidoEntrada.itensPedidoEntrada!.length,
+                      itemBuilder: (context, index) {
+                        return _buildListItem(controller.pedidoEntrada.itensPedidoEntrada!, index, context);
+                      },
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      ButtonComponent(
+                          color: primaryColor,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          text: 'Voltar')
+                    ],
+                  )
+                ]),
               ))
           : LoadingComponent(),
     );

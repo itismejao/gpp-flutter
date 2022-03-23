@@ -9,9 +9,9 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
 
-import 'package:gpp/src/repositories/PedidoEntradaRepository.dart';
+import 'package:gpp/src/repositories/pedido_entrada_repository.dart';
 
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
@@ -104,9 +104,8 @@ void main() {
 }''';
 
     test('Verifica a busca de pedidos de entrada', () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final resposta = await repository.buscarTodos(1);
+      when(api.get(any)).thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      final resposta = await repository.buscarPedidosEntrada(1);
       expect(resposta, isA<List>());
     });
 
@@ -158,18 +157,14 @@ void main() {
 }
       ''';
 
-    test(
-        'Verifica a busca de pedidos de entrada utilizando o id como parâmetro',
-        () async {
-      when(api.get(any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
-      final resposta = await repository.buscar(1);
+    test('Verifica a busca de pedidos de entrada utilizando o id como parâmetro', () async {
+      when(api.get(any)).thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      final resposta = await repository.buscarPedidoEntrada(1);
       expect(resposta, isA<PedidoEntradaModel>());
     });
 
     test('Verifica a criação do pedido de entrada', () async {
-      when(api.post(any, any))
-          .thenAnswer((realInvocation) async => Response(dataReceived, 200));
+      when(api.post(any, any)).thenAnswer((realInvocation) async => Response(dataReceived, 200));
       final resposta = await repository.criar(new PedidoEntradaModel());
       expect(resposta, isA<PedidoEntradaModel>());
     });

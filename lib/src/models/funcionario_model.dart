@@ -8,16 +8,13 @@ class FuncionarioModel {
 
   FuncionarioModel.fromJson(Map<String, dynamic> json) {
     idFuncionario = json['id_funcionario'];
-    clienteFunc = json['cliente_func'] != null
-        ? ClienteFuncModel.fromJson(json['cliente_func'])
-        : null;
+    clienteFunc = json['cliente_func'] != null ? ClienteFuncModel.fromJson(json['cliente_func']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_funcionario'] = this.idFuncionario;
-    data['cliente_func'] =
-        this.clienteFunc != null ? this.clienteFunc!.toJson() : null;
+    data['cliente_func'] = this.clienteFunc != null ? this.clienteFunc!.toJson() : null;
     return data;
   }
 }

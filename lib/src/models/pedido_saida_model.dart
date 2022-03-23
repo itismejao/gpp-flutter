@@ -41,14 +41,9 @@ class PedidoSaidaModel {
       dataEmissao: DateTime.tryParse(json['data_emissao']),
       situacao: json['situacao'],
       valorTotal: json['valor_total'],
-      funcionario: json['funcionario'] != null
-          ? FuncionarioModel.fromJson((json['funcionario'] as List).first)
-          : null,
-      cliente: json['cliente'] != null
-          ? ClienteModel.fromJson(json['cliente'])
-          : null,
-      asteca:
-          json['asteca'] != null ? AstecaModel.fromJson(json['asteca']) : null,
+      funcionario: json['funcionario'] != null ? FuncionarioModel.fromJson(json['funcionario']) : null,
+      cliente: json['cliente'] != null ? ClienteModel.fromJson(json['cliente']) : null,
+      asteca: json['asteca'] != null ? AstecaModel.fromJson(json['asteca']) : null,
       itemsPedidoSaida: json['items_pedido_saida'] != null
           ? json['items_pedido_saida'].map<ItemPedidoSaidaModel>((data) {
               return ItemPedidoSaidaModel.fromJson(data);
@@ -69,8 +64,7 @@ class PedidoSaidaModel {
     data['id_funcionario'] = funcionario!.idFuncionario;
     data['cliente'] = cliente!.toJson();
 
-    data['items_pedido_saida'] =
-        itemsPedidoSaida!.map((e) => e.toJson()).toList();
+    data['items_pedido_saida'] = itemsPedidoSaida!.map((e) => e.toJson()).toList();
     return data;
   }
 }
