@@ -6,7 +6,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class EmailPedidoEntradaRepository {
-  ApiService api = gppApi;
+  late ApiService api;
+
+  EmailPedidoEntradaRepository() {
+    api = ApiService();
+  }
 
   Future<bool> criar(PedidoEntradaModel pedidoEntrada) async {
     Response response =

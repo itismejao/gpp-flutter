@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 
 import 'package:http/http.dart';
 
@@ -10,24 +10,14 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class AstecaRepository {
-  ApiService api = gppApi;
-  String endpoint = '/asteca';
+  late ApiService api;
   PendenciaRepository pendencia = PendenciaRepository();
 
-  Future<AstecaModel> buscar(int id) async {
-    Response response = await api.get(endpoint + '/' + id.toString());
-
-    if (response.statusCode == StatusCode.OK) {
-      var data = jsonDecode(response.body);
-
-      return AstecaModel.fromJson(data);
-    } else {
-      var error = jsonDecode(response.body)['error'];
-      throw error;
-    }
+  AstecaRepository() {
+    api = ApiService();
   }
 
-  Future<List> buscarTodas(int pagina,
+  Future<List> buscarAstecas(int pagina,
       {AstecaModel? filtroAsteca,
       String? pendencia,
       DateTime? dataInicio,
@@ -46,7 +36,7 @@ class AstecaRepository {
     };
 
     Response response =
-        await api.get(endpoint, queryParameters: queryParameters);
+        await api.get('/astecas', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -60,6 +50,19 @@ class AstecaRepository {
       return [astecas, pagina];
     } else {
       var error = json.decode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<AstecaModel> buscar(int id) async {
+    Response response = await api.get('/astecas/${id.toString()}');
+
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return AstecaModel.fromJson(data);
+    } else {
+      var error = jsonDecode(response.body)['error'];
       throw error;
     }
   }
@@ -261,7 +264,11 @@ class AstecaRepository {
 }
 
 class PendenciaRepository {
-  ApiService api = gppApi;
+  late ApiService api;
+
+  PendenciaRepository() {
+    api = ApiService();
+  }
 
   Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
     Response response = await api.get('/astecas/pendencias');

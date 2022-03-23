@@ -16,8 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/controllers/AstecaController.dart';
 
-import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/CheckboxComponent.dart';
@@ -428,7 +428,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: TextComponent(
-                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.produto!.first.fornecedor!.cliente!.nome}'),
+                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.produto!.first.fornecedores!.first.cliente!.nome}'),
                         ),
                       ],
                     ),
@@ -1397,12 +1397,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                     SizedBox(
                                       height: 8,
                                     ),
-                                    TextComponent(
-                                      'Data ${DateFormat('dd/MM/yyyy').format(astecaController.asteca.astecaTipoPendencias![index].dataCria!)}',
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.normal,
-                                      fontStyle: FontStyle.italic,
-                                    ),
                                   ],
                                 ),
                               ),
@@ -1449,7 +1443,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               child: InputComponent(
                 enable: false,
                 label: 'Nº Asteca',
-                initialValue: astecaController.asteca.idAsteca,
+                initialValue: astecaController.asteca.idAsteca.toString(),
               ),
             ),
             Container(
@@ -1837,10 +1831,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.camelCaseAll(
-                      astecaController.asteca.funcionario!.nome == null
-                          ? ''
-                          : astecaController.asteca.funcionario!.nome),
+                  initialValue: astecaController.camelCaseAll(astecaController
+                              .asteca.funcionario!.clienteFunc!.cliente!.nome ==
+                          null
+                      ? ''
+                      : astecaController
+                          .asteca.funcionario!.clienteFunc!.cliente!.nome),
                 ),
               ),
             ],
@@ -2418,12 +2414,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'ID',
-                  initialValue: astecaController
-                              .asteca.produto?[0].fornecedor?.idFornecedor ==
+                  initialValue: astecaController.asteca.produto?[0]
+                              .fornecedores!.first.idFornecedor ==
                           null
                       ? ''
                       : astecaController
-                          .asteca.produto?[0].fornecedor?.idFornecedor
+                          .asteca.produto?[0].fornecedores!.first.idFornecedor
                           .toString(),
                 ),
               ),
@@ -2437,11 +2433,16 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue: astecaController.camelCaseAll(astecaController
-                              .asteca.produto?[0].fornecedor?.cliente?.nome ==
+                              .asteca
+                              .produto?[0]
+                              .fornecedores!
+                              .first
+                              .cliente
+                              ?.nome ==
                           null
                       ? ''
-                      : astecaController
-                          .asteca.produto?[0].fornecedor?.cliente?.nome),
+                      : astecaController.asteca.produto?[0].fornecedores!.first
+                          .cliente?.nome),
                 ),
               ),
               SizedBox(

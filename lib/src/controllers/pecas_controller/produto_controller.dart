@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/models/pecas_model/produto_model.dart';
+import 'package:gpp/src/models/produto_model.dart';
 import 'package:gpp/src/repositories/pecas_repository/produto_repositoy.dart';
 
 class ProdutoController {

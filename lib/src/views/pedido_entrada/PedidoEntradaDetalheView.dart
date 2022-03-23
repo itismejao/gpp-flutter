@@ -212,7 +212,8 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                                       .asteca!
                                       .produto!
                                       .first
-                                      .fornecedor!
+                                      .fornecedores!
+                                      .first
                                       .cliente!
                                       .cpfCnpj ??
                                   '',
@@ -230,7 +231,8 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                                       .asteca!
                                       .produto!
                                       .first
-                                      .fornecedor!
+                                      .fornecedores!
+                                      .first
                                       .cliente!
                                       .nome ??
                                   '',
@@ -248,7 +250,11 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
                                 enable: false,
                                 label: 'Funcionário',
                                 initialValue: controller
-                                        .pedidoEntrada.funcionario!.nome ??
+                                        .pedidoEntrada
+                                        .funcionario!
+                                        .clienteFunc!
+                                        .cliente!
+                                        .nome ??
                                     ''),
                           ),
                           SizedBox(

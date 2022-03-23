@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/cliente_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';

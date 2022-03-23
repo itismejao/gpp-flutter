@@ -66,7 +66,7 @@ class GerarPedidoEntradaPDF {
                         style: pw.TextStyle(
                             fontSize: 12, fontWeight: pw.FontWeight.bold)),
                     pw.Text(
-                        'Nome do fornecedor: ${pedidoEntrada.asteca!.produto!.first.fornecedor!.cliente!.nome}',
+                        'Nome do fornecedor: ${pedidoEntrada.asteca!.produto!.first.fornecedores!.first.cliente!.nome}',
                         style: pw.TextStyle(
                             fontSize: 12, fontWeight: pw.FontWeight.bold)),
                   ]),

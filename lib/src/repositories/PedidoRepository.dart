@@ -7,7 +7,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PedidoRepository {
-  ApiService api = gppApi;
+  late ApiService api;
+
+  PedidoRepository() {
+    api = ApiService();
+  }
 
   Future<List> buscarTodos(int pagina,
       {int? idPedido,

@@ -1,25 +1,27 @@
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/asteca_end_cliente_model.dart';
-import 'package:gpp/src/models/asteca_motivo_model.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_end_cliente_model.dart';
+import 'package:gpp/src/models/asteca/asteca_motivo_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
 import 'package:gpp/src/models/produto_model.dart';
 
 class AstecaModel {
-  dynamic idAsteca;
-  int? tipoAsteca;
+  int? idAsteca;
+  AstecaMotivoModel? astecaMotivo;
+  int? tipoAsteca; //Defini se é cliente ou estoque
   int? idFilialRegistro;
   String? observacao;
   String? defeitoEstadoProd;
   DateTime? dataEmissao;
-  List<AstecaTipoPendenciaModel>? astecaTipoPendencias;
   AstecaEndClienteModel? astecaEndCliente;
-  AstecaMotivoModel? astecaMotivo;
   DocumentoFiscalModel? documentoFiscal;
   List<ProdutoModel>? produto;
   FuncionarioModel? funcionario;
   PedidoSaidaModel? pedidoSaida;
+
+  //Tabela pivot
+  List<AstecaTipoPendenciaModel>? astecaTipoPendencias;
 
   AstecaModel({
     this.idAsteca,

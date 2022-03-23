@@ -10,7 +10,11 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class DepartamentoRepository {
-  ApiService api = gppApi;
+  late ApiService api;
+
+  DepartamentoRepository() {
+    api = ApiService();
+  }
 
   String path = '/departamentos';
 

@@ -10,8 +10,11 @@ import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class UsuarioRepository {
-  ApiService api = gppApi;
+  late ApiService api;
 
+  UsuarioRepository() {
+    api = ApiService();
+  }
   String path = '/usuarios';
 
   Future<UsuarioModel> fetchUser(String id) async {

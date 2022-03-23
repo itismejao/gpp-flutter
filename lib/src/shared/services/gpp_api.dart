@@ -131,5 +131,3 @@ class ApiService {
     return response;
   }
 }
-
-final gppApi = ApiService();

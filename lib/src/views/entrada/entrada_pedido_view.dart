@@ -471,18 +471,19 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
 
       //Testa se fornecedor ja foi carregado e o carrrega caso não
       if (movimentoEntradaController.id_fornecedor == null) {
-        movimentoEntradaController.id_fornecedor =
-            pedidoEntradaBusca.asteca?.produto?[0].fornecedor?.idFornecedor;
+        movimentoEntradaController.id_fornecedor = pedidoEntradaBusca
+            .asteca?.produto?[0].fornecedores!.first.idFornecedor;
         setState(() {
           _controllerFornecedor.text = pedidoEntradaBusca
-                  .asteca?.produto?[0].fornecedor?.cliente?.nome ??
+                  .asteca?.produto?[0].fornecedores!.first.cliente?.nome ??
               '';
         });
       }
 
       //Testa se o fornecedor do pedido buscado é o mesmo do jaá indexado
       if (movimentoEntradaController.id_fornecedor ==
-          pedidoEntradaBusca.asteca?.produto?[0].fornecedor?.idFornecedor) {
+          pedidoEntradaBusca
+              .asteca?.produto?[0].fornecedores!.first.idFornecedor) {
         //Testa se o pedido ja foi adicionado
         if (pedidoEntradaController.pedidosEntrada.any((element) =>
             element.idPedidoEntrada == pedidoEntradaBusca.idPedidoEntrada)) {

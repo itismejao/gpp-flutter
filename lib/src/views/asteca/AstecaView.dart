@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:gpp/src/controllers/AstecaController.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 
-import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -39,7 +39,7 @@ class _AstecaViewState extends State<AstecaView> {
       setState(() {
         astecaController.carregado = false;
       });
-      var retorno = await astecaController.repository.buscarTodas(
+      var retorno = await astecaController.repository.buscarAstecas(
           astecaController.pagina.atual,
           filtroAsteca: astecaController.filtroAsteca,
           pendencia: astecaController.pendenciaFiltro,
@@ -67,7 +67,7 @@ class _AstecaViewState extends State<AstecaView> {
   }
 
   limparFiltro() {
-    astecaController.filtroAsteca.idAsteca = '';
+    astecaController.filtroAsteca.idAsteca = null;
     astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = '';
     astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = null;
     astecaController.dataInicio = null;

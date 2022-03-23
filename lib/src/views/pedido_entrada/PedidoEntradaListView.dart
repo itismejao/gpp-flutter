@@ -361,7 +361,8 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                   .asteca!
                                   .produto!
                                   .first
-                                  .fornecedor!
+                                  .fornecedores!
+                                  .first
                                   .cliente!
                                   .nome!,
                             )),
@@ -381,7 +382,8 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                               .asteca!
                                               .produto!
                                               .first
-                                              .fornecedor!
+                                              .fornecedores!
+                                              .first
                                               .cliente!
                                               .cpfCnpj
                                               .toString()) !=
@@ -392,7 +394,8 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                               .asteca!
                                               .produto!
                                               .first
-                                              .fornecedor!
+                                              .fornecedores!
+                                              .first
                                               .cliente!
                                               .cpfCnpj
                                               .toString())!

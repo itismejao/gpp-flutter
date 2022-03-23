@@ -9,7 +9,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
-import 'package:gpp/src/models/pecas_model/produto_model.dart';
+import 'package:gpp/src/models/produto_model.dart';
 
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -160,7 +160,7 @@ class _PecasListViewState extends State<PecasListView> {
     NotifyController notificacao = NotifyController(context: context);
 
     try {
-      if (pecaController.produto.id_produto == null) {
+      if (pecaController.produto.idProduto == null) {
         notificacao.alerta(
             'E necessário informa o produto para realizar a importação das peças');
       } else if (await notificacao.confirmacao(
@@ -168,7 +168,7 @@ class _PecasListViewState extends State<PecasListView> {
         adicionarProdutoPecas();
         //Chama o endpoint
         await pecaController.produtoRepository.inserirPecasProduto(
-            pecaController.produto.id_produto.toString(),
+            pecaController.produto.idProduto.toString(),
             pecaController.produto);
 
         //Limpa
@@ -262,7 +262,7 @@ class _PecasListViewState extends State<PecasListView> {
                                           key: UniqueKey(),
                                           initialValue: pecaController
                                                   .produto
-                                                  .fornecedor
+                                                  .fornecedores
                                                   ?.first
                                                   .cliente
                                                   ?.nome ??

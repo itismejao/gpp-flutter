@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
 
 import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
 import 'package:gpp/src/repositories/AstecaRepository.dart';
