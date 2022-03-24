@@ -12,8 +12,11 @@ import 'package:http/http.dart';
 
 class AutenticacaoRepository {
   String path = '/autenticacao';
+  late ApiService api;
 
-  ApiService api = gppApi;
+  AutenticacaoRepository() {
+    api = ApiService();
+  }
 
   Future<bool> criar(AutenticacaoModel autenticacao) async {
     Response response = await api.post(path, autenticacao.toJson());

@@ -6,11 +6,11 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PecasCorRepository {
-  ApiService api;
+  late ApiService api;
 
-  PecasCorRepository({
-    required this.api,
-  });
+  PecasCorRepository() {
+    this.api = ApiService();
+  }
 
   Future<bool> create(PecasCorModel pecasCorModel) async {
     print(jsonEncode(pecasCorModel.toJson()));
@@ -27,8 +27,7 @@ class PecasCorRepository {
   Future<bool> editar(PecasCorModel pecasCorModel) async {
     print(jsonEncode(pecasCorModel.toJson()));
 
-    Response response = await api.put(
-        '/peca-cor/${pecasCorModel.id_peca_cor}', pecasCorModel.toJson());
+    Response response = await api.put('/peca-cor/${pecasCorModel.id_peca_cor}', pecasCorModel.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -43,9 +42,7 @@ class PecasCorRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PecasCorModel> pecasCor = data
-          .map<PecasCorModel>((data) => PecasCorModel.fromJson(data))
-          .toList();
+      List<PecasCorModel> pecasCor = data.map<PecasCorModel>((data) => PecasCorModel.fromJson(data)).toList();
 
       return pecasCor;
     } else {
@@ -55,8 +52,7 @@ class PecasCorRepository {
   }
 
   Future<bool> excluir(PecasCorModel pecasCorModel) async {
-    Response response =
-        await api.delete('/peca-cor/' + pecasCorModel.id_peca_cor.toString());
+    Response response = await api.delete('/peca-cor/' + pecasCorModel.id_peca_cor.toString());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

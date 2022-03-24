@@ -3,7 +3,7 @@ import 'package:gpp/src/repositories/MotivoTrocaPecaRepository.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class MotivoTrocaPecaController {
-  MotivoTrocaPecaRepository repository = MotivoTrocaPecaRepository(api: gppApi);
+  MotivoTrocaPecaRepository repository = MotivoTrocaPecaRepository();
   bool isLoaded = false;
 
   late MotivoTrocaPecaModel motivoTrocaPeca = MotivoTrocaPecaModel();

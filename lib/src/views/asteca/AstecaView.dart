@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/AstecaController.dart';
+import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 
-import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -39,7 +39,7 @@ class _AstecaViewState extends State<AstecaView> {
       setState(() {
         astecaController.carregado = false;
       });
-      var retorno = await astecaController.repository.buscarTodas(
+      var retorno = await astecaController.repository.buscarAstecas(
           astecaController.pagina.atual,
           filtroAsteca: astecaController.filtroAsteca,
           pendencia: astecaController.pendenciaFiltro,
@@ -67,7 +67,7 @@ class _AstecaViewState extends State<AstecaView> {
   }
 
   limparFiltro() {
-    astecaController.filtroAsteca.idAsteca = '';
+    astecaController.filtroAsteca.idAsteca = null;
     astecaController.filtroAsteca.documentoFiscal!.cpfCnpj = '';
     astecaController.filtroAsteca.documentoFiscal!.numDocFiscal = null;
     astecaController.dataInicio = null;
@@ -79,8 +79,9 @@ class _AstecaViewState extends State<AstecaView> {
       astecaController.carregado = false;
     });
 
-    astecaController.astecaTipoPendencias =
-        await astecaController.repository.pendencia.buscarPendencias();
+    astecaController.astecaTipoPendencias = await astecaController
+        .astecaTipoPendenciaRepository
+        .buscarAstecaTIpoPendencias();
 
     setState(() {
       astecaController.carregado = true;
@@ -404,6 +405,7 @@ class ItemList extends StatelessWidget {
         onTap: () {
           // Navigator.pushNamed(
           //     context, '/astecas/' + asteca[index].idAsteca.toString());
+
           astecaDetalhe(asteca.idAsteca.toString());
         },
         child: Padding(
@@ -493,10 +495,10 @@ class ItemList extends StatelessWidget {
                     )),
                     Expanded(
                         flex: 2,
-                        child: asteca.astecaTipoPendencias!.isNotEmpty
-                            ? TextComponent(
-                                asteca.astecaTipoPendencias!.last.descricao ??
-                                    '')
+                        child: asteca.astecaPendencias != null
+                            ? TextComponent(asteca.astecaPendencias!.first
+                                    .astecaTipoPendencia!.descricao ??
+                                '')
                             : TextComponent('Aguardando pendência')),
                   ],
                 ),

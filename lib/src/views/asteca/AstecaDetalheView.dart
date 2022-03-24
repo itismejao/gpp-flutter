@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/main.dart';
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
-import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
+import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoEntradaPDF.dart';
 import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
-import 'package:gpp/src/controllers/AstecaController.dart';
+import 'package:gpp/src/controllers/asteca_controller.dart';
 
-import 'package:gpp/src/models/AstecaModel.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/CheckboxComponent.dart';
@@ -69,20 +69,21 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       astecaController.carregado = false;
     });
     astecaController.asteca =
-        await astecaController.repository.buscar(widget.id);
+        await astecaController.repository.buscarAsteca(widget.id);
 
     setState(() {
       astecaController.carregado = true;
     });
   }
 
-  buscarPendencias() async {
+  buscarAstecaTipoPendencias() async {
     setState(() {
       astecaController.carregado = false;
     });
 
-    astecaController.astecaTipoPendencias =
-        await astecaController.repository.pendencia.buscarPendencias();
+    astecaController.astecaTipoPendencias = await astecaController
+        .astecaTipoPendenciaRepository
+        .buscarAstecaTIpoPendencias();
 
     setState(() {
       astecaController.carregado = true;
@@ -104,7 +105,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   handlePendencia(
       AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
-    await astecaController.repository.pendencia.criar(asteca, pendencia);
+    await astecaController.astecaTipoPendenciaRepository
+        .inserirAstecaPendencia(asteca.idAsteca!, pendencia);
     //Atualiza asteca
     await buscar();
   }
@@ -326,7 +328,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
             astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
         PedidoSaidaModel pedidoComprovante = await astecaController
-            .pedidoRepository
+            .pedidoSaidaRepository
             .criar(astecaController.pedidoSaida);
 
         exibirComprovantePedidoSaida(pedidoComprovante);
@@ -428,7 +430,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: TextComponent(
-                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.produto!.first.fornecedor!.cliente!.nome}'),
+                              'Nome do fornecedor: ${pedidoConfirmacao.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome}'),
                         ),
                       ],
                     ),
@@ -559,8 +561,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       //Atualiza a pendência da asteca
       var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
 
-      await astecaController.repository.pendencia
-          .criar(astecaController.asteca, pendencia);
+      await astecaController.astecaTipoPendenciaRepository
+          .inserirAstecaPendencia(astecaController.asteca.idAsteca!, pendencia);
 
       //Exibi comprovante
       exibirComprovantePedidoEntrada(pedidoConfirmacao);
@@ -599,7 +601,8 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     });
     produtoController.produto.produtoPecas =
         await produtoController.produtoRepository.buscarProdutoPecas(
-            astecaController.asteca.produto!.first.idProduto!.toString());
+            astecaController.asteca.compEstProd!.first.produto!.idProduto!
+                .toString());
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });
@@ -635,7 +638,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     buscar();
 
     //Busca lista de pendências
-    buscarPendencias();
+    buscarAstecaTipoPendencias();
 
     //Buscar motivos de troca de peças
     buscarMotivosTrocaPeca();
@@ -822,21 +825,24 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                   bottom: 12),
                                               child: astecaController
                                                       .asteca
-                                                      .astecaTipoPendencias!
+                                                      .astecaPendencias!
                                                       .isNotEmpty
                                                   ? TextComponent(
                                                       astecaController
                                                               .asteca
-                                                              .astecaTipoPendencias!
+                                                              .astecaPendencias!
                                                               .last
+                                                              .astecaTipoPendencia!
                                                               .idTipoPendencia
                                                               .toString() +
                                                           ' - ' +
                                                           astecaController
                                                               .asteca
-                                                              .astecaTipoPendencias!
+                                                              .astecaPendencias!
                                                               .last
-                                                              .descricao!,
+                                                              .astecaTipoPendencia!
+                                                              .descricao
+                                                              .toString(),
                                                       color: Colors.white)
                                                   : const TextComponent(
                                                       'Aguardando Pendência',
@@ -1367,8 +1373,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ? Container(
                   height: 700,
                   child: ListView.builder(
-                    itemCount:
-                        astecaController.asteca.astecaTipoPendencias!.length,
+                    itemCount: astecaController.asteca.astecaPendencias!.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -1389,19 +1394,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     TextComponent(
-                                      'Pendência:  ${astecaController.asteca.astecaTipoPendencias![index].idTipoPendencia} - ${astecaController.asteca.astecaTipoPendencias![index].descricao}',
+                                      'Pendência:  ${astecaController.asteca.astecaPendencias![index].astecaTipoPendencia!.idTipoPendencia} - ${astecaController.asteca.astecaPendencias![index].astecaTipoPendencia!.descricao}',
                                       fontSize: 10,
                                       fontWeight: FontWeight.normal,
                                       fontStyle: FontStyle.italic,
                                     ),
                                     SizedBox(
                                       height: 8,
-                                    ),
-                                    TextComponent(
-                                      'Data ${DateFormat('dd/MM/yyyy').format(astecaController.asteca.astecaTipoPendencias![index].dataCria!)}',
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.normal,
-                                      fontStyle: FontStyle.italic,
                                     ),
                                   ],
                                 ),
@@ -1449,7 +1448,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               child: InputComponent(
                 enable: false,
                 label: 'Nº Asteca',
-                initialValue: astecaController.asteca.idAsteca,
+                initialValue: astecaController.asteca.idAsteca.toString(),
               ),
             ),
             Container(
@@ -1821,11 +1820,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'RE',
-                  initialValue: astecaController.camelCaseAll(
+                  initialValue:
                       astecaController.asteca.funcionario!.idFuncionario == null
                           ? ''
                           : astecaController.asteca.funcionario!.idFuncionario
-                              .toString()),
+                              .toString(),
                 ),
               ),
               SizedBox(
@@ -1837,10 +1836,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.camelCaseAll(
-                      astecaController.asteca.funcionario!.nome == null
-                          ? ''
-                          : astecaController.asteca.funcionario!.nome),
+                  initialValue: astecaController.camelCaseAll(astecaController
+                              .asteca.funcionario!.clienteFunc!.cliente!.nome ==
+                          null
+                      ? ''
+                      : astecaController
+                          .asteca.funcionario!.clienteFunc!.cliente!.nome),
                 ),
               ),
             ],
@@ -2353,11 +2354,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'ID',
-                  initialValue:
-                      astecaController.asteca.produto?[0].idProduto == null
-                          ? ''
-                          : astecaController.asteca.produto?[0].idProduto
-                              .toString(),
+                  initialValue: astecaController
+                              .asteca.compEstProd!.first.produto!.idProduto ==
+                          null
+                      ? ''
+                      : astecaController
+                          .asteca.compEstProd!.first.produto!.idProduto
+                          .toString(),
                 ),
               ),
               SizedBox(
@@ -2369,10 +2372,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'Nome',
-                  initialValue: astecaController.camelCaseFirst(
-                      astecaController.asteca.produto?[0].resumida == null
-                          ? ''
-                          : astecaController.asteca.produto?[0].resumida),
+                  initialValue: astecaController.camelCaseFirst(astecaController
+                              .asteca.compEstProd!.first.produto!.resumida ==
+                          null
+                      ? ''
+                      : astecaController
+                          .asteca.compEstProd!.first.produto!.resumida),
                 ),
               ),
               SizedBox(
@@ -2418,12 +2423,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   enable: false,
                   key: UniqueKey(),
                   label: 'ID',
-                  initialValue: astecaController
-                              .asteca.produto?[0].fornecedor?.idFornecedor ==
+                  initialValue: astecaController.asteca.compEstProd!.first
+                              .produto!.fornecedores!.first.idFornecedor ==
                           null
                       ? ''
-                      : astecaController
-                          .asteca.produto?[0].fornecedor?.idFornecedor
+                      : astecaController.asteca.compEstProd!.first.produto!
+                          .fornecedores!.first.idFornecedor
                           .toString(),
                 ),
               ),
@@ -2437,11 +2442,18 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   key: UniqueKey(),
                   label: 'Nome',
                   initialValue: astecaController.camelCaseAll(astecaController
-                              .asteca.produto?[0].fornecedor?.cliente?.nome ==
+                              .asteca
+                              .compEstProd!
+                              .first
+                              .produto!
+                              .fornecedores!
+                              .first
+                              .cliente
+                              ?.nome ==
                           null
                       ? ''
-                      : astecaController
-                          .asteca.produto?[0].fornecedor?.cliente?.nome),
+                      : astecaController.asteca.compEstProd!.first.produto!
+                          .fornecedores!.first.cliente?.nome),
                 ),
               ),
               SizedBox(

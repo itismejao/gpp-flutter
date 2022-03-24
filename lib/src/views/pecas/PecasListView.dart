@@ -9,7 +9,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
-import 'package:gpp/src/models/pecas_model/produto_model.dart';
+import 'package:gpp/src/models/produto/produto_model.dart';
 
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -160,15 +160,15 @@ class _PecasListViewState extends State<PecasListView> {
     NotifyController notificacao = NotifyController(context: context);
 
     try {
-      if (pecaController.produto.id_produto == null) {
+      if (pecaController.produto.idProduto == null) {
         notificacao.alerta(
             'E necessário informa o produto para realizar a importação das peças');
-      } else if (await notificacao.alerta(
+      } else if (await notificacao.confirmacao(
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
         adicionarProdutoPecas();
         //Chama o endpoint
         await pecaController.produtoRepository.inserirPecasProduto(
-            pecaController.produto.id_produto.toString(),
+            pecaController.produto.idProduto.toString(),
             pecaController.produto);
 
         //Limpa
@@ -262,7 +262,7 @@ class _PecasListViewState extends State<PecasListView> {
                                           key: UniqueKey(),
                                           initialValue: pecaController
                                                   .produto
-                                                  .fornecedor
+                                                  .fornecedores
                                                   ?.first
                                                   .cliente
                                                   ?.nome ??
@@ -750,7 +750,7 @@ class _PecasListViewState extends State<PecasListView> {
       pecaController.produto =
           await pecaController.produtoRepository.buscar(value);
     } catch (e) {
-      notify.confirmacao(e.toString());
+      notify.alerta(e.toString());
     }
   }
 

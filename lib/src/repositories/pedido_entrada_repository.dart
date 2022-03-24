@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PedidoEntradaRepository {
-  ApiService api = gppApi;
+  late ApiService api;
 
-  Future<List> buscarTodos(int pagina,
-      {int? idPedido,
-      DateTime? dataInicio,
-      DateTime? dataFim,
-      int? situacao}) async {
+  PedidoEntradaRepository() {
+    api = ApiService();
+  }
+
+  Future<List> buscarPedidosEntrada(int pagina, {int? idPedido, DateTime? dataInicio, DateTime? dataFim, int? situacao}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'idPedido': idPedido != null ? idPedido.toString() : '',
@@ -22,15 +22,13 @@ class PedidoEntradaRepository {
       'situacao': situacao != null ? situacao.toString() : ''
     };
 
-    Response response =
-        await api.get('/pedido-entrada', queryParameters: queryParameters);
+    Response response = await api.get('/pedidos-entrada', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PedidoEntradaModel> pedidosEntrada = data['pedidos']
-          .map<PedidoEntradaModel>((data) => PedidoEntradaModel.fromJson(data))
-          .toList();
+      List<PedidoEntradaModel> pedidosEntrada =
+          data['pedidos'].map<PedidoEntradaModel>((data) => PedidoEntradaModel.fromJson(data)).toList();
 
       PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
       return [pedidosEntrada, pagina];
@@ -40,8 +38,8 @@ class PedidoEntradaRepository {
     }
   }
 
-  Future<PedidoEntradaModel> buscar(int id) async {
-    Response response = await api.get('/pedido-entrada/${id}');
+  Future<PedidoEntradaModel> buscarPedidoEntrada(int id) async {
+    Response response = await api.get('/pedidos-entrada/${id.toString()}');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -55,8 +53,7 @@ class PedidoEntradaRepository {
   }
 
   Future<PedidoEntradaModel> criar(PedidoEntradaModel pedidoEntrada) async {
-    Response response =
-        await api.post('/pedido-entrada', pedidoEntrada.toJson());
+    Response response = await api.post('/pedidos-entrada', pedidoEntrada.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);

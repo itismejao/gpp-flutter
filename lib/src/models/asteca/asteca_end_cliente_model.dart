@@ -1,16 +1,16 @@
 class AstecaEndClienteModel {
   int? idAstecaEndCli;
   String? logradouro;
-  String? localidade;
-  int? numero;
   String? complemento;
+  int? numero;
   String? bairro;
+  String? cep;
+  String? localidade;
   String? uf;
-  int? cep;
-  String? pontoReferencia1;
-  String? pontoReferencia2;
   int? ddd;
   int? telefone;
+  String? pontoReferencia1;
+  String? pontoReferencia2;
 
   AstecaEndClienteModel(
       {this.idAstecaEndCli,

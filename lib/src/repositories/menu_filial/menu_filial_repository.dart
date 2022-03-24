@@ -1,16 +1,17 @@
 import 'dart:convert';
 
-import 'package:gpp/src/models/menu_filial/empresa_filial_model.dart';
+import 'package:gpp/src/models/filial/empresa_filial_model.dart';
+
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class FilialRepository {
-  ApiService api;
+  late ApiService api;
 
-  FilialRepository({
-    required this.api,
-  });
+  FilialRepository() {
+    this.api = ApiService();
+  }
 
   Future<List<EmpresaFilialModel>> buscarTodos() async {
     Response response = await api.get('/menu-filiais');

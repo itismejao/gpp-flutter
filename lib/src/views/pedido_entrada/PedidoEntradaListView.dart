@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/PedidoEntradaController.dart';
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
+import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
@@ -46,7 +46,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
       });
       //parei aqui
 
-      List retorno = await controller.repository.buscarTodos(
+      List retorno = await controller.repository.buscarPedidosEntrada(
           controller.pagina.atual,
           idPedido: controller.idPedidoEntrada,
           dataInicio: controller.dataInicio,
@@ -359,9 +359,11 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                             child: TextComponent(
                               pedido[index]
                                   .asteca!
-                                  .produto!
+                                  .compEstProd!
                                   .first
-                                  .fornecedor!
+                                  .produto!
+                                  .fornecedores!
+                                  .first
                                   .cliente!
                                   .nome!,
                             )),
@@ -379,9 +381,11 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                               maskFormatter.cpfCnpjFormatter(
                                           value: pedido[index]
                                               .asteca!
-                                              .produto!
+                                              .compEstProd!
                                               .first
-                                              .fornecedor!
+                                              .produto!
+                                              .fornecedores!
+                                              .first
                                               .cliente!
                                               .cpfCnpj
                                               .toString()) !=
@@ -390,9 +394,11 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
                                       .cpfCnpjFormatter(
                                           value: pedido[index]
                                               .asteca!
-                                              .produto!
+                                              .compEstProd!
                                               .first
-                                              .fornecedor!
+                                              .produto!
+                                              .fornecedores!
+                                              .first
                                               .cliente!
                                               .cpfCnpj
                                               .toString())!

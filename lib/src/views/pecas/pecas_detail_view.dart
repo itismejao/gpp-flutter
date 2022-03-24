@@ -90,7 +90,8 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   criarProdutoPeca(context) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      _pecasController.produtoPecaModel.peca?.id_peca = _pecasModelInserido!.id_peca;
+      _pecasController.produtoPecaModel.peca?.id_peca =
+          _pecasModelInserido!.id_peca;
 
       if (await _pecasController.criarProdutoPeca()) {
         notify.sucess("Peça cadastrada com sucesso!");
@@ -151,14 +152,13 @@ class _PecasDetailViewState extends State<PecasDetailView> {
                           onPressed: () async {
                             await buscaProduto(txtIdProduto.text);
 
-                            txtNomeProduto.text = _produtoController
-                                .produto.resumida
-                                .toString();
+                            txtNomeProduto.text =
+                                _produtoController.produto.resumida.toString();
                             txtIdFornecedor.text = _produtoController
-                                .produto.id_fornecedor
+                                .produto.fornecedores!.first.idFornecedor
                                 .toString();
                             txtNomeFornecedor.text = _produtoController
-                                .produto.fornecedor![0].cliente!.nome
+                                .produto.fornecedores!.first.cliente!.nome
                                 .toString();
 
                             _pecasController.produtoPecaModel.idProdutoPeca =

@@ -1,15 +1,14 @@
 class AstecaTipoPendenciaModel {
   int? idTipoPendencia;
   String? descricao;
-  DateTime? dataCria;
-  AstecaTipoPendenciaModel(
-      {this.idTipoPendencia, this.descricao, this.dataCria});
+
+  AstecaTipoPendenciaModel({this.idTipoPendencia, this.descricao});
 
   factory AstecaTipoPendenciaModel.fromJson(Map<String, dynamic> json) {
     return AstecaTipoPendenciaModel(
-        idTipoPendencia: json['id_tipo_pendencia'],
-        descricao: json['descricao'],
-        dataCria: DateTime.tryParse(json['data_cria']));
+      idTipoPendencia: json['id_tipo_pendencia'],
+      descricao: json['descricao'],
+    );
   }
 
   Map<String, dynamic> toJson() {

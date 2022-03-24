@@ -7,8 +7,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class FuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final FuncionalitiesRepository repository =
-      FuncionalitiesRepository(api: gppApi);
+  late final FuncionalitiesRepository repository = FuncionalitiesRepository();
   List<FuncionalidadeModel> funcionalities = [];
   FuncionalidadeModel funcionalitie = FuncionalidadeModel();
   FuncionalitiesEnum state = FuncionalitiesEnum.notChange;

@@ -1,44 +1,43 @@
+import 'package:gpp/src/models/produto/fornecedor_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
-import 'package:gpp/src/models/pecas_model/fornecedor_pecas_model.dart';
+
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 
 class ProdutoModel {
-  int? id_produto;
-  String? situacao;
-  String? cod_barra;
+  int? idProduto;
   String? resumida;
-  String? marca;
-  String? data_cadastro;
-  int? id_fornecedor;
+  // String? situacao;
+  // String? codBarra;
+  // String? marca;
+  // String? data_cadastro;
+
+  List<FornecedorModel>? fornecedores;
 
   List<ProdutoPecaModel>? produtoPecas;
 
-  List<PecasFornecedorModel>? fornecedor;
-
   ProdutoModel(
-      {this.id_produto,
-      this.situacao,
-      this.cod_barra,
+      {this.idProduto,
+      // this.situacao,
+      // this.codBarra,
       this.resumida,
-      this.marca,
-      this.data_cadastro,
-      this.id_fornecedor,
-      this.fornecedor,
+      // // this.marca,
+      // // this.data_cadastro,
+      this.fornecedores,
       this.produtoPecas});
 
   factory ProdutoModel.fromJson(Map<String, dynamic> json) {
     return ProdutoModel(
-        id_produto: json['id_produto'],
+        idProduto: json['id_produto'],
         // situacao: json['situacao'],
         // cod_barra: json['cod_barra'],
         resumida: json['resumida'],
         // marca: json['marca'],
         // data_cadastro: json['data_cadastro'],
-        id_fornecedor: json['id_fornecedor'],
+
         // fornecedor: json['fornecedor'] == null ? null : FornecedorPecasModel.fromJson(json['fornecedor']),
-        fornecedor: json['fornecedor'] != null
-            ? json['fornecedor'].map<PecasFornecedorModel>((data) {
-                return PecasFornecedorModel.fromJson(data);
+        fornecedores: json['fornecedores'] != null
+            ? json['fornecedores'].map<FornecedorModel>((data) {
+                return FornecedorModel.fromJson(data);
               }).toList()
             : null,
         produtoPecas: json['produto_peca'] != null

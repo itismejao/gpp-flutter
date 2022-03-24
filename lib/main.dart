@@ -210,15 +210,15 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
       } else if (uri.pathSegments.first == 'departamentos') {
-        pagina = DepartamentoListView();
+        builder = (BuildContext context) => DepartamentoListView();
       } else if (uri.pathSegments.first == 'usuarios') {
-        pagina = UsuarioListView();
+        builder = (BuildContext context) => UsuarioListView();
       } else if (uri.pathSegments.first == 'motivos-defeitos') {
-        pagina = MotivosTrocaPecasListView();
+        builder = (BuildContext context) => MotivosTrocaPecasListView();
       } else if (uri.pathSegments.first == 'logout') {
-        pagina = AutenticacaoView();
+        builder = (BuildContext context) => AutenticacaoView();
       } else if (uri.pathSegments.first == 'pecas-cadastrar') {
-        pagina = MenuCadastrarView();
+        builder = (BuildContext context) => MenuCadastrarView();
       } else if (uri.pathSegments.first == 'pecas-consultar') {
         builder = (BuildContext context) => PecasListView();
       } else if (uri.pathSegments.first == 'pecas-enderecamento') {
@@ -230,20 +230,20 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'pedidos-saida') {
         builder = (BuildContext context) => PedidoSaidaListView();
       } else if (uri.pathSegments.first == 'estoque-entrada') {
-        pagina = MenuEntradaView();
+        builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
-        pagina = EstoqueConsultaView();
+        builder = (BuildContext context) => EstoqueConsultaView();
       }
 
       //Se existe 2 parâmetros da url
     } else if (uri.pathSegments.length == 2) {
       var id = int.parse(uri.pathSegments[1]);
       if (uri.pathSegments.first == 'astecas') {
-        pagina = AstecaDetalheView(id: id);
+        //      builder = (BuildContext context) => AstecaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-saida') {
-        pagina = PedidoSaidaDetalheView(id: id);
+        builder = (BuildContext context) => PedidoSaidaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
-        pagina = PedidoEntradaDetalheView(id: id);
+        builder = (BuildContext context) => PedidoEntradaDetalheView(id: id);
       }
     }
 

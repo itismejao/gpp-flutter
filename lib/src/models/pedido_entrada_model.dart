@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
 
@@ -28,11 +28,8 @@ class PedidoEntradaModel {
       dataEmissao: DateTime.parse(json['data_emissao']),
       situacao: json['situacao'],
       valorTotal: json['valor_total'],
-      funcionario: json['funcionario'] != null
-          ? FuncionarioModel.fromJson((json['funcionario'] as List).first)
-          : null,
-      asteca:
-          json['asteca'] != null ? AstecaModel.fromJson(json['asteca']) : null,
+      funcionario: json['funcionario'] != null ? FuncionarioModel.fromJson(json['funcionario']) : null,
+      asteca: json['asteca'] != null ? AstecaModel.fromJson(json['asteca']) : null,
       itensPedidoEntrada: json['items_pedido_entrada'] != null
           ? json['items_pedido_entrada'].map<ItemPedidoEntradaModel>((data) {
               return ItemPedidoEntradaModel.fromJson(data);
@@ -50,9 +47,7 @@ class PedidoEntradaModel {
     //     dataEmissao != null ? dataEmissao!.toIso8601String() : null;
     data['asteca'] = asteca != null ? asteca!.toJson() : null;
     data['funcionario'] = funcionario != null ? funcionario!.toJson() : null;
-    data['itens_pedido_entrada'] = itensPedidoEntrada != null
-        ? itensPedidoEntrada!.map((e) => e.toJson()).toList()
-        : null;
+    data['itens_pedido_entrada'] = itensPedidoEntrada != null ? itensPedidoEntrada!.map((e) => e.toJson()).toList() : null;
     return data;
   }
 }

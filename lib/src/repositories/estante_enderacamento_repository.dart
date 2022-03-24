@@ -6,12 +6,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class EstanteEnderecamentoRepository {
-  ApiService api;
-  String path = '/enderecamento-estante';
+  late ApiService api;
+  late String path;
 
-  EstanteEnderecamentoRepository({
-    required this.api,
-  });
+  EstanteEnderecamentoRepository() {
+    this.api = ApiService();
+    this.path = '/enderecamento-estante';
+  }
 
   Future<List<EstanteEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);
@@ -19,10 +20,8 @@ class EstanteEnderecamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<EstanteEnderecamentoModel> enderecamentoCorredor = data
-          .map<EstanteEnderecamentoModel>(
-              (data) => EstanteEnderecamentoModel.fromJson(data))
-          .toList();
+      List<EstanteEnderecamentoModel> enderecamentoCorredor =
+          data.map<EstanteEnderecamentoModel>((data) => EstanteEnderecamentoModel.fromJson(data)).toList();
 
       return enderecamentoCorredor;
     } else {

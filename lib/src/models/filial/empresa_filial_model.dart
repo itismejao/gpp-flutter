@@ -1,4 +1,4 @@
-import 'package:gpp/src/models/menu_filial/filial_model.dart';
+import 'package:gpp/src/models/filial/filial_model.dart';
 
 class EmpresaFilialModel {
   int? id_empresa;
@@ -13,8 +13,6 @@ class EmpresaFilialModel {
   });
 
   factory EmpresaFilialModel.fromJson(Map<String, dynamic> json) {
-    print('aqui 2');
-    print(json);
     return EmpresaFilialModel(
       id_empresa: json['id_empresa'],
       id_filial: json['id_filial'],

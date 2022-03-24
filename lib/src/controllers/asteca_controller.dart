@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/models/PaginaModel.dart';
 
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
-import 'package:gpp/src/models/AstecaModel.dart';
+import 'package:gpp/src/models/pedido_saida_model.dart';
+import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
-import 'package:gpp/src/models/asteca_tipo_pendencia_model.dart';
+import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 
 import 'package:gpp/src/repositories/AstecaRepository.dart';
 import 'package:gpp/src/repositories/PecaRepository.dart';
-import 'package:gpp/src/repositories/PedidoRepository.dart';
+import 'package:gpp/src/repositories/pedido_saida_repository.dart';
 import 'package:intl/intl.dart';
 
 class AstecaController {
-  late PedidoRepository pedidoRepository = PedidoRepository();
+  late PedidoSaidaRepository pedidoSaidaRepository = PedidoSaidaRepository();
   bool carregaProdutoPeca = false;
   late PecaRepository pecaRepository = PecaRepository();
   late List<ProdutoPecaModel> produtoPecas;
@@ -44,6 +44,8 @@ class AstecaController {
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
+  AstecaTipoPendenciaRepository astecaTipoPendenciaRepository =
+      AstecaTipoPendenciaRepository();
   AstecaModel filtroAsteca = AstecaModel(
     documentoFiscal: DocumentoFiscalModel(),
   );

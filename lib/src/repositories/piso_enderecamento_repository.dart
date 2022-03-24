@@ -6,12 +6,13 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
 class PisoEnderecamentoRepository {
-  ApiService api;
-  String path = '/enderecamento-piso';
+  late ApiService api;
+  late String path;
 
-  PisoEnderecamentoRepository({
-    required this.api,
-  });
+  PisoEnderecamentoRepository() {
+    api = ApiService();
+    path = '/enderecamento-piso';
+  }
 
   Future<List<PisoEnderecamentoModel>> buscarTodos() async {
     Response response = await api.get(path);

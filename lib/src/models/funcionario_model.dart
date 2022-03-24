@@ -1,18 +1,20 @@
+import 'package:gpp/src/models/cliente_func_model.dart';
+
 class FuncionarioModel {
   int? idFuncionario;
-  String? nome;
+  ClienteFuncModel? clienteFunc;
 
-  FuncionarioModel({this.idFuncionario, this.nome});
+  FuncionarioModel({this.idFuncionario, this.clienteFunc});
 
   FuncionarioModel.fromJson(Map<String, dynamic> json) {
     idFuncionario = json['id_funcionario'];
-    nome = json['nome'];
+    clienteFunc = json['cliente_func'] != null ? ClienteFuncModel.fromJson(json['cliente_func']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_funcionario'] = this.idFuncionario;
-    data['nome'] = this.nome;
+    data['cliente_func'] = this.clienteFunc != null ? this.clienteFunc!.toJson() : null;
     return data;
   }
 }

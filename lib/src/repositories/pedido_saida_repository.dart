@@ -1,19 +1,19 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/PaginaModel.dart';
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/gpp_api.dart';
 import 'package:http/http.dart';
 
-class PedidoRepository {
-  ApiService api = gppApi;
+class PedidoSaidaRepository {
+  late ApiService api;
 
-  Future<List> buscarTodos(int pagina,
-      {int? idPedido,
-      DateTime? dataInicio,
-      DateTime? dataFim,
-      int? situacao}) async {
+  PedidoSaidaRepository() {
+    api = ApiService();
+  }
+
+  Future<List> buscarPedidosSaida(int pagina, {int? idPedido, DateTime? dataInicio, DateTime? dataFim, int? situacao}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'idPedido': idPedido != null ? idPedido.toString() : '',
@@ -22,15 +22,12 @@ class PedidoRepository {
       'situacao': situacao != null ? situacao.toString() : ''
     };
 
-    Response response =
-        await api.get('/pedido-saida', queryParameters: queryParameters);
+    Response response = await api.get('/pedidos-saida', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<PedidoSaidaModel> pedidos = data['pedidos']
-          .map<PedidoSaidaModel>((data) => PedidoSaidaModel.fromJson(data))
-          .toList();
+      List<PedidoSaidaModel> pedidos = data['pedidos'].map<PedidoSaidaModel>((data) => PedidoSaidaModel.fromJson(data)).toList();
       //Obtém a pagina
       PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
       return [pedidos, pagina];
@@ -41,8 +38,8 @@ class PedidoRepository {
     }
   }
 
-  Future<PedidoSaidaModel> buscar(int id) async {
-    Response response = await api.get('/pedido-saida/${id}');
+  Future<PedidoSaidaModel> buscarPedidoSaida(int id) async {
+    Response response = await api.get('/pedidos-saida/${id.toString()}');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);

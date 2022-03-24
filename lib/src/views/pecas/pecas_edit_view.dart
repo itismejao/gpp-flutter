@@ -72,9 +72,9 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
 
     txtNomeProduto.text = _produtoController.produto.resumida.toString();
     txtIdFornecedor.text =
-        _produtoController.produto.id_fornecedor.toString();
+        _produtoController.produto.fornecedores!.first.idFornecedor.toString();
     txtNomeFornecedor.text =
-        _produtoController.produto.fornecedor![0].cliente!.nome.toString();
+        _produtoController.produto.fornecedores!.first.cliente!.nome.toString();
   }
 
   buscarLinhaEspecie(String codigo) async {

@@ -4,10 +4,9 @@ import 'package:gpp/src/models/estante_enderecamento_model.dart';
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/repositories/enderecamento_repository.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class EnderecamentoController {
-  EnderecamentoRepository repository = EnderecamentoRepository(api: gppApi);
+  EnderecamentoRepository repository = EnderecamentoRepository();
   bool isLoaded = false;
 
   //pisos

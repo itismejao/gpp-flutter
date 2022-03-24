@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 class PecasEspecieController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late final PecasEspecieRepository pecasEspecieRepository = PecasEspecieRepository(api: gppApi);
+  late final PecasEspecieRepository pecasEspecieRepository = PecasEspecieRepository();
   PecasEspecieModel pecasEspecieModel = PecasEspecieModel();
 
   Future<bool> create() async {

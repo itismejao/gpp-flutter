@@ -13,13 +13,10 @@ class MovimentoEntradaController {
 
   int? id_fornecedor;
 
-  late final MovimentoEntradaRepository movimentoEntradaRepository =
-      MovimentoEntradaRepository(api: gppApi);
+  late final MovimentoEntradaRepository movimentoEntradaRepository = MovimentoEntradaRepository();
 
-  Future<List<MovimentoEntradaModel>> buscarTodos(String? id_filial,
-      {String? id_funcionario}) async {
-    return await movimentoEntradaRepository.buscarTodos(id_filial,
-        id_funcionario: id_funcionario);
+  Future<List<MovimentoEntradaModel>> buscarTodos(String? id_filial, {String? id_funcionario}) async {
+    return await movimentoEntradaRepository.buscarTodos(id_filial, id_funcionario: id_funcionario);
   }
 
   Future<bool> create() async {
@@ -31,13 +28,11 @@ class MovimentoEntradaController {
   somarLista(List<ItemPedidoEntradaModel>? listaItensPedido) {
     listaItensPedido?.forEach((itemPedido) {
       //ip = listaItensSomados.firstWhere((itemSomado) => itemPedido.idItemPedidoEntrada == itemSomado.idItemPedidoEntrada, orElse: ()=>ItemPedidoEntradaModel());
-      int index = listaItensSomados.indexWhere((element) =>
-          itemPedido.idItemPedidoEntrada == element.idItemPedidoEntrada);
+      int index = listaItensSomados.indexWhere((element) => itemPedido.idItemPedidoEntrada == element.idItemPedidoEntrada);
       if (index == -1) {
         listaItensSomados.add(itemPedido);
       } else {
-        listaItensSomados[index].quantidade =
-            listaItensSomados[index].quantidade! + itemPedido.quantidade!;
+        listaItensSomados[index].quantidade = listaItensSomados[index].quantidade! + itemPedido.quantidade!;
       }
     });
   }
@@ -57,8 +52,7 @@ class MovimentoEntradaController {
             pecaModel: element.peca,
             valor_unitario: element.custo);
         listaItens.add(itemEntrada);
-        movimentoEntradaModel!.custo_total =
-            (movimentoEntradaModel!.custo_total! + element.custo!);
+        movimentoEntradaModel!.custo_total = (movimentoEntradaModel!.custo_total! + element.custo!);
       }
     });
     return sucess;

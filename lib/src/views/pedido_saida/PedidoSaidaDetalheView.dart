@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/PedidoController.dart';
+import 'package:gpp/src/controllers/pedido_saida_controller.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -22,7 +22,7 @@ class PedidoSaidaDetalheView extends StatefulWidget {
 }
 
 class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
-  late PedidoController pedidoController;
+  late PedidoSaidaController pedidoController;
   late MaskFormatter maskFormatter;
 
   buscar() async {
@@ -30,7 +30,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       pedidoController.carregado = false;
     });
     pedidoController.pedido =
-        await pedidoController.pedidoRepository.buscar(widget.id);
+        await pedidoController.pedidoRepository.buscarPedidoSaida(widget.id);
 
     setState(() {
       pedidoController.carregado = true;
@@ -41,7 +41,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
   void initState() {
     super.initState();
     //Inicializa pedido controller
-    pedidoController = PedidoController();
+    pedidoController = PedidoSaidaController();
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
     //buscar o pedido
@@ -169,258 +169,262 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
       child: pedidoController.carregado
           ? Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TitleComponent('Pedido de saída'),
-                      _buildSituacaoPedido(pedidoController.pedido.situacao)
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'ID',
-                          initialValue:
-                              pedidoController.pedido.idPedidoSaida.toString(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'CPF/CNPJ',
-                          initialValue:
-                              pedidoController.pedido.cpfCnpj.toString(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'Filial de venda',
-                          initialValue:
-                              pedidoController.pedido.filialVenda.toString(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'Nº Documento Fiscal',
-                          initialValue:
-                              pedidoController.pedido.numDocFiscal.toString(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'Série Documento Fiscal',
-                          initialValue: pedidoController.pedido.serieDocFiscal,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                          enable: false,
-                          label: 'Data de emissão',
-                          initialValue: maskFormatter
-                              .dataFormatter(
-                                  value: pedidoController.pedido.dataEmissao
-                                      .toString())
-                              .getMaskedText(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                            enable: false,
-                            label: 'Valor total R\$',
-                            initialValue: pedidoController.formatter
-                                .format(pedidoController.pedido.valorTotal)),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [TitleComponent('Asteca')],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TitleComponent('Pedido de saída'),
+                        _buildSituacaoPedido(pedidoController.pedido.situacao)
+                      ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
                             enable: false,
                             label: 'ID',
-                            initialValue:
-                                pedidoController.pedido.asteca!.idAsteca == null
-                                    ? ''
-                                    : pedidoController.pedido.asteca!.idAsteca
-                                        .toString()),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: InputComponent(
-                            enable: false,
-                            label: 'Cliente',
-                            initialValue: pedidoController.camelCaseAll(
-                                pedidoController.pedido.cliente!.nome == null
-                                    ? ''
-                                    : pedidoController.pedido.cliente!.nome
-                                        .toString())),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputComponent(
-                            enable: false,
-                            label: 'Produto',
-                            initialValue: pedidoController.camelCaseFirst(
-                                pedidoController.pedido.asteca!.produto?[0]
-                                            .resumida ==
-                                        null
-                                    ? ''
-                                    : pedidoController
-                                        .pedido.asteca!.produto?[0].resumida
-                                        .toString())),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ButtonComponent(
-                        icon: Icon(
-                          Icons.wysiwyg_outlined,
-                          color: Colors.white,
+                            initialValue: pedidoController.pedido.idPedidoSaida
+                                .toString(),
+                          ),
                         ),
-                        color: secundaryColor,
-                        onPressed: () {
-                          Navigator.pushNamed(context,
-                              "/astecas/${pedidoController.pedido.asteca!.idAsteca}");
-                        },
-                        text: 'Ver mais',
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [TitleComponent('Itens do pedido')],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Container(
-                    height: 200,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  TextComponent(
-                                    'ID',
-                                    fontWeight: FontWeight.bold,
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                                flex: 4,
-                                child: TextComponent(
-                                  'Descrição',
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            Expanded(
-                                child: TextComponent(
-                              'Quantidade',
-                              fontWeight: FontWeight.bold,
-                            )),
-                            Expanded(
-                                child: TextComponent(
-                              'Valor R\$',
-                              fontWeight: FontWeight.bold,
-                            )),
-                            Expanded(
-                                child: TextComponent(
-                              'Subtotal R\$',
-                              fontWeight: FontWeight.bold,
-                            )),
-                          ],
+                        SizedBox(
+                          width: 8,
                         ),
-                        Divider(),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: pedidoController
-                                .pedido.itemsPedidoSaida!.length,
-                            itemBuilder: (context, index) {
-                              return _buildListItem(
-                                  pedidoController.pedido.itemsPedidoSaida!,
-                                  index,
-                                  context);
-                            },
+                          child: InputComponent(
+                            enable: false,
+                            label: 'CPF/CNPJ',
+                            initialValue:
+                                pedidoController.pedido.cpfCnpj.toString(),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                            enable: false,
+                            label: 'Filial de venda',
+                            initialValue:
+                                pedidoController.pedido.filialVenda.toString(),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      ButtonComponent(
-                          color: primaryColor,
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                            enable: false,
+                            label: 'Nº Documento Fiscal',
+                            initialValue:
+                                pedidoController.pedido.numDocFiscal.toString(),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                            enable: false,
+                            label: 'Série Documento Fiscal',
+                            initialValue:
+                                pedidoController.pedido.serieDocFiscal,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                            enable: false,
+                            label: 'Data de emissão',
+                            initialValue: maskFormatter
+                                .dataFormatter(
+                                    value: pedidoController.pedido.dataEmissao
+                                        .toString())
+                                .getMaskedText(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                              enable: false,
+                              label: 'Valor total R\$',
+                              initialValue: pedidoController.formatter
+                                  .format(pedidoController.pedido.valorTotal)),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [TitleComponent('Asteca')],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                              enable: false,
+                              label: 'ID',
+                              initialValue:
+                                  pedidoController.pedido.asteca!.idAsteca ==
+                                          null
+                                      ? ''
+                                      : pedidoController.pedido.asteca!.idAsteca
+                                          .toString()),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: InputComponent(
+                              enable: false,
+                              label: 'Cliente',
+                              initialValue: pedidoController.camelCaseAll(
+                                  pedidoController.pedido.cliente!.nome == null
+                                      ? ''
+                                      : pedidoController.pedido.cliente!.nome
+                                          .toString())),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputComponent(
+                              enable: false,
+                              label: 'Produto',
+                              initialValue: pedidoController.camelCaseFirst(
+                                  pedidoController.pedido.asteca!.compEstProd!
+                                              .first.produto!.resumida ==
+                                          null
+                                      ? ''
+                                      : pedidoController.pedido.asteca!
+                                          .compEstProd!.first.produto!.resumida
+                                          .toString())),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ButtonComponent(
+                          icon: Icon(
+                            Icons.wysiwyg_outlined,
+                            color: Colors.white,
+                          ),
+                          color: secundaryColor,
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushNamed(context,
+                                "/astecas/${pedidoController.pedido.asteca!.idAsteca}");
                           },
-                          text: 'Voltar')
-                    ],
-                  )
-                ],
+                          text: 'Ver mais',
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [TitleComponent('Itens do pedido')],
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      height: 400,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    TextComponent(
+                                      'ID',
+                                      fontWeight: FontWeight.bold,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 4,
+                                  child: TextComponent(
+                                    'Descrição',
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              Expanded(
+                                  child: TextComponent(
+                                'Quantidade',
+                                fontWeight: FontWeight.bold,
+                              )),
+                              Expanded(
+                                  child: TextComponent(
+                                'Valor R\$',
+                                fontWeight: FontWeight.bold,
+                              )),
+                              Expanded(
+                                  child: TextComponent(
+                                'Subtotal R\$',
+                                fontWeight: FontWeight.bold,
+                              )),
+                            ],
+                          ),
+                          Divider(),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: pedidoController
+                                  .pedido.itemsPedidoSaida!.length,
+                              itemBuilder: (context, index) {
+                                return _buildListItem(
+                                    pedidoController.pedido.itemsPedidoSaida!,
+                                    index,
+                                    context);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        ButtonComponent(
+                            color: primaryColor,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            text: 'Voltar')
+                      ],
+                    )
+                  ],
+                ),
               ),
             )
           : LoadingComponent(),

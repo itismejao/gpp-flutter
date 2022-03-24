@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:gpp/src/models/PedidoEntradaModel.dart';
+import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
@@ -66,7 +66,7 @@ class GerarPedidoEntradaPDF {
                         style: pw.TextStyle(
                             fontSize: 12, fontWeight: pw.FontWeight.bold)),
                     pw.Text(
-                        'Nome do fornecedor: ${pedidoEntrada.asteca!.produto!.first.fornecedor!.cliente!.nome}',
+                        'Nome do fornecedor: ${pedidoEntrada.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome}',
                         style: pw.TextStyle(
                             fontSize: 12, fontWeight: pw.FontWeight.bold)),
                   ]),

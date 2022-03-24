@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/PedidoController.dart';
+import 'package:gpp/src/controllers/pedido_saida_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
-import 'package:gpp/src/models/PedidoSaidaModel.dart';
+import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -35,7 +35,7 @@ class PedidoSaidaListView extends StatefulWidget {
 class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   final ResponsiveController _responsive = ResponsiveController();
 
-  late final PedidoController pedidoController;
+  late final PedidoSaidaController pedidoController;
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
@@ -45,7 +45,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
         pedidoController.carregado = false;
       });
       //parei aqui
-      List retorno = await pedidoController.pedidoRepository.buscarTodos(
+      List retorno = await pedidoController.pedidoRepository.buscarPedidosSaida(
           pedidoController.pagina.atual,
           idPedido: pedidoController.idPedido,
           dataInicio: pedidoController.dataInicio,
@@ -109,7 +109,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
     super.initState();
 
     //Iniciliza o controlador de pedido
-    pedidoController = PedidoController();
+    pedidoController = PedidoSaidaController();
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
 
