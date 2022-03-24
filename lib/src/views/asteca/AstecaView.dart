@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/AstecaController.dart';
+import 'package:gpp/src/controllers/asteca_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 
 import 'package:gpp/src/models/asteca/asteca_model.dart';

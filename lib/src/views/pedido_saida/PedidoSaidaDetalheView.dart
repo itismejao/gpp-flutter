@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/PedidoController.dart';
+import 'package:gpp/src/controllers/pedido_saida_controller.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -22,7 +22,7 @@ class PedidoSaidaDetalheView extends StatefulWidget {
 }
 
 class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
-  late PedidoController pedidoController;
+  late PedidoSaidaController pedidoController;
   late MaskFormatter maskFormatter;
 
   buscar() async {
@@ -41,7 +41,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
   void initState() {
     super.initState();
     //Inicializa pedido controller
-    pedidoController = PedidoController();
+    pedidoController = PedidoSaidaController();
     //Inicializa mask formatter
     maskFormatter = MaskFormatter();
     //buscar o pedido

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/main.dart';
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
-import 'package:gpp/src/controllers/PedidoEntradaController.dart';
+import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
@@ -14,7 +14,7 @@ import 'package:gpp/src/shared/utils/GerarPedidoSaidaPDF.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
-import 'package:gpp/src/controllers/AstecaController.dart';
+import 'package:gpp/src/controllers/asteca_controller.dart';
 
 import 'package:gpp/src/models/asteca/asteca_model.dart';
 import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
