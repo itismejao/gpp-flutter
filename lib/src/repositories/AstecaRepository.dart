@@ -11,30 +11,38 @@ import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class AstecaRepository {
   late ApiService api;
-  PendenciaRepository pendencia = PendenciaRepository();
 
   AstecaRepository() {
     api = ApiService();
   }
 
   Future<List> buscarAstecas(int pagina,
-      {AstecaModel? filtroAsteca, String? pendencia, DateTime? dataInicio, DateTime? dataFim}) async {
+      {AstecaModel? filtroAsteca,
+      String? pendencia,
+      DateTime? dataInicio,
+      DateTime? dataFim}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
-      'idAsteca': filtroAsteca?.idAsteca != null ? filtroAsteca!.idAsteca.toString() : '',
+      'idAsteca': filtroAsteca?.idAsteca != null
+          ? filtroAsteca!.idAsteca.toString()
+          : '',
       'cpfCnpj': filtroAsteca?.documentoFiscal?.cpfCnpj?.toString() ?? '',
-      'numeroNotaFiscalVenda': filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
+      'numeroNotaFiscalVenda':
+          filtroAsteca?.documentoFiscal?.numDocFiscal?.toString() ?? '',
       'pendencia': pendencia?.toString() ?? '',
       'dataInicio': dataInicio != null ? dataInicio.toString() : '',
       'dataFim': dataFim != null ? dataFim.toString() : ''
     };
 
-    Response response = await api.get('/astecas', queryParameters: queryParameters);
+    Response response =
+        await api.get('/astecas', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaModel> astecas = data['astecas'].map<AstecaModel>((data) => AstecaModel.fromJson(data)).toList();
+      List<AstecaModel> astecas = data['astecas']
+          .map<AstecaModel>((data) => AstecaModel.fromJson(data))
+          .toList();
 
       //Obtém a pagina
       PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
@@ -59,21 +67,23 @@ class AstecaRepository {
   }
 }
 
-class PendenciaRepository {
+class AstecaTipoPendenciaRepository {
   late ApiService api;
 
-  PendenciaRepository() {
+  AstecaTipoPendenciaRepository() {
     api = ApiService();
   }
 
-  Future<List<AstecaTipoPendenciaModel>> buscarPendencias() async {
-    Response response = await api.get('/astecas/pendencias');
+  Future<List<AstecaTipoPendenciaModel>> buscarAstecaTIpoPendencias() async {
+    Response response = await api.get('/asteca-tipo-pendencias');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<AstecaTipoPendenciaModel> astecaTipoPendencia =
-          data.map<AstecaTipoPendenciaModel>((data) => AstecaTipoPendenciaModel.fromJson(data)).toList();
+      List<AstecaTipoPendenciaModel> astecaTipoPendencia = data
+          .map<AstecaTipoPendenciaModel>(
+              (data) => AstecaTipoPendenciaModel.fromJson(data))
+          .toList();
       return astecaTipoPendencia;
     } else {
       var error = jsonDecode(response.body)['error'];
@@ -81,8 +91,10 @@ class PendenciaRepository {
     }
   }
 
-  Future<bool> criar(AstecaModel asteca, AstecaTipoPendenciaModel pendencia) async {
-    Response response = await api.post('/astecas/${asteca.idAsteca}/pendencias', pendencia.toJson());
+  Future<bool> inserirAstecaPendencia(
+      int id, AstecaTipoPendenciaModel astecaTipoPendencia) async {
+    Response response = await api.post(
+        '/astecas/${id}/pendencias', astecaTipoPendencia.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;

@@ -23,7 +23,8 @@ class PedidoController {
     String? nome = '';
     value!.split(" ").forEach((element) {
       if (element.length > 3) {
-        nome = nome! + " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+        nome = nome! +
+            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
         nome = nome! + " ${element.toString().toLowerCase()}";
       }
