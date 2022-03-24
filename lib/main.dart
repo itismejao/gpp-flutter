@@ -66,11 +66,11 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/shared/utils/Usuario.dart';
-import 'package:gpp/src/views/addressing/addressing_list_view.dart';
 import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
 import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
+import 'package:gpp/src/views/enderecamento/cadastro_piso_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 import 'package:gpp/src/views/home/filial_view.dart';
@@ -129,7 +129,7 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
           pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
-          pagina = AddressingListView();
+          pagina = CadastroPisoView();
         } else if (uri.pathSegments.first == 'pedidos-entrada') {
           pagina = PedidoEntradaListView();
         } else if (uri.pathSegments.first == 'pedidos-saida') {
@@ -223,7 +223,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'pecas-enderecamento') {
         builder = (BuildContext context) => PecaEnderecamentoDetailView();
       } else if (uri.pathSegments.first == 'enderecamentos') {
-        builder = (BuildContext context) => AddressingListView();
+        builder = (BuildContext context) => CadastroPisoView();
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
         builder = (BuildContext context) => PedidoEntradaListView();
       } else if (uri.pathSegments.first == 'pedidos-saida') {

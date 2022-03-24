@@ -7,7 +7,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
+import 'package:gpp/src/views/enderecamento/cadastro_box_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 
 import '../funcionalities_view.dart';
