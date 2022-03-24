@@ -29,10 +29,8 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
         Padding(padding: EdgeInsets.only(left: 20)),
         Expanded(
           flex: 4,
-          child: Column(
-            children: [
-              _pecasNavigator(),
-            ],
+          child: SingleChildScrollView(
+            child: _pecasNavigator(),
           ),
         ),
         Padding(padding: EdgeInsets.only(left: 20)),

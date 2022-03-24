@@ -1,41 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
-import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/views/addressing/cadastro_box_view.dart';
+import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/enderecamento/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 
 import '../funcionalities_view.dart';
 
-// ignore: must_be_immutable
-class CadastroPrateleiraView extends StatefulWidget {
-  String? idEstante;
-  CadastroPrateleiraView({this.idEstante});
-
-  // int id;
-
-  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
-  //const CadastroPrateleiraView({Key? key}) : super(key: key);
+class CadastroPisoView extends StatefulWidget {
+  const CadastroPisoView({Key? key}) : super(key: key);
 
   @override
-  _CadastroPrateleiraViewState createState() => _CadastroPrateleiraViewState();
+  _CadastroPisoViewState createState() => _CadastroPisoViewState();
 }
 
-class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
-  //late EnderecamentoPrateleiraController controller;
-  String? idEstante;
-
+class _CadastroPisoViewState extends State<CadastroPisoView> {
+//  late AddressingFloorController controller;
   late EnderecamentoController enderecamentoController;
 
-  fetchAll(idEstante) async {
-    //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPrateleira =
-        await enderecamentoController.repository.buscarPrateleira(idEstante);
+  fetchAll() async {
+    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 
@@ -45,35 +35,32 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     });
   }
 
-  handleCreate(
-      context,
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel,
-      String idEstante) async {
+  handleCreate(context, PisoEnderecamentoModel piso) async {
     NotifyController notify = NotifyController(context: context);
+
+    if (piso.id_filial == null) {
+      piso.id_filial = getFilial().id_filial;
+    }
+
     try {
-      if (await enderecamentoController.criarPrateleira(
-          prateleiraEnderecamentoModel, idEstante)) {
+      if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
-        fetchAll(widget.idEstante.toString());
-        notify.sucess('Prateleira adicionada com sucesso!');
+        fetchAll();
+        notify.sucess('Piso adicionado com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  handleDelete(context,
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
+  handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir a prateleira?")) {
-        if (await enderecamentoController
-            .excluirPrateleira(prateleiraEnderecamentoModel)) {
-          // Navigator.pop(context); //volta para tela anterior
-
-          fetchAll(widget.idEstante.toString());
-          notify.sucess("Prateleira excluída!");
+      if (await notify.confirmacao("você deseja excluir o piso?")) {
+        if (await enderecamentoController.repository.excluir(excluiPiso)) {
+          notify.sucess("Piso excluído!");
           //Atualiza a lista de motivos
+          fetchAll();
         }
       }
     } catch (e) {
@@ -81,92 +68,29 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     }
   }
 
-  handleEdit(context, PrateleiraEnderecamentoModel editaEstante) async {
+  //  handleEdit(context) async {
+  //   NotifyController notify = NotifyController(context: context);
+  //   try {
+  //     if (await enderecamentoController.editar()) {
+  //       notify.sucess("Piso editado com sucesso!");
+  //     }
+  //   } catch (e) {
+  //     notify.error(e.toString());
+  //   }
+  // }
+
+  handleEdit(context, PisoEnderecamentoModel editaPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Prateleira editada com sucesso!");
+        notify.sucess("Piso editado com sucesso!");
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  openForm(context,
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // retorna um objeto do tipo Dialog
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: prateleiraEnderecamentoReplacement.id_prateleira == null
-                  ? Text("Cadastro da Prateleira")
-                  : Text("Atualizar motivo de troca de peça"),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      InputComponent(
-                        label: 'Prateleira',
-                        initialValue:
-                            prateleiraEnderecamentoReplacement.desc_prateleira,
-                        hintText: 'Digite o nome da Prateleira',
-                        onChanged: (value) {
-                          setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira =
-                                value!;
-                          });
-                        },
-                      ),
-                      InputComponent(
-                        label: 'Estante',
-                        initialValue: prateleiraEnderecamentoReplacement
-                            .id_estante
-                            .toString(),
-                        hintText: 'Digite a Estante',
-                        enable: false,
-                        onChanged: (value) {
-                          setState(() {
-                            prateleiraEnderecamentoReplacement.id_estante
-                                .toString();
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24.0),
-                        child: Row(
-                          children: [
-                            ButtonComponent(
-                                onPressed: () {
-                                  handleCreate(
-                                      context,
-                                      enderecamentoController.prateleiraModel,
-                                      widget.idEstante.toString());
-                                },
-                                text: 'Adicionar')
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  openFormEdit(context,
-      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openForm(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -184,26 +108,21 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                     children: [
                       InputComponent(
                         label: 'Piso',
-                        initialValue:
-                            prateleiraEnderecamentoReplacement.desc_prateleira,
+                        initialValue: pisoEnderecamentoReplacement.desc_piso,
                         hintText: 'Digite o nome do Piso',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira
-                                .toString();
+                            pisoEnderecamentoReplacement.desc_piso = value!;
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: prateleiraEnderecamentoReplacement
-                            .id_prateleira
-                            .toString(),
-                        hintText: 'Digite a estante',
+                        hintText: 'Digite a filial',
+                        initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_prateleira
-                                .toString();
+                            pisoEnderecamentoReplacement.id_filial = int.parse(value);
                           });
                         },
                       ),
@@ -218,8 +137,71 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context,
-                                      prateleiraEnderecamentoReplacement);
+                                  handleCreate(context, pisoEnderecamentoReplacement);
+                                },
+                                text: 'Adicionar')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  openFormEdit(context, PisoEnderecamentoModel pisoEnderecamentoReplacement) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // retorna um objeto do tipo Dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text("Cadastro do Piso"),
+              // pisoEnderecamentoReplacement.id_piso == null
+
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      InputComponent(
+                        label: 'Piso',
+                        initialValue: pisoEnderecamentoReplacement.desc_piso,
+                        hintText: 'Digite o nome do Piso',
+                        onChanged: (value) {
+                          setState(() {
+                            pisoEnderecamentoReplacement.desc_piso.toString();
+                          });
+                        },
+                      ),
+                      InputComponent(
+                        label: 'Filial',
+                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
+                        hintText: 'Digite a filial',
+                        onChanged: (value) {
+                          setState(() {
+                            pisoEnderecamentoReplacement.id_filial.toString();
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0),
+                        child: Row(
+                          children: [
+                            //  pisoEnderecamentoReplacement.id_piso == null
+                            ButtonComponent(
+                                onPressed: () {
+                                  handleEdit(context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -250,10 +232,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
   void initState() {
     super.initState();
     //Iniciliza controlador
-    // controller = EnderecamentoPrateleiraController();
+    //controller = AddressingFloorController();
     enderecamentoController = EnderecamentoController();
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll(widget.idEstante.toString());
+    fetchAll();
   }
 
   @override
@@ -269,13 +251,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(child: TitleComponent('Prateleira')),
+                  Flexible(child: TitleComponent('Pisos')),
                   ButtonComponent(
                       onPressed: () {
-                        enderecamentoController.prateleiraModel.id_estante =
-                            int.parse(widget.idEstante.toString());
-                        openForm(
-                            context, enderecamentoController.prateleiraModel);
+                        openForm(context, enderecamentoController.pisoModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -294,25 +273,19 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: enderecamentoController.listaPrateleira.length,
+                      itemCount: enderecamentoController.listaPiso.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TextComponent(enderecamentoController
-                                      .listaPrateleira[index].id_prateleira
-                                      .toString()),
+                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController
-                                      .listaPrateleira[index].desc_prateleira
-                                      .toString()),
+                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -320,24 +293,14 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                       ButtonComponent(
                                           onPressed: () {
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HomeView(
-                                                    funcionalities:
-                                                        FuncionalitiesView(),
-                                                    page: CadastroBoxView(
-                                                      idPrateleira:
-                                                          enderecamentoController
-                                                              .listaPrateleira[
-                                                                  index]
-                                                              .id_prateleira
-                                                              .toString(),
-                                                    ),
-                                                  ),
-                                                ));
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => CadastroCorredorView(
+                                                    idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
+                                              ),
+                                            );
                                           },
-                                          text: 'Box'),
+                                          text: 'Corredor'),
                                       // IconButton(
                                       //   icon: Icon(
                                       //     Icons.edit,
@@ -347,20 +310,21 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                       //     openFormEdit(
                                       //         context,
                                       //         enderecamentoController
-                                      //             .listaPrateleira[index]);
+                                      //             .listaPiso[index]);
                                       //   },
                                       // ),
                                       IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
-                                            handleDelete(
-                                                context,
-                                                enderecamentoController
-                                                    .listaPrateleira[index]);
-                                          }),
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        onPressed: () {
+                                          handleDelete(
+                                            context,
+                                            enderecamentoController.listaPiso[index],
+                                          );
+                                        },
+                                      )
                                     ],
                                   ),
                                 )
