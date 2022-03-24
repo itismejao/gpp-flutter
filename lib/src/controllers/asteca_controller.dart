@@ -44,6 +44,8 @@ class AstecaController {
   GlobalKey<FormState> filtroFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> filtroExpandidoFormKey = GlobalKey<FormState>();
   AstecaRepository repository = AstecaRepository();
+  AstecaTipoPendenciaRepository astecaTipoPendenciaRepository =
+      AstecaTipoPendenciaRepository();
   AstecaModel filtroAsteca = AstecaModel(
     documentoFiscal: DocumentoFiscalModel(),
   );
@@ -104,7 +106,8 @@ class AstecaController {
     String? nome = '';
     value!.split(" ").forEach((element) {
       if (element.length > 3) {
-        nome = nome! + " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+        nome = nome! +
+            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
         nome = nome! + " ${element.toString().toLowerCase()}";
       }

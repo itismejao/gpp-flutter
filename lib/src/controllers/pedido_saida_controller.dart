@@ -4,7 +4,7 @@ import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/repositories/pedido_saida_repository.dart';
 import 'package:intl/intl.dart';
 
-class PedidoController {
+class PedidoSaidaController {
   int? idPedido;
   DateTime? dataInicio;
   DateTime? dataFim;
@@ -23,7 +23,8 @@ class PedidoController {
     String? nome = '';
     value!.split(" ").forEach((element) {
       if (element.length > 3) {
-        nome = nome! + " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
+        nome = nome! +
+            " ${toBeginningOfSentenceCase(element.toString().toLowerCase())}";
       } else {
         nome = nome! + " ${element.toString().toLowerCase()}";
       }
