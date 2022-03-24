@@ -1,43 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
-import 'package:gpp/src/models/estante_enderecamento_model.dart';
+import 'package:gpp/src/models/corredor_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
-import 'package:gpp/src/views/addressing/cadastro_prateleira_view.dart';
+import 'package:gpp/src/views/enderecamento/cadastro_estante_view.dart';
 import 'package:gpp/src/views/home/home_view.dart';
 
 import '../funcionalities_view.dart';
 
 // ignore: must_be_immutable
-// ignore: must_be_immutable
-class CadastroEstanteView extends StatefulWidget {
-  String? idCorredor;
-  CadastroEstanteView({this.idCorredor});
+class CadastroCorredorView extends StatefulWidget {
+  String? idPiso;
+  CadastroCorredorView({this.idPiso});
 
   // int id;
 
-  //CadastroEstanteView({ Key? key, required this.id } ) : super(key: key);
-
-  //const CadastroEstanteView({Key? key}) : super(key: key);
+  //CadastroCorredorView({ Key? key, required this.id } ) : super(key: key);
+  // const CadastroCorredorView({Key? key}) : super(key: key);
 
   @override
-  _CadastroEstanteViewState createState() => _CadastroEstanteViewState();
+  _CadastroCorredorViewState createState() => _CadastroCorredorViewState();
 }
 
-class _CadastroEstanteViewState extends State<CadastroEstanteView> {
-  //late EnderecamentoEstanteController controller;
-  String? idCorredor;
+class _CadastroCorredorViewState extends State<CadastroCorredorView> {
+  //late EnderecamentoCorredorController controller;
+  // String? idPiso;
 
   late EnderecamentoController enderecamentoController;
 
-  fetchAll(String idCorredor) async {
+  fetchAll(String idPiso) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaEstante =
-        await enderecamentoController.repository.buscarEstante(idCorredor);
+    enderecamentoController.listaCorredor = await enderecamentoController.buscarCorredor(idPiso);
 
     enderecamentoController.isLoaded = true;
 
@@ -47,32 +44,28 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     });
   }
 
-  handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoModel,
-      String idCorredor) async {
+  handleCreate(context, CorredorEnderecamentoModel corredor, String idPiso) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await enderecamentoController.criarEstante(
-          estanteEnderecamentoModel, idCorredor)) {
+      if (await enderecamentoController.criarCorredor(corredor, idPiso)) {
         Navigator.pop(context);
-        fetchAll(widget.idCorredor.toString());
-        notify.sucess('Estante adicionada com sucesso!');
+        fetchAll(widget.idPiso.toString());
+        notify.sucess('Corredor adicionado com sucesso!');
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  handleDelete(
-      context, EstanteEnderecamentoModel estanteEnderecamentoModel) async {
+  handleDelete(context, CorredorEnderecamentoModel excluiCorredor) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir a estante?")) {
-        if (await enderecamentoController
-            .excluirEstante(estanteEnderecamentoModel)) {
+      if (await notify.confirmacao("você deseja excluir o corredor?")) {
+        if (await enderecamentoController.repository.excluirCorredor(excluiCorredor)) {
           // Navigator.pop(context); //volta para tela anterior
 
-          fetchAll(widget.idCorredor.toString());
-          notify.sucess("Estante excluída!");
+          fetchAll(widget.idPiso.toString());
+          notify.sucess("Corredor excluído!");
           //Atualiza a lista de motivos
         }
       }
@@ -81,18 +74,18 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     }
   }
 
-  handleEdit(context, EstanteEnderecamentoModel editaEstante) async {
+  handleEdit(context, CorredorEnderecamentoModel editaCorredor) async {
     NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Estante editada com sucesso!");
+        notify.sucess("Corredor editado com sucesso!");
       }
     } catch (e) {
       notify.error(e.toString());
     }
   }
 
-  openForm(context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
+  openForm(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -100,35 +93,30 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text("Cadastro da Estante"),
+              title: Text("Cadastro do Piso"),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     children: [
                       InputComponent(
-                        label: 'Estante',
-                        initialValue:
-                            estanteEnderecamentoReplacement.desc_estante,
-                        hintText: 'Digite o nome da Estante',
+                        label: 'Corredor',
+                        initialValue: corredorEnderecamentoReplacement.desc_corredor,
+                        hintText: 'Digite o nome do Corredor',
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.desc_estante =
-                                value!;
+                            corredorEnderecamentoReplacement.desc_corredor = value!;
                           });
                         },
                       ),
                       InputComponent(
-                        label: 'Corredor',
-                        initialValue: estanteEnderecamentoReplacement
-                            .id_corredor
-                            .toString(),
-                        hintText: 'Digite a prateleira',
+                        label: 'Piso',
+                        initialValue: corredorEnderecamentoReplacement.id_piso.toString(),
+                        hintText: 'Digite o piso',
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.id_corredor
-                                .toString();
+                            corredorEnderecamentoReplacement.id_piso.toString();
                           });
                         },
                       ),
@@ -142,10 +130,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(
-                                      context,
-                                      enderecamentoController.estanteModel,
-                                      widget.idCorredor.toString());
+                                  handleCreate(context, enderecamentoController.corredorModel, widget.idPiso.toString());
                                 },
                                 text: 'Adicionar')
                           ],
@@ -162,8 +147,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
     );
   }
 
-  openFormEdit(
-      context, EstanteEnderecamentoModel estanteEnderecamentoReplacement) {
+  openFormEdit(context, CorredorEnderecamentoModel corredorEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -181,25 +165,21 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                     children: [
                       InputComponent(
                         label: 'Piso',
-                        initialValue:
-                            estanteEnderecamentoReplacement.desc_estante,
+                        initialValue: corredorEnderecamentoReplacement.desc_corredor,
                         hintText: 'Digite o nome do Piso',
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.desc_estante
-                                .toString();
+                            corredorEnderecamentoReplacement.desc_corredor.toString();
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: estanteEnderecamentoReplacement.id_estante
-                            .toString(),
-                        hintText: 'Digite a estante',
+                        initialValue: corredorEnderecamentoReplacement.id_corredor.toString(),
+                        hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
-                            estanteEnderecamentoReplacement.id_estante
-                                .toString();
+                            corredorEnderecamentoReplacement.id_corredor.toString();
                           });
                         },
                       ),
@@ -214,8 +194,7 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(
-                                      context, estanteEnderecamentoReplacement);
+                                  handleEdit(context, corredorEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -246,10 +225,10 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
   void initState() {
     super.initState();
     //Iniciliza controlador
-    // controller = EnderecamentoEstanteController();
     enderecamentoController = EnderecamentoController();
+    // corredorEnderecamentoModel = widget.corredorEnderecamentoModel;
     //Quando o widget for inserido na árvore chama o fetchAll
-    fetchAll(widget.idCorredor.toString());
+    fetchAll(widget.idPiso.toString());
   }
 
   @override
@@ -265,12 +244,11 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(child: TitleComponent('Estante')),
+                  Flexible(child: TitleComponent('Corredor')),
                   ButtonComponent(
                       onPressed: () {
-                        enderecamentoController.estanteModel.id_corredor =
-                            int.parse(widget.idCorredor.toString());
-                        openForm(context, enderecamentoController.estanteModel);
+                        enderecamentoController.corredorModel.id_piso = int.parse(widget.idPiso.toString());
+                        openForm(context, enderecamentoController.corredorModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -289,51 +267,47 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
-                      itemCount: enderecamentoController.listaEstante.length,
+                      itemCount: enderecamentoController.listaCorredor.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
+                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TextComponent(enderecamentoController
-                                      .listaEstante[index].id_estante
-                                      .toString()),
+                                  child: TextComponent(enderecamentoController.listaCorredor[index].id_corredor.toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController
-                                      .listaEstante[index].desc_estante
-                                      .toString()),
+                                  child: TextComponent(enderecamentoController.listaCorredor[index].desc_corredor.toString()),
                                 ),
                                 Expanded(
                                   child: Row(
+                                    //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       ButtonComponent(
                                           onPressed: () {
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      HomeView(
-                                                    funcionalities:
-                                                        FuncionalitiesView(),
-                                                    page:
-                                                        CadastroPrateleiraView(
-                                                      idEstante:
-                                                          enderecamentoController
-                                                              .listaEstante[
-                                                                  index]
-                                                              .id_estante
-                                                              .toString(),
-                                                    ),
-                                                  ),
-                                                ));
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => CadastroEstanteView(
+                                                  idCorredor: enderecamentoController.listaCorredor[index].id_corredor.toString(),
+                                                ),
+                                              ),
+                                            );
                                           },
-                                          text: 'Prateleira'),
+                                          text: 'Estante'),
+                                      IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                          onPressed: () => {
+                                                handleDelete(
+                                                  context,
+                                                  enderecamentoController.listaCorredor[index],
+                                                )
+                                              }),
                                       // IconButton(
                                       //   icon: Icon(
                                       //     Icons.edit,
@@ -343,20 +317,9 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
                                       //     openFormEdit(
                                       //         context,
                                       //         enderecamentoController
-                                      //             .listaEstante[index]);
+                                      //             .listaCorredor[index]);
                                       //   },
                                       // ),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
-                                            handleDelete(
-                                                context,
-                                                enderecamentoController
-                                                    .listaEstante[index]);
-                                          }),
                                     ],
                                   ),
                                 )
