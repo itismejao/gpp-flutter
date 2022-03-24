@@ -906,7 +906,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     PecaController pecasController = PecaController();
     peca = await pecasController.buscar(id);
     _controllerNomePeca.text = peca.descricao ?? '';
-    if (peca.produto_peca?[0].idProdutoPeca != null) buscarProduto(peca.produto_peca![0].idProdutoPeca.toString());
+    if (peca.produto_peca?[0].id_produto != null) buscarProduto(peca.produto_peca![0].id_produto.toString());
   }
 
   buscarProduto(String id) async {
@@ -914,7 +914,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     await _produtoController.buscar(id);
     _controllerNomeProduto.text = _produtoController.produto.resumida ?? '';
     _controllerIdProduto.text = _produtoController.produto.idProduto.toString();
-    buscarFornecedor(_produtoController.produto.fornecedores!.first.toString());
+    print("Fornecedor");
+    print(_produtoController.produto.fornecedores!.first.idFornecedor);
+    buscarFornecedor(_produtoController.produto.fornecedores!.first.idFornecedor.toString());
   }
 
   buscarFornecedor(String id) async {
