@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
@@ -691,7 +692,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.enderecamento?.endereco ?? '-',
+                                      pecaEstoqueController.pecas_estoque[index]!.endereco ?? '-',
                                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                                     ),
                                   ),
@@ -839,24 +840,35 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     setState(() {
       pecaEstoqueController.isLoading = true;
     });
-    await pecaEstoqueController
-        .consultarEstoque(
-            pecaEstoqueController.paginaModel.atual,
-            _controllerIdFilial.text,
-            _controllerIdPeca.text,
-            _controllerIdProduto.text,
-            _controllerIdFornecedor.text,
-            endereco,
-            disponivel,
-            reservado,
-            transferencia,
-            _controllerCorredor.text,
-            _controllerEstante.text,
-            _controllerPrateleira.text,
-            _controllerBox.text)
-        .then((value) => setState(() {
-              pecaEstoqueController.isLoading = false;
-            }));
+
+    try {
+      await pecaEstoqueController
+          .consultarEstoque(
+          pecaEstoqueController.paginaModel.atual,
+          _controllerIdFilial.text,
+          _controllerIdPeca.text,
+          _controllerIdProduto.text,
+          _controllerIdFornecedor.text,
+          endereco,
+          disponivel,
+          reservado,
+          transferencia,
+          _controllerCorredor.text,
+          _controllerEstante.text,
+          _controllerPrateleira.text,
+          _controllerBox.text)
+          .then((value) =>
+          setState(() {
+            pecaEstoqueController.isLoading = false;
+          }));
+    } catch (e){
+      NotifyController notify = NotifyController(context: context);
+      notify.error2(e.toString());
+      setState(() {
+        pecaEstoqueController.isLoading = false;
+      });
+
+    }
   }
 
   limparFields() {
