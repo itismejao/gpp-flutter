@@ -601,8 +601,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     });
     produtoController.produto.produtoPecas =
         await produtoController.produtoRepository.buscarProdutoPecas(
-            astecaController.asteca.compEstProd!.first.produto!.idProduto!
-                .toString());
+            astecaController.asteca.compEstProd!.first.produto!.idProduto!);
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });

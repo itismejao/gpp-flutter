@@ -59,6 +59,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
@@ -85,6 +86,7 @@ import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaListView.dart';
+import 'package:gpp/src/views/produto/produto_view.dart';
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
@@ -165,7 +167,7 @@ class _GppAppState extends State<GppApp> {
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'GPP - Gerenciamento de Peças e Pedidos',
@@ -205,7 +207,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => AstecaView();
+      builder = (BuildContext context) => ProdutoView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();

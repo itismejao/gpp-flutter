@@ -14,14 +14,13 @@ class ProdutoRepository {
     api = ApiService();
   }
 
-  Future<List<ProdutoModel>> buscarTodos(String codigo) async {
-    int codigo2 = 14634;
-    Response response = await api.get('/produtos/' + codigo2.toString());
+  Future<List<ProdutoModel>> buscarProdutos() async {
+    Response response = await api.get('/produtos');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<ProdutoModel> produto = data
+      List<ProdutoModel> produto = data['produtos']
           .map<ProdutoModel>((data) => ProdutoModel.fromJson(data))
           .toList();
 
@@ -62,8 +61,8 @@ class ProdutoRepository {
     }
   }
 
-  Future<List<ProdutoPecaModel>> buscarProdutoPecas(String id) async {
-    Response response = await api.get('/produtos/${id}/pecas');
+  Future<List<ProdutoPecaModel>> buscarProdutoPecas(int idProduto) async {
+    Response response = await api.get('/produtos/${idProduto}/pecas');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
