@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:gpp/main.dart';
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
@@ -7,6 +8,8 @@ import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
 import 'package:gpp/src/models/PecaEstoqueModel.dart';
+import 'package:gpp/src/models/PecaModel.dart';
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
@@ -65,6 +68,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late ResponsiveController _responsive;
   late MaskFormatter maskFormatter;
   late String selecionado;
+  late PecaEstoqueModel pecaEstoque;
 
   buscar() async {
     setState(() {
@@ -146,19 +150,25 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       for (var itemPeca in itemsProdutoPeca) {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
+          astecaController.pedidoSaida.itemsPedidoSaida!.add(
+              ItemPedidoSaidaModel(peca: itemPeca.produtoPeca.peca, valor: itemPeca.produtoPeca.peca!.custo!, quantidade: 1));
+
           //Verifica se já existe item com o mesmo id adicionado na lista
-          int index = astecaController.pedidoSaida.itemsPedidoSaida!
-              .indexWhere((element) => element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
-          //Se não existe item adiciona na lista
-          if (index < 0) {
-            astecaController.pedidoSaida.itemsPedidoSaida!.add(
-                ItemPedidoSaidaModel(peca: itemPeca.produtoPeca.peca, valor: itemPeca.produtoPeca.peca!.custo!, quantidade: 1));
-          } else {
-            //Caso exista item na lista incrementa a quantidade;
-            astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
-            astecaController.pedidoSaida.itemsPedidoSaida![index].valor += itemPeca.produtoPeca.peca!.custo!;
-            //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
-          }
+          // int index = astecaController.pedidoSaida.itemsPedidoSaida!
+          //     .indexWhere((element) => element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
+          // //Se não existe item adiciona na lista
+          // if (index < 0) {
+          //   astecaController.pedidoSaida.itemsPedidoSaida!.add(ItemPedidoSaidaModel(
+          //     peca: itemPeca.produtoPeca.peca,
+          //     valor: itemPeca.produtoPeca.peca!.custo!,
+          //     quantidade: 1,
+          //   ));
+          // } else {
+          //   //Caso exista item na lista incrementa a quantidade;
+          //   astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
+          //   astecaController.pedidoSaida.itemsPedidoSaida![index].valor += itemPeca.produtoPeca.peca!.custo!;
+          //   //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
+          // }
           //Soma o total
           calcularValorTotal();
         }
@@ -572,6 +582,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     gerarProdutoPeca();
   }
 
+  estoqueTotal(PecasModel peca) {
+    int qtdTotal = 0;
+    peca.estoque!.forEach((element) {
+      qtdTotal += element.saldoDisponivel;
+    });
+    return qtdTotal.toString();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -624,7 +642,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.isEmpty) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.first.saldoDisponivel <
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.last.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
       } else {
@@ -2287,6 +2305,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               Expanded(
                 child: const TextComponent('Ações'),
               ),
+              Expanded(
+                flex: 2,
+                child: const TextComponent('Estoque'),
+              ),
             ],
           ),
         ),
@@ -2392,6 +2414,29 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         removerPeca(index);
                                       }),
                                 ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: DropdownSearch<PecaEstoqueModel>(
+                                  mode: Mode.MENU,
+                                  showSearchBox: false,
+                                  onChanged: (value) {
+                                    print(value!.saldoDisponivel);
+                                    setState(() {
+                                      astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.remove(value);
+                                      astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.add(value);
+                                    });
+                                  },
+                                  emptyBuilder: (context, searchEntry) => Center(child: Text('Não existe estoque!')),
+                                  items: astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque,
+                                  //produtoController.produto.produtoPecas![index].peca!.estoque!,
+                                  itemAsString: (PecaEstoqueModel? value) {
+                                    return "End: ${value!.endereco} / Qtd: ${value.saldoDisponivel}";
+                                  },
+                                ),
                               ),
                             ),
                           ],
@@ -2660,6 +2705,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                           Expanded(
                             child: const TextComponent('Estoque disponível'),
                           ),
+                          // Expanded(
+                          //   child: const TextComponent('Selecione Estoque'),
+                          // ),
                         ],
                       ),
                       const Divider(),
@@ -2692,29 +2740,25 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                               produtoController.produto.produtoPecas![index].peca!.custo.toString()),
                                         ),
                                         Expanded(
-                                            child: DropdownButton<PecaEstoqueModel>(
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selecionado =
-                                                        "Endereço: ${value!.endereco}  Estoque: ${value.saldoDisponivel}";
-                                                  });
-                                                },
-                                                //value: produtoController.produto.produtoPecas![index].peca!.estoque[value],
-                                                items: produtoController.produto.produtoPecas![index].peca!.estoque!
-                                                    .toList()
-                                                    .map<DropdownMenuItem<PecaEstoqueModel>>((value) {
-                                                  return DropdownMenuItem<PecaEstoqueModel>(
-                                                    value: value,
-                                                    child: Text("Endereço: ${value.endereco}  Estoque: ${value.saldoDisponivel}"),
-                                                  );
-                                                }).toList())),
+                                          child: TextComponent(
+                                              produtoController.produto.produtoPecas![index].peca!.estoque!.length != 0
+                                                  ? estoqueTotal(produtoController.produto.produtoPecas![index].peca!)
+                                                  : ''),
+                                        ),
                                         // Expanded(
-                                        //     child: TextComponent(
-                                        //         produtoController.produto.produtoPecas![index].peca!.estoque!.length != 0
-                                        //             ? produtoController
-                                        //                 .produto.produtoPecas![index].peca!.estoque!.first.saldoDisponivel
-                                        //                 .toString()
-                                        //             : '')),
+                                        //   child: Container(
+                                        //     padding: EdgeInsets.all(5),
+                                        //     child: DropdownSearch<PecaEstoqueModel>(
+                                        //       mode: Mode.MENU,
+                                        //       showSearchBox: false,
+                                        //       onChanged: (value) {},
+                                        //       items: produtoController.produto.produtoPecas![index].peca!.estoque!,
+                                        //       itemAsString: (PecaEstoqueModel? value) {
+                                        //         return "Endereço: ${value!.endereco} / Estoque: ${value.saldoDisponivel}";
+                                        //       },
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   );
