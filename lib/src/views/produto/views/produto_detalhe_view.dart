@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gpp/src/controllers/produto_controller.dart';
 
+import 'package:gpp/src/views/produto/controllers/produto_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
-
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/views/produto/controllers/produto_detalhe_controller.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class ProdutoDetalheView extends StatelessWidget {
-  // final ProdutoModel produto;
+  final int id;
   const ProdutoDetalheView({
     Key? key,
-    //  required this.produto,
+    required this.id,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final produtoController = Get.put(ProdutoController());
+    final produtoController = Get.put(ProdutoDetalheController(id));
 
     return Material(
       child: Container(
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Row(
@@ -61,7 +62,8 @@ class ProdutoDetalheView extends StatelessWidget {
                             width: 8,
                           ),
                           ButtonComponent(
-                            onPressed: () {},
+                            onPressed: () =>
+                                produtoController.importarPecas(id),
                             text: 'Importar peças',
                             icon: Icon(Icons.upload_file_rounded,
                                 color: Colors.white),
@@ -69,42 +71,45 @@ class ProdutoDetalheView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextComponent(
-                            'Código da peça',
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextComponent(
+                              'Código da peça',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextComponent(
-                            'Descrição',
+                          Expanded(
+                            child: TextComponent(
+                              'Descrição',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextComponent(
-                            'Quantidade de peças por produto',
+                          Expanded(
+                            child: TextComponent(
+                              'Quantidade de peças por produto',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextComponent(
-                            'Código de fabrica',
+                          Expanded(
+                            child: TextComponent(
+                              'Código de fabrica',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextComponent(
-                            'Medida',
+                          Expanded(
+                            child: TextComponent(
+                              'Medida',
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: TextComponent(
-                            'Ações',
-                          ),
-                        )
-                      ],
+                          Expanded(
+                            child: TextComponent(
+                              'Ações',
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     Expanded(
-                        child: Obx(() => produtoController.carregado.value
+                        child: Obx(() => !produtoController.carregando.value
                             ? ListView.builder(
                                 itemCount:
                                     produtoController.produtoPecas.length,
@@ -151,7 +156,16 @@ class ProdutoDetalheView extends StatelessWidget {
                                               '${produtoController.produtoPecas[index].peca!.altura}x${produtoController.produtoPecas[index].peca!.largura}x${produtoController.produtoPecas[index].peca!.profundidade}',
                                             ),
                                           ),
-                                          Expanded(child: ButtonAcaoWidget())
+                                          Expanded(
+                                              child: ButtonAcaoWidget(
+                                            deletar: () => produtoController
+                                                .deletarProdutoPeca(
+                                                    id,
+                                                    produtoController
+                                                        .produtoPecas[index]
+                                                        .peca!
+                                                        .id_peca),
+                                          ))
                                         ],
                                       ),
                                     ),

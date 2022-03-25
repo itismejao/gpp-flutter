@@ -8,6 +8,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: 14, horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -25,10 +26,7 @@ class CardWidget extends StatelessWidget {
           ),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: widget,
-      ),
+      child: widget,
     );
   }
 }

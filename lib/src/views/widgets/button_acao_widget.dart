@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ButtonAcaoWidget extends StatelessWidget {
+  final Function? deletar;
+
   const ButtonAcaoWidget({
     Key? key,
+    this.deletar,
   }) : super(key: key);
 
   @override
@@ -42,16 +45,19 @@ class ButtonAcaoWidget extends StatelessWidget {
           SizedBox(
             width: 6,
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.redAccent,
-                borderRadius: BorderRadius.circular(5)),
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Icon(
-                Icons.delete_rounded,
-                color: Colors.white,
-                size: 14,
+          GestureDetector(
+            onTap: () => deletar!(),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(5)),
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Icon(
+                  Icons.delete_rounded,
+                  color: Colors.white,
+                  size: 14,
+                ),
               ),
             ),
           ),

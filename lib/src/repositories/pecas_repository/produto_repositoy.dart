@@ -46,9 +46,8 @@ class ProdutoRepository {
     }
   }
 
-  Future<void> inserirPecasProduto(String id, ProdutoModel produto) async {
+  Future<void> inserirProdutoPecas(int id, ProdutoModel produto) async {
     print(json.encode(produto.toJson()));
-
     Response response =
         await api.post('/produtos/${id}/pecas', produto.toJson());
 
@@ -72,6 +71,18 @@ class ProdutoRepository {
           .toList();
 
       return produtoPecas;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<bool> deletarProdutoPeca(int idProduto, int idPeca) async {
+    Response response =
+        await api.delete('/produtos/${idProduto}/pecas/${idPeca}');
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;

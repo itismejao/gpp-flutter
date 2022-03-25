@@ -86,12 +86,14 @@ import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaListView.dart';
-import 'package:gpp/src/views/produto/produto_view.dart';
+import 'package:gpp/src/views/produto/views/produto_detalhe_view.dart';
+import 'package:gpp/src/views/produto/views/produto_view.dart';
+
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> navigatorKey2 = GlobalKey<NavigatorState>();
+
 void main() async {
   await dotenv.load(fileName: "env");
 
@@ -235,6 +237,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
         builder = (BuildContext context) => EstoqueConsultaView();
+      } else if (uri.pathSegments.first == 'produtos') {
+        builder = (BuildContext context) => ProdutoView();
       }
 
       //Se existe 2 parâmetros da url
@@ -246,6 +250,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => PedidoSaidaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
         builder = (BuildContext context) => PedidoEntradaDetalheView(id: id);
+      } else if (uri.pathSegments.first == 'produtos') {
+        builder = (BuildContext context) => ProdutoDetalheView(id: id);
       }
     }
 
@@ -296,11 +302,11 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
             child: Container(
               color: Colors.grey.shade100,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Container(
                   color: Colors.white,
                   child: Navigator(
-                    key: navigatorKey2,
+                    key: Get.nestedKey(1),
                     onGenerateRoute: (RouteSettings settings) {
                       return navegar(settings);
                     },
@@ -475,7 +481,7 @@ class _SubItemSidebarState extends State<SubItemSidebar> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => navigatorKey2.currentState!.pushNamed(widget.rota),
+      onTap: () => Get.keys[1]!.currentState!.pushNamed(widget.rota),
       child: MouseRegion(
         onHover: (value) => setState(() {
           onHover = true;

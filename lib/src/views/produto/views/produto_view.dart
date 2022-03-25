@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:gpp/src/shared/components/PaginacaoComponent.dart';
+
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/views/produto/controllers/produto_controller.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
 import 'package:gpp/src/views/widgets/situacao_widget.dart';
-
-import '../../controllers/produto_controller.dart';
 
 class ProdutoView extends StatelessWidget {
   const ProdutoView({
@@ -31,16 +32,16 @@ class ProdutoView extends StatelessWidget {
           ),
           Expanded(
             child: Obx(
-              () => produtoController.carregado.value
+              () => !produtoController.carregando.value
                   ? Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: ListView.builder(
                         itemCount: produtoController.produtos.length,
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () {
-                              produtoController.exibirProdutoDetalhe(
-                                  produtoController.produtos[index]);
+                            onTap: () async {
+                              Get.keys[1]!.currentState!.pushNamed(
+                                  '/produtos/${produtoController.produtos[index].idProduto}');
                             },
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 8),
@@ -137,7 +138,7 @@ class ProdutoView extends StatelessWidget {
                     )
                   : LoadingComponent(),
             ),
-          )
+          ),
         ],
       ),
     );
