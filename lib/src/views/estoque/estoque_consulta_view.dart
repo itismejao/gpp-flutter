@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
@@ -49,9 +50,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
 
   @override
   void initState() {
-    filialModel = getFilial().filial;
-    _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
-    _controllerNomeFilial.text = filialModel?.sigla ?? '';
+
+    setarFilialPadrao();
 
     super.initState();
   }
@@ -686,7 +686,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                   // CheckboxComponent(),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.filial.toString(),
+                                      pecaEstoqueController.pecas_estoque[index]!.filial != null ? pecaEstoqueController.pecas_estoque[index]!.filial.toString() : pecaEstoqueController.pecas_estoque[index]!.box!.prateleira!.estante!.corredor!.piso!.id_filial!.toString(),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -698,13 +698,14 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.id_peca.toString(),
+                                      pecaEstoqueController.pecas_estoque[index]!.id_peca != null ? pecaEstoqueController.pecas_estoque[index]!.id_peca.toString() : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
-                                    child: Text(pecaEstoqueController.pecas_estoque[index]!.pecasModel?.descricao ?? ''),
+                                    child: Text(
+                                        pecaEstoqueController.pecas_estoque[index]!.pecasModel?.descricao ?? '-'),
                                   ),
                                   Expanded(
                                     flex: 2,
@@ -712,19 +713,19 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.saldo_disponivel.toString(),
+                                      pecaEstoqueController.pecas_estoque[index]!.saldo_disponivel != null ? pecaEstoqueController.pecas_estoque[index]!.saldo_disponivel.toString() : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.saldo_reservado.toString(),
+                                      pecaEstoqueController.pecas_estoque[index]!.saldo_reservado != null ? pecaEstoqueController.pecas_estoque[index]!.saldo_reservado.toString() : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.quantidade_transferencia.toString(),
+                                      pecaEstoqueController.pecas_estoque[index]!.quantidade_transferencia != null ? pecaEstoqueController.pecas_estoque[index]!.quantidade_transferencia.toString() : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -862,6 +863,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
             pecaEstoqueController.isLoading = false;
           }));
     } catch (e){
+      pecaEstoqueController.pecas_estoque.clear();
       NotifyController notify = NotifyController(context: context);
       notify.error2(e.toString());
       setState(() {
@@ -872,6 +874,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   }
 
   limparFields() {
+    setarFilialPadrao();
     limparFieldsPeca();
     limparFieldsEnd();
   }
@@ -924,5 +927,18 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     await _fornecedorController.buscar(id);
     _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
     _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
+  }
+
+  buscarFilial(String id) async {
+    FilialController _filialController = FilialController();
+    await _filialController.buscarTodos();
+    _controllerIdFilial.text = _filialController.filialModel.id_filial.toString();
+    _controllerNomeFilial.text = _filialController.filialModel.sigla ?? '';
+  }
+
+  setarFilialPadrao(){
+    filialModel = getFilial().filial;
+    _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
+    _controllerNomeFilial.text = filialModel?.sigla ?? '';
   }
 }
