@@ -10,6 +10,8 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/views/enderecamento/und_medida_box.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class CadastroBoxView extends StatefulWidget {
   String? idPrateleira;
@@ -414,94 +416,86 @@ class _CadastroBoxViewState extends State<CadastroBoxView> {
                 ],
               ),
             ),
-            Divider(),
-            Row(
-              children: [
-                Expanded(child: TextComponent('Id')),
-                Expanded(child: TextComponent('Nome')),
-                Expanded(child: TextComponent('Altura')),
-                Expanded(child: TextComponent('Largura')),
-                Expanded(child: TextComponent('Profundidade')),
-                Expanded(child: TextComponent('Und. Medida')),
-                Expanded(child: TextComponent('Opções')),
-              ],
-            ),
-            Divider(),
             enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
                       itemCount: enderecamentoController.listaBox.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].id_box.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].altura == null
-                                      ? ''
-                                      : enderecamentoController.listaBox[index].altura.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].largura == null
-                                      ? ''
-                                      : enderecamentoController.listaBox[index].largura.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].profundidade == null
-                                      ? ''
-                                      : enderecamentoController.listaBox[index].profundidade.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaBox[index].unidade_medida == null
-                                      ? ''
-                                      : enderecamentoController.listaBox[index].unidade_medida == 0
-                                          ? UnidadeMedidaBox.Milimetros.name
-                                          : enderecamentoController.listaBox[index].unidade_medida == 1
-                                              ? UnidadeMedidaBox.Centimetros.name
-                                              : enderecamentoController.listaBox[index].unidade_medida == 2
-                                                  ? UnidadeMedidaBox.Metros.name
-                                                  : enderecamentoController.listaBox[index].unidade_medida == 3
-                                                      ? UnidadeMedidaBox.Polegadas.name
-                                                      : ''),
-                                ),
-                                // IconButton(
-                                //   icon: Icon(
-                                //     Icons.edit,
-                                //     color: Colors.grey.shade400,
-                                //   ),
-                                //   onPressed: () {
-                                //     openFormEdit(
-                                //         context,
-                                //         enderecamentoController
-                                //             .listaBox[index]);
-                                //   },
-                                // ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
-                                            handleDelete(context, enderecamentoController.listaBox[index]);
-                                          }),
-                                    ],
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: CardWidget(
+                              widget: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: TextComponent('Id')),
+                                  Expanded(child: TextComponent('Nome')),
+                                  Expanded(child: TextComponent('Altura')),
+                                  Expanded(child: TextComponent('Largura')),
+                                  Expanded(child: TextComponent('Profundidade')),
+                                  Expanded(child: TextComponent('Und. Medida')),
+                                  Expanded(child: TextComponent('Opções')),
+                                ],
+                              ),
+                              Divider(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].id_box.toString()),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].desc_box.toString()),
+                                  ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].altura == null
+                                        ? ''
+                                        : enderecamentoController.listaBox[index].altura.toString()),
+                                  ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].largura == null
+                                        ? ''
+                                        : enderecamentoController.listaBox[index].largura.toString()),
+                                  ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].profundidade == null
+                                        ? ''
+                                        : enderecamentoController.listaBox[index].profundidade.toString()),
+                                  ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController.listaBox[index].unidade_medida == null
+                                        ? ''
+                                        : enderecamentoController.listaBox[index].unidade_medida == 0
+                                            ? UnidadeMedidaBox.Milimetros.name
+                                            : enderecamentoController.listaBox[index].unidade_medida == 1
+                                                ? UnidadeMedidaBox.Centimetros.name
+                                                : enderecamentoController.listaBox[index].unidade_medida == 2
+                                                    ? UnidadeMedidaBox.Metros.name
+                                                    : enderecamentoController.listaBox[index].unidade_medida == 3
+                                                        ? UnidadeMedidaBox.Polegadas.name
+                                                        : ''),
+                                  ),
+                                  // IconButton(
+                                  //   icon: Icon(
+                                  //     Icons.edit,
+                                  //     color: Colors.grey.shade400,
+                                  //   ),
+                                  //   onPressed: () {
+                                  //     openFormEdit(
+                                  //         context,
+                                  //         enderecamentoController
+                                  //             .listaBox[index]);
+                                  //   },
+                                  // ),
+                                  Expanded(child: ButtonAcaoWidget(
+                                    deletar: () {
+                                      handleDelete(context, enderecamentoController.listaBox[index]);
+                                    },
+                                  ))
+                                ],
+                              )
+                            ],
+                          )),
                         );
                       },
                     ),
