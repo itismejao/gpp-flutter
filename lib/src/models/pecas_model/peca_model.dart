@@ -145,7 +145,7 @@ class PecasModel {
     // data['updated_at'] = this.updated_at;
     data['material_fabricacao'] = this.material_fabricacao;
     data['produto_peca'] = this.produtoPeca != null ? this.produtoPeca!.map((e) => e.toJson()).toList() : null;
-
+    data['estoque_unico'] = this.estoqueUnico != null ? this.estoqueUnico! : null;
     data['estoque'] = this.estoque != null ? this.estoque!.map((e) => e.toJson()).toList() : null;
     // data['especie'] = this.especie;
 

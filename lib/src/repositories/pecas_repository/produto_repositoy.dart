@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:gpp/src/models/PecaEstoqueModel.dart';
+import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/produto/produto_model.dart';
@@ -99,10 +100,24 @@ tratarMeuEstoque(List<ProdutoPecaModel>? p) async {
             especie: pp.peca!.especie,
             estoque: null,
             estoqueUnico: PecaEstoqueModel(
-                idPecaEstoque: element.idPecaEstoque,
-                saldoDisponivel: element.saldoDisponivel,
-                saldoReservado: element.saldoReservado,
-                endereco: element.endereco),
+              idPecaEstoque: element.idPecaEstoque,
+              saldoDisponivel: element.saldoDisponivel,
+              saldoReservado: element.saldoReservado,
+              endereco: element.endereco,
+              box: element.box != null
+                  ? new BoxEnderecamentoModel(
+                      id_box: element.box!.id_box,
+                      altura: element.box!.altura,
+                      desc_box: element.box!.desc_box,
+                      largura: element.box!.largura,
+                      profundidade: element.box!.profundidade,
+                      unidade_medida: element.box!.unidade_medida,
+                      id_prateleira: element.box!.id_prateleira != null ? element.box!.id_prateleira : null,
+                      prateleira: null,
+                      created_at: element.box!.created_at,
+                    )
+                  : null,
+            ),
             id_peca: pp.peca!.id_peca,
             id_peca_cor: pp.peca!.id_peca_cor,
             id_peca_especie: pp.peca!.id_peca_especie,

@@ -150,25 +150,22 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
       for (var itemPeca in itemsProdutoPeca) {
         //Verifica se o item está marcado
         if (itemPeca.marcado) {
-          astecaController.pedidoSaida.itemsPedidoSaida!.add(
-              ItemPedidoSaidaModel(peca: itemPeca.produtoPeca.peca, valor: itemPeca.produtoPeca.peca!.custo!, quantidade: 1));
-
           //Verifica se já existe item com o mesmo id adicionado na lista
-          // int index = astecaController.pedidoSaida.itemsPedidoSaida!
-          //     .indexWhere((element) => element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
-          // //Se não existe item adiciona na lista
-          // if (index < 0) {
-          //   astecaController.pedidoSaida.itemsPedidoSaida!.add(ItemPedidoSaidaModel(
-          //     peca: itemPeca.produtoPeca.peca,
-          //     valor: itemPeca.produtoPeca.peca!.custo!,
-          //     quantidade: 1,
-          //   ));
-          // } else {
-          //   //Caso exista item na lista incrementa a quantidade;
-          //   astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
-          //   astecaController.pedidoSaida.itemsPedidoSaida![index].valor += itemPeca.produtoPeca.peca!.custo!;
-          //   //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
-          // }
+          int index = astecaController.pedidoSaida.itemsPedidoSaida!
+              .indexWhere((element) => element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
+          //Se não existe item adiciona na lista
+          if (index < 0) {
+            astecaController.pedidoSaida.itemsPedidoSaida!.add(ItemPedidoSaidaModel(
+              peca: itemPeca.produtoPeca.peca,
+              valor: itemPeca.produtoPeca.peca!.custo!,
+              quantidade: 1,
+            ));
+          } else {
+            //Caso exista item na lista incrementa a quantidade;
+            astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
+            astecaController.pedidoSaida.itemsPedidoSaida![index].valor += itemPeca.produtoPeca.peca!.custo!;
+            //  astecaController.pedidoSaida.itemsPedidoSaida![index].valor += 0;
+          }
           //Soma o total
           calcularValorTotal();
         }
@@ -226,11 +223,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   bool verificaEstoque() {
     bool verificaEstoque = true;
     for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-      if (item.peca!.estoque!.isEmpty) {
+      if (item.peca!.estoqueUnico == null) {
         verificaEstoque = false;
         break;
       } else {
-        if (item.quantidade > item.peca!.estoque!.first.saldoDisponivel) {
+        if (item.quantidade > item.peca!.estoqueUnico!.saldoDisponivel) {
           verificaEstoque = false;
           break;
         }
@@ -306,7 +303,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         if (!verificarSelecaoMotivoTrocaPeca()) {
           myShowDialog('Selecione o motivo de troca da peça');
         }
-
         //Criar o pedido
         astecaController.pedidoSaida.cpfCnpj = astecaController.asteca.documentoFiscal!.cpfCnpj.toString();
         astecaController.pedidoSaida.filialVenda = astecaController.asteca.documentoFiscal!.idFilialVenda;
@@ -318,6 +314,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         astecaController.pedidoSaida.funcionario = astecaController.asteca.funcionario;
         astecaController.pedidoSaida.cliente = astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
+
         PedidoSaidaModel pedidoComprovante = await astecaController.pedidoSaidaRepository.criar(astecaController.pedidoSaida);
 
         exibirComprovantePedidoSaida(pedidoComprovante);
@@ -2287,17 +2284,23 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 flex: 2,
-                child: const TextComponent('Quantidade'),
+                child: const Center(
+                  child: TextComponent('Quantidade'),
+                ),
               ),
               Expanded(
                 child: const TextComponent('Valor R\$'),
               ),
               Expanded(
-                child: const TextComponent('Subtotal R\$'),
+                child: const Center(
+                  child: TextComponent('Subtotal R\$'),
+                ),
               ),
               Expanded(
                 flex: 3,
-                child: const TextComponent('Motivo'),
+                child: const Center(
+                  child: TextComponent('Motivo'),
+                ),
               ),
               Expanded(
                 child: const TextComponent('Ações'),
