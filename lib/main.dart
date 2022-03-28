@@ -110,7 +110,7 @@ class _GppAppState extends State<GppApp> {
 
 //Se existe 1 parâmetros da url
       if (uri.pathSegments.length == 0) {
-        pagina = EstoqueConsultaView();
+        pagina = MenuEntradaView();
       } else if (uri.pathSegments.length == 1) {
         if (uri.pathSegments.first == 'astecas') {
           pagina = AstecaView();
@@ -204,7 +204,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => EstoqueConsultaView();
+      builder = (BuildContext context) => MenuEntradaView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
