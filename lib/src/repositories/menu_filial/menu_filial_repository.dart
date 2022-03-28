@@ -30,7 +30,7 @@ class FilialRepository {
   }
 
   Future<bool> mudarFilialSelecionada(UsuarioModel usuario) async {
-    Response response = await api.post('/menu-filiais/filial', usuario.toJson());
+    Response response = await api.post('/menu-filiais/filialSelecionada', usuario.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       print(jsonDecode(response.body));
