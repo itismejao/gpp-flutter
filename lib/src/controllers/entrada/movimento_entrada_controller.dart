@@ -28,11 +28,26 @@ class MovimentoEntradaController {
   somarLista(List<ItemPedidoEntradaModel>? listaItensPedido) {
     listaItensPedido?.forEach((itemPedido) {
       //ip = listaItensSomados.firstWhere((itemSomado) => itemPedido.idItemPedidoEntrada == itemSomado.idItemPedidoEntrada, orElse: ()=>ItemPedidoEntradaModel());
-      int index = listaItensSomados.indexWhere((element) => itemPedido.idItemPedidoEntrada == element.idItemPedidoEntrada);
+      int index = listaItensSomados.indexWhere((element) => itemPedido.peca?.id_peca == element.peca?.id_peca);
       if (index == -1) {
         listaItensSomados.add(itemPedido);
       } else {
         listaItensSomados[index].quantidade = listaItensSomados[index].quantidade! + itemPedido.quantidade!;
+        print(itemPedido.quantidade!);
+      }
+    });
+  }
+
+  subtrairLista(List<ItemPedidoEntradaModel>? listaItensPedido) {
+    listaItensPedido?.forEach((itemPedido) {
+      //ip = listaItensSomados.firstWhere((itemSomado) => itemPedido.idItemPedidoEntrada == itemSomado.idItemPedidoEntrada, orElse: ()=>ItemPedidoEntradaModel());
+      int index = listaItensSomados.indexWhere((element) => itemPedido.peca?.id_peca == element.peca?.id_peca);
+      if (index != -1) {
+        print(itemPedido.quantidade!);
+        listaItensSomados[index].quantidade = listaItensSomados[index].quantidade! - itemPedido.quantidade!;
+        if (listaItensSomados[index].quantidade == 0){
+          listaItensSomados.removeAt(index);
+        }
       }
     });
   }

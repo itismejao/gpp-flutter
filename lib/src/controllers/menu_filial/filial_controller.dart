@@ -8,6 +8,7 @@ import 'package:gpp/src/shared/utils/Usuario.dart';
 
 class FilialController {
   late final FilialRepository filialRepository = FilialRepository();
+  FilialModel filialModel = FilialModel();
 
   static void filialLogin() {
     List filiaisAsteca = [89, 101, 106, 116, 119, 210, 217, 451, 500, 516, 519, 520, 529, 541, 545, 547, 548, 901];
