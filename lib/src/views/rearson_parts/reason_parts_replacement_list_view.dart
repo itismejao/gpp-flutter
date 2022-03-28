@@ -10,6 +10,9 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/utils/notificacao.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class MotivosTrocaPecasListView extends StatefulWidget {
   const MotivosTrocaPecasListView({Key? key}) : super(key: key);
@@ -37,8 +40,8 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   handleDelete(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
     NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify
-          .confirmacao("você deseja excluir o motivo de troca de peça ?")) {
+      if (await Notificacao.confirmacao(
+          "você deseja excluir o motivo de troca de peça ?")) {
         if (await controller.repository.excluir(reasonPartsReplacement)) {
           notify.sucess("Funcionalidade excluída!");
           //Atualiza a lista de motivos
@@ -46,7 +49,7 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -183,6 +186,7 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return Container(
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -201,81 +205,77 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
                 ],
               ),
             ),
-            Divider(),
-            Row(
-              children: [
-                Expanded(child: TextComponent('ID')),
-                Expanded(child: TextComponent('Nome')),
-                Expanded(child: TextComponent('Status')),
-                Expanded(child: TextComponent('Opções')),
-              ],
-            ),
-            Divider(),
             controller.isLoaded
-                ? Container(
-                    height: media.size.height * 0.5,
+                ? Expanded(
                     child: ListView.builder(
-                      itemCount: controller.motivoTrocaPecas.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            color: (index % 2) == 0
-                                ? Colors.white
-                                : Colors.grey.shade50,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: TextComponent(controller
-                                        .motivoTrocaPecas[index]
-                                        .idMotivoTrocaPeca
-                                        .toString())),
-                                Expanded(
-                                    child: TextComponent(controller
-                                        .motivoTrocaPecas[index].nome!)),
-                                Expanded(
-                                    child: Row(
-                                  children: [
-                                    StatusComponent(
-                                        status: controller
-                                            .motivoTrocaPecas[index].situacao!),
-                                  ],
-                                )),
-                                Expanded(
-                                  child: Row(
+                        itemCount: controller.motivoTrocaPecas.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            child: CardWidget(
+                              widget: Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.edit,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
+                                      Expanded(
+                                          child: TextComponent(
+                                        'ID',
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                      Expanded(
+                                          child: TextComponent('Nome',
+                                              fontWeight: FontWeight.bold)),
+                                      Expanded(
+                                          child: TextComponent('Status',
+                                              fontWeight: FontWeight.bold)),
+                                      Expanded(
+                                          child: TextComponent('Opções',
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  Divider(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: TextComponent(controller
+                                              .motivoTrocaPecas[index]
+                                              .idMotivoTrocaPeca
+                                              .toString())),
+                                      Expanded(
+                                          child: TextComponent(controller
+                                              .motivoTrocaPecas[index].nome!)),
+                                      Expanded(
+                                          child: Row(
+                                        children: [
+                                          StatusComponent(
+                                              status: controller
+                                                  .motivoTrocaPecas[index]
+                                                  .situacao!),
+                                        ],
+                                      )),
+                                      Expanded(
+                                        child: ButtonAcaoWidget(
+                                          editar: () {
                                             openForm(
                                                 context,
                                                 controller
                                                     .motivoTrocaPecas[index]);
-                                          }),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () => {
-                                                handleDelete(
-                                                    context,
-                                                    controller.motivoTrocaPecas[
-                                                        index]),
-                                              }),
+                                          },
+                                          deletar: () {
+                                            handleDelete(
+                                                context,
+                                                controller
+                                                    .motivoTrocaPecas[index]);
+                                          },
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  )
+                          );
+                        }))
                 : LoadingComponent()
           ],
         ),

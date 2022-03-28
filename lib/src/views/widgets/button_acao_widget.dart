@@ -42,16 +42,21 @@ class ButtonAcaoWidget extends StatelessWidget {
             width: 6,
           ),
           editar != null
-              ? Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Icon(
-                      Icons.edit_rounded,
-                      color: Colors.white,
-                      size: 14,
+              ? GestureDetector(
+                  onTap: () {
+                    editar!();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Icon(
+                        Icons.edit_rounded,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                     ),
                   ),
                 )

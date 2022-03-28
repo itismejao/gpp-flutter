@@ -19,10 +19,11 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
-import '../../controllers/peca_controller.dart';
+import '../../../controllers/peca_controller.dart';
 
-import '../../shared/components/CheckboxComponent.dart';
+import '../../../shared/components/CheckboxComponent.dart';
 
 class ItemPeca {
   bool marcado = false;
@@ -330,13 +331,6 @@ class _PecasListViewState extends State<PecasListView> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-
-                                  // const Expanded(
-                                  //   child: const TextComponent(
-                                  //     'Unidade',
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  // ),
                                   SizedBox(
                                     width: 8,
                                   ),
@@ -373,7 +367,6 @@ class _PecasListViewState extends State<PecasListView> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-
                                   SizedBox(
                                     width: 8,
                                   ),
@@ -383,44 +376,6 @@ class _PecasListViewState extends State<PecasListView> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-
-                                  // const Expanded(
-                                  //   child: const TextComponent(
-                                  //     'Classificação de custo',
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  // ),
-                                  // SizedBox(
-                                  //   width: 8,
-                                  // ),
-                                  // const Expanded(
-                                  //   child: const TextComponent(
-                                  //     'Tipo de classificação de custo',
-                                  //     fontWeight: FontWeight.bold,
-                                  //   ),
-                                  // ),
-                                  // SizedBox(
-                                  //   width: 8,
-                                  // ),
-                                  // Expanded(
-                                  //   child: Wrap(children: [
-                                  //     Switch(
-                                  //         activeColor: primaryColor,
-                                  //         value: ativar,
-                                  //         onChanged: (bool value) {
-                                  //           setState(() {
-                                  //             ativarInativarTodos(value);
-                                  //           });
-                                  //         }),
-                                  //     SizedBox(
-                                  //       width: 8,
-                                  //     ),
-                                  //     const TextComponent(
-                                  //       'Ativo/inativo',
-                                  //       fontWeight: FontWeight.bold,
-                                  //     ),
-                                  //   ]),
-                                  // ),
                                 ],
                               ),
                               Divider(),
@@ -841,17 +796,17 @@ class _PecasListViewState extends State<PecasListView> {
                       });
                     },
                     text: 'Adicionar filtro'),
-                SizedBox(
-                  width: 8,
-                ),
-                ButtonComponent(
-                  onPressed: () => importarCSV(),
-                  text: 'Importar peças',
-                  icon: Icon(
-                    Icons.upload_file_rounded,
-                    color: Colors.white,
-                  ),
-                )
+                // SizedBox(
+                //   width: 8,
+                // ),
+                // ButtonComponent(
+                //   onPressed: () => importarCSV(),
+                //   text: 'Importar peças',
+                //   icon: Icon(
+                //     Icons.upload_file_rounded,
+                //     color: Colors.white,
+                //   ),
+                // )
               ],
             ),
             SizedBox(
@@ -906,111 +861,80 @@ class ItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigator.pushNamed(context,
-        //     '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 0,
-                blurRadius: 9,
-                offset: Offset(0, 5), // changes position of shadow
+    return CardWidget(
+      widget: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    TextComponent(
+                      'ID',
+                      fontWeight: FontWeight.bold,
+                    )
+                  ],
+                ),
               ),
+              Expanded(
+                  child: TextComponent(
+                'Descrição',
+                fontWeight: FontWeight.bold,
+              )),
+              Expanded(
+                  child: TextComponent(
+                'Comprimento',
+                fontWeight: FontWeight.bold,
+              )),
+              Expanded(
+                  child: TextComponent(
+                'Altura',
+                fontWeight: FontWeight.bold,
+              )),
+              Expanded(
+                  child: TextComponent(
+                'Largura',
+                fontWeight: FontWeight.bold,
+              )),
+              Expanded(
+                  child: TextComponent(
+                'Cor',
+                fontWeight: FontWeight.bold,
+              ))
             ],
-            border: Border(
-              left: BorderSide(
-                color: Theme.of(context).primaryColor,
-                //color:
-                //     situacao(controller.pedidosEntrada[index].dataEmissao!),
-                width: 7.0,
-              ),
-            ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          TextComponent(
-                            'ID',
-                            fontWeight: FontWeight.bold,
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                        child: TextComponent(
-                      'Descrição',
-                      fontWeight: FontWeight.bold,
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      'Comprimento',
-                      fontWeight: FontWeight.bold,
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      'Altura',
-                      fontWeight: FontWeight.bold,
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      'Largura',
-                      fontWeight: FontWeight.bold,
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      'Cor',
-                      fontWeight: FontWeight.bold,
-                    ))
-                  ],
-                ),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: TextComponent(
-                      '# ${peca.id_peca}',
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      '${peca.descricao}',
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      '${peca.profundidade ?? ''}',
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      '${peca.altura ?? ''}',
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      '${peca.largura ?? ''}',
-                    )),
-                    Expanded(
-                        child: TextComponent(
-                      '${peca.cor ?? ''}',
-                    ))
-                  ],
-                ),
-              ],
-            ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                  child: TextComponent(
+                '# ${peca.id_peca}',
+              )),
+              Expanded(
+                  child: TextComponent(
+                '${peca.descricao}',
+              )),
+              Expanded(
+                  child: TextComponent(
+                '${peca.profundidade ?? ''}',
+              )),
+              Expanded(
+                  child: TextComponent(
+                '${peca.altura ?? ''}',
+              )),
+              Expanded(
+                  child: TextComponent(
+                '${peca.largura ?? ''}',
+              )),
+              Expanded(
+                  child: TextComponent(
+                '${peca.cor ?? ''}',
+              ))
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

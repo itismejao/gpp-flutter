@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import '../shared/components/TextButtonComponent.dart';
 
 class Notificacao {
-  static alerta(String mensagem) async {
+  static confirmacao(String mensagem) async {
     return await Get.dialog(AlertDialog(
       title: TextComponent(
         'Confirmação',

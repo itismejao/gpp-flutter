@@ -160,7 +160,7 @@ class ProdutoDetalheController extends GetxController {
 
   inserirProdutoPecas(int idProduto) async {
     try {
-      if (await Notificacao.alerta(
+      if (await Notificacao.confirmacao(
           'Gostaria de importar ${marcados} peças ?')) {
         gerarListaProdutoPeca();
         await produtoRepository.inserirProdutoPecas(

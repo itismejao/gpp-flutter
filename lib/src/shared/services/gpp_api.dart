@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:gpp/main.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart';
+
+import 'package:get/get.dart';
 
 class ApiService {
   late String? baseUrl;
@@ -37,19 +39,20 @@ class ApiService {
     return headers;
   }
 
-  Future<Response> get(String endpoint,
+  Future<http.Response> get(String endpoint,
       {Map<String, String>? queryParameters}) async {
     try {
       var uri = Uri.parse(baseUrl! + endpoint)
           .replace(queryParameters: queryParameters);
 
-      Response response = await http
+      http.Response response = await http
           .get(uri, headers: getHeader())
           .timeout(const Duration(seconds: 30));
 
       if (response.statusCode == StatusCode.UNAUTHORIZED) {
         logout();
-        navigatorKey.currentState!.pushNamed('/logout');
+
+        Get.to(AutenticacaoView());
       }
 
       return response;
@@ -67,7 +70,7 @@ class ApiService {
 
       if (response.statusCode == StatusCode.UNAUTHORIZED) {
         logout();
-        navigatorKey.currentState!.pushNamed('/logout');
+        Get.to(AutenticacaoView());
       }
 
       return response;
@@ -83,7 +86,7 @@ class ApiService {
 
     if (response.statusCode == StatusCode.UNAUTHORIZED) {
       logout();
-      navigatorKey.currentState!.pushNamed('/logout');
+      Get.to(AutenticacaoView());
     }
 
     return response;
@@ -95,7 +98,7 @@ class ApiService {
 
     if (response.statusCode == StatusCode.UNAUTHORIZED) {
       logout();
-      navigatorKey.currentState!.pushNamed('/logout');
+      Get.to(AutenticacaoView());
     }
 
     return response;

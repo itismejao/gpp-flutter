@@ -9,9 +9,6 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_corredor_view.dart';
-import 'package:gpp/src/views/home/home_view.dart';
-
-import '../funcionalities_view.dart';
 
 class CadastroPisoView extends StatefulWidget {
   const CadastroPisoView({Key? key}) : super(key: key);
@@ -25,7 +22,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos(getFilial().id_filial!);
+    enderecamentoController.listaPiso =
+        await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 
@@ -122,7 +120,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                         initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = int.parse(value);
+                            pisoEnderecamentoReplacement.id_filial =
+                                int.parse(value);
                           });
                         },
                       ),
@@ -137,7 +136,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(context, pisoEnderecamentoReplacement);
+                                  handleCreate(
+                                      context, pisoEnderecamentoReplacement);
                                 },
                                 text: 'Adicionar')
                           ],
@@ -182,7 +182,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
+                        initialValue:
+                            pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
@@ -201,7 +202,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context, pisoEnderecamentoReplacement);
+                                  handleEdit(
+                                      context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -278,14 +280,20 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+                            color: (index % 2) == 0
+                                ? Colors.white
+                                : Colors.grey.shade50,
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].id_piso
+                                      .toString()),
                                 ),
                                 Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
+                                  child: TextComponent(enderecamentoController
+                                      .listaPiso[index].desc_piso
+                                      .toString()),
                                 ),
                                 Expanded(
                                   child: Row(
@@ -295,8 +303,14 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => CadastroCorredorView(
-                                                    idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
+                                                builder: (context) =>
+                                                    CadastroCorredorView(
+                                                        idPiso:
+                                                            enderecamentoController
+                                                                .listaPiso[
+                                                                    index]
+                                                                .id_piso
+                                                                .toString()),
                                               ),
                                             );
                                           },
@@ -321,7 +335,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                                         onPressed: () {
                                           handleDelete(
                                             context,
-                                            enderecamentoController.listaPiso[index],
+                                            enderecamentoController
+                                                .listaPiso[index],
                                           );
                                         },
                                       )
