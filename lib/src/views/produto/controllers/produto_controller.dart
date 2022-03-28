@@ -22,6 +22,7 @@ class ProdutoController extends GetxController {
   var carregando = true.obs;
   late ProdutoRepository produtoRepository;
   late List<ProdutoModel> produtos;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   int marcados = 0;
 
@@ -39,7 +40,17 @@ class ProdutoController extends GetxController {
   buscarProdutos() async {
     try {
       carregando(true);
-      this.produtos = await produtoRepository.buscarProdutos();
+      this.produtos = await produtoRepository.buscarProdutos(1);
+    } finally {
+      carregando(false);
+    }
+  }
+
+  pesquisarProduto(value) async {
+    try {
+      carregando(true);
+      this.produtos =
+          await produtoRepository.buscarProdutos(1, pesquisar: value);
     } finally {
       carregando(false);
     }

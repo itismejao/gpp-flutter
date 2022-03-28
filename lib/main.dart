@@ -68,7 +68,7 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/shared/utils/Usuario.dart';
 import 'package:gpp/src/views/addressing/addressing_list_view.dart';
-import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
+
 import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
@@ -304,7 +304,6 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Container(
-                  color: Colors.white,
                   child: Navigator(
                     key: Get.nestedKey(1),
                     onGenerateRoute: (RouteSettings settings) {

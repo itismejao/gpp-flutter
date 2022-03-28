@@ -29,6 +29,7 @@ class ProdutoDetalheController extends GetxController {
   late MaskFormatter maskFormatter;
   late GlobalKey<FormState> formKey;
   int marcados = 0;
+  late ProdutoModel produto;
 
   ProdutoDetalheController(int id) {
     produtoRepository = ProdutoRepository();
@@ -38,12 +39,28 @@ class ProdutoDetalheController extends GetxController {
     formKey = GlobalKey<FormState>();
     maskFormatter = MaskFormatter();
     this.id = id;
+    produto = ProdutoModel();
   }
 
   @override
   void onInit() async {
-    buscarProdutoPecas();
     super.onInit();
+    await buscarProduto();
+    await buscarProdutoPecas();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  buscarProduto() async {
+    try {
+      carregando(true);
+      this.produto = await produtoRepository.buscarProduto(this.id);
+    } finally {
+      carregando(false);
+    }
   }
 
   buscarProdutoPecas() async {
