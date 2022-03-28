@@ -203,6 +203,7 @@ class _HomePageViewState extends State<HomePageView> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         shadowColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         title: TextComponent(
           'gpp',
           color: Colors.white,
