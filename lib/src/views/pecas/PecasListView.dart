@@ -167,9 +167,9 @@ class _PecasListViewState extends State<PecasListView> {
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
         adicionarProdutoPecas();
         //Chama o endpoint
-        await pecaController.produtoRepository.inserirPecasProduto(
-            pecaController.produto.idProduto.toString(),
-            pecaController.produto);
+        // await pecaController.produtoRepository.inserirPecasProduto(
+        //     pecaController.produto.idProduto.toString(),
+        //     pecaController.produto);
 
         //Limpa
         pecaController.produto = ProdutoModel();
