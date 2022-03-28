@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
+import 'package:gpp/src/models/user_model.dart';
+import 'package:gpp/src/shared/utils/Usuario.dart';
 import 'package:universal_html/html.dart';
 
 import '../../models/filial/empresa_filial_model.dart';
@@ -25,11 +28,18 @@ bool isAuthenticated() {
 }
 
 void setFilial({EmpresaFilialModel? filial}) {
-  if (filial != null) {
-    Map<String, dynamic> filialMap = filial.toJson();
+  FilialController filialController = FilialController();
 
+  if (filial != null) {
+    UsuarioModel usuario = UsuarioModel(idFilial: filial.id_filial);
+    filialController.mudarFilialSelecionada(usuario);
+
+    Map<String, dynamic> filialMap = filial.toJson();
     storage['filial'] = jsonEncode(filialMap);
   } else {
+    UsuarioModel usuario = UsuarioModel(idFilial: 500);
+    filialController.mudarFilialSelecionada(usuario);
+
     Map<String, dynamic> filialMap = EmpresaFilialModel(
       id_empresa: 1,
       id_filial: 500,
