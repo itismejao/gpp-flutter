@@ -204,7 +204,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => AstecaView();
+      builder = (BuildContext context) => EstoqueConsultaView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();

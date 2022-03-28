@@ -50,8 +50,6 @@ class PecaRepository {
   Future<PecasModel> buscar(String codigo) async {
     Response response = await api.get('/pecas/' + codigo);
 
-    print(response.body);
-
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 

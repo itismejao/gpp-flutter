@@ -5,12 +5,18 @@ class ProdutoPecaModel {
   int? quantidadePorProduto;
   PecasModel? peca;
   int? id_produto;
+  int? id_peca;
+  int? status;
+  int? situacao;
 
   ProdutoPecaModel({
     this.idProdutoPeca,
     this.quantidadePorProduto,
     this.peca,
-    this.id_produto
+    this.id_produto,
+    this.id_peca,
+    this.situacao,
+    this.status
   });
 
   factory ProdutoPecaModel.fromJson(Map<String, dynamic> json) {
@@ -18,7 +24,11 @@ class ProdutoPecaModel {
         idProdutoPeca: json['id_produto_peca'],
         quantidadePorProduto: json['quantidade_por_produto'],
         id_produto: json['id_produto'],
-        peca: PecasModel.fromJson(json['peca']));
+        peca: json['peca'] == null ? null : PecasModel.fromJson(json['peca']),
+        id_peca: json['id_peca'],
+        situacao: json['situacao'],
+        status: json['status']
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -26,6 +36,11 @@ class ProdutoPecaModel {
     data['quantidade_por_produto'] =
         quantidadePorProduto != null ? quantidadePorProduto : null;
     data['pecas'] = peca != null ? peca!.toJson() : null;
+
+    data['id_produto_peca'] = this.idProdutoPeca;
+    data['id_produto'] = this.id_produto;
+
+    data['id_peca'] = this.id_peca;
 
     return data;
   }

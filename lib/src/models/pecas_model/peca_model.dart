@@ -115,11 +115,11 @@ class PecasModel {
                 return ProdutoPecaModel.fromJson(data);
               }).toList()
             : null,
-        estoque: json['estoque'] != null
+        /*estoque: json['estoque'] != null
             ? json['estoque'].map<PecaEstoqueModel>((data) {
                 return PecaEstoqueModel.fromJson(data);
               }).toList()
-            : null);
+            : null*/);
   }
 
   Map<String, dynamic> toJson() {
