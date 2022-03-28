@@ -61,6 +61,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/controllers/UserController.dart';
+import 'package:gpp/src/models/authenticate_model.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -77,7 +78,7 @@ import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 import 'package:gpp/src/views/home/filial_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/pecas/PecasListView.dart';
+import 'package:gpp/src/views/peca/views/PecasListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
 import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
 import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
@@ -106,104 +107,34 @@ class GppApp extends StatefulWidget {
 }
 
 class _GppAppState extends State<GppApp> {
-  obterRota(settings) {
-    Widget pagina = NotFoundView();
-    if (isAuthenticated()) {
-      //Autenticação
-      Uri uri = Uri.parse(settings.name);
-
-//Se existe 1 parâmetros da url
-      if (uri.pathSegments.length == 0) {
-        pagina = MenuEntradaView();
-      } else if (uri.pathSegments.length == 1) {
-        if (uri.pathSegments.first == 'astecas') {
-          pagina = AstecaView();
-        } else if (uri.pathSegments.first == 'departamentos') {
-          pagina = DepartamentoListView();
-        } else if (uri.pathSegments.first == 'usuarios') {
-          pagina = UsuarioListView();
-        } else if (uri.pathSegments.first == 'motivos-defeitos') {
-          pagina = MotivosTrocaPecasListView();
-        } else if (uri.pathSegments.first == 'logout') {
-          pagina = AutenticacaoView();
-        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
-          pagina = MenuCadastrarView();
-        } else if (uri.pathSegments.first == 'pecas-consultar') {
-          pagina = MenuConsultarView();
-        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          pagina = PecaEnderecamentoDetailView();
-        } else if (uri.pathSegments.first == 'enderecamentos') {
-          pagina = CadastroPisoView();
-        } else if (uri.pathSegments.first == 'pedidos-entrada') {
-          pagina = PedidoEntradaListView();
-        } else if (uri.pathSegments.first == 'pedidos-saida') {
-          pagina = PedidoSaidaListView();
-        } else if (uri.pathSegments.first == 'estoque-entrada') {
-          pagina = MenuEntradaView();
-        } else if (uri.pathSegments.first == 'estoque-consulta') {
-          pagina = EstoqueConsultaView();
-        }
-
-        //Se existe 2 parâmetros da url
-      } else if (uri.pathSegments.length == 2) {
-        var id = int.parse(uri.pathSegments[1]);
-        if (uri.pathSegments.first == 'astecas') {
-          // pagina = AstecaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos-saida') {
-          pagina = PedidoSaidaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos-entrada') {
-          pagina = PedidoEntradaDetalheView(id: id);
-        }
-      }
-    } else {
-      return MaterialPageRoute(builder: (context) => AutenticacaoView());
-    }
-    return MaterialPageRoute(builder: (context) => pagina);
-  }
-
-  @override
-  void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        title: 'GPP - Gerenciamento de Peças e Pedidos',
-        home: PaginaInicialView(),
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            primaryColor: primaryColor,
-            fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(
-              iconColor: Colors.grey,
-              floatingLabelStyle:
-                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
-            )),
-        onGenerateRoute: (settings) {
-          // Handle '/'
-          //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-
-          return obterRota(settings);
-        });
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: 'GPP - Gerenciamento de Peças e Pedidos',
+      home: HomePageView(),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: primaryColor,
+          fontFamily: 'Mada',
+          inputDecorationTheme: const InputDecorationTheme(
+            iconColor: Colors.grey,
+            floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+          )),
+    );
   }
 }
 
-class PaginaInicialView extends StatefulWidget {
-  const PaginaInicialView({Key? key}) : super(key: key);
+class HomePageView extends StatefulWidget {
+  const HomePageView({Key? key}) : super(key: key);
 
   @override
-  State<PaginaInicialView> createState() => _PaginaInicialViewState();
+  State<HomePageView> createState() => _HomePageViewState();
 }
 
-class _PaginaInicialViewState extends State<PaginaInicialView> {
+class _HomePageViewState extends State<HomePageView> {
   navegar(settings) {
     var builder;
-
-    Widget pagina = NotFoundView();
 
     Uri uri = Uri.parse(settings.name);
 
@@ -216,7 +147,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'departamentos') {
         builder = (BuildContext context) => DepartamentoListView();
       } else if (uri.pathSegments.first == 'usuarios') {
-        builder = (BuildContext context) => UsuarioListView();
+        //builder = (BuildContext context) => UsuarioListView();
       } else if (uri.pathSegments.first == 'motivos-defeitos') {
         builder = (BuildContext context) => MotivosTrocaPecasListView();
       } else if (uri.pathSegments.first == 'logout') {
@@ -239,6 +170,9 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => EstoqueConsultaView();
       } else if (uri.pathSegments.first == 'produtos') {
         builder = (BuildContext context) => ProdutoView();
+      } else if (uri.pathSegments.first == 'logout') {
+        builder = (BuildContext context) => AutenticacaoView();
+        ;
       }
 
       //Se existe 2 parâmetros da url
