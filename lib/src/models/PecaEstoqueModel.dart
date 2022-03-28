@@ -3,6 +3,7 @@ class PecaEstoqueModel {
   int saldoDisponivel;
   int saldoReservado;
   String endereco;
+  bool selecionado = false;
 
   PecaEstoqueModel(
       {required this.idPecaEstoque, required this.saldoDisponivel, required this.saldoReservado, required this.endereco});

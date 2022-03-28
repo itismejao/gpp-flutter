@@ -577,7 +577,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });
-
     //gerarItemPeca
     gerarProdutoPeca();
   }
@@ -639,16 +638,14 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   }
 
   _buildSituacaoEstoque(index) {
-    if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.isEmpty) {
+    if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico == null) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.last.saldoDisponivel <
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico!.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
       } else {
-        if (index % 2 == 0) {
-          return Colors.white;
-        } else {}
+        return Colors.white;
       }
     }
   }
@@ -2306,8 +2303,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                 child: const TextComponent('Ações'),
               ),
               Expanded(
-                flex: 2,
-                child: const TextComponent('Estoque'),
+                flex: 1,
+                child: const TextComponent('Endereço'),
+              ),
+              Expanded(
+                flex: 1,
+                child: const TextComponent('Saldo'),
               ),
             ],
           ),
@@ -2417,28 +2418,42 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                               ),
                             ),
                             Expanded(
-                              flex: 2,
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                child: DropdownSearch<PecaEstoqueModel>(
-                                  mode: Mode.MENU,
-                                  showSearchBox: false,
-                                  onChanged: (value) {
-                                    print(value!.saldoDisponivel);
-                                    setState(() {
-                                      astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.remove(value);
-                                      astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.add(value);
-                                    });
-                                  },
-                                  emptyBuilder: (context, searchEntry) => Center(child: Text('Não existe estoque!')),
-                                  items: astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque,
-                                  //produtoController.produto.produtoPecas![index].peca!.estoque!,
-                                  itemAsString: (PecaEstoqueModel? value) {
-                                    return "End: ${value!.endereco} / Qtd: ${value.saldoDisponivel}";
-                                  },
-                                ),
-                              ),
+                              flex: 1,
+                              child: Text(astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico != null
+                                  ? astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico!.endereco.toString()
+                                  : '-'),
                             ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico != null
+                                  ? astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico!.saldoDisponivel
+                                      .toString()
+                                  : '-'),
+                            ),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Container(
+                            //     padding: EdgeInsets.all(5),
+                            //     child: DropdownSearch<PecaEstoqueModel>(
+                            //       mode: Mode.MENU,
+                            //       showSearchBox: false,
+                            //       onChanged: (value) {
+                            //         print(value!.saldoDisponivel);
+
+                            //         setState(() {
+                            //           astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.remove(value);
+                            //           astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.add(value);
+                            //         });
+                            //       },
+                            //       emptyBuilder: (context, searchEntry) => Center(child: Text('Não existe estoque!')),
+                            //       items: astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque,
+                            //       //produtoController.produto.produtoPecas![index].peca!.estoque!,
+                            //       itemAsString: (PecaEstoqueModel? value) {
+                            //         return "End: ${value!.endereco} / Qtd: ${value.saldoDisponivel}";
+                            //       },
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -2703,11 +2718,11 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             ),
                           ),
                           Expanded(
-                            child: const TextComponent('Estoque disponível'),
+                            child: const TextComponent('Endereço'),
                           ),
-                          // Expanded(
-                          //   child: const TextComponent('Selecione Estoque'),
-                          // ),
+                          Expanded(
+                            child: const TextComponent('Saldo'),
+                          ),
                         ],
                       ),
                       const Divider(),
@@ -2741,9 +2756,17 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                         ),
                                         Expanded(
                                           child: TextComponent(
-                                              produtoController.produto.produtoPecas![index].peca!.estoque!.length != 0
-                                                  ? estoqueTotal(produtoController.produto.produtoPecas![index].peca!)
-                                                  : ''),
+                                            produtoController.produto.produtoPecas![index].peca!.estoqueUnico != null
+                                                ? "${produtoController.produto.produtoPecas![index].peca!.estoqueUnico!.endereco}"
+                                                : '-',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                            produtoController.produto.produtoPecas![index].peca!.estoqueUnico != null
+                                                ? "${produtoController.produto.produtoPecas![index].peca!.estoqueUnico!.saldoDisponivel}"
+                                                : '-',
+                                          ),
                                         ),
                                         // Expanded(
                                         //   child: Container(
@@ -2787,17 +2810,19 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                           child: TextComponent(itemsProdutoPecaBusca[index].produtoPeca.peca!.custo.toString()),
                                         ),
                                         Expanded(
-                                            child: TextComponent(
-                                                itemsProdutoPecaBusca[index].produtoPeca.peca!.estoque!.length != 0
-                                                    ? itemsProdutoPecaBusca[index]
-                                                        .produtoPeca
-                                                        .peca!
-                                                        .estoque!
-                                                        .first
-                                                        .saldoDisponivel
-                                                        .toString()
-                                                    : ''))
-                                        //   ),
+                                          child: TextComponent(
+                                            itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico != null
+                                                ? "${itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico!.endereco}"
+                                                : '-',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                            itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico != null
+                                                ? "${itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico!.saldoDisponivel}"
+                                                : '-',
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   );
