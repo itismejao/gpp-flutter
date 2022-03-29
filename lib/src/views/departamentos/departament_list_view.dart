@@ -12,7 +12,10 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/departamentos/departament_form_view.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class DepartamentoListView extends StatefulWidget {
   const DepartamentoListView({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
         _controller.state = DepartamentEnum.changeDepartament;
       });
     } catch (e) {
+      Notificacao.snackBar(e.toString());
       setState(() {
         _controller.state = DepartamentEnum.changeDepartament;
       });
@@ -74,17 +78,16 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
   }
 
   handleDelete(context, DepartamentoModel departament) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify
-          .confirmacao("você deseja excluir essa funcionalidade?")) {
+      if (await Notificacao.confirmacao(
+          'você deseja excluir essa funcionalidade?')) {
         if (await _controller.delete(departament)) {
-          notify.sucess("Funcionalidade excluída!");
+          Notificacao.snackBar("Departamento excluída!");
           changeDepartaments();
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -108,31 +111,11 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
               });
         }
 
-        return Column(
-          children: [
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: TextComponent('Nome')),
-                  Expanded(child: TextComponent('Status')),
-                  Expanded(child: TextComponent('Opções')),
-                ],
-              ),
-            ),
-            Divider(),
-            Container(
-              height: 400,
-              child: ListView.builder(
-                  itemCount: _controller.departaments.length,
-                  itemBuilder: (context, index) {
-                    return _buildListItem(index, context);
-                  }),
-            )
-          ],
-        );
+        return ListView.builder(
+            itemCount: _controller.departaments.length,
+            itemBuilder: (context, index) {
+              return _buildListItem(index, context);
+            });
       },
     );
 
@@ -222,55 +205,63 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
         return Container(
           color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: TextComponent(
-                  _controller.departaments[index].nome!,
-                )),
-                Expanded(
-                    child: Row(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+              ),
+              child: CardWidget(
+                widget: Column(
                   children: [
-                    StatusComponent(
-                        status: _controller.departaments[index].situacao!)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: TextComponent(
+                          'Código do departamento',
+                          fontWeight: FontWeight.bold,
+                        )),
+                        Expanded(
+                            child: TextComponent(
+                          'Nome',
+                          fontWeight: FontWeight.bold,
+                        )),
+                        Expanded(
+                            child: TextComponent('Status',
+                                fontWeight: FontWeight.bold)),
+                        Expanded(
+                            child: TextComponent('Ações',
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: TextComponent(
+                          '#${_controller.departaments[index].idDepartamento.toString()}',
+                        )),
+                        Expanded(
+                            child: TextComponent(
+                          '${_controller.departaments[index].nome.toString()}',
+                        )),
+                        Expanded(
+                            child: Row(
+                          children: [
+                            StatusComponent(
+                                status:
+                                    _controller.departaments[index].situacao!)
+                          ],
+                        )),
+                        Expanded(
+                            child: ButtonAcaoWidget(
+                          deletar: () => handleDelete(
+                              context, _controller.departaments[index]),
+                        ))
+                      ],
+                    ),
                   ],
-                )),
-                Expanded(
-                  child: Row(
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.grey.shade400,
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context,
-                                '/departaments/' +
-                                    _controller
-                                        .departaments[index].idDepartamento
-                                        .toString());
-                          }
-                          //handleEdit(context, departament[index]),
-                          ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.grey.shade400,
-                        ),
-                        onPressed: () => handleDelete(
-                            context, _controller.departaments[index]),
-                      ),
-                    ],
-                  ),
                 ),
-              ],
-            ),
-          ),
+              )),
         );
       },
     );
@@ -344,28 +335,28 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(24),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TitleComponent('Departamentos'),
-                    ButtonComponent(
-                        onPressed: () {
-                          exibirFormDepartamento();
-                        },
-                        text: 'Adicionar')
-                  ],
-                ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TitleComponent('Departamentos'),
+                  ButtonComponent(
+                      onPressed: () {
+                        exibirFormDepartamento();
+                      },
+                      text: 'Adicionar')
+                ],
               ),
-              _controller.state == DepartamentEnum.changeDepartament
+            ),
+            Expanded(
+              child: _controller.state == DepartamentEnum.changeDepartament
                   ? _buildList()
-                  : LoadingComponent()
-            ],
-          ),
+                  : LoadingComponent(),
+            )
+          ],
         ),
       ),
     );
