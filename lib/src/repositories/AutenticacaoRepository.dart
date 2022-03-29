@@ -27,6 +27,7 @@ class AutenticacaoRepository {
       //Seta token
       setToken(usuario.accessToken!);
       FilialController.filialLogin();
+      setUsuario(usuario);
       // authenticateUser = authenticate;
 
       return true;

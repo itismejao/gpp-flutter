@@ -20,6 +20,7 @@ String? getToken() {
 
 void logout() {
   storage.remove('token');
+  storage.remove('usuario');
 }
 
 bool isAuthenticated() {
@@ -56,4 +57,18 @@ EmpresaFilialModel getFilial() {
   EmpresaFilialModel filialModel = EmpresaFilialModel.fromJson(json);
 
   return filialModel;
+}
+
+void setUsuario(UsuarioModel usuario) {
+  // FilialController filialController = FilialController();
+  Map<String, dynamic> usuarioMap = usuario.toJson();
+  storage['usuario'] = jsonEncode(usuarioMap);
+}
+
+UsuarioModel getUsuario() {
+  Map<String, dynamic> json = jsonDecode(storage['usuario']!);
+
+  UsuarioModel usuario = UsuarioModel.fromJson(json);
+
+  return usuario;
 }
