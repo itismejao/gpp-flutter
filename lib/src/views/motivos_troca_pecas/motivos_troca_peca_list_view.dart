@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/controllers/MotivoTrocaPecaController.dart';
 import 'package:gpp/src/models/reason_parts_replacement_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -180,7 +180,6 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
     return Container(
       color: Colors.white,
       child: Padding(

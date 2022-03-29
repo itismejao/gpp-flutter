@@ -7,7 +7,6 @@ import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponentExpanded.dart';
 import 'package:gpp/src/shared/utils/CurrencyPtBrInputFormatter.dart';
 
-import '../../shared/components/ButtonComponent.dart';
 import '../../shared/components/TextComponent.dart';
 import '../../shared/components/TitleComponent.dart';
 import '../../shared/repositories/styles.dart';
@@ -121,7 +120,9 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                       key: filtroFormKey,
                       child: TextFormField(
                         controller: _controllerNumPedido,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         onFieldSubmitted: (value) {
                           if (_controllerNumPedido != '') {
                             adicionarPedido(value);
@@ -201,7 +202,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                   child: Text(
                                     'Pedido\n' +
                                         pedidoEntradaController
-                                            .pedidosEntrada[index].idPedidoEntrada
+                                            .pedidosEntrada[index]
+                                            .idPedidoEntrada
                                             .toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -215,16 +217,17 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                               width: 88,
                               alignment: Alignment.centerRight,
                               child: IconButton(
-                                  onPressed: (){
-                                    removerPedido( pedidoEntradaController
-                                        .pedidosEntrada[index].idPedidoEntrada);
-                                  },
-                                  icon: Icon(
-                                    Icons.close,
-                                    size: 15,
-                                    color: Colors.white,),),
+                                onPressed: () {
+                                  removerPedido(pedidoEntradaController
+                                      .pedidosEntrada[index].idPedidoEntrada);
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  size: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
                             )
-
                           ],
                         );
                       },
@@ -295,11 +298,11 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
             const Divider(),
             Center(
               child: Container(
-                height: media.height/2,
+                height: media.height / 2,
                 child: ListView.builder(
                   primary: false,
                   itemCount:
-                  movimentoEntradaController.listaItensSomados.length,
+                      movimentoEntradaController.listaItensSomados.length,
                   itemBuilder: (context, index) {
                     return Container(
                       child: Padding(
@@ -311,8 +314,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                             Expanded(
                               child: TextComponent(
                                 movimentoEntradaController
-                                    .listaItensSomados[index].peca?.id_peca
-                                    .toString() ??
+                                        .listaItensSomados[index].peca?.id_peca
+                                        .toString() ??
                                     '-',
                                 textAlign: TextAlign.center,
                               ),
@@ -321,9 +324,9 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                               flex: 3,
                               child: TextComponent(
                                 movimentoEntradaController
-                                    .listaItensSomados[index]
-                                    .peca
-                                    ?.descricao ??
+                                        .listaItensSomados[index]
+                                        .peca
+                                        ?.descricao ??
                                     '-',
                               ),
                             ),
@@ -363,8 +366,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                           .quantidade_recebida = null;
                                     else
                                       movimentoEntradaController
-                                          .listaItensSomados[index]
-                                          .quantidade_recebida =
+                                              .listaItensSomados[index]
+                                              .quantidade_recebida =
                                           int.parse(value);
                                   },
                                 ),
@@ -400,10 +403,10 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                           .listaItensSomados[index].custo = 0;
                                     else
                                       movimentoEntradaController
-                                          .listaItensSomados[index].custo =
-                                      (double.parse(value
-                                          .replaceAll('.', '')
-                                          .replaceAll(',', '.')));
+                                              .listaItensSomados[index].custo =
+                                          (double.parse(value
+                                              .replaceAll('.', '')
+                                              .replaceAll(',', '.')));
                                   },
                                 ),
                               ),
@@ -414,30 +417,30 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                 children: [
                                   Expanded(
                                       child: IconButton(
-                                        tooltip: 'Excluir Item',
-                                        icon: Icon(
-                                          Icons.delete_outlined,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        onPressed: () async {
-                                          NotifyController notify =
+                                    tooltip: 'Excluir Item',
+                                    icon: Icon(
+                                      Icons.delete_outlined,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                    onPressed: () async {
+                                      NotifyController notify =
                                           NotifyController(context: context);
-                                          try {
-                                            if (await notify.confirmacao(
-                                                'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
-                                              setState(() {
-                                                movimentoEntradaController
-                                                    .listaItensSomados
-                                                    .removeAt(index);
-                                              });
-                                              notify.sucess(
-                                                  'Item removido com sucesso!');
-                                            }
-                                          } catch (e) {
-                                            notify.error(e.toString());
-                                          }
-                                        },
-                                      ))
+                                      try {
+                                        if (await notify.confirmacao(
+                                            'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
+                                          setState(() {
+                                            movimentoEntradaController
+                                                .listaItensSomados
+                                                .removeAt(index);
+                                          });
+                                          notify.sucess(
+                                              'Item removido com sucesso!');
+                                        }
+                                      } catch (e) {
+                                        notify.error(e.toString());
+                                      }
+                                    },
+                                  ))
                                 ],
                               ),
                             ),
@@ -472,9 +475,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                ],
+                children: [],
               ),
             ),
           ],
@@ -513,8 +514,8 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
         } else {
           setState(() {
             pedidoEntradaController.pedidosEntrada.add(pedidoEntradaBusca);
-            movimentoEntradaController
-                .somarLista(pedidoEntradaController.pedidosEntrada.last.itensPedidoEntrada);
+            movimentoEntradaController.somarLista(
+                pedidoEntradaController.pedidosEntrada.last.itensPedidoEntrada);
           });
           movimentoEntradaController.movimentoEntradaModel?.id_pedido_entrada!
               .add(pedidoEntradaBusca.idPedidoEntrada!);
@@ -528,23 +529,28 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
     }
   }
 
-  removerPedido(int? id_pedido){
+  removerPedido(int? id_pedido) {
     NotifyController notify = NotifyController(context: context);
 
     try {
       setState(() {
-        int index = pedidoEntradaController.pedidosEntrada.indexWhere((element) => element.idPedidoEntrada == id_pedido); //Pega o indice do pedido
-        movimentoEntradaController.subtrairLista(pedidoEntradaController.pedidosEntrada[index].itensPedidoEntrada); //Subtrai o remove a quantidade dos itens
-        pedidoEntradaController.pedidosEntrada.removeAt(index); //Remove o pedido
+        int index = pedidoEntradaController.pedidosEntrada.indexWhere(
+            (element) =>
+                element.idPedidoEntrada == id_pedido); //Pega o indice do pedido
+        movimentoEntradaController.subtrairLista(pedidoEntradaController
+            .pedidosEntrada[index]
+            .itensPedidoEntrada); //Subtrai o remove a quantidade dos itens
+        pedidoEntradaController.pedidosEntrada
+            .removeAt(index); //Remove o pedido
       });
       notify.sucess('Pedido removido com sucesso!');
 
       //verifica se todos os pedidos foram excluidos e remove o fornecedor
-      if (pedidoEntradaController.pedidosEntrada.length == 0){
+      if (pedidoEntradaController.pedidosEntrada.length == 0) {
         movimentoEntradaController.id_fornecedor = null;
         _controllerFornecedor.text = '';
       }
-    } catch (e){
+    } catch (e) {
       notify.error('Erro ao remover pedido');
     }
   }

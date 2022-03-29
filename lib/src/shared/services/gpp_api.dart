@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:gpp/main.dart';
 import 'package:gpp/src/shared/repositories/status_code.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
