@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
 import 'package:gpp/src/models/user_model.dart';
-import 'package:gpp/src/shared/utils/Usuario.dart';
+
 import 'package:universal_html/html.dart';
 
 import '../../models/filial/empresa_filial_model.dart';
@@ -14,12 +14,12 @@ void setToken(String token) {
   storage['token'] = token;
 }
 
-void logout() {
-  storage.remove('token');
-}
-
 String? getToken() {
   return storage['token'];
+}
+
+void logout() {
+  storage.remove('token');
 }
 
 bool isAuthenticated() {

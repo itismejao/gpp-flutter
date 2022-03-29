@@ -219,7 +219,7 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
                                         fontWeight: FontWeight.bold,
                                       )),
                                       Expanded(
-                                          child: TextComponent('Nome',
+                                          child: TextComponent('Motivo',
                                               fontWeight: FontWeight.bold)),
                                       Expanded(
                                           child: TextComponent('Status',

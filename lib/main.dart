@@ -76,6 +76,7 @@ import 'package:gpp/src/views/enderecamento/cadastro_piso_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 import 'package:gpp/src/views/home/filial_view.dart';
+import 'package:gpp/src/views/motivos_troca_pecas/motivos_troca_peca_list_view.dart';
 
 import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/peca/views/PecasListView.dart';
@@ -90,7 +91,6 @@ import 'package:gpp/src/views/pedido_saida/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/produto/views/produto_detalhe_view.dart';
 import 'package:gpp/src/views/produto/views/produto_view.dart';
 
-import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -140,7 +140,7 @@ class _HomePageViewState extends State<HomePageView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => ProdutoView();
+      builder = (BuildContext context) => AstecaView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -219,8 +219,8 @@ class _HomePageViewState extends State<HomePageView> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child:
-                  Image.network('https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
+              child: Image.network(
+                  'https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
             ),
           ),
           Padding(
@@ -289,7 +289,10 @@ class _SidebarState extends State<Sidebar> {
                 child: Column(
                   children: controller.funcionalities
                       .map((e) => ItemSideBar(
-                          e.nome ?? '', IconData(int.parse(e.icone!), fontFamily: 'MaterialIcons'), e.subFuncionalidades ?? []))
+                          e.nome ?? '',
+                          IconData(int.parse(e.icone!),
+                              fontFamily: 'MaterialIcons'),
+                          e.subFuncionalidades ?? []))
                       .toList(),
                 ),
               ),
@@ -381,7 +384,9 @@ class _ItemSideBarState extends State<ItemSideBar> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
-                children: widget.subFuncionalidades.map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? '')).toList(),
+                children: widget.subFuncionalidades
+                    .map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? ''))
+                    .toList(),
               ),
             ),
           ),
@@ -419,8 +424,9 @@ class _SubItemSidebarState extends State<SubItemSidebar> {
           onHover = false;
         }),
         child: Container(
-          decoration:
-              BoxDecoration(color: onHover ? Colors.grey.shade200 : Colors.transparent, borderRadius: BorderRadius.circular(5)),
+          decoration: BoxDecoration(
+              color: onHover ? Colors.grey.shade200 : Colors.transparent,
+              borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32),
             child: Row(
