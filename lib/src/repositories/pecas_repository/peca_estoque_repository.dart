@@ -73,4 +73,23 @@ class PecaEstoqueRepository {
       throw error;
     }
   }
+
+  Future<bool> alterarEstoque(PecasEstoqueModel pe) async{
+
+    print('Alterar Estoque');
+    print(pe.id_peca_estoque);
+    print(pe.id_box);
+
+    Response response = await api.put(
+        '/pecas/${pe.id_peca}/peca-estoque/${pe.id_peca_estoque}',
+        pe.toJson());
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
 }

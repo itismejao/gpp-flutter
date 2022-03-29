@@ -6,6 +6,7 @@ import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart'
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
+import 'package:gpp/src/models/filial/empresa_filial_model.dart';
 import 'package:gpp/src/models/filial/filial_model.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -14,9 +15,14 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/views/pecas/endereco_detail_view.dart';
+import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
 class EstoqueConsultaView extends StatefulWidget {
-  const EstoqueConsultaView({Key? key}) : super(key: key);
+
+  int? tipo; //1-Consulta, 2-Edição/Endereçamento
+
+  EstoqueConsultaView(this.tipo);
 
   @override
   _EstoqueConsultaViewState createState() => _EstoqueConsultaViewState();
@@ -46,10 +52,14 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
   bool transferencia = false;
   bool? endereco;
 
+  int? tipo;
+
   PecaEstoqueController pecaEstoqueController = PecaEstoqueController();
 
   @override
   void initState() {
+
+    tipo = widget.tipo;
 
     setarFilialPadrao();
 
@@ -68,9 +78,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
             child: Row(
               children: [
                 const Padding(padding: EdgeInsets.only(left: 20)),
-                const Icon(Icons.grid_view_outlined),
+                tipo == 1 ? const Icon(Icons.grid_view_outlined) : const Icon(Icons.add_box),
                 const Padding(padding: EdgeInsets.only(right: 12)),
-                const TitleComponent('Consultar Estoque'),
+                tipo == 1 ?  const TitleComponent('Consultar Estoque') : const TitleComponent('Endereçar Peças'),
                 const Padding(padding: EdgeInsets.only(right: 5)),
               ],
             ),
@@ -98,6 +108,7 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           ),
                           child: TextFormField(
                             controller: _controllerIdFilial,
+                            enabled: tipo == 1 ? true : false,
                             keyboardType: TextInputType.number,
                             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                             style: TextStyle(
@@ -733,13 +744,23 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
+                                        tipo == 1 ? Container() :
                                         Expanded(
                                           child: IconButton(
+                                            tooltip: pecaEstoqueController.pecas_estoque[index]?.id_peca_estoque == null
+                                                ? 'Endereçar Peça'
+                                                : 'Transferir Peça',
                                             icon: Icon(
-                                              Icons.visibility,
+                                              pecaEstoqueController.pecas_estoque[index]?.id_peca_estoque == null ? Icons.location_on_outlined : Icons.sync_outlined,
                                               color: Colors.grey.shade400,
                                             ),
-                                            onPressed: () async {},
+                                            onPressed: () async {
+                                              await PopUpEditar.popUpPeca(
+                                                  context,
+                                                  EnderecoDetailView(
+                                                      pecaEstoque:  pecaEstoqueController.pecas_estoque[index]));
+                                              setState(() {});
+                                            },
                                           ),
                                         ),
                                         Expanded(
@@ -764,8 +785,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                         ),
                         pecaEstoqueController.isLoading
                             ? Center(
-                                child: CircularProgressIndicator(),
-                              )
+                          child: CircularProgressIndicator(),
+                        )
                             : Container(),
                       ],
                     ),
@@ -936,9 +957,14 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     _controllerNomeFilial.text = _filialController.filialModel.sigla ?? '';
   }
 
-  setarFilialPadrao(){
-    filialModel = getFilial().filial;
-    _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
-    _controllerNomeFilial.text = filialModel?.sigla ?? '';
+  setarFilialPadrao() async {
+    EmpresaFilialModel tt = EmpresaFilialModel();
+    tt = await getFilial();
+    setState(() {
+      _controllerIdFilial.text = tt.id_filial.toString();
+      _controllerNomeFilial.text = (tt.filial?.sigla == null ? tt.id_filial.toString() : tt.filial?.sigla) ?? '';
+    });
+
+
   }
 }
