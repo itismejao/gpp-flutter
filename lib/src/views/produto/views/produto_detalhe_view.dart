@@ -262,7 +262,7 @@ class ProdutoDetalheView extends StatelessWidget {
                                       ? Row(
                                           children: [
                                             TextComponent(
-                                              'Total de peças vinculadas ${produtoController.produtoPecas.length + 1}',
+                                              'Total de peças vinculadas ${produtoController.produtoPecas.length}',
                                               fontWeight: FontWeight.bold,
                                             )
                                           ],
