@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/pedido_saida_controller.dart';
@@ -39,7 +40,6 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         pedidoController.carregado = false;
@@ -63,7 +63,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
       });
     } catch (e) {
       limparFiltro();
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
       setState(() {
         pedidoController.pedidos = [];
         pedidoController.carregado = true;

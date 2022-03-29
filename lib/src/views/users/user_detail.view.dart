@@ -17,6 +17,7 @@ import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 // ignore: must_be_immutable
 class UserDetailView extends StatefulWidget {
@@ -81,13 +82,11 @@ class _UserDetailViewState extends State<UserDetailView> {
   }
 
   void handleUpdate(UsuarioModel user) async {
-    NotifyController nofity = NotifyController(context: context);
-
     try {
       if (await _controller.update(user) &&
           await _controller.updateUserSubFuncionalities(
               user, _controller.subFuncionalities)) {
-        nofity.sucess("Usuário atualizado!");
+        Notificacao.snackBar('Usuário atualizado!');
         Navigator.pushReplacementNamed(context, '/users');
       }
     } catch (e) {

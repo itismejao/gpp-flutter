@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +43,6 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         controller.carregado = false;
@@ -71,7 +71,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         controller.pedidosEntrada = [];
         controller.carregado = true;
       });
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
