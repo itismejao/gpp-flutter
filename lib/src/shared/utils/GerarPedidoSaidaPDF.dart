@@ -67,11 +67,12 @@ class GerarPedidoSaidaPDF {
             pw.Padding(
               padding: pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
               child: pw.Row(children: [
-                pw.Expanded(child: pw.Text('ID')),
-                pw.Expanded(child: pw.Text('Descrição')),
-                pw.Expanded(child: pw.Text('Quantidade')),
-                pw.Expanded(child: pw.Text('Valor R\$')),
-                pw.Expanded(child: pw.Text('Subtotal R\$')),
+                pw.Expanded(child: pw.Center(child: pw.Text('ID'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Descrição'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Quantidade'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Valor R\$'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Subtotal R\$'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Endereço'))),
               ]),
             ),
             pw.Divider(),
@@ -80,18 +81,28 @@ class GerarPedidoSaidaPDF {
               itemCount: pedido.itemsPedidoSaida!.length,
               itemBuilder: (context, index) {
                 return pw.Container(
-                    color: (index % 2) == 0 ? PdfColor(1, 1, 1) : PdfColor(0.95, 0.95, 0.95),
-                    child: pw.Padding(
-                        padding: pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-                        child: pw.Row(children: [
-                          pw.Expanded(child: pw.Text(pedido.itemsPedidoSaida![index].peca!.id_peca.toString())),
-                          pw.Expanded(child: pw.Text(pedido.itemsPedidoSaida![index].peca!.descricao!)),
-                          pw.Expanded(child: pw.Text(pedido.itemsPedidoSaida![index].quantidade.toString())),
-                          pw.Expanded(child: pw.Text(formatter.format(pedido.itemsPedidoSaida![index].valor))),
-                          pw.Expanded(
-                              child: pw.Text(formatter
-                                  .format((pedido.itemsPedidoSaida![index].quantidade * pedido.itemsPedidoSaida![index].valor)))),
-                        ])));
+                  color: (index % 2) == 0 ? PdfColor(1, 1, 1) : PdfColor(0.95, 0.95, 0.95),
+                  child: pw.Padding(
+                    padding: pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+                    child: pw.Row(
+                      children: [
+                        pw.Expanded(child: pw.Center(child: pw.Text(pedido.itemsPedidoSaida![index].peca!.id_peca.toString()))),
+                        pw.Expanded(child: pw.Center(child: pw.Text(pedido.itemsPedidoSaida![index].peca!.descricao!))),
+                        pw.Expanded(child: pw.Center(child: pw.Text(pedido.itemsPedidoSaida![index].quantidade.toString()))),
+                        pw.Expanded(child: pw.Center(child: pw.Text(formatter.format(pedido.itemsPedidoSaida![index].valor)))),
+                        pw.Expanded(
+                            child: pw.Center(
+                                child: pw.Text(formatter.format(
+                                    (pedido.itemsPedidoSaida![index].quantidade * pedido.itemsPedidoSaida![index].valor))))),
+                        pw.Expanded(
+                            child: pw.Center(
+                                child: pw.Text(pedido.itemsPedidoSaida![index].peca!.estoque?.first != null
+                                    ? pedido.itemsPedidoSaida![index].peca!.estoque!.first.endereco.toString()
+                                    : '-'))),
+                      ],
+                    ),
+                  ),
+                );
               },
             )),
             pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [

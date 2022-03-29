@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gpp/main.dart';
@@ -7,6 +8,9 @@ import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/ItemPedidoEntradaModel.dart';
 import 'package:gpp/src/models/ItemPedidoSaidaModel.dart';
+import 'package:gpp/src/models/PecaEstoqueModel.dart';
+
+import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
@@ -64,6 +68,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   late ResponsiveController _responsive;
   late MaskFormatter maskFormatter;
+  late String selecionado;
+  late PecaEstoqueModel pecaEstoque;
+  bool error = false;
 
   buscar() async {
     setState(() {
@@ -158,11 +165,12 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                   element.peca!.id_peca == itemPeca.produtoPeca.peca!.id_peca);
           //Se não existe item adiciona na lista
           if (index < 0) {
-            astecaController.pedidoSaida.itemsPedidoSaida!.add(
-                ItemPedidoSaidaModel(
-                    peca: itemPeca.produtoPeca.peca,
-                    valor: itemPeca.produtoPeca.peca!.custo!,
-                    quantidade: 1));
+            astecaController.pedidoSaida.itemsPedidoSaida!
+                .add(ItemPedidoSaidaModel(
+              peca: itemPeca.produtoPeca.peca,
+              valor: itemPeca.produtoPeca.peca!.custo!,
+              quantidade: 1,
+            ));
           } else {
             //Caso exista item na lista incrementa a quantidade;
             astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade++;
@@ -229,15 +237,21 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   bool verificaEstoque() {
     bool verificaEstoque = true;
-    for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-      if (item.peca!.estoque!.isEmpty) {
-        verificaEstoque = false;
-        break;
-      } else {
-        if (item.quantidade > item.peca!.estoque!.first.saldoDisponivel) {
+    if (!pedidoEntracaController.pedidoEntradaCriado) {
+      for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
+        if (item.peca!.estoqueUnico == null) {
           verificaEstoque = false;
           break;
+        } else {
+          if (item.quantidade > item.peca!.estoqueUnico!.saldoDisponivel) {
+            verificaEstoque = false;
+            break;
+          }
         }
+      }
+    } else {
+      for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
+        item.pendenciaItem = true;
       }
     }
     return verificaEstoque;
@@ -310,7 +324,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         if (!verificarSelecaoMotivoTrocaPeca()) {
           myShowDialog('Selecione o motivo de troca da peça');
         }
-
         //Criar o pedido
         astecaController.pedidoSaida.cpfCnpj =
             astecaController.asteca.documentoFiscal!.cpfCnpj.toString();
@@ -328,10 +341,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         astecaController.pedidoSaida.cliente =
             astecaController.asteca.documentoFiscal!.cliente;
         //Solicita o endpoint a criação do pedido
+
         PedidoSaidaModel pedidoComprovante = await astecaController
             .pedidoSaidaRepository
             .criar(astecaController.pedidoSaida);
-
         exibirComprovantePedidoSaida(pedidoComprovante);
       } else {
         exibirDialogPedidoEntrada();
@@ -343,6 +356,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   exibirComprovantePedidoSaida(pedidoConfirmacao) {
     //Notificação
+
     showDialog(
         context: context,
         builder: (context) {
@@ -445,11 +459,13 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               children: [
                 ButtonComponent(
                     color: primaryColor,
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
-                      Get.keys[1]!
-                        ..currentState!
-                            .pushReplacementNamed('/pedidos-entrada');
+
+                      error ? error = false : await finalizarPedido();
+
+                      Get.keys[1]!.currentState!
+                          .pushReplacementNamed('/pedidos-entrada');
                     },
                     text: 'Ok'),
                 SizedBox(
@@ -546,30 +562,37 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   }
 
   criarPedidoEntrada() async {
-    //Criar o pedido de entrada
-    PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
-        situacao: 1, //Em aberto,
-        valorTotal: astecaController.pedidoSaida.valorTotal,
-        //dataEmissao: DateTime.now(),
-        funcionario: astecaController.pedidoSaida.funcionario,
-        asteca: astecaController.asteca,
-        itensPedidoEntrada: criarItensPedidoEntrada());
+    if (!verificarSelecaoMotivoTrocaPeca()) {
+      myShowDialog('Selecione o motivo de troca da peça');
+    } else {
+      //Criar o pedido de entrada
+      PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
+          situacao: 1, //Em aberto,
+          valorTotal: astecaController.pedidoSaida.valorTotal,
+          //dataEmissao: DateTime.now(),
+          funcionario: astecaController.pedidoSaida.funcionario,
+          asteca: astecaController.asteca,
+          itensPedidoEntrada: criarItensPedidoEntrada());
+      //Solicita a criação do pedido de entrada
+      try {
+        var pedidoConfirmacao =
+            await pedidoEntracaController.repository.criar(pedidoEntrada);
+        pedidoEntracaController.pedidoEntradaCriado = true;
 
-    //Solicita a criação do pedido de entrada
-    try {
-      var pedidoConfirmacao =
-          await pedidoEntracaController.repository.criar(pedidoEntrada);
+        //Atualiza a pendência da asteca
+        var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
 
-      //Atualiza a pendência da asteca
-      var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
+        await astecaController.astecaTipoPendenciaRepository
+            .inserirAstecaPendencia(
+                astecaController.asteca.idAsteca!, pendencia);
 
-      await astecaController.astecaTipoPendenciaRepository
-          .inserirAstecaPendencia(astecaController.asteca.idAsteca!, pendencia);
-
-      //Exibi comprovante
-      exibirComprovantePedidoEntrada(pedidoConfirmacao);
-    } catch (e) {
-      print(e.toString());
+        //Exibi comprovante
+        await exibirComprovantePedidoEntrada(pedidoConfirmacao);
+      } catch (e) {
+        pedidoEntracaController.pedidoEntradaCriado = false;
+        error = true;
+        print(e.toString());
+      }
     }
   }
 
@@ -607,14 +630,23 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });
-
     //gerarItemPeca
     gerarProdutoPeca();
+  }
+
+  estoqueTotal(PecasModel peca) {
+    int qtdTotal = 0;
+    peca.estoque!.forEach((element) {
+      qtdTotal += element.saldoDisponivel;
+    });
+    return qtdTotal.toString();
   }
 
   @override
   void initState() {
     super.initState();
+
+    selecionado = '';
 
     //Inicializa asteca controller
     astecaController = AstecaController();
@@ -661,17 +693,16 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   _buildSituacaoEstoque(index) {
     if (astecaController
-        .pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.isEmpty) {
+            .pedidoSaida.itemsPedidoSaida![index].peca!.estoqueUnico ==
+        null) {
       return Colors.red.shade100;
     } else {
-      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!
-              .first.saldoDisponivel <
+      if (astecaController.pedidoSaida.itemsPedidoSaida![index].peca!
+              .estoqueUnico!.saldoDisponivel <
           astecaController.pedidoSaida.itemsPedidoSaida![index].quantidade) {
         return Colors.red.shade100;
       } else {
-        if (index % 2 == 0) {
-          return Colors.white;
-        } else {}
+        return Colors.white;
       }
     }
   }
@@ -2525,20 +2556,34 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               ),
               Expanded(
                 flex: 2,
-                child: const TextComponent('Quantidade'),
+                child: const Center(
+                  child: TextComponent('Quantidade'),
+                ),
               ),
               Expanded(
                 child: const TextComponent('Valor R\$'),
               ),
               Expanded(
-                child: const TextComponent('Subtotal R\$'),
+                child: const Center(
+                  child: TextComponent('Subtotal R\$'),
+                ),
               ),
               Expanded(
                 flex: 3,
-                child: const TextComponent('Motivo'),
+                child: const Center(
+                  child: TextComponent('Motivo'),
+                ),
               ),
               Expanded(
                 child: const TextComponent('Ações'),
+              ),
+              Expanded(
+                flex: 1,
+                child: const TextComponent('Endereço'),
+              ),
+              Expanded(
+                flex: 1,
+                child: const TextComponent('Saldo'),
               ),
             ],
           ),
@@ -2668,6 +2713,64 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                 ],
                               ),
                             ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(astecaController
+                                          .pedidoSaida
+                                          .itemsPedidoSaida![index]
+                                          .peca!
+                                          .estoqueUnico !=
+                                      null
+                                  ? astecaController
+                                      .pedidoSaida
+                                      .itemsPedidoSaida![index]
+                                      .peca!
+                                      .estoqueUnico!
+                                      .endereco
+                                      .toString()
+                                  : '-'),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(astecaController
+                                          .pedidoSaida
+                                          .itemsPedidoSaida![index]
+                                          .peca!
+                                          .estoqueUnico !=
+                                      null
+                                  ? astecaController
+                                      .pedidoSaida
+                                      .itemsPedidoSaida![index]
+                                      .peca!
+                                      .estoqueUnico!
+                                      .saldoDisponivel
+                                      .toString()
+                                  : '-'),
+                            ),
+                            // Expanded(
+                            //   flex: 2,
+                            //   child: Container(
+                            //     padding: EdgeInsets.all(5),
+                            //     child: DropdownSearch<PecaEstoqueModel>(
+                            //       mode: Mode.MENU,
+                            //       showSearchBox: false,
+                            //       onChanged: (value) {
+                            //         print(value!.saldoDisponivel);
+
+                            //         setState(() {
+                            //           astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.remove(value);
+                            //           astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque!.add(value);
+                            //         });
+                            //       },
+                            //       emptyBuilder: (context, searchEntry) => Center(child: Text('Não existe estoque!')),
+                            //       items: astecaController.pedidoSaida.itemsPedidoSaida![index].peca!.estoque,
+                            //       //produtoController.produto.produtoPecas![index].peca!.estoque!,
+                            //       itemAsString: (PecaEstoqueModel? value) {
+                            //         return "End: ${value!.endereco} / Qtd: ${value.saldoDisponivel}";
+                            //       },
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -2967,7 +3070,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                             ),
                           ),
                           Expanded(
-                            child: const TextComponent('Estoque disponível'),
+                            child: const TextComponent('Endereço'),
+                          ),
+                          Expanded(
+                            child: const TextComponent('Saldo'),
                           ),
                         ],
                       ),
@@ -3018,24 +3124,43 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                               .toString()),
                                         ),
                                         Expanded(
-                                            child: TextComponent(
-                                                produtoController
-                                                            .produto
-                                                            .produtoPecas![
-                                                                index]
-                                                            .peca!
-                                                            .estoque!
-                                                            .length !=
-                                                        0
-                                                    ? produtoController
+                                          child: TextComponent(
+                                            produtoController
                                                         .produto
                                                         .produtoPecas![index]
                                                         .peca!
-                                                        .estoque!
-                                                        .first
-                                                        .saldoDisponivel
-                                                        .toString()
-                                                    : '')),
+                                                        .estoqueUnico !=
+                                                    null
+                                                ? "${produtoController.produto.produtoPecas![index].peca!.estoqueUnico!.endereco}"
+                                                : '-',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                            produtoController
+                                                        .produto
+                                                        .produtoPecas![index]
+                                                        .peca!
+                                                        .estoqueUnico !=
+                                                    null
+                                                ? "${produtoController.produto.produtoPecas![index].peca!.estoqueUnico!.saldoDisponivel}"
+                                                : '-',
+                                          ),
+                                        ),
+                                        // Expanded(
+                                        //   child: Container(
+                                        //     padding: EdgeInsets.all(5),
+                                        //     child: DropdownSearch<PecaEstoqueModel>(
+                                        //       mode: Mode.MENU,
+                                        //       showSearchBox: false,
+                                        //       onChanged: (value) {},
+                                        //       items: produtoController.produto.produtoPecas![index].peca!.estoque!,
+                                        //       itemAsString: (PecaEstoqueModel? value) {
+                                        //         return "Endereço: ${value!.endereco} / Estoque: ${value.saldoDisponivel}";
+                                        //       },
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   );
@@ -3082,23 +3207,27 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                                                   .toString()),
                                         ),
                                         Expanded(
-                                            child: TextComponent(
-                                                itemsProdutoPecaBusca[index]
-                                                            .produtoPeca
-                                                            .peca!
-                                                            .estoque!
-                                                            .length !=
-                                                        0
-                                                    ? itemsProdutoPecaBusca[
-                                                            index]
+                                          child: TextComponent(
+                                            itemsProdutoPecaBusca[index]
                                                         .produtoPeca
                                                         .peca!
-                                                        .estoque!
-                                                        .first
-                                                        .saldoDisponivel
-                                                        .toString()
-                                                    : ''))
-                                        //   ),
+                                                        .estoqueUnico !=
+                                                    null
+                                                ? "${itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico!.endereco}"
+                                                : '-',
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: TextComponent(
+                                            itemsProdutoPecaBusca[index]
+                                                        .produtoPeca
+                                                        .peca!
+                                                        .estoqueUnico !=
+                                                    null
+                                                ? "${itemsProdutoPecaBusca[index].produtoPeca.peca!.estoqueUnico!.saldoDisponivel}"
+                                                : '-',
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   );

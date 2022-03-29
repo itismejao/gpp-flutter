@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 class PedidoEntradaController {
   int? idPedidoEntrada;
-
+  bool pedidoEntradaCriado = false;
   DateTime? dataInicio;
   DateTime? dataFim;
   int? situacao;

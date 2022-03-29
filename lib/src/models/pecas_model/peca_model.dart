@@ -27,6 +27,7 @@ class PecasModel {
   String? id_peca_material_fabricacao;
   int? id_peca_cor;
   List<PecaEstoqueModel>? estoque;
+  PecaEstoqueModel? estoqueUnico;
   // DateTime? created_at;
   // DateTime? updated_at;
 
@@ -73,7 +74,8 @@ class PecasModel {
       this.pecasEspecieModel,
       this.produto_peca,
       this.produtoPeca,
-      this.estoque});
+      this.estoque,
+      this.estoqueUnico});
 
   factory PecasModel.fromJson(Map<String, dynamic> json) {
     return PecasModel(
@@ -96,13 +98,9 @@ class PecasModel {
 
         // created_at: json['created_at'],
         // updated_at: json['updated_at'],
-        pecasMaterialModel: json['material_fabricacao'] == null
-            ? null
-            : PecasMaterialModel.fromJson(json['material_fabricacao']),
+        pecasMaterialModel: json['material_fabricacao'] == null ? null : PecasMaterialModel.fromJson(json['material_fabricacao']),
         // especie: List<PecasEspecieModel>.from(json["especie"].map((x) => PecasEspecieModel.fromJson(x))),
-        pecasEspecieModel: json["especie"] == null
-            ? null
-            : PecasEspecieModel.fromJson(json["especie"]),
+        pecasEspecieModel: json["especie"] == null ? null : PecasEspecieModel.fromJson(json["especie"]),
         produto_peca: json['produto_peca'] != null
             ? json['produto_peca'].map<ProdutoPecaModel>((data) {
                 return ProdutoPecaModel.fromJson(data);
@@ -146,13 +144,9 @@ class PecasModel {
     // data['created_at'] = this.created_at;
     // data['updated_at'] = this.updated_at;
     data['material_fabricacao'] = this.material_fabricacao;
-    data['produto_peca'] = this.produtoPeca != null
-        ? this.produtoPeca!.map((e) => e.toJson()).toList()
-        : null;
-
-    data['estoque'] = this.estoque != null
-        ? this.estoque!.map((e) => e.toJson()).toList()
-        : null;
+    data['produto_peca'] = this.produtoPeca != null ? this.produtoPeca!.map((e) => e.toJson()).toList() : null;
+    data['estoque_unico'] = this.estoqueUnico != null ? this.estoqueUnico! : null;
+    data['estoque'] = this.estoque != null ? this.estoque!.map((e) => e.toJson()).toList() : null;
     // data['especie'] = this.especie;
 
     // if (this.produto_peca != null) {

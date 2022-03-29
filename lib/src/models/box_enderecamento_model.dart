@@ -31,10 +31,8 @@ class BoxEnderecamentoModel {
         largura: json['largura'],
         profundidade: json['profundidade'],
         unidade_medida: json['unidade_medida'],
-        created_at: json['created_at'],
-        prateleira: json['prateleira'] == null
-            ? null
-            : PrateleiraEnderecamentoModel.fromJson(json['prateleira']));
+        created_at: json['created_at']);
+    //prateleira: json['prateleira'] == null ? null : PrateleiraEnderecamentoModel.fromJson(json['prateleira']));
   }
 
   Map<String, dynamic> toJson() {
