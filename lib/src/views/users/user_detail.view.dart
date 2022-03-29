@@ -90,14 +90,13 @@ class _UserDetailViewState extends State<UserDetailView> {
         Navigator.pushReplacementNamed(context, '/users');
       }
     } catch (e) {
-      nofity.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   fetchDepartamentsSubfuncionalities(DepartamentoModel departament) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           "As funcionalidades serão alteradas, deseja concluir a operação?")) {
         await _departamentController
             .changeDepartamentSubFuncionalities(departament);
@@ -108,7 +107,7 @@ class _UserDetailViewState extends State<UserDetailView> {
         checkedSelectedAll();
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
