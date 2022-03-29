@@ -14,6 +14,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 class EstoqueConsultaView extends StatefulWidget {
   const EstoqueConsultaView({Key? key}) : super(key: key);
@@ -50,7 +51,6 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
 
   @override
   void initState() {
-
     setarFilialPadrao();
 
     super.initState();
@@ -80,7 +80,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
               padding: EdgeInsets.only(left: 5, right: 5, top: 10),
               child: InputDecorator(
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   labelText: 'Informação de Peças',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -99,7 +100,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           child: TextFormField(
                             controller: _controllerIdFilial,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -107,7 +110,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'Filial',
                               labelText: 'Filial',
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                               suffixIcon: IconButton(
                                 onPressed: () async {},
                                 icon: Icon(Icons.search),
@@ -135,7 +139,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'Nome Filial',
                               labelText: 'Nome Filial',
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                             ),
                           ),
                         ),
@@ -151,7 +156,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           child: TextFormField(
                             controller: _controllerIdFornecedor,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -159,13 +166,15 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 hintText: 'ID',
                                 labelText: 'ID',
                                 border: InputBorder.none,
-                                contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                contentPadding: EdgeInsets.only(
+                                    top: 15, bottom: 10, left: 10),
                                 suffixIcon: IconButton(
                                   onPressed: () async {
                                     if (_controllerIdFornecedor.text == '') {
                                       limparFieldsPeca();
                                     } else {
-                                      buscarFornecedor(_controllerIdFornecedor.text);
+                                      buscarFornecedor(
+                                          _controllerIdFornecedor.text);
                                     }
                                   },
                                   icon: Icon(Icons.search),
@@ -191,7 +200,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'Nome Fornecedor',
                               labelText: 'Nome Fornecedor',
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                             ),
                           ),
                         ),
@@ -212,7 +222,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           child: TextFormField(
                             controller: _controllerIdProduto,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -220,7 +232,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'ID',
                               labelText: 'ID',
                               border: InputBorder.none,
-                              contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                               suffixIcon: IconButton(
                                 onPressed: () async {
                                   if (_controllerIdProduto.text == '') {
@@ -254,7 +267,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'Nome Produto',
                               labelText: 'Nome Produto',
                               border: InputBorder.none,
-                              contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                             ),
                           ),
                         ),
@@ -270,7 +284,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           child: TextFormField(
                             controller: _controllerIdPeca,
                             keyboardType: TextInputType.number,
-                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                             ),
@@ -278,7 +294,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 hintText: 'ID',
                                 labelText: 'ID',
                                 border: InputBorder.none,
-                                contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                                contentPadding: const EdgeInsets.only(
+                                    top: 15, bottom: 10, left: 10),
                                 suffixIcon: IconButton(
                                   onPressed: () async {
                                     if (_controllerIdPeca.text == '') {
@@ -310,7 +327,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               hintText: 'Nome Peça',
                               labelText: 'Nome Peça',
                               border: InputBorder.none,
-                              contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                              contentPadding: const EdgeInsets.only(
+                                  top: 15, bottom: 10, left: 10),
                             ),
                           ),
                         ),
@@ -330,7 +348,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                     //width: 300,
                     child: InputDecorator(
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                         labelText: 'Endereço Resumido',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -359,7 +378,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    if (_controllerCorredor.text == '') _controllerEstante.text = '';
+                                    if (_controllerCorredor.text == '')
+                                      _controllerEstante.text = '';
                                   });
                                 }),
                           ),
@@ -375,7 +395,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: TextFormField(
-                                enabled: _controllerCorredor.text == '' ? false : true,
+                                enabled: _controllerCorredor.text == ''
+                                    ? false
+                                    : true,
                                 controller: _controllerEstante,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -383,11 +405,13 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  contentPadding: const EdgeInsets.only(top: 10, bottom: 10),
+                                  contentPadding: const EdgeInsets.only(
+                                      top: 10, bottom: 10),
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    if (_controllerEstante.text == '') _controllerPrateleira.text = '';
+                                    if (_controllerEstante.text == '')
+                                      _controllerPrateleira.text = '';
                                   });
                                 }),
                           ),
@@ -403,7 +427,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: TextFormField(
-                                enabled: _controllerEstante.text == '' ? false : true,
+                                enabled: _controllerEstante.text == ''
+                                    ? false
+                                    : true,
                                 controller: _controllerPrateleira,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -418,7 +444,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    if (_controllerPrateleira.text == '') _controllerBox.text = '';
+                                    if (_controllerPrateleira.text == '')
+                                      _controllerBox.text = '';
                                   });
                                 }),
                           ),
@@ -434,7 +461,9 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: TextFormField(
-                                enabled: _controllerPrateleira.text == '' ? false : true,
+                                enabled: _controllerPrateleira.text == ''
+                                    ? false
+                                    : true,
                                 controller: _controllerBox,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -461,7 +490,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                     //width: 900,
                     child: InputDecorator(
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 5),
                         labelText: 'Disponibilidade',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -521,7 +551,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                     //width: 900,
                     child: InputDecorator(
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 5),
                         labelText: 'Endereçado?',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -614,7 +645,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                 ),
                 const Divider(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4.0, horizontal: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -680,58 +712,115 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                           itemBuilder: (context, index) {
                             return Container(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Padding(padding: EdgeInsets.only(left: 10)),
                                   // CheckboxComponent(),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.filial != null ? pecaEstoqueController.pecas_estoque[index]!.filial.toString() : pecaEstoqueController.pecas_estoque[index]!.box!.prateleira!.estante!.corredor!.piso!.id_filial!.toString(),
+                                      pecaEstoqueController
+                                                  .pecas_estoque[index]!
+                                                  .filial !=
+                                              null
+                                          ? pecaEstoqueController
+                                              .pecas_estoque[index]!.filial
+                                              .toString()
+                                          : pecaEstoqueController
+                                              .pecas_estoque[index]!
+                                              .box!
+                                              .prateleira!
+                                              .estante!
+                                              .corredor!
+                                              .piso!
+                                              .id_filial!
+                                              .toString(),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.endereco ?? '-',
-                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                                      pecaEstoqueController
+                                              .pecas_estoque[index]!.endereco ??
+                                          '-',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.id_peca != null ? pecaEstoqueController.pecas_estoque[index]!.id_peca.toString() : '-',
+                                      pecaEstoqueController
+                                                  .pecas_estoque[index]!
+                                                  .id_peca !=
+                                              null
+                                          ? pecaEstoqueController
+                                              .pecas_estoque[index]!.id_peca
+                                              .toString()
+                                          : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     flex: 3,
-                                    child: Text(
-                                        pecaEstoqueController.pecas_estoque[index]!.pecasModel?.descricao ?? '-'),
+                                    child: Text(pecaEstoqueController
+                                            .pecas_estoque[index]!
+                                            .pecasModel
+                                            ?.descricao ??
+                                        '-'),
                                   ),
                                   Expanded(
                                     flex: 2,
-                                    child: Text(pecaEstoqueController.pecas_estoque[index]!.fornecedor ?? '-'),
+                                    child: Text(pecaEstoqueController
+                                            .pecas_estoque[index]!.fornecedor ??
+                                        '-'),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.saldo_disponivel != null ? pecaEstoqueController.pecas_estoque[index]!.saldo_disponivel.toString() : '-',
+                                      pecaEstoqueController
+                                                  .pecas_estoque[index]!
+                                                  .saldo_disponivel !=
+                                              null
+                                          ? pecaEstoqueController
+                                              .pecas_estoque[index]!
+                                              .saldo_disponivel
+                                              .toString()
+                                          : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.saldo_reservado != null ? pecaEstoqueController.pecas_estoque[index]!.saldo_reservado.toString() : '-',
+                                      pecaEstoqueController
+                                                  .pecas_estoque[index]!
+                                                  .saldo_reservado !=
+                                              null
+                                          ? pecaEstoqueController
+                                              .pecas_estoque[index]!
+                                              .saldo_reservado
+                                              .toString()
+                                          : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
-                                      pecaEstoqueController.pecas_estoque[index]!.quantidade_transferencia != null ? pecaEstoqueController.pecas_estoque[index]!.quantidade_transferencia.toString() : '-',
+                                      pecaEstoqueController
+                                                  .pecas_estoque[index]!
+                                                  .quantidade_transferencia !=
+                                              null
+                                          ? pecaEstoqueController
+                                              .pecas_estoque[index]!
+                                              .quantidade_transferencia
+                                              .toString()
+                                          : '-',
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   Expanded(
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           child: IconButton(
@@ -777,7 +866,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextComponent('Total de páginas: ' + pecaEstoqueController.paginaModel.total.toString()),
+                      TextComponent('Total de páginas: ' +
+                          pecaEstoqueController.paginaModel.total.toString()),
                       Row(
                         children: [
                           IconButton(
@@ -796,20 +886,29 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  if (pecaEstoqueController.paginaModel.atual > 1) {
-                                    pecaEstoqueController.paginaModel.atual = pecaEstoqueController.paginaModel.atual - 1;
+                                  if (pecaEstoqueController.paginaModel.atual >
+                                      1) {
+                                    pecaEstoqueController.paginaModel.atual =
+                                        pecaEstoqueController
+                                                .paginaModel.atual -
+                                            1;
                                     //buscarTodas();
                                   }
                                 });
                                 consultarEstoque();
                               }),
-                          TextComponent(pecaEstoqueController.paginaModel.atual.toString()),
+                          TextComponent(pecaEstoqueController.paginaModel.atual
+                              .toString()),
                           IconButton(
                               icon: Icon(Icons.navigate_next_rounded),
                               onPressed: () {
                                 setState(() {
-                                  if (pecaEstoqueController.paginaModel.atual != pecaEstoqueController.paginaModel.total) {
-                                    pecaEstoqueController.paginaModel.atual = pecaEstoqueController.paginaModel.atual + 1;
+                                  if (pecaEstoqueController.paginaModel.atual !=
+                                      pecaEstoqueController.paginaModel.total) {
+                                    pecaEstoqueController.paginaModel.atual =
+                                        pecaEstoqueController
+                                                .paginaModel.atual +
+                                            1;
                                   }
                                 });
                                 consultarEstoque();
@@ -819,7 +918,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
                               icon: Icon(Icons.last_page),
                               onPressed: () {
                                 setState(() {
-                                  pecaEstoqueController.paginaModel.atual = pecaEstoqueController.paginaModel.total;
+                                  pecaEstoqueController.paginaModel.atual =
+                                      pecaEstoqueController.paginaModel.total;
                                 });
                                 consultarEstoque();
                                 //buscarTodas();
@@ -845,31 +945,29 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     try {
       await pecaEstoqueController
           .consultarEstoque(
-          pecaEstoqueController.paginaModel.atual,
-          _controllerIdFilial.text,
-          _controllerIdPeca.text,
-          _controllerIdProduto.text,
-          _controllerIdFornecedor.text,
-          endereco,
-          disponivel,
-          reservado,
-          transferencia,
-          _controllerCorredor.text,
-          _controllerEstante.text,
-          _controllerPrateleira.text,
-          _controllerBox.text)
-          .then((value) =>
-          setState(() {
-            pecaEstoqueController.isLoading = false;
-          }));
-    } catch (e){
+              pecaEstoqueController.paginaModel.atual,
+              _controllerIdFilial.text,
+              _controllerIdPeca.text,
+              _controllerIdProduto.text,
+              _controllerIdFornecedor.text,
+              endereco,
+              disponivel,
+              reservado,
+              transferencia,
+              _controllerCorredor.text,
+              _controllerEstante.text,
+              _controllerPrateleira.text,
+              _controllerBox.text)
+          .then((value) => setState(() {
+                pecaEstoqueController.isLoading = false;
+              }));
+    } catch (e) {
       pecaEstoqueController.pecas_estoque.clear();
-      NotifyController notify = NotifyController(context: context);
-      notify.error2(e.toString());
+
+      Notificacao.snackBar(e.toString());
       setState(() {
         pecaEstoqueController.isLoading = false;
       });
-
     }
   }
 
@@ -909,7 +1007,8 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     PecaController pecasController = PecaController();
     peca = await pecasController.buscar(id);
     _controllerNomePeca.text = peca.descricao ?? '';
-    if (peca.produto_peca?[0].id_produto != null) buscarProduto(peca.produto_peca![0].id_produto.toString());
+    if (peca.produto_peca?[0].id_produto != null)
+      buscarProduto(peca.produto_peca![0].id_produto.toString());
   }
 
   buscarProduto(String id) async {
@@ -919,24 +1018,28 @@ class _EstoqueConsultaViewState extends State<EstoqueConsultaView> {
     _controllerIdProduto.text = _produtoController.produto.idProduto.toString();
     print("Fornecedor");
     print(_produtoController.produto.fornecedores!.first.idFornecedor);
-    buscarFornecedor(_produtoController.produto.fornecedores!.first.idFornecedor.toString());
+    buscarFornecedor(
+        _produtoController.produto.fornecedores!.first.idFornecedor.toString());
   }
 
   buscarFornecedor(String id) async {
     FornecedorController _fornecedorController = FornecedorController();
     await _fornecedorController.buscar(id);
-    _controllerNomeFornecedor.text = _fornecedorController.fornecedorModel.cliente?.nome ?? '';
-    _controllerIdFornecedor.text = _fornecedorController.fornecedorModel.idFornecedor.toString();
+    _controllerNomeFornecedor.text =
+        _fornecedorController.fornecedorModel.cliente?.nome ?? '';
+    _controllerIdFornecedor.text =
+        _fornecedorController.fornecedorModel.idFornecedor.toString();
   }
 
   buscarFilial(String id) async {
     FilialController _filialController = FilialController();
     await _filialController.buscarTodos();
-    _controllerIdFilial.text = _filialController.filialModel.id_filial.toString();
+    _controllerIdFilial.text =
+        _filialController.filialModel.id_filial.toString();
     _controllerNomeFilial.text = _filialController.filialModel.sigla ?? '';
   }
 
-  setarFilialPadrao(){
+  setarFilialPadrao() {
     filialModel = getFilial().filial;
     _controllerIdFilial.text = filialModel?.id_filial.toString() ?? '';
     _controllerNomeFilial.text = filialModel?.sigla ?? '';

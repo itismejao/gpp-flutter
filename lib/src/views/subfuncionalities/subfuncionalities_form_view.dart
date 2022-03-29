@@ -6,6 +6,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 // ignore: must_be_immutable
 class SubFuncionalitiesFormView extends StatefulWidget {
@@ -24,14 +25,13 @@ class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {
   SubFuncionalitiesController _controller = SubFuncionalitiesController();
 
   handleCreate() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _controller.create(widget.id)) {
-        notify.sucess("Subfuncionalidade cadastrado!");
+        Notificacao.snackBar("Subfuncionalidade cadastrado!");
         Navigator.pushReplacementNamed(context, '/funcionalities');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

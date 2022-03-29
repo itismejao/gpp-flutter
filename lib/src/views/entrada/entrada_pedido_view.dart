@@ -6,6 +6,7 @@ import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponentExpanded.dart';
 import 'package:gpp/src/shared/utils/CurrencyPtBrInputFormatter.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 import '../../shared/components/TextComponent.dart';
 import '../../shared/components/TitleComponent.dart';
@@ -423,21 +424,19 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
                                       color: Colors.grey.shade400,
                                     ),
                                     onPressed: () async {
-                                      NotifyController notify =
-                                          NotifyController(context: context);
                                       try {
-                                        if (await notify.confirmacao(
+                                        if (await Notificacao.confirmacao(
                                             'Deseja remover a entrada da peça ${movimentoEntradaController.listaItensSomados[index].peca?.descricao}?')) {
                                           setState(() {
                                             movimentoEntradaController
                                                 .listaItensSomados
                                                 .removeAt(index);
                                           });
-                                          notify.sucess(
+                                          Notificacao.snackBar(
                                               'Item removido com sucesso!');
                                         }
                                       } catch (e) {
-                                        notify.error(e.toString());
+                                        Notificacao.snackBar(e.toString());
                                       }
                                     },
                                   ))
@@ -485,7 +484,6 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
   }
 
   adicionarPedido(String numPedido) async {
-    NotifyController notify = NotifyController(context: context);
     PedidoEntradaModel pedidoEntradaBusca;
 
     try {
@@ -510,7 +508,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
         //Testa se o pedido ja foi adicionado
         if (pedidoEntradaController.pedidosEntrada.any((element) =>
             element.idPedidoEntrada == pedidoEntradaBusca.idPedidoEntrada)) {
-          notify.warning('Pedido já adicionado!');
+          Notificacao.snackBar('Pedido já adicionado!');
         } else {
           setState(() {
             pedidoEntradaController.pedidosEntrada.add(pedidoEntradaBusca);
@@ -521,17 +519,15 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
               .add(pedidoEntradaBusca.idPedidoEntrada!);
         }
       } else {
-        notify.warning(
+        Notificacao.snackBar(
             'Pedido não adicionado pois não pertence ao mesmo fornecedor!');
       }
     } catch (e) {
-      notify.warning(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   removerPedido(int? id_pedido) {
-    NotifyController notify = NotifyController(context: context);
-
     try {
       setState(() {
         int index = pedidoEntradaController.pedidosEntrada.indexWhere(
@@ -543,7 +539,7 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
         pedidoEntradaController.pedidosEntrada
             .removeAt(index); //Remove o pedido
       });
-      notify.sucess('Pedido removido com sucesso!');
+      Notificacao.snackBar('Pedido removido com sucesso!');
 
       //verifica se todos os pedidos foram excluidos e remove o fornecedor
       if (pedidoEntradaController.pedidosEntrada.length == 0) {
@@ -551,16 +547,15 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
         _controllerFornecedor.text = '';
       }
     } catch (e) {
-      notify.error('Erro ao remover pedido');
+      Notificacao.snackBar('Erro ao remover pedido');
     }
   }
 
   lancarEntrada() async {
-    NotifyController notify = NotifyController(context: context);
     if (_controllerNotaFiscal.text == '' || _controllerSerie.text == '') {
-      notify.warning('Numero da Nota Fiscal e Série são obrigatórios!');
+      Notificacao.snackBar('Numero da Nota Fiscal e Série são obrigatórios!');
     } else if (movimentoEntradaController.listaItensSomados.isEmpty) {
-      notify.warning('É necessário adionar as peças para dar a entrada!');
+      Notificacao.snackBar('É necessário adionar as peças para dar a entrada!');
     } else {
       movimentoEntradaController.movimentoEntradaModel?.num_nota_fiscal =
           int.parse(_controllerNotaFiscal.text);
@@ -570,15 +565,15 @@ class _EntradaPedidoViewState extends State<EntradaPedidoView> {
       if (success) {
         try {
           if (await movimentoEntradaController.create()) {
-            notify.sucess('Entrada realizada com sucesso');
+            Notificacao.snackBar('Entrada realizada com sucesso');
             Navigator.pushNamed(context, 'astecas');
           }
         } catch (e) {
-          notify.error2(e.toString());
+          Notificacao.snackBar(e.toString());
         }
       } else {
-        notify
-            .warning('Existem items com a quantidade recebida não informada!');
+        Notificacao.snackBar(
+            'Existem items com a quantidade recebida não informada!');
       }
     }
   }
