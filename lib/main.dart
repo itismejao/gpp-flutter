@@ -127,7 +127,8 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'pecas-consultar') {
           pagina = MenuConsultarView();
         } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          pagina = PecaEnderecamentoDetailView();
+          pagina = EstoqueConsultaView(2);
+          //pagina = PecaEnderecamentoDetailView();
         } else if (uri.pathSegments.first == 'enderecamentos') {
           pagina = CadastroPisoView();
         } else if (uri.pathSegments.first == 'pedidos-entrada') {
@@ -137,7 +138,7 @@ class _GppAppState extends State<GppApp> {
         } else if (uri.pathSegments.first == 'estoque-entrada') {
           pagina = MenuEntradaView();
         } else if (uri.pathSegments.first == 'estoque-consulta') {
-          pagina = EstoqueConsultaView();
+          pagina = EstoqueConsultaView(1);
         }
 
         //Se existe 2 parâmetros da url
@@ -221,7 +222,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'pecas-consultar') {
         builder = (BuildContext context) => PecasListView();
       } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-        builder = (BuildContext context) => PecaEnderecamentoDetailView();
+        builder = (BuildContext context) => EstoqueConsultaView(2);
+        //builder = (BuildContext context) => PecaEnderecamentoDetailView();
       } else if (uri.pathSegments.first == 'enderecamentos') {
         builder = (BuildContext context) => CadastroPisoView();
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
@@ -231,7 +233,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
-        builder = (BuildContext context) => EstoqueConsultaView();
+        builder = (BuildContext context) => EstoqueConsultaView(1);
       }
 
       //Se existe 2 parâmetros da url
