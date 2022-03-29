@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:gpp/src/views/produto/controllers/produto_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -251,7 +250,24 @@ class ProdutoDetalheView extends StatelessWidget {
                                           );
                                         },
                                       )
-                                    : LoadingComponent()))
+                                    : LoadingComponent())),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                                margin: EdgeInsets.all(8),
+                                child: Obx(
+                                  () => !produtoController.carregando.value
+                                      ? Row(
+                                          children: [
+                                            TextComponent(
+                                              'Total de peças vinculadas ${produtoController.produtoPecas.length}',
+                                              fontWeight: FontWeight.bold,
+                                            )
+                                          ],
+                                        )
+                                      : Container(),
+                                ))
                           ],
                         ),
                       ),

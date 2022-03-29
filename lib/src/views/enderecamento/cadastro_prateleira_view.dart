@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_box_view.dart';
-import 'package:gpp/src/views/home/home_view.dart';
-
-import '../funcionalities_view.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 // ignore: must_be_immutable
 class CadastroPrateleiraView extends StatefulWidget {
@@ -34,7 +34,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
 
   fetchAll(idEstante) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPrateleira = await enderecamentoController.repository.buscarPrateleira(idEstante);
+    enderecamentoController.listaPrateleira =
+        await enderecamentoController.repository.buscarPrateleira(idEstante);
 
     enderecamentoController.isLoaded = true;
 
@@ -44,48 +45,52 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     });
   }
 
-  handleCreate(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
-    NotifyController notify = NotifyController(context: context);
+  handleCreate(
+      context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel,
+      String idEstante) async {
     try {
-      if (await enderecamentoController.criarPrateleira(prateleiraEnderecamentoModel, idEstante)) {
+      if (await enderecamentoController.criarPrateleira(
+          prateleiraEnderecamentoModel, idEstante)) {
         Navigator.pop(context);
         fetchAll(widget.idEstante.toString());
-        notify.sucess('Prateleira adicionada com sucesso!');
+        Notificacao.snackBar('Prateleira adicionada com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
-  handleDelete(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
-    NotifyController notify = NotifyController(context: context);
+  handleDelete(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
     try {
-      if (await notify.confirmacao("você deseja excluir a prateleira?")) {
-        if (await enderecamentoController.excluirPrateleira(prateleiraEnderecamentoModel)) {
+      if (await Notificacao.confirmacao("você deseja excluir a prateleira?")) {
+        if (await enderecamentoController
+            .excluirPrateleira(prateleiraEnderecamentoModel)) {
           // Navigator.pop(context); //volta para tela anterior
 
           fetchAll(widget.idEstante.toString());
-          notify.sucess("Prateleira excluída!");
+          Notificacao.snackBar("Prateleira excluída!");
           //Atualiza a lista de motivos
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleEdit(context, PrateleiraEnderecamentoModel editaEstante) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Prateleira editada com sucesso!");
+        Notificacao.snackBar("Prateleira editada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
-  openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openForm(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -103,22 +108,27 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                     children: [
                       InputComponent(
                         label: 'Prateleira',
-                        initialValue: prateleiraEnderecamentoReplacement.desc_prateleira,
+                        initialValue:
+                            prateleiraEnderecamentoReplacement.desc_prateleira,
                         hintText: 'Digite o nome da Prateleira',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira = value!;
+                            prateleiraEnderecamentoReplacement.desc_prateleira =
+                                value!;
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Estante',
-                        initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement
+                            .id_estante
+                            .toString(),
                         hintText: 'Digite a Estante',
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_estante.toString();
+                            prateleiraEnderecamentoReplacement.id_estante
+                                .toString();
                           });
                         },
                       ),
@@ -132,7 +142,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(context, enderecamentoController.prateleiraModel, widget.idEstante.toString());
+                                  handleCreate(
+                                      context,
+                                      enderecamentoController.prateleiraModel,
+                                      widget.idEstante.toString());
                                 },
                                 text: 'Adicionar')
                           ],
@@ -149,7 +162,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     );
   }
 
-  openFormEdit(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openFormEdit(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -167,21 +181,26 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                     children: [
                       InputComponent(
                         label: 'Piso',
-                        initialValue: prateleiraEnderecamentoReplacement.desc_prateleira,
+                        initialValue:
+                            prateleiraEnderecamentoReplacement.desc_prateleira,
                         hintText: 'Digite o nome do Piso',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.desc_prateleira
+                                .toString();
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement
+                            .id_prateleira
+                            .toString(),
                         hintText: 'Digite a estante',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.id_prateleira
+                                .toString();
                           });
                         },
                       ),
@@ -196,7 +215,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context, prateleiraEnderecamentoReplacement);
+                                  handleEdit(context,
+                                      prateleiraEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -249,81 +269,93 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                   Flexible(child: TitleComponent('Prateleira')),
                   ButtonComponent(
                       onPressed: () {
-                        enderecamentoController.prateleiraModel.id_estante = int.parse(widget.idEstante.toString());
-                        openForm(context, enderecamentoController.prateleiraModel);
+                        enderecamentoController.prateleiraModel.id_estante =
+                            int.parse(widget.idEstante.toString());
+                        openForm(
+                            context, enderecamentoController.prateleiraModel);
                       },
                       text: 'Adicionar')
                 ],
               ),
             ),
-            Divider(),
-            Row(
-              children: [
-                Expanded(child: TextComponent('Id')),
-                Expanded(child: TextComponent('Nome')),
-                Expanded(child: TextComponent('Opções')),
-              ],
-            ),
-            Divider(),
             enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
                       itemCount: enderecamentoController.listaPrateleira.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaPrateleira[index].id_prateleira.toString()),
-                                ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      ButtonComponent(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => CadastroBoxView(
-                                                        idPrateleira: enderecamentoController.listaPrateleira[index].id_prateleira
-                                                            .toString(),
-                                                      )),
-                                            );
-                                          },
-                                          text: 'Box'),
-                                      // IconButton(
-                                      //   icon: Icon(
-                                      //     Icons.edit,
-                                      //     color: Colors.grey.shade400,
-                                      //   ),
-                                      //   onPressed: () {
-                                      //     openFormEdit(
-                                      //         context,
-                                      //         enderecamentoController
-                                      //             .listaPrateleira[index]);
-                                      //   },
-                                      // ),
-                                      IconButton(
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Colors.grey.shade400,
-                                          ),
-                                          onPressed: () {
-                                            handleDelete(context, enderecamentoController.listaPrateleira[index]);
-                                          }),
-                                    ],
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: CardWidget(
+                              widget: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(child: TextComponent('Id')),
+                                  Expanded(child: TextComponent('Nome')),
+                                  Expanded(child: TextComponent('Opções')),
+                                ],
+                              ),
+                              Divider(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController
+                                        .listaPrateleira[index].id_prateleira
+                                        .toString()),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
+                                  Expanded(
+                                    child: TextComponent(enderecamentoController
+                                        .listaPrateleira[index].desc_prateleira
+                                        .toString()),
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        ButtonComponent(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CadastroBoxView(
+                                                          idPrateleira:
+                                                              enderecamentoController
+                                                                  .listaPrateleira[
+                                                                      index]
+                                                                  .id_prateleira
+                                                                  .toString(),
+                                                        )),
+                                              );
+                                            },
+                                            text: 'Box'),
+                                        // IconButton(
+                                        //   icon: Icon(
+                                        //     Icons.edit,
+                                        //     color: Colors.grey.shade400,
+                                        //   ),
+                                        //   onPressed: () {
+                                        //     openFormEdit(
+                                        //         context,
+                                        //         enderecamentoController
+                                        //             .listaPrateleira[index]);
+                                        //   },
+                                        // ),
+                                        Expanded(child: ButtonAcaoWidget(
+                                          deletar: () {
+                                            handleDelete(
+                                                context,
+                                                enderecamentoController
+                                                    .listaPrateleira[index]);
+                                          },
+                                        ))
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )),
                         );
                       },
                     ),

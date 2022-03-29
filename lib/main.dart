@@ -57,16 +57,18 @@
 //   }
 // }
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/controllers/UserController.dart';
+
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/shared/utils/Usuario.dart';
 
 import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
@@ -75,11 +77,11 @@ import 'package:gpp/src/views/enderecamento/cadastro_piso_view.dart';
 import 'package:gpp/src/views/entrada/menu_entrada_view.dart';
 import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 import 'package:gpp/src/views/home/filial_view.dart';
+import 'package:gpp/src/views/motivos_troca_pecas/motivos_troca_peca_list_view.dart';
 
-import 'package:gpp/src/views/not_found_view.dart';
-import 'package:gpp/src/views/pecas/PecasListView.dart';
+import 'package:gpp/src/views/peca/views/PecasListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
-import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+
 import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
@@ -89,7 +91,6 @@ import 'package:gpp/src/views/pedido_saida/PedidoSaidaListView.dart';
 import 'package:gpp/src/views/produto/views/produto_detalhe_view.dart';
 import 'package:gpp/src/views/produto/views/produto_view.dart';
 
-import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -106,111 +107,40 @@ class GppApp extends StatefulWidget {
 }
 
 class _GppAppState extends State<GppApp> {
-  obterRota(settings) {
-    Widget pagina = NotFoundView();
-    if (isAuthenticated()) {
-      //Autenticação
-      Uri uri = Uri.parse(settings.name);
-
-//Se existe 1 parâmetros da url
-      if (uri.pathSegments.length == 0) {
-        pagina = MenuEntradaView();
-      } else if (uri.pathSegments.length == 1) {
-        if (uri.pathSegments.first == 'astecas') {
-          pagina = AstecaView();
-        } else if (uri.pathSegments.first == 'departamentos') {
-          pagina = DepartamentoListView();
-        } else if (uri.pathSegments.first == 'usuarios') {
-          pagina = UsuarioListView();
-        } else if (uri.pathSegments.first == 'motivos-defeitos') {
-          pagina = MotivosTrocaPecasListView();
-        } else if (uri.pathSegments.first == 'logout') {
-          pagina = AutenticacaoView();
-        } else if (uri.pathSegments.first == 'pecas-cadastrar') {
-          pagina = MenuCadastrarView();
-        } else if (uri.pathSegments.first == 'pecas-consultar') {
-          pagina = MenuConsultarView();
-        } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-          pagina = EstoqueConsultaView(2);
-          //pagina = PecaEnderecamentoDetailView();
-        } else if (uri.pathSegments.first == 'enderecamentos') {
-          pagina = CadastroPisoView();
-        } else if (uri.pathSegments.first == 'pedidos-entrada') {
-          pagina = PedidoEntradaListView();
-        } else if (uri.pathSegments.first == 'pedidos-saida') {
-          pagina = PedidoSaidaListView();
-        } else if (uri.pathSegments.first == 'estoque-entrada') {
-          pagina = MenuEntradaView();
-        } else if (uri.pathSegments.first == 'estoque-consulta') {
-          pagina = EstoqueConsultaView(1);
-        }
-
-        //Se existe 2 parâmetros da url
-      } else if (uri.pathSegments.length == 2) {
-        var id = int.parse(uri.pathSegments[1]);
-        if (uri.pathSegments.first == 'astecas') {
-          // pagina = AstecaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos-saida') {
-          pagina = PedidoSaidaDetalheView(id: id);
-        } else if (uri.pathSegments.first == 'pedidos-entrada') {
-          pagina = PedidoEntradaDetalheView(id: id);
-        }
-      }
-    } else {
-      return MaterialPageRoute(builder: (context) => AutenticacaoView());
-    }
-    return MaterialPageRoute(builder: (context) => pagina);
-  }
-
-  @override
-  void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        title: 'GPP - Gerenciamento de Peças e Pedidos',
-        home: PaginaInicialView(),
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            primaryColor: primaryColor,
-            fontFamily: 'Mada',
-            inputDecorationTheme: const InputDecorationTheme(
-              iconColor: Colors.grey,
-              floatingLabelStyle:
-                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
-            )),
-        onGenerateRoute: (settings) {
-          // Handle '/'
-          //return MaterialPageRoute(builder: (context) => Scaffold(body: AstecaListView()));
-
-          return obterRota(settings);
-        });
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: 'GPP - Gerenciamento de Peças e Pedidos',
+      home: HomePageView(),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: primaryColor,
+          fontFamily: 'Mada',
+          inputDecorationTheme: const InputDecorationTheme(
+            iconColor: Colors.grey,
+            floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+          )),
+    );
   }
 }
 
-class PaginaInicialView extends StatefulWidget {
-  const PaginaInicialView({Key? key}) : super(key: key);
+class HomePageView extends StatefulWidget {
+  const HomePageView({Key? key}) : super(key: key);
 
   @override
-  State<PaginaInicialView> createState() => _PaginaInicialViewState();
+  State<HomePageView> createState() => _HomePageViewState();
 }
 
-class _PaginaInicialViewState extends State<PaginaInicialView> {
+class _HomePageViewState extends State<HomePageView> {
   navegar(settings) {
     var builder;
-
-    Widget pagina = NotFoundView();
 
     Uri uri = Uri.parse(settings.name);
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => ProdutoView();
+      builder = (BuildContext context) => AstecaView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -227,8 +157,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'pecas-consultar') {
         builder = (BuildContext context) => PecasListView();
       } else if (uri.pathSegments.first == 'pecas-enderecamento') {
-        builder = (BuildContext context) => EstoqueConsultaView(2);
-        //builder = (BuildContext context) => PecaEnderecamentoDetailView();
+        builder = (BuildContext context) => PecaEnderecamentoDetailView();
       } else if (uri.pathSegments.first == 'enderecamentos') {
         builder = (BuildContext context) => CadastroPisoView();
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
@@ -238,9 +167,12 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
-        builder = (BuildContext context) => EstoqueConsultaView(1);
+        builder = (BuildContext context) => EstoqueConsultaView();
       } else if (uri.pathSegments.first == 'produtos') {
         builder = (BuildContext context) => ProdutoView();
+      } else if (uri.pathSegments.first == 'logout') {
+        builder = (BuildContext context) => AutenticacaoView();
+        ;
       }
 
       //Se existe 2 parâmetros da url
@@ -271,6 +203,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         shadowColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         title: TextComponent(
           'gpp',
           color: Colors.white,
@@ -383,14 +316,40 @@ class FooterSidebar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+                height: 40,
+                width: 40,
+                color:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                child: Center(
+                    child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextComponent(
+                      '${getUsuario().nome!.split(' ').first[0].toUpperCase()}',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    TextComponent(
+                      '${getUsuario().nome!.split(' ').last[0].toUpperCase()}',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ],
+                ))),
+          ),
           TextComponent(
-            usuario.nome ?? '',
+            '${getUsuario().nome!.split(' ').first} ${getUsuario().nome!.split(' ').last}',
             fontWeight: FontWeight.bold,
           ),
           IconButton(
               onPressed: () => {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushReplacementNamed('/logout')
+                    // Navigator.of(context, rootNavigator: true)
+                    //     .pushReplacementNamed('/logout')
+                    Get.to(AutenticacaoView())
                   },
               icon: Icon(Icons.logout_rounded))
         ],

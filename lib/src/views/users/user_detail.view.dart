@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/departament_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/models/user_model.dart';
@@ -17,6 +16,7 @@ import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 // ignore: must_be_immutable
 class UserDetailView extends StatefulWidget {
@@ -81,24 +81,21 @@ class _UserDetailViewState extends State<UserDetailView> {
   }
 
   void handleUpdate(UsuarioModel user) async {
-    NotifyController nofity = NotifyController(context: context);
-
     try {
       if (await _controller.update(user) &&
           await _controller.updateUserSubFuncionalities(
               user, _controller.subFuncionalities)) {
-        nofity.sucess("Usuário atualizado!");
+        Notificacao.snackBar('Usuário atualizado!');
         Navigator.pushReplacementNamed(context, '/users');
       }
     } catch (e) {
-      nofity.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   fetchDepartamentsSubfuncionalities(DepartamentoModel departament) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           "As funcionalidades serão alteradas, deseja concluir a operação?")) {
         await _departamentController
             .changeDepartamentSubFuncionalities(departament);
@@ -109,7 +106,7 @@ class _UserDetailViewState extends State<UserDetailView> {
         checkedSelectedAll();
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

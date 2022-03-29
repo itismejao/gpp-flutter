@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/pedido_saida_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -39,7 +39,6 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         pedidoController.carregado = false;
@@ -63,7 +62,7 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
       });
     } catch (e) {
       limparFiltro();
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
       setState(() {
         pedidoController.pedidos = [];
         pedidoController.carregado = true;
@@ -391,180 +390,184 @@ class _PedidoSaidaListViewState extends State<PedidoSaidaListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              children: [
-                Expanded(child: TitleComponent('Pedidos de saída')),
-                Expanded(
-                  child: Form(
-                    key: pedidoController.filtroFormKey,
-                    child: InputComponent(
-                      maxLines: 1,
-                      onFieldSubmitted: (value) {
-                        pedidoController.idPedido = int.tryParse(value);
-                        //Limpa o formúlario
-                        pedidoController.filtroFormKey.currentState!.reset();
-                        buscarTodas();
-                      },
-                      prefixIcon: Icon(
-                        Icons.search,
-                      ),
-                      hintText: 'Buscar',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                ButtonComponent(
-                    icon: Icon(Icons.tune_rounded, color: Colors.white),
-                    color: secundaryColor,
-                    onPressed: () {
-                      setState(() {
-                        pedidoController.abrirFiltro =
-                            !(pedidoController.abrirFiltro);
-                      });
-                    },
-                    text: 'Adicionar filtro')
-              ],
-            ),
-          ),
-          Container(
-            height: pedidoController.abrirFiltro ? null : 0,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
                 children: [
-                  Form(
-                    key: pedidoController.filtroExpandidoFormKey,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextComponent('Situação'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              DropdownButtonFormFieldComponent(
-                                onChanged: (value) {
-                                  pedidoController.situacao = value.id;
-                                },
-                                hintText: 'Em aberto',
-                                items: <Situacao>[
-                                  Situacao(id: 1, descricao: 'Em aberto'),
-                                  Situacao(id: 2, descricao: 'Pendente'),
-                                  Situacao(id: 3, descricao: 'Concluído'),
-                                  Situacao(id: 4, descricao: 'Cancelado')
-                                ].map<DropdownMenuItem<Situacao>>(
-                                    (Situacao value) {
-                                  return DropdownMenuItem<Situacao>(
-                                    value: value,
-                                    child: TextComponent(value.descricao!),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
+                  Expanded(child: TitleComponent('Pedidos de saída')),
+                  Expanded(
+                    child: Form(
+                      key: pedidoController.filtroFormKey,
+                      child: InputComponent(
+                        maxLines: 1,
+                        onFieldSubmitted: (value) {
+                          pedidoController.idPedido = int.tryParse(value);
+                          //Limpa o formúlario
+                          pedidoController.filtroFormKey.currentState!.reset();
+                          buscarTodas();
+                        },
+                        prefixIcon: Icon(
+                          Icons.search,
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: InputComponent(
-                            inputFormatter: [maskFormatter.dataFormatter()],
-                            label: 'Período:',
-                            maxLines: 1,
-                            onSaved: (value) {
-                              if (value.length == 10) {
-                                pedidoController.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
-                              }
-                            },
-                            hintText: '24/02/2022',
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: InputComponent(
-                            inputFormatter: [maskFormatter.dataFormatter()],
-                            label: '',
-                            maxLines: 1,
-                            onSaved: (value) {
-                              if (value.length == 10) {
-                                pedidoController.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
-                              }
-                            },
-                            hintText: '25/02/2022',
-                          ),
-                        ),
-                      ],
+                        hintText: 'Buscar',
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ButtonComponent(
-                            onPressed: () {
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
-                                  .save();
-                              pedidoController
-                                  .filtroExpandidoFormKey.currentState!
-                                  .reset();
-                              buscarTodas();
-
-                              setState(() {
-                                pedidoController.abrirFiltro = false;
-                              });
-                            },
-                            text: 'Pesquisar')
-                      ],
-                    ),
-                  )
+                  SizedBox(
+                    width: 8,
+                  ),
+                  ButtonComponent(
+                      icon: Icon(Icons.tune_rounded, color: Colors.white),
+                      color: secundaryColor,
+                      onPressed: () {
+                        setState(() {
+                          pedidoController.abrirFiltro =
+                              !(pedidoController.abrirFiltro);
+                        });
+                      },
+                      text: 'Adicionar filtro')
                 ],
               ),
             ),
-          ),
-          Expanded(
-            child:
-                pedidoController.carregado ? _buildList() : LoadingComponent(),
-          ),
-          PaginacaoComponent(
-            total: pedidoController.pagina.total,
-            atual: pedidoController.pagina.atual,
-            primeiraPagina: () {
-              pedidoController.pagina.primeira();
-              buscarTodas();
-              setState(() {});
-            },
-            anteriorPagina: () {
-              pedidoController.pagina.anterior();
-              buscarTodas();
-              setState(() {});
-            },
-            proximaPagina: () {
-              pedidoController.pagina.proxima();
-              buscarTodas();
-              setState(() {});
-            },
-            ultimaPagina: () {
-              pedidoController.pagina.ultima();
-              buscarTodas();
-              setState(() {});
-            },
-          )
-        ],
+            Container(
+              height: pedidoController.abrirFiltro ? null : 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: pedidoController.filtroExpandidoFormKey,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextComponent('Situação'),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                DropdownButtonFormFieldComponent(
+                                  onChanged: (value) {
+                                    pedidoController.situacao = value.id;
+                                  },
+                                  hintText: 'Em aberto',
+                                  items: <Situacao>[
+                                    Situacao(id: 1, descricao: 'Em aberto'),
+                                    Situacao(id: 2, descricao: 'Pendente'),
+                                    Situacao(id: 3, descricao: 'Concluído'),
+                                    Situacao(id: 4, descricao: 'Cancelado')
+                                  ].map<DropdownMenuItem<Situacao>>(
+                                      (Situacao value) {
+                                    return DropdownMenuItem<Situacao>(
+                                      value: value,
+                                      child: TextComponent(value.descricao!),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: InputComponent(
+                              inputFormatter: [maskFormatter.dataFormatter()],
+                              label: 'Período:',
+                              maxLines: 1,
+                              onSaved: (value) {
+                                if (value.length == 10) {
+                                  pedidoController.dataInicio =
+                                      DateFormat("dd/MM/yyyy").parse(value);
+                                }
+                              },
+                              hintText: '24/02/2022',
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: InputComponent(
+                              inputFormatter: [maskFormatter.dataFormatter()],
+                              label: '',
+                              maxLines: 1,
+                              onSaved: (value) {
+                                if (value.length == 10) {
+                                  pedidoController.dataFim =
+                                      DateFormat("dd/MM/yyyy").parse(value);
+                                }
+                              },
+                              hintText: '25/02/2022',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ButtonComponent(
+                              onPressed: () {
+                                pedidoController
+                                    .filtroExpandidoFormKey.currentState!
+                                    .save();
+                                pedidoController
+                                    .filtroExpandidoFormKey.currentState!
+                                    .reset();
+                                buscarTodas();
+
+                                setState(() {
+                                  pedidoController.abrirFiltro = false;
+                                });
+                              },
+                              text: 'Pesquisar')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: pedidoController.carregado
+                  ? _buildList()
+                  : LoadingComponent(),
+            ),
+            PaginacaoComponent(
+              total: pedidoController.pagina.total,
+              atual: pedidoController.pagina.atual,
+              primeiraPagina: () {
+                pedidoController.pagina.primeira();
+                buscarTodas();
+                setState(() {});
+              },
+              anteriorPagina: () {
+                pedidoController.pagina.anterior();
+                buscarTodas();
+                setState(() {});
+              },
+              proximaPagina: () {
+                pedidoController.pagina.proxima();
+                buscarTodas();
+                setState(() {});
+              },
+              ultimaPagina: () {
+                pedidoController.pagina.ultima();
+                buscarTodas();
+                setState(() {});
+              },
+            )
+          ],
+        ),
       ),
     );
   }

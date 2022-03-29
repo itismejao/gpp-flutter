@@ -56,14 +56,6 @@ class MockApiService extends _i1.Mock implements _i3.ApiService {
       (super.noSuchMethod(Invocation.method(#post, [path, body]),
           returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
   @override
-  _i4.Future<dynamic> postTeste(String? endpoint, dynamic body) =>
-      (super.noSuchMethod(Invocation.method(#postTeste, [endpoint, body]),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
-  @override
-  _i4.Future<dynamic> endereco(String? endpoint, dynamic body) =>
-      (super.noSuchMethod(Invocation.method(#endereco, [endpoint, body]),
-          returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);
-  @override
   _i4.Future<dynamic> put(String? endpoint, dynamic body) =>
       (super.noSuchMethod(Invocation.method(#put, [endpoint, body]),
           returnValue: Future<dynamic>.value()) as _i4.Future<dynamic>);

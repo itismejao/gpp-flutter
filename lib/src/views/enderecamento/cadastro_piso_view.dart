@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/piso_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -8,10 +8,10 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_corredor_view.dart';
-import 'package:gpp/src/views/home/home_view.dart';
-
-import '../funcionalities_view.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class CadastroPisoView extends StatefulWidget {
   const CadastroPisoView({Key? key}) : super(key: key);
@@ -25,7 +25,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   late EnderecamentoController enderecamentoController;
 
   fetchAll() async {
-    enderecamentoController.listaPiso = await enderecamentoController.buscarTodos(getFilial().id_filial!);
+    enderecamentoController.listaPiso =
+        await enderecamentoController.buscarTodos(getFilial().id_filial!);
 
     enderecamentoController.isLoaded = true;
 
@@ -36,8 +37,6 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   }
 
   handleCreate(context, PisoEnderecamentoModel piso) async {
-    NotifyController notify = NotifyController(context: context);
-
     if (piso.id_filial == null) {
       piso.id_filial = getFilial().id_filial;
     }
@@ -46,25 +45,24 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Piso adicionado com sucesso!');
+        Notificacao.snackBar('Piso adicionado com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir o piso?")) {
+      if (await Notificacao.confirmacao("você deseja excluir o piso?")) {
         if (await enderecamentoController.repository.excluir(excluiPiso)) {
-          notify.sucess("Piso excluído!");
+          Notificacao.snackBar("Piso excluído!");
           //Atualiza a lista de motivos
           fetchAll();
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -80,13 +78,12 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   // }
 
   handleEdit(context, PisoEnderecamentoModel editaPiso) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Piso editado com sucesso!");
+        Notificacao.snackBar("Piso editado com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -122,7 +119,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                         initialValue: getFilial().id_filial.toString(),
                         onChanged: (value) {
                           setState(() {
-                            pisoEnderecamentoReplacement.id_filial = int.parse(value);
+                            pisoEnderecamentoReplacement.id_filial =
+                                int.parse(value);
                           });
                         },
                       ),
@@ -137,7 +135,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(context, pisoEnderecamentoReplacement);
+                                  handleCreate(
+                                      context, pisoEnderecamentoReplacement);
                                 },
                                 text: 'Adicionar')
                           ],
@@ -182,7 +181,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: pisoEnderecamentoReplacement.id_filial.toString(),
+                        initialValue:
+                            pisoEnderecamentoReplacement.id_filial.toString(),
                         hintText: 'Digite a filial',
                         onChanged: (value) {
                           setState(() {
@@ -201,7 +201,8 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context, pisoEnderecamentoReplacement);
+                                  handleEdit(
+                                      context, pisoEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -260,73 +261,86 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
                 ],
               ),
             ),
-            Divider(),
-            Row(
-              children: [
-                Expanded(child: TextComponent('Id')),
-                Expanded(child: TextComponent('Nome')),
-                Expanded(child: TextComponent('Opções')),
-              ],
-            ),
-            Divider(),
             enderecamentoController.isLoaded
                 ? Container(
                     height: media.size.height * 0.5,
                     child: ListView.builder(
                       itemCount: enderecamentoController.listaPiso.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-                            child: Row(
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 8.0),
+                          child: CardWidget(
+                            widget: Column(
                               children: [
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].id_piso.toString()),
+                                Row(
+                                  children: [
+                                    Expanded(child: TextComponent('Id')),
+                                    Expanded(child: TextComponent('Nome')),
+                                    Expanded(child: TextComponent('Opções')),
+                                  ],
                                 ),
-                                Expanded(
-                                  child: TextComponent(enderecamentoController.listaPiso[index].desc_piso.toString()),
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      ButtonComponent(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => CadastroCorredorView(
-                                                    idPiso: enderecamentoController.listaPiso[index].id_piso.toString()),
-                                              ),
-                                            );
-                                          },
-                                          text: 'Corredor'),
-                                      // IconButton(
-                                      //   icon: Icon(
-                                      //     Icons.edit,
-                                      //     color: Colors.grey.shade400,
-                                      //   ),
-                                      //   onPressed: () {
-                                      //     openFormEdit(
-                                      //         context,
-                                      //         enderecamentoController
-                                      //             .listaPiso[index]);
-                                      //   },
-                                      // ),
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        onPressed: () {
-                                          handleDelete(
-                                            context,
-                                            enderecamentoController.listaPiso[index],
-                                          );
-                                        },
-                                      )
-                                    ],
-                                  ),
+                                Divider(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextComponent(
+                                          enderecamentoController
+                                              .listaPiso[index].id_piso
+                                              .toString()),
+                                    ),
+                                    Expanded(
+                                      child: TextComponent(
+                                          enderecamentoController
+                                              .listaPiso[index].desc_piso
+                                              .toString()),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          ButtonComponent(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CadastroCorredorView(
+                                                            idPiso:
+                                                                enderecamentoController
+                                                                    .listaPiso[
+                                                                        index]
+                                                                    .id_piso
+                                                                    .toString()),
+                                                  ),
+                                                );
+                                              },
+                                              text: 'Corredor'),
+                                          // IconButton(
+                                          //   icon: Icon(
+                                          //     Icons.edit,
+                                          //     color: Colors.grey.shade400,
+                                          //   ),
+                                          //   onPressed: () {
+                                          //     openFormEdit(
+                                          //         context,
+                                          //         enderecamentoController
+                                          //             .listaPiso[index]);
+                                          //   },
+                                          // ),
+                                          Expanded(
+                                            child: ButtonAcaoWidget(
+                                              deletar: () {
+                                                handleDelete(
+                                                  context,
+                                                  enderecamentoController
+                                                      .listaPiso[index],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 )
                               ],
                             ),

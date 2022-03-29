@@ -1,5 +1,5 @@
 import 'package:gpp/src/models/box_enderecamento_model.dart';
-import 'package:gpp/src/models/pecas_model/peca_enderecamento_model.dart';
+
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 
 class PecasEstoqueModel {
@@ -15,7 +15,6 @@ class PecasEstoqueModel {
   BoxEnderecamentoModel? box;
   String? fornecedor;
   String? endereco;
-
 
   PecasEstoqueModel(
       {this.id_peca_estoque,
@@ -61,7 +60,6 @@ class PecasEstoqueModel {
     data['saldo_reservado'] = this.saldo_reservado;
     data['quantidade_transferencia'] = this.quantidade_transferencia;
     data['quantidade_minima'] = this.quantidade_minima;
-
 
     return data;
   }

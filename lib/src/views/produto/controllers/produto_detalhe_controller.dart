@@ -69,6 +69,7 @@ class ProdutoDetalheController extends GetxController {
       this.produtoPecas = await produtoRepository.buscarProdutoPecas(this.id);
     } finally {
       carregando(false);
+      update();
     }
   }
 
@@ -160,7 +161,7 @@ class ProdutoDetalheController extends GetxController {
 
   inserirProdutoPecas(int idProduto) async {
     try {
-      if (await Notificacao.alerta(
+      if (await Notificacao.confirmacao(
           'Gostaria de importar ${marcados} peças ?')) {
         gerarListaProdutoPeca();
         await produtoRepository.inserirProdutoPecas(
@@ -171,7 +172,7 @@ class ProdutoDetalheController extends GetxController {
         Notificacao.snackBar('Peças importadas com sucesso');
       }
     } catch (e) {
-      Get.snackbar('Messagem', e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -470,7 +471,9 @@ class ProdutoDetalheController extends GetxController {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextComponent('Total de peças selecionadas: ${marcados}'),
+                    GetBuilder<ProdutoDetalheController>(
+                        builder: (_) => TextComponent(
+                            'Total de peças selecionadas: ${marcados}')),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

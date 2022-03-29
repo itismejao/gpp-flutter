@@ -6,7 +6,7 @@ import 'package:gpp/src/shared/repositories/styles.dart';
 import '../shared/components/TextButtonComponent.dart';
 
 class Notificacao {
-  static alerta(String mensagem) async {
+  static confirmacao(String mensagem) async {
     return await Get.dialog(AlertDialog(
       title: TextComponent(
         'Confirmação',
@@ -54,7 +54,7 @@ class Notificacao {
     Get.snackbar('Mensagem', mensagem,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: primaryColor,
+        backgroundColor: secundaryColor,
         borderRadius: 5,
         margin: EdgeInsets.only(left: Get.width * 0.8, bottom: 20, right: 20),
         maxWidth: Get.width * 0.6);

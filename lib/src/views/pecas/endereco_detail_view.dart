@@ -2,7 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_enderecamento_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/models/corredor_enderecamento_model.dart';
@@ -14,21 +13,22 @@ import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 import '../../models/box_enderecamento_model.dart';
 
 // ignore: must_be_immutable
 class EnderecoDetailView extends StatefulWidget {
-  PecasEstoqueModel? pecaEstoque;
+  PecaEnderacamentoModel? pecaEnderecamento;
 
-  EnderecoDetailView({this.pecaEstoque});
+  EnderecoDetailView({this.pecaEnderecamento});
 
   @override
   _EnderecoDetailViewState createState() => _EnderecoDetailViewState();
 }
 
 class _EnderecoDetailViewState extends State<EnderecoDetailView> {
-  PecasEstoqueModel? pecaEstoque;
+  PecaEnderacamentoModel? pecaEnderecamento;
 
   late EnderecamentoController enderecamentoController;
   late PecaEstoqueController _pecasEstoqueController;
@@ -38,6 +38,8 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
   TextEditingController _controllerNomePeca = new TextEditingController();
   TextEditingController _controllerEnderecoPeca = new TextEditingController();
 
+  PecasEstoqueModel? pecaEstoque;
+
   PisoEnderecamentoModel? _pisoSelected;
   CorredorEnderecamentoModel? _corredorSelected;
   PrateleiraEnderecamentoModel? _prateleiraSelected;
@@ -46,25 +48,26 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
 
   @override
   void initState() {
-    pecaEstoque = widget.pecaEstoque;
+    pecaEnderecamento = widget.pecaEnderecamento;
     enderecamentoController = EnderecamentoController();
     _pecaEnderecamentoController = PecaEnderecamentoController();
-    if (pecaEstoque!.id_peca_estoque == null)
+    if (pecaEnderecamento!.id_peca_estoque == null)
       _pecasEstoqueController = PecaEstoqueController();
     else {
       _controllerIdPeca.text =
-          pecaEstoque!.pecasModel!.id_peca.toString();
+          pecaEnderecamento!.peca_estoque!.pecasModel!.id_peca.toString();
       _controllerNomePeca.text =
-          pecaEstoque!.pecasModel!.descricao ?? '';
+          pecaEnderecamento!.peca_estoque!.pecasModel!.descricao ?? '';
       _pisoSelected =
-          pecaEstoque!.box?.prateleira?.estante?.corredor?.piso;
-      _corredorSelected = pecaEstoque!.box?.prateleira?.estante?.corredor;
-      _prateleiraSelected = pecaEstoque!.box?.prateleira;
-      _estanteSelected = pecaEstoque!.box?.prateleira?.estante;
-      _boxSelected = pecaEstoque!.box;
+          pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso;
+      _corredorSelected = pecaEnderecamento!.box?.prateleira?.estante?.corredor;
+      _prateleiraSelected = pecaEnderecamento!.box?.prateleira;
+      _estanteSelected = pecaEnderecamento!.box?.prateleira?.estante;
+      _boxSelected = pecaEnderecamento!.box;
+      pecaEstoque = pecaEnderecamento!.peca_estoque;
     }
 
-    _controllerEnderecoPeca.text = pecaEstoque!.endereco!;
+    _controllerEnderecoPeca.text = pecaEnderecamento!.endereco;
 
     super.initState();
   }
@@ -77,34 +80,30 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(pecaEstoque!.id_peca_estoque == null
+            Icon(pecaEnderecamento!.id_peca_estoque == null
                 ? Icons.location_on_outlined
                 : Icons.sync_outlined),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent(pecaEstoque!.id_peca_estoque == null
+            TitleComponent(pecaEnderecamento!.id_peca_estoque == null
                 ? 'Endereçar Peça'
                 : 'Transferir Peça'),
             new Spacer(),
-            pecaEstoque!.box == null
+            pecaEnderecamento!.id_peca_enderecamento == null
                 ? Container()
                 : IconButton(
                     onPressed: () async {
-                      NotifyController notify =
-                          NotifyController(context: context);
                       try {
-                        if (await notify.confirmacao(
-                            'Deseja remover o endereçamento da peça (${pecaEstoque!.pecasModel!.descricao}) localizado no endereço: ${pecaEstoque!.endereco}?')) {
-                          pecaEstoque?.box = null;
-                          pecaEstoque?.id_box = null;
+                        if (await Notificacao.confirmacao(
+                            'Deseja remover o endereçamento da peça (${pecaEnderecamento!.peca_estoque!.pecasModel!.descricao}) localizado no endereço: ${pecaEnderecamento!.endereco}?')) {
                           if (await _pecaEnderecamentoController
-                              .alterar(pecaEstoque!)) {
-                            notify
-                                .sucess("Endereçamento excluído com sucesso!");
+                              .excluir(pecaEnderecamento!)) {
+                            Notificacao.snackBar(
+                                "Endereçamento excluído com sucesso!");
                             Navigator.pop(context);
                           }
                         }
                       } catch (e) {
-                        notify.error(e.toString());
+                        Notificacao.snackBar(e.toString());
                         Navigator.pop(context);
                       }
                     },
@@ -132,7 +131,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                   child: TextFormField(
                     controller: _controllerIdPeca,
                     keyboardType: TextInputType.number,
-                    enabled: pecaEstoque!.id_peca_estoque == null
+                    enabled: pecaEnderecamento!.id_peca_estoque == null
                         ? true
                         : false,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -211,7 +210,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
             ],
           ),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
-          pecaEstoque!.id_peca_estoque == null
+          pecaEnderecamento!.id_peca_estoque == null
               ? Container()
               : Row(
                   children: [
@@ -240,7 +239,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                     child:
                                         DropdownSearch<PisoEnderecamentoModel>(
                                       mode: Mode.MENU,
-                                      enabled: pecaEstoque!.box == null
+                                      enabled: pecaEnderecamento!.box == null
                                           ? true
                                           : false,
                                       showSearchBox: true,
@@ -258,7 +257,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                         setState(() {
                                           zerarCampos();
                                           _pisoSelected = value;
-                                          pecaEstoque!
+                                          pecaEnderecamento!
                                               .box
                                               ?.prateleira
                                               ?.estante
@@ -533,11 +532,11 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                             setState(() {
                                               zerarBox();
                                               _boxSelected = value;
-                                              pecaEstoque!.box?.id_box =
+                                              pecaEnderecamento!.box?.id_box =
                                                   value?.id_box;
-                                              pecaEstoque!.box?.desc_box =
+                                              pecaEnderecamento!.box?.desc_box =
                                                   value?.desc_box;
-                                              pecaEstoque!.id_box =
+                                              pecaEnderecamento!.id_box =
                                                   value!.id_box;
                                             });
                                           },
@@ -579,12 +578,13 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                                     setState(() {
                                                       zerarBox();
                                                       _boxSelected = value;
-                                                      pecaEstoque!.box!.id_box =
+                                                      pecaEnderecamento!
+                                                              .box!.id_box =
                                                           value?.id_box;
-                                                      pecaEstoque!
+                                                      pecaEnderecamento!
                                                               .box!.desc_box =
                                                           value?.desc_box;
-                                                      pecaEstoque!
+                                                      pecaEnderecamento!
                                                               .id_box =
                                                           value!.id_box;
                                                     });
@@ -635,23 +635,43 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                 children: [
                   ButtonComponent(
                     onPressed: () async {
-                      NotifyController notify =
-                          NotifyController(context: context);
-
-                      if (pecaEstoque!.id_box == null) {
-                          notify.warning(
+                      if (pecaEnderecamento!.id_peca_enderecamento == null) {
+                        if (pecaEnderecamento!.id_box == null) {
+                          Notificacao.snackBar(
                               "É necessário informar para qual box a peça será transferida!");
                         } else {
-                         try {
+                          pecaEnderecamento!.id_peca_estoque =
+                              pecaEstoque!.id_peca_estoque;
+
+                          try {
                             if (await _pecaEnderecamentoController
-                                .alterar(pecaEstoque!)) {
-                              notify.sucess("Peça endereçada com sucesso!");
+                                .create(pecaEnderecamento!)) {
+                              Notificacao.snackBar(
+                                  "Peça endereçada com sucesso!");
                             }
                           } catch (e) {
-                            notify.error2(e.toString());
+                            Notificacao.snackBar(e.toString());
                           }
                           Navigator.pop(context);
                         }
+                      } else {
+                        try {
+                          if (pecaEnderecamento!.id_box == null) {
+                            Notificacao.snackBar(
+                                "É necessário informar para qual box a peça será transferida!");
+                          } else {
+                            if (await _pecaEnderecamentoController
+                                .editar(pecaEnderecamento!)) {
+                              Notificacao.snackBar(
+                                  "Peça endereçada com sucesso!");
+                              Navigator.pop(context);
+                            }
+                          }
+                        } catch (e) {
+                          Notificacao.snackBar(e.toString());
+                          Navigator.pop(context);
+                        }
+                      }
                     },
                     text: 'Salvar',
                   ),
@@ -674,7 +694,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
 
   buscarPeca(String id) async {
     pecaEstoque = await _pecasEstoqueController.buscarEstoque(id,
-        pecaEstoque!.box!.prateleira!.estante!.corredor!.piso!.id_filial);
+        pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso!.id_filial);
     _controllerNomePeca.text = pecaEstoque?.pecasModel?.descricao ?? '';
   }
 
@@ -707,7 +727,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
   zerarBox() {
     setState(() {
       _boxSelected = null;
-      pecaEstoque!.id_box = null;
+      pecaEnderecamento!.id_box = null;
     });
   }
 }

@@ -12,12 +12,14 @@ class PecaEstoqueRepository {
     this.api = ApiService();
   }
 
-  Future<PecasEstoqueModel> buscarEstoque(String id_peca, String? id_filial) async {
+  Future<PecasEstoqueModel> buscarEstoque(
+      String id_peca, String? id_filial) async {
     Map<String, String> queryParameters = {
       'id_filial': id_filial != null ? id_filial.toString() : '',
     };
 
-    Response response = await api.get('/pecas/$id_peca/peca-estoque', queryParameters: queryParameters);
+    Response response = await api.get('/pecas/$id_peca/peca-estoque',
+        queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -59,13 +61,16 @@ class PecaEstoqueRepository {
       'desc_box': desc_box,
     };
 
-    Response response = await api.get('/consulta-estoque', queryParameters: queryParameters);
+    Response response =
+        await api.get('/consulta-estoque', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
       return [
-        data['data'].map<PecasEstoqueModel>((data) => PecasEstoqueModel.fromJson(data)).toList(),
+        data['data']
+            .map<PecasEstoqueModel>((data) => PecasEstoqueModel.fromJson(data))
+            .toList(),
         PaginaModel(total: data['last_page'], atual: data['current_page'])
       ];
     } else {
@@ -74,16 +79,14 @@ class PecaEstoqueRepository {
     }
   }
 
-  Future<bool> alterarEstoque(PecasEstoqueModel pe) async{
-
+  Future<bool> alterarEstoque(PecasEstoqueModel pe) async {
     print('Alterar Estoque');
     print(pe.id_peca_estoque);
     print(pe.id_box);
     print(pe.id_peca);
 
     Response response = await api.put(
-        '/pecas/${pe.id_peca}/peca-estoque/${pe.id_peca_estoque}',
-        pe.toJson());
+        '/pecas/${pe.id_peca}/peca-estoque/${pe.id_peca_estoque}', pe.toJson());
 
     if (response.statusCode == StatusCode.OK) {
       return true;
@@ -91,7 +94,5 @@ class PecaEstoqueRepository {
       var error = json.decode(response.body)['error'];
       throw error;
     }
-
   }
-
 }

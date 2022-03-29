@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gpp/main.dart';
+
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
 import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/produto_controller.dart';

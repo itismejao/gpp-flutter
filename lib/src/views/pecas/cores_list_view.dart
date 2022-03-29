@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 import 'pop_up_editar.dart';
@@ -27,18 +27,17 @@ class _CoresListViewState extends State<CoresListView> {
   }
 
   Future<bool> excluir(context, PecasCorModel pecasCorModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           'Deseja excluir a cor (${pecasCorModel.id_peca_cor} - ${pecasCorModel.cor})?')) {
         if (await _pecasCorController.excluir(pecasCorModel)) {
-          notify.sucess("Cor excluída com sucesso!");
+          Notificacao.snackBar("Cor excluída com sucesso!");
           return true;
         }
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }

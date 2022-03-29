@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/pecas_edit_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 
@@ -18,24 +18,22 @@ class _PecasListViewState extends State<PecasListView> {
   PecaController _pecasController = PecaController();
 
   excluir(PecasModel pecasModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasController.excluir(pecasModel)) {
-        notify.sucess("Peça excluída com sucesso!");
+        Notificacao.snackBar("Peça excluída com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editar() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await true) {
-        notify.sucess("Peça alterada com sucesso!");
+        Notificacao.snackBar("Peça alterada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -222,8 +220,7 @@ class _PecasListViewState extends State<PecasListView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextComponent('Total de páginas: ' +
-                            _pecasController.pagina.total
-                                .toString()),
+                            _pecasController.pagina.total.toString()),
                         Row(
                           children: [
                             IconButton(
@@ -240,31 +237,22 @@ class _PecasListViewState extends State<PecasListView> {
                                 ),
                                 tooltip: 'Página Anterior',
                                 onPressed: () {
-                                  if (_pecasController
-                                          .pagina.atual >
-                                      0) {
+                                  if (_pecasController.pagina.atual > 0) {
                                     _pecasController.pagina.atual =
-                                        _pecasController
-                                                .pagina.atual -
-                                            1;
+                                        _pecasController.pagina.atual - 1;
                                     buscarTodasPecas();
                                   }
                                 }),
-                            TextComponent(_pecasController
-                                .pagina.atual
-                                .toString()),
+                            TextComponent(
+                                _pecasController.pagina.atual.toString()),
                             IconButton(
                                 icon: Icon(Icons.navigate_next_rounded),
                                 tooltip: 'Próxima Página',
                                 onPressed: () {
-                                  if (_pecasController
-                                          .pagina.atual !=
-                                      _pecasController
-                                          .pagina.atual) {
+                                  if (_pecasController.pagina.atual !=
+                                      _pecasController.pagina.atual) {
                                     _pecasController.pagina.atual =
-                                        _pecasController
-                                                .pagina.atual +
-                                            1;
+                                        _pecasController.pagina.atual + 1;
                                   }
 
                                   buscarTodasPecas();

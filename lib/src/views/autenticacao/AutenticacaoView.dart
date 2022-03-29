@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gpp/src/controllers/AutenticacaoController.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/controllers/responsive_controller.dart';
 
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -11,6 +11,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 class AutenticacaoView extends StatefulWidget {
   const AutenticacaoView({
@@ -40,7 +41,6 @@ class _AutenticacaoViewState extends State<AutenticacaoView> {
   }
 
   void autenticar(context) async {
-    NotifyController nofity = NotifyController(context: context);
     try {
       if (await controller.repository.criar(controller.autenticacao)) {
         setState(() {
@@ -50,7 +50,7 @@ class _AutenticacaoViewState extends State<AutenticacaoView> {
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
-      nofity.error2(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

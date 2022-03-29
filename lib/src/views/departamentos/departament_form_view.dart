@@ -452,11 +452,13 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gpp/src/controllers/departament_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 class DepartamentFormView extends StatefulWidget {
   const DepartamentFormView({Key? key}) : super(key: key);
@@ -469,14 +471,14 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
   late DepartamentController _controller;
 
   handleCreate() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _controller.create()) {
-        notify.sucess("Departamento cadastrado!");
-        Navigator.pushReplacementNamed(context, '/departamentos');
+        Notificacao.snackBar("Departamento cadastrado!");
+        Navigator.pop(context);
+        Get.keys[1]!.currentState!.pushReplacementNamed('/departamentos');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

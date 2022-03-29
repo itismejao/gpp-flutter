@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 // ignore: must_be_immutable
@@ -34,25 +34,23 @@ class _CoresDetailViewState extends State<CoresDetailView> {
   }
 
   create(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasCorController.create()) {
-        notify.sucess("Cor cadastrada com sucesso!");
+        Notificacao.snackBar("Cor cadastrada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editar(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasCorController.editar()) {
-        notify.sucess("Cor editada com sucesso!");
+        Notificacao.snackBar("Cor editada com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

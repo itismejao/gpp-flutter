@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/PaginacaoComponent.dart';
 
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
@@ -35,8 +36,10 @@ class ProdutoView extends StatelessWidget {
                       Expanded(
                           child: InputComponent(
                         hintText: 'Buscar',
+                        onChanged: (value) =>
+                            produtoController.pesquisar = value,
                         onFieldSubmitted: (value) {
-                          produtoController.pesquisarProduto(value);
+                          produtoController.buscarProdutos();
                         },
                       ))
                     ],
@@ -103,9 +106,7 @@ class ProdutoView extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             TextComponent(
-                                              produtoController
-                                                  .produtos[index].idProduto
-                                                  .toString(),
+                                              '${produtoController.produtos[index].idProduto.toString()}',
                                             )
                                           ],
                                         ),
@@ -158,6 +159,31 @@ class ProdutoView extends StatelessWidget {
                   : LoadingComponent(),
             ),
           ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 24),
+            child: GetBuilder<ProdutoController>(
+              builder: (_) => PaginacaoComponent(
+                total: produtoController.pagina.total,
+                atual: produtoController.pagina.atual,
+                primeiraPagina: () {
+                  produtoController.pagina.primeira();
+                  produtoController.buscarProdutos();
+                },
+                anteriorPagina: () {
+                  produtoController.pagina.anterior();
+                  produtoController.buscarProdutos();
+                },
+                proximaPagina: () {
+                  produtoController.pagina.proxima();
+                  produtoController.buscarProdutos();
+                },
+                ultimaPagina: () {
+                  produtoController.pagina.ultima();
+                  produtoController.buscarProdutos();
+                },
+              ),
+            ),
+          )
         ],
       ),
     );

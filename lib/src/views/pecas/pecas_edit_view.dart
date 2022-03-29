@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_linha_controller.dart';
@@ -15,6 +14,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/und_medida.dart';
 import 'package:gpp/src/views/pecas/unidade.dart';
 
@@ -87,27 +87,25 @@ class _PecasEditAndViewState extends State<PecasEditAndView> {
   }
 
   editar(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasController.editar()) {
-        notify.sucess("Peça editada com sucesso!");
+        Notificacao.snackBar("Peça editada com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   EditarProdutoPeca(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       // _pecasController.produtoPecaModel.id_peca = _pecasModelInserido!.id_peca;
 
       if (await _pecasController.editarProdutoPeca()) {
-        notify.sucess("Produto peça cadastrado com sucesso!");
+        Notificacao.snackBar("Produto peça cadastrado com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

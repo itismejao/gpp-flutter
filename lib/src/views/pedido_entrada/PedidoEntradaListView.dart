@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/DropdownButtonFormFieldComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
+import 'package:gpp/src/views/widgets/button_acao_widget.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -39,7 +42,6 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
   late MaskFormatter maskFormatter;
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         controller.carregado = false;
@@ -68,7 +70,7 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
         controller.pedidosEntrada = [];
         controller.carregado = true;
       });
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -261,171 +263,151 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
           // );
         }
 
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context,
-                '/pedidos-entrada/' + pedido[index].idPedidoEntrada.toString());
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 0,
-                    blurRadius: 9,
-                    offset: Offset(0, 5), // changes position of shadow
-                  ),
-                ],
-                border: Border(
-                  left: BorderSide(
-                    color:
-                        situacao(controller.pedidosEntrada[index].dataEmissao!),
-                    width: 7.0,
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 8),
+          child: CardWidget(
+            widget: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              TextComponent(
-                                'ID',
-                                fontWeight: FontWeight.bold,
-                              )
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: TextComponent(
-                              'Nome',
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              'Data de abertura',
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              'CPF/CNPJ',
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              'Situação',
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Expanded(
-                            flex: 3,
-                            child: TextComponent(
-                              'Valor total',
-                              fontWeight: FontWeight.bold,
-                            ))
-                      ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          TextComponent(
+                            'ID',
+                            fontWeight: FontWeight.bold,
+                          )
+                        ],
+                      ),
                     ),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              pedido[index].idPedidoEntrada != null
-                                  ? TextComponent(
-                                      '#' +
-                                          pedido[index]
-                                              .idPedidoEntrada
-                                              .toString(),
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: TextComponent(
-                              pedido[index]
-                                  .asteca!
-                                  .compEstProd!
-                                  .first
-                                  .produto!
-                                  .fornecedores!
-                                  .first
-                                  .cliente!
-                                  .nome!,
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: pedido[index].dataEmissao != null
-                                ? TextComponent(
-                                    DateFormat('dd/MM/yyyy')
-                                        .format(pedido[index].dataEmissao!),
-                                  )
-                                : Container()),
-                        Expanded(
-                            flex: 2,
-                            child: TextComponent(
-                              maskFormatter.cpfCnpjFormatter(
-                                          value: pedido[index]
-                                              .asteca!
-                                              .compEstProd!
-                                              .first
-                                              .produto!
-                                              .fornecedores!
-                                              .first
-                                              .cliente!
-                                              .cpfCnpj
-                                              .toString()) !=
-                                      null
-                                  ? maskFormatter
-                                      .cpfCnpjFormatter(
-                                          value: pedido[index]
-                                              .asteca!
-                                              .compEstProd!
-                                              .first
-                                              .produto!
-                                              .fornecedores!
-                                              .first
-                                              .cliente!
-                                              .cpfCnpj
-                                              .toString())!
-                                      .getMaskedText()
-                                  : '',
-                            )),
-                        Expanded(
-                            flex: 2,
-                            child: _buildSituacaoPedido(
-                                        pedido[index].situacao) !=
-                                    null
-                                ? _buildSituacaoPedido(pedido[index].situacao)
-                                : Container()),
-                        Expanded(
-                            flex: 3,
-                            child: TextComponent(
-                                pedido[index].valorTotal != null
-                                    ? controller.formatter
-                                        .format(pedido[index].valorTotal)
-                                    : controller.formatter.format(0)
-                                // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
-                                ))
-                      ],
-                    ),
+                    Expanded(
+                        flex: 4,
+                        child: TextComponent(
+                          'Nome',
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: TextComponent(
+                          'Data de abertura',
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: TextComponent(
+                          'CPF/CNPJ',
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: TextComponent(
+                          'Situação',
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Expanded(
+                        flex: 3,
+                        child: TextComponent(
+                          'Valor total',
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Expanded(
+                        child: TextComponent(
+                      'Ações',
+                      fontWeight: FontWeight.bold,
+                    ))
                   ],
                 ),
-              ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          pedido[index].idPedidoEntrada != null
+                              ? TextComponent(
+                                  '#' +
+                                      pedido[index].idPedidoEntrada.toString(),
+                                )
+                              : Container()
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                        flex: 4,
+                        child: TextComponent(
+                          pedido[index]
+                              .asteca!
+                              .compEstProd!
+                              .first
+                              .produto!
+                              .fornecedores!
+                              .first
+                              .cliente!
+                              .nome!,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: pedido[index].dataEmissao != null
+                            ? TextComponent(
+                                DateFormat('dd/MM/yyyy')
+                                    .format(pedido[index].dataEmissao!),
+                              )
+                            : Container()),
+                    Expanded(
+                        flex: 2,
+                        child: TextComponent(
+                          maskFormatter.cpfCnpjFormatter(
+                                      value: pedido[index]
+                                          .asteca!
+                                          .compEstProd!
+                                          .first
+                                          .produto!
+                                          .fornecedores!
+                                          .first
+                                          .cliente!
+                                          .cpfCnpj
+                                          .toString()) !=
+                                  null
+                              ? maskFormatter
+                                  .cpfCnpjFormatter(
+                                      value: pedido[index]
+                                          .asteca!
+                                          .compEstProd!
+                                          .first
+                                          .produto!
+                                          .fornecedores!
+                                          .first
+                                          .cliente!
+                                          .cpfCnpj
+                                          .toString())!
+                                  .getMaskedText()
+                              : '',
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child:
+                            _buildSituacaoPedido(pedido[index].situacao) != null
+                                ? _buildSituacaoPedido(pedido[index].situacao)
+                                : Container()),
+                    Expanded(
+                        flex: 3,
+                        child: TextComponent(pedido[index].valorTotal != null
+                                ? controller.formatter
+                                    .format(pedido[index].valorTotal)
+                                : controller.formatter.format(0)
+                            // maskFormatter.realInputFormmater(pedido[index].valorTotal.toString()).getMaskedText(),
+                            )),
+                    Expanded(child: ButtonAcaoWidget(
+                      detalhe: () {
+                        Get.keys[1]!.currentState!.pushNamed(
+                            '/pedidos-entrada/${pedido[index].idPedidoEntrada.toString()}');
+                      },
+                    ))
+                  ],
+                ),
+              ],
             ),
           ),
         );
@@ -435,177 +417,180 @@ class _PedidoEntradaListViewState extends State<PedidoEntradaListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              children: [
-                Expanded(child: TitleComponent('Pedidos de entrada')),
-                Expanded(
-                  child: Form(
-                    key: controller.filtroFormKey,
-                    child: InputComponent(
-                      maxLines: 1,
-                      onFieldSubmitted: (value) {
-                        controller.idPedidoEntrada = int.tryParse(value);
-                        //Limpa o formúlario
-                        controller.filtroFormKey.currentState!.reset();
-                        buscarTodas();
-                      },
-                      prefixIcon: Icon(
-                        Icons.search,
-                      ),
-                      hintText: 'Buscar',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                ButtonComponent(
-                    icon: Icon(Icons.add, color: Colors.white),
-                    color: secundaryColor,
-                    onPressed: () {
-                      setState(() {
-                        controller.abrirFiltro = !(controller.abrirFiltro);
-                      });
-                    },
-                    text: 'Adicionar filtro')
-              ],
-            ),
-          ),
-          Container(
-            color: Colors.grey.shade50,
-            height: controller.abrirFiltro ? null : 0,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Row(
                 children: [
-                  Form(
-                    key: controller.filtroExpandidoFormKey,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextComponent('Situação'),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              DropdownButtonFormFieldComponent(
-                                onChanged: (value) {
-                                  controller.situacao = value.id;
-                                },
-                                hintText: 'Em aberto',
-                                items: <Situacao>[
-                                  Situacao(id: 1, descricao: 'Em aberto'),
-                                  Situacao(id: 2, descricao: 'Pendente'),
-                                  Situacao(id: 3, descricao: 'Concluído'),
-                                  Situacao(id: 4, descricao: 'Cancelado')
-                                ].map<DropdownMenuItem<Situacao>>(
-                                    (Situacao value) {
-                                  return DropdownMenuItem<Situacao>(
-                                    value: value,
-                                    child: TextComponent(value.descricao!),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
+                  Expanded(child: TitleComponent('Pedidos de entrada')),
+                  Expanded(
+                    child: Form(
+                      key: controller.filtroFormKey,
+                      child: InputComponent(
+                        maxLines: 1,
+                        onFieldSubmitted: (value) {
+                          controller.idPedidoEntrada = int.tryParse(value);
+                          //Limpa o formúlario
+                          controller.filtroFormKey.currentState!.reset();
+                          buscarTodas();
+                        },
+                        prefixIcon: Icon(
+                          Icons.search,
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Expanded(
-                          child: InputComponent(
-                            inputFormatter: [maskFormatter.dataFormatter()],
-                            label: 'Período:',
-                            maxLines: 1,
-                            onSaved: (value) {
-                              if (value.length == 10) {
-                                controller.dataInicio =
-                                    DateFormat("dd/MM/yyyy").parse(value);
-                              }
-                            },
-                            hintText: '24/02/2022',
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: InputComponent(
-                            inputFormatter: [maskFormatter.dataFormatter()],
-                            label: '',
-                            maxLines: 1,
-                            onSaved: (value) {
-                              if (value.length == 10) {
-                                controller.dataFim =
-                                    DateFormat("dd/MM/yyyy").parse(value);
-                              }
-                            },
-                            hintText: '25/02/2022',
-                          ),
-                        ),
-                      ],
+                        hintText: 'Buscar',
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ButtonComponent(
-                            onPressed: () {
-                              controller.filtroExpandidoFormKey.currentState!
-                                  .save();
-                              controller.filtroExpandidoFormKey.currentState!
-                                  .reset();
-                              buscarTodas();
-
-                              setState(() {
-                                controller.abrirFiltro = false;
-                              });
-                            },
-                            text: 'Pesquisar')
-                      ],
-                    ),
-                  )
+                  SizedBox(
+                    width: 8,
+                  ),
+                  ButtonComponent(
+                      icon: Icon(Icons.add, color: Colors.white),
+                      color: secundaryColor,
+                      onPressed: () {
+                        setState(() {
+                          controller.abrirFiltro = !(controller.abrirFiltro);
+                        });
+                      },
+                      text: 'Adicionar filtro')
                 ],
               ),
             ),
-          ),
-          Expanded(
-            child: controller.carregado ? _buildList() : LoadingComponent(),
-          ),
-          PaginacaoComponent(
-            total: controller.pagina.total,
-            atual: controller.pagina.atual,
-            primeiraPagina: () {
-              controller.pagina.primeira();
-              buscarTodas();
-              setState(() {});
-            },
-            anteriorPagina: () {
-              controller.pagina.anterior();
-              buscarTodas();
-              setState(() {});
-            },
-            proximaPagina: () {
-              controller.pagina.proxima();
-              buscarTodas();
-              setState(() {});
-            },
-            ultimaPagina: () {
-              controller.pagina.ultima();
-              buscarTodas();
-              setState(() {});
-            },
-          )
-        ],
+            Container(
+              color: Colors.grey.shade50,
+              height: controller.abrirFiltro ? null : 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: controller.filtroExpandidoFormKey,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextComponent('Situação'),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                DropdownButtonFormFieldComponent(
+                                  onChanged: (value) {
+                                    controller.situacao = value.id;
+                                  },
+                                  hintText: 'Em aberto',
+                                  items: <Situacao>[
+                                    Situacao(id: 1, descricao: 'Em aberto'),
+                                    Situacao(id: 2, descricao: 'Pendente'),
+                                    Situacao(id: 3, descricao: 'Concluído'),
+                                    Situacao(id: 4, descricao: 'Cancelado')
+                                  ].map<DropdownMenuItem<Situacao>>(
+                                      (Situacao value) {
+                                    return DropdownMenuItem<Situacao>(
+                                      value: value,
+                                      child: TextComponent(value.descricao!),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: InputComponent(
+                              inputFormatter: [maskFormatter.dataFormatter()],
+                              label: 'Período:',
+                              maxLines: 1,
+                              onSaved: (value) {
+                                if (value.length == 10) {
+                                  controller.dataInicio =
+                                      DateFormat("dd/MM/yyyy").parse(value);
+                                }
+                              },
+                              hintText: '24/02/2022',
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: InputComponent(
+                              inputFormatter: [maskFormatter.dataFormatter()],
+                              label: '',
+                              maxLines: 1,
+                              onSaved: (value) {
+                                if (value.length == 10) {
+                                  controller.dataFim =
+                                      DateFormat("dd/MM/yyyy").parse(value);
+                                }
+                              },
+                              hintText: '25/02/2022',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ButtonComponent(
+                              onPressed: () {
+                                controller.filtroExpandidoFormKey.currentState!
+                                    .save();
+                                controller.filtroExpandidoFormKey.currentState!
+                                    .reset();
+                                buscarTodas();
+
+                                setState(() {
+                                  controller.abrirFiltro = false;
+                                });
+                              },
+                              text: 'Pesquisar')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: controller.carregado ? _buildList() : LoadingComponent(),
+            ),
+            PaginacaoComponent(
+              total: controller.pagina.total,
+              atual: controller.pagina.atual,
+              primeiraPagina: () {
+                controller.pagina.primeira();
+                buscarTodas();
+                setState(() {});
+              },
+              anteriorPagina: () {
+                controller.pagina.anterior();
+                buscarTodas();
+                setState(() {});
+              },
+              proximaPagina: () {
+                controller.pagina.proxima();
+                buscarTodas();
+                setState(() {});
+              },
+              ultimaPagina: () {
+                controller.pagina.ultima();
+                buscarTodas();
+                setState(() {});
+              },
+            )
+          ],
+        ),
       ),
     );
   }

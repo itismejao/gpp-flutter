@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/linha_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -19,18 +20,17 @@ class _EspecieListViewState extends State<EspecieListView> {
   PecasEspecieController _pecasEspecieController = PecasEspecieController();
 
   Future<bool> excluir(context, PecasEspecieModel pecasEspecieModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           'Deseja excluir a espécie (${pecasEspecieModel.id_peca_especie} - ${pecasEspecieModel.especie})?')) {
         if (await _pecasEspecieController.excluir(pecasEspecieModel)) {
-          notify.sucess("Espécie excluída com sucesso!");
+          Notificacao.snackBar("Espécie excluída com sucesso!");
           return true;
         }
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }

@@ -172,6 +172,7 @@ class _PedidoEntradaDetalheViewState extends State<PedidoEntradaDetalheView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: controller.carregado
           ? Padding(
               padding: const EdgeInsets.all(24.0),

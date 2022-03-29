@@ -36,12 +36,13 @@ class DepartamentoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<DepartamentoModel> departament = data.first
+      List<DepartamentoModel> departamento = data
           .map<DepartamentoModel>((data) => DepartamentoModel.fromJson(data))
           .toList();
-      return departament;
+      return departamento;
     } else {
-      throw DepartamentException("Não foi possível encontrar departamentos !");
+      var error = json.decode(response.body)['error'];
+      throw error;
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:gpp/src/models/FuncionalidadeModel.dart';
 import 'package:gpp/src/repositories/FuncionalidadeRepository.dart';
 import 'package:gpp/src/shared/enumeration/funcionalities_enum.dart';
-import 'package:gpp/src/shared/services/gpp_api.dart';
 
 class FuncionalitiesController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
