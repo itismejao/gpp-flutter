@@ -29,8 +29,6 @@ class _FilialViewState extends State<FilialView> {
         filial: FilialModel(id_filial: 500, sigla: 'DP/ASTEC'),
       ));
     }
-
-    print(ModalRoute.of(context)!.settings.name);
   }
 
   @override
