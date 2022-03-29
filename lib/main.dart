@@ -238,7 +238,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
-        builder = (BuildContext context) => EstoqueConsultaView();
+        builder = (BuildContext context) => EstoqueConsultaView(1);
       } else if (uri.pathSegments.first == 'produtos') {
         builder = (BuildContext context) => ProdutoView();
       }
