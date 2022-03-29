@@ -36,8 +36,10 @@ class ProdutoView extends StatelessWidget {
                       Expanded(
                           child: InputComponent(
                         hintText: 'Buscar',
+                        onChanged: (value) =>
+                            produtoController.pesquisar = value,
                         onFieldSubmitted: (value) {
-                          produtoController.pesquisarProduto(value);
+                          produtoController.buscarProdutos();
                         },
                       ))
                     ],
@@ -157,26 +159,31 @@ class ProdutoView extends StatelessWidget {
                   : LoadingComponent(),
             ),
           ),
-          Obx(() => PaginacaoComponent(
-                total: produtoController.pagina.value.total,
-                atual: produtoController.pagina.value.atual,
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 24),
+            child: GetBuilder<ProdutoController>(
+              builder: (_) => PaginacaoComponent(
+                total: produtoController.pagina.total,
+                atual: produtoController.pagina.atual,
                 primeiraPagina: () {
-                  produtoController.pagina.value.primeira();
+                  produtoController.pagina.primeira();
                   produtoController.buscarProdutos();
                 },
                 anteriorPagina: () {
-                  produtoController.pagina.value.anterior();
+                  produtoController.pagina.anterior();
                   produtoController.buscarProdutos();
                 },
                 proximaPagina: () {
-                  produtoController.pagina.value.proxima();
+                  produtoController.pagina.proxima();
                   produtoController.buscarProdutos();
                 },
                 ultimaPagina: () {
-                  produtoController.pagina.value.ultima();
+                  produtoController.pagina.ultima();
                   produtoController.buscarProdutos();
                 },
-              ))
+              ),
+            ),
+          )
         ],
       ),
     );

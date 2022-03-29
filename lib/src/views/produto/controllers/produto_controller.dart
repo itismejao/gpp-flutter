@@ -20,18 +20,19 @@ import '../../../shared/components/CheckboxComponent.dart';
 import '../../../shared/components/InputComponent.dart';
 
 class ProdutoController extends GetxController {
+  String pesquisar = '';
   var carregando = true.obs;
   late ProdutoRepository produtoRepository;
   late List<ProdutoModel> produtos;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late Rx<PaginaModel> pagina;
+  late PaginaModel pagina;
 
   int marcados = 0;
 
   ProdutoController() {
     produtoRepository = ProdutoRepository();
     produtos = <ProdutoModel>[].obs;
-    pagina = PaginaModel(atual: 1, total: 0).obs;
+    pagina = PaginaModel(atual: 1, total: 0);
   }
 
   @override
@@ -43,26 +44,15 @@ class ProdutoController extends GetxController {
   buscarProdutos() async {
     try {
       carregando(true);
-      var retorno =
-          await produtoRepository.buscarProdutos(this.pagina.value.atual);
+
+      var retorno = await produtoRepository.buscarProdutos(this.pagina.atual,
+          pesquisar: this.pesquisar);
 
       this.produtos = retorno[0];
       this.pagina = retorno[1];
     } finally {
       carregando(false);
-    }
-  }
-
-  pesquisarProduto(value) async {
-    try {
-      carregando(true);
-      var retorno =
-          await produtoRepository.buscarProdutos(this.pagina.value.atual);
-
-      this.produtos = retorno[0];
-      this.pagina = retorno[1];
-    } finally {
-      carregando(false);
+      update();
     }
   }
 }

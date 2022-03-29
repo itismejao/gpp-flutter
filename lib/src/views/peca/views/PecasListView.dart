@@ -758,6 +758,7 @@ class _PecasListViewState extends State<PecasListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -817,7 +818,9 @@ class _PecasListViewState extends State<PecasListView> {
                     ? ListView.builder(
                         itemCount: pecaController.pecas.length,
                         itemBuilder: (context, index) {
-                          return ItemList(pecaController.pecas[index]);
+                          return Container(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: ItemList(pecaController.pecas[index]));
                         },
                       )
                     : LoadingComponent()),
