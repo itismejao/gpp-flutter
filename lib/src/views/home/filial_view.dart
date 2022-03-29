@@ -52,7 +52,6 @@ class _FilialViewState extends State<FilialView> {
               case ConnectionState.waiting:
                 return Center(child: CircularProgressIndicator());
               case ConnectionState.done:
-                print(snapshot.data);
                 return Container(
                   width: 150,
                   // height: 40,
