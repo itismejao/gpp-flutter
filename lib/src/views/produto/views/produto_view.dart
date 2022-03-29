@@ -103,9 +103,7 @@ class ProdutoView extends StatelessWidget {
                                         child: Row(
                                           children: [
                                             TextComponent(
-                                              produtoController
-                                                  .produtos[index].idProduto
-                                                  .toString(),
+                                              '${produtoController.produtos[index].idProduto.toString()}',
                                             )
                                           ],
                                         ),

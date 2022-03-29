@@ -166,6 +166,7 @@ class _PedidoSaidaDetalheViewState extends State<PedidoSaidaDetalheView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: pedidoController.carregado
           ? Padding(
               padding: const EdgeInsets.all(24.0),

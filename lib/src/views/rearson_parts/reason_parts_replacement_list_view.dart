@@ -29,8 +29,6 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
     //Carrega lista de motivos de defeito de peças
     controller.motivoTrocaPecas = await controller.repository.buscarTodos();
 
-    //controller.isLoaded = true;
-
     //Notifica a tela para atualizar os dados
     setState(() {
       controller.isLoaded = true;
@@ -38,12 +36,12 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   }
 
   handleDelete(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await Notificacao.confirmacao(
           "você deseja excluir o motivo de troca de peça ?")) {
         if (await controller.repository.excluir(reasonPartsReplacement)) {
-          notify.sucess("Funcionalidade excluída!");
+          Notificacao.snackBar(
+              'Motivo de troca de peça excluido com sucesso !');
           //Atualiza a lista de motivos
           fetchAll();
         }
@@ -54,28 +52,26 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
   }
 
   handleCreate(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await controller.repository.create(reasonPartsReplacement)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Motivo de peça adicionado com sucesso!');
+        Notificacao.snackBar('Motivo de peça adicionado com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleUpdate(context, MotivoTrocaPecaModel reasonPartsReplacement) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await controller.repository.update(reasonPartsReplacement)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Motivo de peça atualizado com sucesso!');
+        Notificacao.snackBar('Motivo de peça atualizado com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -237,10 +233,8 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
                                   Row(
                                     children: [
                                       Expanded(
-                                          child: TextComponent(controller
-                                              .motivoTrocaPecas[index]
-                                              .idMotivoTrocaPeca
-                                              .toString())),
+                                          child: TextComponent(
+                                              '#${controller.motivoTrocaPecas[index].idMotivoTrocaPeca.toString()}')),
                                       Expanded(
                                           child: TextComponent(controller
                                               .motivoTrocaPecas[index].nome!)),
@@ -276,7 +270,7 @@ class _MotivosTrocaPecasListViewState extends State<MotivosTrocaPecasListView> {
                             ),
                           );
                         }))
-                : LoadingComponent()
+                : Center(child: LoadingComponent())
           ],
         ),
       ),
