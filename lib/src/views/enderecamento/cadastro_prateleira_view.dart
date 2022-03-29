@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_box_view.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
@@ -44,43 +45,40 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
   }
 
   handleCreate(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.criarPrateleira(prateleiraEnderecamentoModel, idEstante)) {
         Navigator.pop(context);
         fetchAll(widget.idEstante.toString());
-        notify.sucess('Prateleira adicionada com sucesso!');
+        Notificacao.snackBar('Prateleira adicionada com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleDelete(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir a prateleira?")) {
+      if (await Notificacao.confirmacao("você deseja excluir a prateleira?")) {
         if (await enderecamentoController.excluirPrateleira(prateleiraEnderecamentoModel)) {
           // Navigator.pop(context); //volta para tela anterior
 
           fetchAll(widget.idEstante.toString());
-          notify.sucess("Prateleira excluída!");
+          Notificacao.snackBar("Prateleira excluída!");
           //Atualiza a lista de motivos
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleEdit(context, PrateleiraEnderecamentoModel editaEstante) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Prateleira editada com sucesso!");
+        Notificacao.snackBar("Prateleira editada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

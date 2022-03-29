@@ -5,6 +5,7 @@ import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 // ignore: must_be_immutable
@@ -34,25 +35,23 @@ class _CoresDetailViewState extends State<CoresDetailView> {
   }
 
   create(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasCorController.create()) {
-        notify.sucess("Cor cadastrada com sucesso!");
+        Notificacao.snackBar("Cor cadastrada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editar(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasCorController.editar()) {
-        notify.sucess("Cor editada com sucesso!");
+        Notificacao.snackBar("Cor editada com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -94,13 +93,11 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                         onChanged: (Situacao? newValue) {
                           setState(() {
                             pecaCor?.situacao = newValue!.index;
-                            _pecasCorController.pecasCorModel.situacao =
-                                newValue!.index;
+                            _pecasCorController.pecasCorModel.situacao = newValue!.index;
                           });
                         },
                         items: Situacao.values.map((Situacao? situacao) {
-                          return DropdownMenuItem<Situacao>(
-                              value: situacao, child: Text(situacao!.name));
+                          return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
                         }).toList())
                   ],
                 ),
@@ -123,8 +120,7 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                   label: 'Sigla',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.sigla = value;
-                    _pecasCorController.pecasCorModel.situacao =
-                        1; // situacao por padrão vai ativa
+                    _pecasCorController.pecasCorModel.situacao = 1; // situacao por padrão vai ativa
                   },
                 ),
               ),

@@ -9,6 +9,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 class MaterialDetailView extends StatefulWidget {
@@ -49,51 +50,47 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
   }
 
   Future<bool> criarGrupo(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasGrupoController.create()) {
-        notify.sucess("Grupo cadastrado com sucesso!");
+        Notificacao.snackBar("Grupo cadastrado com sucesso!");
         return true;
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }
 
   criarMaterial(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasMaterialController.inserir()) {
-        notify.sucess("Material cadastrado com sucesso!");
+        Notificacao.snackBar("Material cadastrado com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editarGrupo(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasGrupoController.editar()) {
-        notify.sucess("Grupo alterado com sucesso!");
+        Notificacao.snackBar("Grupo alterado com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editarMaterial(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasMaterialController.editar()) {
-        notify.sucess("Material alterado com sucesso!");
+        Notificacao.snackBar("Material alterado com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

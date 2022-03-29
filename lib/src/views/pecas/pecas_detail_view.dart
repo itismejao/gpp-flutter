@@ -17,6 +17,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/und_medida.dart';
 import 'package:gpp/src/views/pecas/unidade.dart';
 
@@ -82,15 +83,14 @@ class _PecasDetailViewState extends State<PecasDetailView> {
   }
 
   criarProdutoPeca(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       _pecasController.produtoPecaModel.peca?.id_peca = _pecasModelInserido!.id_peca;
 
       if (await _pecasController.criarProdutoPeca()) {
-        notify.sucess("Peça cadastrada com sucesso!");
+        Notificacao.snackBar("Peça cadastrada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

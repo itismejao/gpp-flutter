@@ -7,6 +7,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_prateleira_view.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
@@ -46,43 +47,40 @@ class _CadastroEstanteViewState extends State<CadastroEstanteView> {
   }
 
   handleCreate(context, EstanteEnderecamentoModel estanteEnderecamentoModel, String idCorredor) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.criarEstante(estanteEnderecamentoModel, idCorredor)) {
         Navigator.pop(context);
         fetchAll(widget.idCorredor.toString());
-        notify.sucess('Estante adicionada com sucesso!');
+        Notificacao.snackBar('Estante adicionada com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleDelete(context, EstanteEnderecamentoModel estanteEnderecamentoModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir a estante?")) {
+      if (await Notificacao.confirmacao("você deseja excluir a estante?")) {
         if (await enderecamentoController.excluirEstante(estanteEnderecamentoModel)) {
           // Navigator.pop(context); //volta para tela anterior
 
           fetchAll(widget.idCorredor.toString());
-          notify.sucess("Estante excluída!");
+          Notificacao.snackBar("Estante excluída!");
           //Atualiza a lista de motivos
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleEdit(context, EstanteEnderecamentoModel editaEstante) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Estante editada com sucesso!");
+        Notificacao.snackBar("Estante editada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

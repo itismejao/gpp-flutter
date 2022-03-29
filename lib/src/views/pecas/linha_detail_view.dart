@@ -9,6 +9,7 @@ import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
 
 // ignore: must_be_immutable
@@ -48,51 +49,47 @@ class _EspecieDetailViewState extends State<EspecieDetailView> {
   }
 
   Future<bool> criarLinha(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasLinhaController.inserir()) {
-        notify.sucess("Linha cadastrada com sucesso!");
+        Notificacao.snackBar("Linha cadastrada com sucesso!");
         return true;
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }
 
   criarEspecie(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasEspecieController.create()) {
-        notify.sucess("Espécie cadastrada com sucesso!");
+        Notificacao.snackBar("Espécie cadastrada com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editarLinha(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasLinhaController.editar()) {
-        notify.sucess("Linha editada com sucesso!");
+        Notificacao.snackBar("Linha editada com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   editarEspecie(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _pecasEspecieController.editar()) {
-        notify.sucess("Espécie editada com sucesso!");
+        Notificacao.snackBar("Espécie editada com sucesso!");
         Navigator.pop(context);
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

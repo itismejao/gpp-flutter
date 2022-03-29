@@ -19,6 +19,7 @@ import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/utils/MaskFormatter.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
 
 import '../../../controllers/peca_controller.dart';
@@ -77,10 +78,8 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   void importarCSV() async {
-    FilePickerResult? arquivo = await FilePicker.platform.pickFiles(
-        allowedExtensions: ['csv'],
-        type: FileType.custom,
-        allowMultiple: false);
+    FilePickerResult? arquivo =
+        await FilePicker.platform.pickFiles(allowedExtensions: ['csv'], type: FileType.custom, allowMultiple: false);
 
     if (arquivo != null) {
       //importado
@@ -158,13 +157,10 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   inserirPecas(setState, context) async {
-    NotifyController notificacao = NotifyController(context: context);
-
     try {
       if (pecaController.produto.idProduto == null) {
-        notificacao.alerta(
-            'E necessário informa o produto para realizar a importação das peças');
-      } else if (await notificacao.confirmacao(
+        Notificacao.snackBar('E necessário informa o produto para realizar a importação das peças');
+      } else if (await Notificacao.confirmacao(
           'Gostaria de importar as ${marcados} peças selecionadas ? pressione sim para continuar ou não para cancelar.')) {
         adicionarProdutoPecas();
         //Chama o endpoint
@@ -178,12 +174,12 @@ class _PecasListViewState extends State<PecasListView> {
         //Fecha a caixa de dialogo
         Navigator.pop(context);
 
-        notificacao.sucess('Peças cadastradas com sucesso.');
+        Notificacao.snackBar('Peças cadastradas com sucesso.');
         buscarTodas();
       }
     } catch (e) {
       //Imprime erro
-      notificacao.error2(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -218,8 +214,7 @@ class _PecasListViewState extends State<PecasListView> {
                           child: Column(
                             children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
                                   children: [TitleComponent('Produto')],
                                 ),
@@ -237,8 +232,7 @@ class _PecasListViewState extends State<PecasListView> {
                                           hintText: '4584544',
                                           onFieldSubmitted: (value) {
                                             buscarProduto(value);
-                                            print(pecaController
-                                                .produto.resumida);
+                                            print(pecaController.produto.resumida);
                                             setState(() {});
                                           },
                                         ),
@@ -249,8 +243,7 @@ class _PecasListViewState extends State<PecasListView> {
                                       Expanded(
                                         child: InputComponent(
                                           key: UniqueKey(),
-                                          initialValue:
-                                              pecaController.produto.resumida,
+                                          initialValue: pecaController.produto.resumida,
                                           label: 'Descrição',
                                           hintText: 'Guarda roupa',
                                         ),
@@ -261,13 +254,7 @@ class _PecasListViewState extends State<PecasListView> {
                                       Expanded(
                                         child: InputComponent(
                                           key: UniqueKey(),
-                                          initialValue: pecaController
-                                                  .produto
-                                                  .fornecedores
-                                                  ?.first
-                                                  .cliente
-                                                  ?.nome ??
-                                              '',
+                                          initialValue: pecaController.produto.fornecedores?.first.cliente?.nome ?? '',
                                           label: 'Fornecedor',
                                           hintText: 'Guarda roupa',
                                         ),
@@ -277,8 +264,7 @@ class _PecasListViewState extends State<PecasListView> {
                                 ],
                               )),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 24.0),
+                                padding: const EdgeInsets.symmetric(vertical: 24.0),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -387,19 +373,15 @@ class _PecasListViewState extends State<PecasListView> {
                                     itemBuilder: (context, index) {
                                       return Container(
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
+                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               CheckboxComponent(
-                                                  value:
-                                                      itemsPeca[index].marcado,
+                                                  value: itemsPeca[index].marcado,
                                                   onChanged: (bool value) => {
                                                         setState(() {
-                                                          selecionar(
-                                                              index, value);
+                                                          selecionar(index, value);
                                                         })
                                                       }),
                                               SizedBox(
@@ -407,16 +389,9 @@ class _PecasListViewState extends State<PecasListView> {
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                  initialValue: itemsPeca[index]
-                                                      .produtoPeca
-                                                      .peca!
-                                                      .codigo_fabrica
-                                                      .toString(),
+                                                  initialValue: itemsPeca[index].produtoPeca.peca!.codigo_fabrica.toString(),
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                        .produtoPeca
-                                                        .peca!
-                                                        .codigo_fabrica = value;
+                                                    itemsPeca[index].produtoPeca.peca!.codigo_fabrica = value;
                                                   },
                                                 ),
                                               ),
@@ -425,16 +400,9 @@ class _PecasListViewState extends State<PecasListView> {
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                  initialValue: itemsPeca[index]
-                                                      .produtoPeca
-                                                      .peca!
-                                                      .volumes
-                                                      .toString(),
+                                                  initialValue: itemsPeca[index].produtoPeca.peca!.volumes.toString(),
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                        .produtoPeca
-                                                        .peca!
-                                                        .volumes = value;
+                                                    itemsPeca[index].produtoPeca.peca!.volumes = value;
                                                   },
                                                 ),
                                               ),
@@ -444,16 +412,9 @@ class _PecasListViewState extends State<PecasListView> {
                                               Expanded(
                                                 child: InputComponent(
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                        .produtoPeca
-                                                        .peca!
-                                                        .descricao = value;
+                                                    itemsPeca[index].produtoPeca.peca!.descricao = value;
                                                   },
-                                                  initialValue: itemsPeca[index]
-                                                      .produtoPeca
-                                                      .peca!
-                                                      .descricao
-                                                      .toString(),
+                                                  initialValue: itemsPeca[index].produtoPeca.peca!.descricao.toString(),
                                                 ),
                                               ),
                                               SizedBox(
@@ -461,16 +422,10 @@ class _PecasListViewState extends State<PecasListView> {
                                               ),
                                               Expanded(
                                                 child: InputComponent(
-                                                  initialValue: itemsPeca[index]
-                                                          .produtoPeca
-                                                          .quantidadePorProduto
-                                                          ?.toString() ??
-                                                      '',
+                                                  initialValue:
+                                                      itemsPeca[index].produtoPeca.quantidadePorProduto?.toString() ?? '',
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                            .produtoPeca
-                                                            .quantidadePorProduto =
-                                                        int.tryParse(value);
+                                                    itemsPeca[index].produtoPeca.quantidadePorProduto = int.tryParse(value);
                                                   },
                                                 ),
                                               ),
@@ -480,26 +435,12 @@ class _PecasListViewState extends State<PecasListView> {
                                               Expanded(
                                                 child: InputComponent(
                                                   initialValue: maskFormatter
-                                                      .medida(
-                                                          value:
-                                                              itemsPeca[index]
-                                                                  .produtoPeca
-                                                                  .peca!
-                                                                  .profundidade
-                                                                  .toString())
+                                                      .medida(value: itemsPeca[index].produtoPeca.peca!.profundidade.toString())
                                                       .getMaskedText(),
-                                                  inputFormatter: [
-                                                    maskFormatter.medida()
-                                                  ],
+                                                  inputFormatter: [maskFormatter.medida()],
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                            .produtoPeca
-                                                            .peca!
-                                                            .profundidade =
-                                                        double.tryParse(
-                                                            UtilBrasilFields
-                                                                .removeCaracteres(
-                                                                    value));
+                                                    itemsPeca[index].produtoPeca.peca!.profundidade =
+                                                        double.tryParse(UtilBrasilFields.removeCaracteres(value));
                                                   },
                                                 ),
                                               ),
@@ -509,26 +450,12 @@ class _PecasListViewState extends State<PecasListView> {
                                               Expanded(
                                                 child: InputComponent(
                                                   initialValue: maskFormatter
-                                                      .medida(
-                                                          value:
-                                                              itemsPeca[index]
-                                                                  .produtoPeca
-                                                                  .peca!
-                                                                  .altura
-                                                                  .toString())
+                                                      .medida(value: itemsPeca[index].produtoPeca.peca!.altura.toString())
                                                       .getMaskedText(),
-                                                  inputFormatter: [
-                                                    maskFormatter.medida()
-                                                  ],
+                                                  inputFormatter: [maskFormatter.medida()],
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                            .produtoPeca
-                                                            .peca!
-                                                            .largura =
-                                                        double.tryParse(
-                                                            UtilBrasilFields
-                                                                .removeCaracteres(
-                                                                    value));
+                                                    itemsPeca[index].produtoPeca.peca!.largura =
+                                                        double.tryParse(UtilBrasilFields.removeCaracteres(value));
                                                   },
                                                 ),
                                               ),
@@ -538,26 +465,12 @@ class _PecasListViewState extends State<PecasListView> {
                                               Expanded(
                                                 child: InputComponent(
                                                   initialValue: maskFormatter
-                                                      .medida(
-                                                          value:
-                                                              itemsPeca[index]
-                                                                  .produtoPeca
-                                                                  .peca!
-                                                                  .largura
-                                                                  .toString())
+                                                      .medida(value: itemsPeca[index].produtoPeca.peca!.largura.toString())
                                                       .getMaskedText(),
-                                                  inputFormatter: [
-                                                    maskFormatter.medida()
-                                                  ],
+                                                  inputFormatter: [maskFormatter.medida()],
                                                   onSaved: (value) {
-                                                    itemsPeca[index]
-                                                            .produtoPeca
-                                                            .peca!
-                                                            .largura =
-                                                        double.tryParse(
-                                                            UtilBrasilFields
-                                                                .removeCaracteres(
-                                                                    value));
+                                                    itemsPeca[index].produtoPeca.peca!.largura =
+                                                        double.tryParse(UtilBrasilFields.removeCaracteres(value));
                                                   },
                                                 ),
                                               ),
@@ -566,15 +479,9 @@ class _PecasListViewState extends State<PecasListView> {
                                               ),
                                               Expanded(
                                                   child: InputComponent(
-                                                initialValue: itemsPeca[index]
-                                                    .produtoPeca
-                                                    .peca!
-                                                    .cor,
+                                                initialValue: itemsPeca[index].produtoPeca.peca!.cor,
                                                 onSaved: (value) {
-                                                  itemsPeca[index]
-                                                      .produtoPeca
-                                                      .peca!
-                                                      .cor = value; //Cor
+                                                  itemsPeca[index].produtoPeca.peca!.cor = value; //Cor
                                                 },
                                               )),
                                               SizedBox(
@@ -638,19 +545,15 @@ class _PecasListViewState extends State<PecasListView> {
                                 ),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: const Divider(),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    TextComponent(
-                                        'Total de peças selecionadas: ${marcados}'),
+                                    TextComponent('Total de peças selecionadas: ${marcados}'),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
@@ -700,24 +603,20 @@ class _PecasListViewState extends State<PecasListView> {
   }
 
   buscarProduto(value) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      pecaController.produto =
-          await pecaController.produtoRepository.buscar(value);
+      pecaController.produto = await pecaController.produtoRepository.buscar(value);
     } catch (e) {
-      notify.alerta(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         pecaController.carregado = false;
       });
       //parei aqui
-      List retorno = await pecaController.pecaRepository
-          .buscarTodos(pecaController.pagina.atual);
+      List retorno = await pecaController.pecaRepository.buscarTodos(pecaController.pagina.atual);
 
       pecaController.pecas = retorno[0];
       pecaController.pagina = retorno[1];
@@ -730,7 +629,7 @@ class _PecasListViewState extends State<PecasListView> {
       });
     } catch (e) {
       // limparFiltro();
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
       setState(() {
         pecaController.pecas = [];
         pecaController.carregado = true;
@@ -819,8 +718,7 @@ class _PecasListViewState extends State<PecasListView> {
                         itemCount: pecaController.pecas.length,
                         itemBuilder: (context, index) {
                           return Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              child: ItemList(pecaController.pecas[index]));
+                              margin: EdgeInsets.symmetric(vertical: 8), child: ItemList(pecaController.pecas[index]));
                         },
                       )
                     : LoadingComponent()),
