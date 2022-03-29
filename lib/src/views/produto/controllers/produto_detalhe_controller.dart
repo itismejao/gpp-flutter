@@ -69,6 +69,7 @@ class ProdutoDetalheController extends GetxController {
       this.produtoPecas = await produtoRepository.buscarProdutoPecas(this.id);
     } finally {
       carregando(false);
+      update();
     }
   }
 

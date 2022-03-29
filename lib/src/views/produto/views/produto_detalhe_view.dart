@@ -251,7 +251,24 @@ class ProdutoDetalheView extends StatelessWidget {
                                           );
                                         },
                                       )
-                                    : LoadingComponent()))
+                                    : LoadingComponent())),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                                margin: EdgeInsets.all(8),
+                                child: Obx(
+                                  () => !produtoController.carregando.value
+                                      ? Row(
+                                          children: [
+                                            TextComponent(
+                                              'Total de peças vinculadas ${produtoController.produtoPecas.length + 1}',
+                                              fontWeight: FontWeight.bold,
+                                            )
+                                          ],
+                                        )
+                                      : Container(),
+                                ))
                           ],
                         ),
                       ),

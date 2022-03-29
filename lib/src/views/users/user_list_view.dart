@@ -12,6 +12,7 @@ import 'package:gpp/src/shared/enumeration/user_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/views/widgets/card_widget.dart';
 
 class UsuarioListView extends StatefulWidget {
   const UsuarioListView({
@@ -158,141 +159,146 @@ class _UsuarioListViewState extends State<UsuarioListView> {
   Widget _buildList(List<UsuarioModel> users) {
     Widget widget = LayoutBuilder(
       builder: (context, constraints) {
-        if (_responsive.isMobile(constraints.maxWidth)) {
-          return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(users, index, context);
-              });
-        }
-
-        return Column(
-          children: [
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(child: TextComponent('RE')),
-                  Expanded(child: TextComponent('Nome')),
-                  Expanded(flex: 2, child: TextComponent('E-mail')),
-                ],
-              ),
-            ),
-            const Divider(),
-            Container(
-              height: 500,
-              child: ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return _buildListItem(users, index, context);
-                  }),
-            )
-          ],
-        );
+        return ListView.builder(
+            itemCount: users.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: CardWidget(
+                    widget: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: TextComponent(
+                          'Código do usuário',
+                          fontWeight: FontWeight.bold,
+                        )),
+                        Expanded(
+                            child: TextComponent('RE',
+                                fontWeight: FontWeight.bold)),
+                        Expanded(
+                            child: TextComponent('Nome',
+                                fontWeight: FontWeight.bold)),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent('E-mail',
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: TextComponent(
+                          '#${users[index].id.toString()}',
+                        )),
+                        Expanded(
+                            child: TextComponent(
+                          users[index].uid.toString(),
+                        )),
+                        Expanded(
+                            child: TextComponent(
+                          users[index].nome!,
+                        )),
+                        Expanded(
+                            flex: 2,
+                            child: TextComponent(
+                              users[index].email!,
+                            )),
+                      ],
+                    ),
+                  ],
+                )),
+              );
+            });
       },
     );
 
     return Container(color: Colors.white, child: widget);
   }
 
-  Widget _buildListItem(
-      List<UsuarioModel> users, int index, BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (_responsive.isMobile(constraints.maxWidth)) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          users[index].nome ?? '',
-                          style: textStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          users[index].departament!.nome ?? '',
-                          style: textStyle(color: Colors.grey.shade400),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        StatusComponent(status: users[index].active!),
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.grey.shade400,
-                          ),
-                          onPressed: () => {
-                            Navigator.pushNamed(
-                                context, '/users/' + users[index].id.toString())
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
+  // Widget _buildListItem(
+  //     List<UsuarioModel> users, int index, BuildContext context) {
+  //   return LayoutBuilder(
+  //     builder: (context, constraints) {
+  //       if (_responsive.isMobile(constraints.maxWidth)) {
+  //         return Padding(
+  //           padding: const EdgeInsets.all(8.0),
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                   color: Colors.grey.withOpacity(0.5),
+  //                   spreadRadius: 5,
+  //                   blurRadius: 7,
+  //                   offset: Offset(0, 3), // changes position of shadow
+  //                 ),
+  //               ],
+  //               color: Colors.white,
+  //               borderRadius: BorderRadius.only(
+  //                   topLeft: Radius.circular(10),
+  //                   topRight: Radius.circular(10),
+  //                   bottomLeft: Radius.circular(10),
+  //                   bottomRight: Radius.circular(10)),
+  //             ),
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(12.0),
+  //               child: Column(
+  //                 children: [
+  //                   Row(
+  //                     children: [
+  //                       Text(
+  //                         users[index].nome ?? '',
+  //                         style: textStyle(fontWeight: FontWeight.bold),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       Text(
+  //                         users[index].departament!.nome ?? '',
+  //                         style: textStyle(color: Colors.grey.shade400),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   SizedBox(
+  //                     height: 12,
+  //                   ),
+  //                   Row(
+  //                     children: [
+  //                       StatusComponent(status: users[index].active!),
+  //                       IconButton(
+  //                         icon: Icon(
+  //                           Icons.edit,
+  //                           color: Colors.grey.shade400,
+  //                         ),
+  //                         onPressed: () => {
+  //                           Navigator.pushNamed(
+  //                               context, '/users/' + users[index].id.toString())
+  //                         },
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       }
 
-        return Container(
-          color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: TextComponent(
-                  users[index].uid.toString(),
-                )),
-                Expanded(
-                    child: TextComponent(
-                  users[index].nome!,
-                )),
-                Expanded(
-                    flex: 2,
-                    child: TextComponent(
-                      users[index].email!,
-                    )),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  //       return Container(
+  //         color: (index % 2) == 0 ? Colors.white : Colors.grey.shade50,
+  //         child: Padding(
+  //           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+  //           child:
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -309,48 +315,23 @@ class _UsuarioListViewState extends State<UsuarioListView> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      TitleComponent('Usuários'),
+                      Expanded(
+                        flex: 2,
+                        child: TitleComponent('Usuários'),
+                      ),
+                      Expanded(
+                        child: InputComponent(
+                          prefixIcon: Icon(Icons.search),
+                          hintText: 'Digite o nome ou RE do usuário',
+                          onChanged: (value) => handleSearch(value),
+                        ),
+                      )
                     ])),
-            LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-              if (_responsive.isMobile(constraints.maxWidth)) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 6,
-                      ),
-                      InputComponent(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: 'Buscar',
-                        onChanged: (value) => handleSearch(value),
-                      ),
-                    ],
-                  ),
-                );
-              }
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 6,
-                    ),
-                    InputComponent(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Digite o nome ou RE do usuário',
-                      onChanged: (value) => handleSearch(value),
-                    ),
-                  ],
-                ),
-              );
-            }),
             //  _buildFilterUsers(),
-            stateManager()
+            Expanded(
+              child: stateManager(),
+            )
           ],
         ),
       ),

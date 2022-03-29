@@ -475,6 +475,7 @@ class _DepartamentFormViewState extends State<DepartamentFormView> {
     try {
       if (await _controller.create()) {
         Notificacao.snackBar("Departamento cadastrado!");
+        Navigator.pop(context);
         Get.keys[1]!.currentState!.pushReplacementNamed('/departamentos');
       }
     } catch (e) {
