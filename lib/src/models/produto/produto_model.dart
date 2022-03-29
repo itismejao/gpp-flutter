@@ -6,7 +6,7 @@ import 'package:gpp/src/models/pecas_model/peca_model.dart';
 class ProdutoModel {
   int? idProduto;
   String? resumida;
-  // String? situacao;
+  int? situacao;
   // String? codBarra;
   // String? marca;
   // String? data_cadastro;
@@ -17,7 +17,7 @@ class ProdutoModel {
 
   ProdutoModel(
       {this.idProduto,
-      // this.situacao,
+      this.situacao,
       // this.codBarra,
       this.resumida,
       // // this.marca,
@@ -28,7 +28,7 @@ class ProdutoModel {
   factory ProdutoModel.fromJson(Map<String, dynamic> json) {
     return ProdutoModel(
         idProduto: json['id_produto'],
-        // situacao: json['situacao'],
+        situacao: json['situacao'],
         // cod_barra: json['cod_barra'],
         resumida: json['resumida'],
         // marca: json['marca'],
@@ -49,7 +49,9 @@ class ProdutoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['produto_pecas'] = produtoPecas!.map((e) => e.toJson()).toList();
+    data['produto_pecas'] = produtoPecas != null
+        ? produtoPecas!.map((e) => e.toJson()).toList()
+        : null;
 
     return data;
   }

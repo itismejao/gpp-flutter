@@ -1,6 +1,6 @@
 class PaginaModel {
-  int total;
-  int atual;
+  int total = 0;
+  int atual = 0;
   PaginaModel({
     required this.total,
     required this.atual,

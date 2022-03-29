@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gpp/main.dart';
 import 'package:gpp/src/controllers/EmailPedidoEntradaController.dart';
 import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
@@ -384,7 +385,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     color: primaryColor,
                     onPressed: () {
                       Navigator.pop(context);
-                      navigatorKey2.currentState!
+                      Get.keys[1]!.currentState!
                           .pushReplacementNamed('/pedidos-saida');
                     },
                     text: 'Ok'),
@@ -446,8 +447,9 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
                     color: primaryColor,
                     onPressed: () {
                       Navigator.pop(context);
-                      navigatorKey2.currentState!
-                          .pushReplacementNamed('/pedidos-entrada');
+                      Get.keys[1]!
+                        ..currentState!
+                            .pushReplacementNamed('/pedidos-entrada');
                     },
                     text: 'Ok'),
                 SizedBox(
@@ -488,7 +490,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
           .criar(pedidoConfirmacao)) {
         myShowDialog('E-mail enviado com sucesso');
         await Future.delayed(Duration(seconds: 3));
-        navigatorKey2.currentState!.pushReplacementNamed('/pedidos-entrada');
+        Get.keys[1]!.currentState!.pushReplacementNamed('/pedidos-entrada');
       }
     } catch (e) {
       print(e.toString());
@@ -601,8 +603,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
     });
     produtoController.produto.produtoPecas =
         await produtoController.produtoRepository.buscarProdutoPecas(
-            astecaController.asteca.compEstProd!.first.produto!.idProduto!
-                .toString());
+            astecaController.asteca.compEstProd!.first.produto!.idProduto!);
     setState(() {
       astecaController.carregaProdutoPeca = true;
     });

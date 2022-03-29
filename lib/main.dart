@@ -59,6 +59,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
@@ -66,7 +67,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
 import 'package:gpp/src/shared/utils/Usuario.dart';
-import 'package:gpp/src/views/asteca/AstecaDetalheView.dart';
+
 import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
 import 'package:gpp/src/views/departamentos/departament_list_view.dart';
@@ -85,11 +86,14 @@ import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaListView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaDetalheView.dart';
 import 'package:gpp/src/views/pedido_saida/PedidoSaidaListView.dart';
+import 'package:gpp/src/views/produto/views/produto_detalhe_view.dart';
+import 'package:gpp/src/views/produto/views/produto_view.dart';
+
 import 'package:gpp/src/views/rearson_parts/reason_parts_replacement_list_view.dart';
 import 'package:gpp/src/views/users/user_list_view.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> navigatorKey2 = GlobalKey<NavigatorState>();
+
 void main() async {
   await dotenv.load(fileName: "env");
 
@@ -166,7 +170,7 @@ class _GppAppState extends State<GppApp> {
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'GPP - Gerenciamento de Peças e Pedidos',
@@ -177,7 +181,8 @@ class _GppAppState extends State<GppApp> {
             fontFamily: 'Mada',
             inputDecorationTheme: const InputDecorationTheme(
               iconColor: Colors.grey,
-              floatingLabelStyle: TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
+              floatingLabelStyle:
+                  TextStyle(color: Color.fromRGBO(4, 4, 145, 1)),
             )),
         onGenerateRoute: (settings) {
           // Handle '/'
@@ -205,7 +210,7 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
 
 //Se existe 1 parâmetros da url
     if (uri.pathSegments.length == 0) {
-      builder = (BuildContext context) => MenuEntradaView();
+      builder = (BuildContext context) => ProdutoView();
     } else if (uri.pathSegments.length == 1) {
       if (uri.pathSegments.first == 'astecas') {
         builder = (BuildContext context) => AstecaView();
@@ -233,7 +238,9 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
       } else if (uri.pathSegments.first == 'estoque-entrada') {
         builder = (BuildContext context) => MenuEntradaView();
       } else if (uri.pathSegments.first == 'estoque-consulta') {
-        builder = (BuildContext context) => EstoqueConsultaView(1);
+        builder = (BuildContext context) => EstoqueConsultaView();
+      } else if (uri.pathSegments.first == 'produtos') {
+        builder = (BuildContext context) => ProdutoView();
       }
 
       //Se existe 2 parâmetros da url
@@ -245,6 +252,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         builder = (BuildContext context) => PedidoSaidaDetalheView(id: id);
       } else if (uri.pathSegments.first == 'pedidos-entrada') {
         builder = (BuildContext context) => PedidoEntradaDetalheView(id: id);
+      } else if (uri.pathSegments.first == 'produtos') {
+        builder = (BuildContext context) => ProdutoDetalheView(id: id);
       }
     }
 
@@ -277,8 +286,8 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child:
-                  Image.network('https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
+              child: Image.network(
+                  'https://as1.ftcdn.net/v2/jpg/01/71/25/36/1000_F_171253635_8svqUJc0BnLUtrUOP5yOMEwFwA8SZayX.jpg'),
             ),
           ),
           Padding(
@@ -293,13 +302,11 @@ class _PaginaInicialViewState extends State<PaginaInicialView> {
         Expanded(
             flex: 5,
             child: Container(
-              color: Colors.grey.shade100,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Container(
-                  color: Colors.white,
                   child: Navigator(
-                    key: navigatorKey2,
+                    key: Get.nestedKey(1),
                     onGenerateRoute: (RouteSettings settings) {
                       return navegar(settings);
                     },
@@ -349,7 +356,10 @@ class _SidebarState extends State<Sidebar> {
                 child: Column(
                   children: controller.funcionalities
                       .map((e) => ItemSideBar(
-                          e.nome ?? '', IconData(int.parse(e.icone!), fontFamily: 'MaterialIcons'), e.subFuncionalidades ?? []))
+                          e.nome ?? '',
+                          IconData(int.parse(e.icone!),
+                              fontFamily: 'MaterialIcons'),
+                          e.subFuncionalidades ?? []))
                       .toList(),
                 ),
               ),
@@ -378,7 +388,10 @@ class FooterSidebar extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           IconButton(
-              onPressed: () => {Navigator.of(context, rootNavigator: true).pushReplacementNamed('/logout')},
+              onPressed: () => {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushReplacementNamed('/logout')
+                  },
               icon: Icon(Icons.logout_rounded))
         ],
       ),
@@ -437,7 +450,9 @@ class _ItemSideBarState extends State<ItemSideBar> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
-                children: widget.subFuncionalidades.map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? '')).toList(),
+                children: widget.subFuncionalidades
+                    .map((e) => SubItemSidebar(e.nome ?? '', e.rota ?? ''))
+                    .toList(),
               ),
             ),
           ),
@@ -466,7 +481,7 @@ class _SubItemSidebarState extends State<SubItemSidebar> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => navigatorKey2.currentState!.pushNamed(widget.rota),
+      onTap: () => Get.keys[1]!.currentState!.pushNamed(widget.rota),
       child: MouseRegion(
         onHover: (value) => setState(() {
           onHover = true;
@@ -475,8 +490,9 @@ class _SubItemSidebarState extends State<SubItemSidebar> {
           onHover = false;
         }),
         child: Container(
-          decoration:
-              BoxDecoration(color: onHover ? Colors.grey.shade200 : Colors.transparent, borderRadius: BorderRadius.circular(5)),
+          decoration: BoxDecoration(
+              color: onHover ? Colors.grey.shade200 : Colors.transparent,
+              borderRadius: BorderRadius.circular(5)),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32),
             child: Row(

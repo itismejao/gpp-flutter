@@ -14,14 +14,20 @@ class ProdutoRepository {
     api = ApiService();
   }
 
-  Future<List<ProdutoModel>> buscarTodos(String codigo) async {
-    int codigo2 = 14634;
-    Response response = await api.get('/produtos/' + codigo2.toString());
+  Future<List<ProdutoModel>> buscarProdutos(int pagina,
+      {String? pesquisar}) async {
+    Map<String, String> queryParameters = {
+      'pagina': pagina.toString(),
+      'pesquisar': pesquisar ?? '',
+    };
+
+    Response response =
+        await api.get('/produtos', queryParameters: queryParameters);
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<ProdutoModel> produto = data
+      List<ProdutoModel> produto = data['dados']
           .map<ProdutoModel>((data) => ProdutoModel.fromJson(data))
           .toList();
 
@@ -32,13 +38,11 @@ class ProdutoRepository {
     }
   }
 
-  Future<ProdutoModel> buscar(String id) async {
-    Response response = await api.get('/produtos' + '/' + id);
+  Future<ProdutoModel> buscarProduto(int id) async {
+    Response response = await api.get('/produtos/${id}');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
-
-      // print(ProdutoModel.fromJson(data).id_produto);
 
       return ProdutoModel.fromJson(data);
     } else {
@@ -47,9 +51,22 @@ class ProdutoRepository {
     }
   }
 
-  Future<void> inserirPecasProduto(String id, ProdutoModel produto) async {
-    print(json.encode(produto.toJson()));
+//remover depois
+  Future<ProdutoModel> buscar(String id) async {
+    Response response = await api.get('/produtos/${id}');
 
+    if (response.statusCode == StatusCode.OK) {
+      var data = jsonDecode(response.body);
+
+      return ProdutoModel.fromJson(data);
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<void> inserirProdutoPecas(int id, ProdutoModel produto) async {
+    print(json.encode(produto.toJson()));
     Response response =
         await api.post('/produtos/${id}/pecas', produto.toJson());
 
@@ -62,8 +79,8 @@ class ProdutoRepository {
     }
   }
 
-  Future<List<ProdutoPecaModel>> buscarProdutoPecas(String id) async {
-    Response response = await api.get('/produtos/${id}/pecas');
+  Future<List<ProdutoPecaModel>> buscarProdutoPecas(int idProduto) async {
+    Response response = await api.get('/produtos/${idProduto}/pecas');
 
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
@@ -73,6 +90,18 @@ class ProdutoRepository {
           .toList();
 
       return produtoPecas;
+    } else {
+      var error = jsonDecode(response.body)['error'];
+      throw error;
+    }
+  }
+
+  Future<bool> deletarProdutoPeca(int idProduto, int idPeca) async {
+    Response response =
+        await api.delete('/produtos/${idProduto}/pecas/${idPeca}');
+
+    if (response.statusCode == StatusCode.OK) {
+      return true;
     } else {
       var error = jsonDecode(response.body)['error'];
       throw error;
