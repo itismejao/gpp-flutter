@@ -147,7 +147,7 @@ class _HomePageViewState extends State<HomePageView> {
       } else if (uri.pathSegments.first == 'departamentos') {
         builder = (BuildContext context) => DepartamentoListView();
       } else if (uri.pathSegments.first == 'usuarios') {
-        //builder = (BuildContext context) => UsuarioListView();
+        builder = (BuildContext context) => UsuarioListView();
       } else if (uri.pathSegments.first == 'motivos-defeitos') {
         builder = (BuildContext context) => MotivosTrocaPecasListView();
       } else if (uri.pathSegments.first == 'logout') {

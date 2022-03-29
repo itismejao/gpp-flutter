@@ -340,28 +340,33 @@ class _DepartamentoListViewState extends State<DepartamentoListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                TitleComponent('Departamentos'),
-                ButtonComponent(
-                    onPressed: () {
-                      exibirFormDepartamento();
-                    },
-                    text: 'Adicionar')
-              ],
-            ),
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    TitleComponent('Departamentos'),
+                    ButtonComponent(
+                        onPressed: () {
+                          exibirFormDepartamento();
+                        },
+                        text: 'Adicionar')
+                  ],
+                ),
+              ),
+              _controller.state == DepartamentEnum.changeDepartament
+                  ? _buildList()
+                  : LoadingComponent()
+            ],
           ),
-          _controller.state == DepartamentEnum.changeDepartament
-              ? _buildList()
-              : LoadingComponent()
-        ],
+        ),
       ),
     );
   }
