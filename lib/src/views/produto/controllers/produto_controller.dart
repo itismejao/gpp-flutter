@@ -5,6 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/pecas_model/peca_model.dart';
 import 'package:gpp/src/models/produto/produto_model.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
@@ -23,12 +24,14 @@ class ProdutoController extends GetxController {
   late ProdutoRepository produtoRepository;
   late List<ProdutoModel> produtos;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late Rx<PaginaModel> pagina;
 
   int marcados = 0;
 
   ProdutoController() {
     produtoRepository = ProdutoRepository();
     produtos = <ProdutoModel>[].obs;
+    pagina = PaginaModel(atual: 1, total: 0).obs;
   }
 
   @override
@@ -40,7 +43,11 @@ class ProdutoController extends GetxController {
   buscarProdutos() async {
     try {
       carregando(true);
-      this.produtos = await produtoRepository.buscarProdutos(1);
+      var retorno =
+          await produtoRepository.buscarProdutos(this.pagina.value.atual);
+
+      this.produtos = retorno[0];
+      this.pagina = retorno[1];
     } finally {
       carregando(false);
     }
@@ -49,8 +56,11 @@ class ProdutoController extends GetxController {
   pesquisarProduto(value) async {
     try {
       carregando(true);
-      this.produtos =
-          await produtoRepository.buscarProdutos(1, pesquisar: value);
+      var retorno =
+          await produtoRepository.buscarProdutos(this.pagina.value.atual);
+
+      this.produtos = retorno[0];
+      this.pagina = retorno[1];
     } finally {
       carregando(false);
     }

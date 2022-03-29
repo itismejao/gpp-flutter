@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
+import 'package:gpp/src/shared/components/PaginacaoComponent.dart';
 
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
@@ -156,6 +157,26 @@ class ProdutoView extends StatelessWidget {
                   : LoadingComponent(),
             ),
           ),
+          Obx(() => PaginacaoComponent(
+                total: produtoController.pagina.value.total,
+                atual: produtoController.pagina.value.atual,
+                primeiraPagina: () {
+                  produtoController.pagina.value.primeira();
+                  produtoController.buscarProdutos();
+                },
+                anteriorPagina: () {
+                  produtoController.pagina.value.anterior();
+                  produtoController.buscarProdutos();
+                },
+                proximaPagina: () {
+                  produtoController.pagina.value.proxima();
+                  produtoController.buscarProdutos();
+                },
+                ultimaPagina: () {
+                  produtoController.pagina.value.ultima();
+                  produtoController.buscarProdutos();
+                },
+              ))
         ],
       ),
     );

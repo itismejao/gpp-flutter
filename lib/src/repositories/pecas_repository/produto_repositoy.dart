@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gpp/src/models/PaginaModel.dart';
 import 'package:gpp/src/models/produto_peca_model.dart';
 import 'package:gpp/src/models/produto/produto_model.dart';
 
@@ -14,8 +15,7 @@ class ProdutoRepository {
     api = ApiService();
   }
 
-  Future<List<ProdutoModel>> buscarProdutos(int pagina,
-      {String? pesquisar}) async {
+  Future<List> buscarProdutos(int pagina, {String? pesquisar}) async {
     Map<String, String> queryParameters = {
       'pagina': pagina.toString(),
       'pesquisar': pesquisar ?? '',
@@ -27,11 +27,12 @@ class ProdutoRepository {
     if (response.statusCode == StatusCode.OK) {
       var data = jsonDecode(response.body);
 
-      List<ProdutoModel> produto = data['dados']
+      List<ProdutoModel> produtos = data['dados']
           .map<ProdutoModel>((data) => ProdutoModel.fromJson(data))
           .toList();
 
-      return produto;
+      PaginaModel pagina = PaginaModel.fromJson(data['pagina']);
+      return [produtos, pagina];
     } else {
       var error = json.decode(response.body)['error'];
       throw error;
