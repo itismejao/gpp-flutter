@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/asteca_controller.dart';
@@ -34,7 +35,6 @@ class _AstecaViewState extends State<AstecaView> {
   late Validator validator;
 
   buscarTodas() async {
-    NotifyController notify = NotifyController(context: context);
     try {
       setState(() {
         astecaController.carregado = false;
@@ -62,7 +62,7 @@ class _AstecaViewState extends State<AstecaView> {
         astecaController.carregado = true;
       });
 
-      notify.error2(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

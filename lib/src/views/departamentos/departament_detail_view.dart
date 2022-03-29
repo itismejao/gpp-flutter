@@ -206,6 +206,7 @@ import 'package:gpp/src/shared/enumeration/departament_enum.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 
 import 'package:gpp/src/shared/components/loading_view.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 // ignore: must_be_immutable
 class DepartamentDetailView extends StatefulWidget {
@@ -260,15 +261,14 @@ class _DepartamentDetailViewState extends State<DepartamentDetailView> {
   }
 
   handleUpdate(context) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await _controller.update() &&
           await _controller.updateDepartamentSubFuncionalities()) {
-        notify.sucess("Departamento atualizado!");
+        Notificacao.snackBar("Departamento atualizado!");
         Navigator.pushReplacementNamed(context, '/departaments');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
