@@ -8,6 +8,7 @@ import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/enderecamento/cadastro_corredor_view.dart';
 import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
@@ -35,8 +36,6 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   }
 
   handleCreate(context, PisoEnderecamentoModel piso) async {
-    NotifyController notify = NotifyController(context: context);
-
     if (piso.id_filial == null) {
       piso.id_filial = getFilial().id_filial;
     }
@@ -45,25 +44,24 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
       if (await enderecamentoController.repository.criar(piso)) {
         Navigator.pop(context);
         fetchAll();
-        notify.sucess('Piso adicionado com sucesso!');
+        Notificacao.snackBar('Piso adicionado com sucesso!');
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
   handleDelete(context, PisoEnderecamentoModel excluiPiso) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao("você deseja excluir o piso?")) {
+      if (await Notificacao.confirmacao("você deseja excluir o piso?")) {
         if (await enderecamentoController.repository.excluir(excluiPiso)) {
-          notify.sucess("Piso excluído!");
+          Notificacao.snackBar("Piso excluído!");
           //Atualiza a lista de motivos
           fetchAll();
         }
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 
@@ -79,13 +77,12 @@ class _CadastroPisoViewState extends State<CadastroPisoView> {
   // }
 
   handleEdit(context, PisoEnderecamentoModel editaPiso) async {
-    NotifyController notify = NotifyController(context: context);
     try {
       if (await enderecamentoController.editar()) {
-        notify.sucess("Piso editado com sucesso!");
+        Notificacao.snackBar("Piso editado com sucesso!");
       }
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
     }
   }
 

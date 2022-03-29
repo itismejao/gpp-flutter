@@ -14,6 +14,7 @@ import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/services/auth.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 
 import '../../models/box_enderecamento_model.dart';
 
@@ -54,12 +55,9 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
     if (pecaEnderecamento!.id_peca_estoque == null)
       _pecasEstoqueController = PecaEstoqueController();
     else {
-      _controllerIdPeca.text =
-          pecaEnderecamento!.peca_estoque!.pecasModel!.id_peca.toString();
-      _controllerNomePeca.text =
-          pecaEnderecamento!.peca_estoque!.pecasModel!.descricao ?? '';
-      _pisoSelected =
-          pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso;
+      _controllerIdPeca.text = pecaEnderecamento!.peca_estoque!.pecasModel!.id_peca.toString();
+      _controllerNomePeca.text = pecaEnderecamento!.peca_estoque!.pecasModel!.descricao ?? '';
+      _pisoSelected = pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso;
       _corredorSelected = pecaEnderecamento!.box?.prateleira?.estante?.corredor;
       _prateleiraSelected = pecaEnderecamento!.box?.prateleira;
       _estanteSelected = pecaEnderecamento!.box?.prateleira?.estante;
@@ -80,32 +78,24 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
         child: Row(
           children: [
             Padding(padding: EdgeInsets.only(left: 20)),
-            Icon(pecaEnderecamento!.id_peca_estoque == null
-                ? Icons.location_on_outlined
-                : Icons.sync_outlined),
+            Icon(pecaEnderecamento!.id_peca_estoque == null ? Icons.location_on_outlined : Icons.sync_outlined),
             Padding(padding: EdgeInsets.only(right: 12)),
-            TitleComponent(pecaEnderecamento!.id_peca_estoque == null
-                ? 'Endereçar Peça'
-                : 'Transferir Peça'),
+            TitleComponent(pecaEnderecamento!.id_peca_estoque == null ? 'Endereçar Peça' : 'Transferir Peça'),
             new Spacer(),
             pecaEnderecamento!.id_peca_enderecamento == null
                 ? Container()
                 : IconButton(
                     onPressed: () async {
-                      NotifyController notify =
-                          NotifyController(context: context);
                       try {
-                        if (await notify.confirmacao(
+                        if (await Notificacao.confirmacao(
                             'Deseja remover o endereçamento da peça (${pecaEnderecamento!.peca_estoque!.pecasModel!.descricao}) localizado no endereço: ${pecaEnderecamento!.endereco}?')) {
-                          if (await _pecaEnderecamentoController
-                              .excluir(pecaEnderecamento!)) {
-                            notify
-                                .sucess("Endereçamento excluído com sucesso!");
+                          if (await _pecaEnderecamentoController.excluir(pecaEnderecamento!)) {
+                            Notificacao.snackBar("Endereçamento excluído com sucesso!");
                             Navigator.pop(context);
                           }
                         }
                       } catch (e) {
-                        notify.error(e.toString());
+                        Notificacao.snackBar(e.toString());
                         Navigator.pop(context);
                       }
                     },
@@ -133,9 +123,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                   child: TextFormField(
                     controller: _controllerIdPeca,
                     keyboardType: TextInputType.number,
-                    enabled: pecaEnderecamento!.id_peca_estoque == null
-                        ? true
-                        : false,
+                    enabled: pecaEnderecamento!.id_peca_estoque == null ? true : false,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
@@ -144,8 +132,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                         hintText: 'ID',
                         labelText: 'ID',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.only(
-                            top: 15, bottom: 10, left: 10),
+                        contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                         suffixIcon: IconButton(
                           onPressed: () async {
                             if (_controllerIdPeca.text == '') {
@@ -177,8 +164,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                       hintText: 'Nome Peça',
                       labelText: 'Nome Peça',
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -201,8 +187,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                       hintText: 'Endereço Atual',
                       labelText: 'Endereço Atual',
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.only(top: 15, bottom: 10, left: 10),
+                      contentPadding: const EdgeInsets.only(top: 15, bottom: 10, left: 10),
                     ),
                   ),
                 ),
@@ -220,51 +205,34 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                     Flexible(
                         flex: 1,
                         child: FutureBuilder(
-                            future: enderecamentoController
-                                .buscarTodos(getFilial().id_filial!),
+                            future: enderecamentoController.buscarTodos(getFilial().id_filial!),
                             builder: (context, AsyncSnapshot snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                   return Text("Sem conexão!");
                                 case ConnectionState.active:
                                 case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
+                                  return Center(child: new CircularProgressIndicator());
                                 case ConnectionState.done:
                                   return Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 12, right: 12),
+                                    padding: const EdgeInsets.only(left: 12, right: 12),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade200,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child:
-                                        DropdownSearch<PisoEnderecamentoModel>(
+                                    child: DropdownSearch<PisoEnderecamentoModel>(
                                       mode: Mode.MENU,
-                                      enabled: pecaEnderecamento!.box == null
-                                          ? true
-                                          : false,
+                                      enabled: pecaEnderecamento!.box == null ? true : false,
                                       showSearchBox: true,
                                       items: snapshot.data,
-                                      itemAsString: (PisoEnderecamentoModel?
-                                              value) =>
-                                          value?.id_filial == null
-                                              ? value!.desc_piso!.toUpperCase()
-                                              : value!.desc_piso!
-                                                      .toUpperCase() +
-                                                  " (" +
-                                                  value.id_filial.toString() +
-                                                  ")",
+                                      itemAsString: (PisoEnderecamentoModel? value) => value?.id_filial == null
+                                          ? value!.desc_piso!.toUpperCase()
+                                          : value!.desc_piso!.toUpperCase() + " (" + value.id_filial.toString() + ")",
                                       onChanged: (value) {
                                         setState(() {
                                           zerarCampos();
                                           _pisoSelected = value;
-                                          pecaEnderecamento!
-                                              .box
-                                              ?.prateleira
-                                              ?.estante
-                                              ?.corredor
-                                              ?.piso = _pisoSelected;
+                                          pecaEnderecamento!.box?.prateleira?.estante?.corredor?.piso = _pisoSelected;
                                         });
                                       },
                                       dropdownSearchDecoration: InputDecoration(
@@ -285,10 +253,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                           zerarCampos();
                                         },
                                       ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: Text(
-                                                  'Nenhum piso encontrado!')),
+                                      emptyBuilder: (context, searchEntry) => Center(child: Text('Nenhum piso encontrado!')),
                                     ),
                                   );
                               }
@@ -297,33 +262,26 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                     Flexible(
                         flex: 1,
                         child: FutureBuilder(
-                            future: enderecamentoController.buscarCorredor(
-                                _pisoSelected?.id_piso.toString() ?? ''),
+                            future: enderecamentoController.buscarCorredor(_pisoSelected?.id_piso.toString() ?? ''),
                             builder: (context, AsyncSnapshot snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                   return Text("Sem conexão!");
                                 case ConnectionState.active:
                                 case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
+                                  return Center(child: new CircularProgressIndicator());
                                 case ConnectionState.done:
                                   return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
+                                    padding: EdgeInsets.only(left: 12, right: 12),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade200,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: DropdownSearch<
-                                        CorredorEnderecamentoModel>(
+                                    child: DropdownSearch<CorredorEnderecamentoModel>(
                                       mode: Mode.MENU,
                                       showSearchBox: true,
                                       items: snapshot.data,
-                                      itemAsString:
-                                          (CorredorEnderecamentoModel? value) =>
-                                              value!.desc_corredor!
-                                                  .toUpperCase(),
+                                      itemAsString: (CorredorEnderecamentoModel? value) => value!.desc_corredor!.toUpperCase(),
                                       onChanged: (value) {
                                         setState(() {
                                           zerarCorredor();
@@ -350,12 +308,10 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                           zerarCorredor();
                                         },
                                       ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _corredorSelected == null
-                                                  ? Text('Selecione um Piso!')
-                                                  : Text(
-                                                      'Corredor não encontrado!')),
+                                      emptyBuilder: (context, searchEntry) => Center(
+                                          child: _corredorSelected == null
+                                              ? Text('Selecione um Piso!')
+                                              : Text('Corredor não encontrado!')),
                                     ),
                                   );
                               }
@@ -364,34 +320,26 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                     Flexible(
                         flex: 1,
                         child: FutureBuilder(
-                            future: enderecamentoController.buscarEstante(
-                                _corredorSelected?.id_corredor.toString() ??
-                                    ''),
+                            future: enderecamentoController.buscarEstante(_corredorSelected?.id_corredor.toString() ?? ''),
                             builder: (context, AsyncSnapshot snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                   return Text("Sem conexão!");
                                 case ConnectionState.active:
                                 case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
+                                  return Center(child: new CircularProgressIndicator());
                                 case ConnectionState.done:
                                   return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
+                                    padding: EdgeInsets.only(left: 12, right: 12),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade200,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: DropdownSearch<
-                                        EstanteEnderecamentoModel>(
+                                    child: DropdownSearch<EstanteEnderecamentoModel>(
                                       mode: Mode.MENU,
                                       showSearchBox: true,
                                       items: snapshot.data,
-                                      itemAsString:
-                                          (EstanteEnderecamentoModel? value) =>
-                                              value!.desc_estante!
-                                                  .toUpperCase(),
+                                      itemAsString: (EstanteEnderecamentoModel? value) => value!.desc_estante!.toUpperCase(),
                                       onChanged: (value) {
                                         setState(() {
                                           zerarPrateleira();
@@ -418,13 +366,10 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                           zerarEstante();
                                         },
                                       ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _estanteSelected == null
-                                                  ? Text(
-                                                      'Selecione um Corredor!')
-                                                  : Text(
-                                                      'Estante não encontrado!')),
+                                      emptyBuilder: (context, searchEntry) => Center(
+                                          child: _estanteSelected == null
+                                              ? Text('Selecione um Corredor!')
+                                              : Text('Estante não encontrado!')),
                                     ),
                                   );
                               }
@@ -433,34 +378,27 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                     Flexible(
                         flex: 1,
                         child: FutureBuilder(
-                            future: enderecamentoController.buscarPrateleira(
-                                _estanteSelected?.id_estante.toString() ?? ''),
+                            future: enderecamentoController.buscarPrateleira(_estanteSelected?.id_estante.toString() ?? ''),
                             builder: (context, AsyncSnapshot snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                   return Text("Sem conexão!");
                                 case ConnectionState.active:
                                 case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
+                                  return Center(child: new CircularProgressIndicator());
                                 case ConnectionState.done:
                                   return Container(
-                                    padding:
-                                        EdgeInsets.only(left: 12, right: 12),
+                                    padding: EdgeInsets.only(left: 12, right: 12),
                                     decoration: BoxDecoration(
                                       color: Colors.grey.shade200,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: DropdownSearch<
-                                        PrateleiraEnderecamentoModel>(
+                                    child: DropdownSearch<PrateleiraEnderecamentoModel>(
                                       mode: Mode.MENU,
                                       showSearchBox: true,
                                       items: snapshot.data,
-                                      itemAsString:
-                                          (PrateleiraEnderecamentoModel?
-                                                  value) =>
-                                              value!.desc_prateleira!
-                                                  .toUpperCase(),
+                                      itemAsString: (PrateleiraEnderecamentoModel? value) =>
+                                          value!.desc_prateleira!.toUpperCase(),
                                       onChanged: (value) {
                                         setState(() {
                                           zerarPrateleira();
@@ -487,13 +425,10 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                           zerarPrateleira();
                                         },
                                       ),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          Center(
-                                              child: _estanteSelected == null
-                                                  ? Text(
-                                                      'Selecione uma Estante!')
-                                                  : Text(
-                                                      'Prateleira não encontrado!')),
+                                      emptyBuilder: (context, searchEntry) => Center(
+                                          child: _estanteSelected == null
+                                              ? Text('Selecione uma Estante!')
+                                              : Text('Prateleira não encontrado!')),
                                     ),
                                   );
                               }
@@ -502,54 +437,40 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                     Flexible(
                         flex: 1,
                         child: FutureBuilder(
-                            future: enderecamentoController.buscarBox(
-                                _prateleiraSelected?.id_prateleira.toString() ??
-                                    ''),
+                            future: enderecamentoController.buscarBox(_prateleiraSelected?.id_prateleira.toString() ?? ''),
                             builder: (context, AsyncSnapshot snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.none:
                                   return Text("Sem conexão!");
                                 case ConnectionState.active:
                                 case ConnectionState.waiting:
-                                  return Center(
-                                      child: new CircularProgressIndicator());
+                                  return Center(child: new CircularProgressIndicator());
                                 case ConnectionState.done:
                                   return Container(
-                                      padding:
-                                          EdgeInsets.only(left: 12, right: 12),
+                                      padding: EdgeInsets.only(left: 12, right: 12),
                                       decoration: BoxDecoration(
                                         color: Colors.grey.shade200,
                                         borderRadius: BorderRadius.circular(5),
                                       ),
-                                      child: DropdownSearch<
-                                              BoxEnderecamentoModel>(
+                                      child: DropdownSearch<BoxEnderecamentoModel>(
                                           mode: Mode.MENU,
                                           showSearchBox: true,
                                           items: snapshot.data,
-                                          itemAsString:
-                                              (BoxEnderecamentoModel? value) =>
-                                                  value!.desc_box!
-                                                      .toUpperCase(),
+                                          itemAsString: (BoxEnderecamentoModel? value) => value!.desc_box!.toUpperCase(),
                                           onChanged: (value) {
                                             setState(() {
                                               zerarBox();
                                               _boxSelected = value;
-                                              pecaEnderecamento!.box?.id_box =
-                                                  value?.id_box;
-                                              pecaEnderecamento!.box?.desc_box =
-                                                  value?.desc_box;
-                                              pecaEnderecamento!.id_box =
-                                                  value!.id_box;
+                                              pecaEnderecamento!.box?.id_box = value?.id_box;
+                                              pecaEnderecamento!.box?.desc_box = value?.desc_box;
+                                              pecaEnderecamento!.id_box = value!.id_box;
                                             });
                                           },
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
-                                                  enabledBorder:
-                                                      InputBorder.none,
-                                                  disabledBorder:
-                                                      InputBorder.none,
-                                                  hintText: "Selecione o Box:",
-                                                  labelText: "Box"),
+                                          dropdownSearchDecoration: InputDecoration(
+                                              enabledBorder: InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              hintText: "Selecione o Box:",
+                                              labelText: "Box"),
                                           dropDownButton: Icon(
                                             Icons.arrow_drop_down_rounded,
                                             color: Colors.black,
@@ -563,46 +484,28 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                               zerarBox();
                                             },
                                           ),
-                                          emptyBuilder: (context,
-                                                  searchEntry) =>
-                                              Center(
-                                                child: DropdownSearch<
-                                                    BoxEnderecamentoModel>(
+                                          emptyBuilder: (context, searchEntry) => Center(
+                                                child: DropdownSearch<BoxEnderecamentoModel>(
                                                   mode: Mode.MENU,
                                                   showSearchBox: true,
                                                   items: snapshot.data,
-                                                  itemAsString:
-                                                      (BoxEnderecamentoModel?
-                                                              value) =>
-                                                          value!.desc_box!
-                                                              .toUpperCase(),
+                                                  itemAsString: (BoxEnderecamentoModel? value) => value!.desc_box!.toUpperCase(),
                                                   onChanged: (value) {
                                                     setState(() {
                                                       zerarBox();
                                                       _boxSelected = value;
-                                                      pecaEnderecamento!
-                                                              .box!.id_box =
-                                                          value?.id_box;
-                                                      pecaEnderecamento!
-                                                              .box!.desc_box =
-                                                          value?.desc_box;
-                                                      pecaEnderecamento!
-                                                              .id_box =
-                                                          value!.id_box;
+                                                      pecaEnderecamento!.box!.id_box = value?.id_box;
+                                                      pecaEnderecamento!.box!.desc_box = value?.desc_box;
+                                                      pecaEnderecamento!.id_box = value!.id_box;
                                                     });
                                                   },
-                                                  dropdownSearchDecoration:
-                                                      InputDecoration(
-                                                          enabledBorder:
-                                                              InputBorder.none,
-                                                          disabledBorder:
-                                                              InputBorder.none,
-                                                          hintText:
-                                                              "Selecione o Box:",
-                                                          labelText: "Box"),
+                                                  dropdownSearchDecoration: InputDecoration(
+                                                      enabledBorder: InputBorder.none,
+                                                      disabledBorder: InputBorder.none,
+                                                      hintText: "Selecione o Box:",
+                                                      labelText: "Box"),
                                                   dropDownButton: Icon(
-                                                    Icons
-                                                        .arrow_drop_down_rounded,
+                                                    Icons.arrow_drop_down_rounded,
                                                     color: Colors.black,
                                                   ),
                                                   showAsSuffixIcons: true,
@@ -614,15 +517,10 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                                                       zerarBox();
                                                     },
                                                   ),
-                                                  emptyBuilder: (context,
-                                                          searchEntry) =>
-                                                      Center(
-                                                          child: _prateleiraSelected ==
-                                                                  null
-                                                              ? Text(
-                                                                  'Selecione uma Prateleira!')
-                                                              : Text(
-                                                                  'Box não encontrado!')),
+                                                  emptyBuilder: (context, searchEntry) => Center(
+                                                      child: _prateleiraSelected == null
+                                                          ? Text('Selecione uma Prateleira!')
+                                                          : Text('Box não encontrado!')),
                                                 ),
                                               )));
                               }
@@ -637,41 +535,33 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                 children: [
                   ButtonComponent(
                     onPressed: () async {
-                      NotifyController notify =
-                          NotifyController(context: context);
-
                       if (pecaEnderecamento!.id_peca_enderecamento == null) {
                         if (pecaEnderecamento!.id_box == null) {
-                          notify.warning(
-                              "É necessário informar para qual box a peça será transferida!");
+                          Notificacao.snackBar("É necessário informar para qual box a peça será transferida!");
                         } else {
-                          pecaEnderecamento!.id_peca_estoque =
-                              pecaEstoque!.id_peca_estoque;
+                          pecaEnderecamento!.id_peca_estoque = pecaEstoque!.id_peca_estoque;
 
                           try {
-                            if (await _pecaEnderecamentoController
-                                .create(pecaEnderecamento!)) {
-                              notify.sucess("Peça endereçada com sucesso!");
+                            if (await _pecaEnderecamentoController.create(pecaEnderecamento!)) {
+                              Notificacao.snackBar("Peça endereçada com sucesso!");
                             }
                           } catch (e) {
-                            notify.error(e.toString());
+                            Notificacao.snackBar(e.toString());
                           }
                           Navigator.pop(context);
                         }
                       } else {
                         try {
                           if (pecaEnderecamento!.id_box == null) {
-                            notify.warning(
-                                "É necessário informar para qual box a peça será transferida!");
+                            Notificacao.snackBar("É necessário informar para qual box a peça será transferida!");
                           } else {
-                            if (await _pecaEnderecamentoController
-                                .editar(pecaEnderecamento!)) {
-                              notify.sucess("Peça endereçada com sucesso!");
+                            if (await _pecaEnderecamentoController.editar(pecaEnderecamento!)) {
+                              Notificacao.snackBar("Peça endereçada com sucesso!");
                               Navigator.pop(context);
                             }
                           }
                         } catch (e) {
-                          notify.error(e.toString());
+                          Notificacao.snackBar(e.toString());
                           Navigator.pop(context);
                         }
                       }
@@ -696,8 +586,8 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
   }
 
   buscarPeca(String id) async {
-    pecaEstoque = await _pecasEstoqueController.buscarEstoque(id,
-        pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso!.id_filial);
+    pecaEstoque =
+        await _pecasEstoqueController.buscarEstoque(id, pecaEnderecamento!.box!.prateleira!.estante!.corredor!.piso!.id_filial);
     _controllerNomePeca.text = pecaEstoque?.pecasModel?.descricao ?? '';
   }
 

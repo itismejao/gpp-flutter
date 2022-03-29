@@ -17,8 +17,7 @@ class SubFuncionalitiesFormView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SubFuncionalitiesFormViewState createState() =>
-      _SubFuncionalitiesFormViewState();
+  _SubFuncionalitiesFormViewState createState() => _SubFuncionalitiesFormViewState();
 }
 
 class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {

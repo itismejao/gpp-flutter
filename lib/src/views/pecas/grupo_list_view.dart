@@ -4,6 +4,7 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -19,18 +20,17 @@ class _GrupoListViewState extends State<GrupoListView> {
   PecasGrupoController _pecasGrupoController = PecasGrupoController();
 
   Future<bool> excluir(context, PecasGrupoModel pecasGrupoModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           'Deseja excluir o grupo (${pecasGrupoModel.id_peca_grupo_material} - ${pecasGrupoModel.grupo})?')) {
         if (await _pecasGrupoController.excluir(pecasGrupoModel)) {
-          notify.sucess("Linha excluída com sucesso!");
+          Notificacao.snackBar("Linha excluída com sucesso!");
           return true;
         }
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }
@@ -105,11 +105,8 @@ class _GrupoListViewState extends State<GrupoListView> {
                           // CheckboxComponent(),
                           Expanded(
                             child: Text(
-                              _pecasGrupo[index]
-                                  .id_peca_grupo_material
-                                  .toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
+                              _pecasGrupo[index].id_peca_grupo_material.toString(),
+                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
@@ -117,8 +114,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                             child: Text(_pecasGrupo[index].grupo.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao
-                                .values[_pecasGrupo[index].situacao!].name),
+                            child: Text(Situacao.values[_pecasGrupo[index].situacao!].name),
                           ),
 
                           Expanded(
@@ -138,11 +134,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                                   ),
                                   tooltip: 'Editar',
                                   onPressed: () {
-                                    PopUpEditar.popUpPeca(
-                                            context,
-                                            MaterialDetailView(
-                                                pecasGrupoModel:
-                                                    _pecasGrupo[index]))
+                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasGrupoModel: _pecasGrupo[index]))
                                         .then((value) => setState(() {}));
                                   },
                                 ),
@@ -154,8 +146,7 @@ class _GrupoListViewState extends State<GrupoListView> {
                                     tooltip: 'Excluir',
                                     onPressed: () {
                                       setState(() {
-                                        excluir(context, _pecasGrupo[index])
-                                            .then((value) => setState(() {}));
+                                        excluir(context, _pecasGrupo[index]).then((value) => setState(() {}));
                                       });
                                     }),
                               ],

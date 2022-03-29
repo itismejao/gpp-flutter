@@ -4,6 +4,7 @@ import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.d
 import 'package:gpp/src/models/pecas_model/pecas_material_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
+import 'package:gpp/src/utils/notificacao.dart';
 import 'package:gpp/src/views/pecas/material_detail_view.dart';
 import 'package:gpp/src/views/pecas/pop_up_editar.dart';
 import 'package:gpp/src/views/pecas/situacao.dart';
@@ -19,18 +20,17 @@ class _MaterialListViewState extends State<MaterialListView> {
   PecasMaterialController _pecasMaterialController = PecasMaterialController();
 
   Future<bool> excluir(context, PecasMaterialModel pecasMaterialModel) async {
-    NotifyController notify = NotifyController(context: context);
     try {
-      if (await notify.confirmacao(
+      if (await Notificacao.confirmacao(
           'Deseja excluir o Material (${pecasMaterialModel.id_peca_material_fabricacao} - ${pecasMaterialModel.material})?')) {
         if (await _pecasMaterialController.excluir(pecasMaterialModel)) {
-          notify.sucess("Material excluído com sucesso!");
+          Notificacao.snackBar("Material excluído com sucesso!");
           return true;
         }
       }
       return false;
     } catch (e) {
-      notify.error(e.toString());
+      Notificacao.snackBar(e.toString());
       return false;
     }
   }
@@ -111,30 +111,22 @@ class _MaterialListViewState extends State<MaterialListView> {
                           // CheckboxComponent(),
                           Expanded(
                             child: Text(
-                              _pecasMaterial[index]
-                                  .id_peca_material_fabricacao
-                                  .toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 16),
+                              _pecasMaterial[index].id_peca_material_fabricacao.toString(),
+                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
-                            child:
-                                Text(_pecasMaterial[index].material.toString()),
+                            child: Text(_pecasMaterial[index].material.toString()),
                           ),
                           Expanded(
                             child: Text(_pecasMaterial[index].sigla.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao
-                                .values[_pecasMaterial[index].situacao!].name),
+                            child: Text(Situacao.values[_pecasMaterial[index].situacao!].name),
                           ),
                           Expanded(
-                            child: Text(_pecasMaterial[index]
-                                .grupo_material!
-                                .grupo
-                                .toString()),
+                            child: Text(_pecasMaterial[index].grupo_material!.grupo.toString()),
                           ),
                           Expanded(
                             child: Row(
@@ -153,11 +145,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                   ),
                                   tooltip: 'Editar',
                                   onPressed: () {
-                                    PopUpEditar.popUpPeca(
-                                            context,
-                                            MaterialDetailView(
-                                                pecasMaterialModel:
-                                                    _pecasMaterial[index]))
+                                    PopUpEditar.popUpPeca(context, MaterialDetailView(pecasMaterialModel: _pecasMaterial[index]))
                                         .then((value) => setState(() {}));
                                   },
                                 ),
@@ -169,8 +157,7 @@ class _MaterialListViewState extends State<MaterialListView> {
                                     tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasMaterialController.excluir(_pecasMaterial[index]).then((value) => setState(() {}));
-                                      excluir(context, _pecasMaterial[index])
-                                          .then((value) => setState(() {}));
+                                      excluir(context, _pecasMaterial[index]).then((value) => setState(() {}));
                                     }),
                               ],
                             ),
