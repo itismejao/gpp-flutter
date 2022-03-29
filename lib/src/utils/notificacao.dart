@@ -54,7 +54,7 @@ class Notificacao {
     Get.snackbar('Mensagem', mensagem,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: primaryColor,
+        backgroundColor: secundaryColor,
         borderRadius: 5,
         margin: EdgeInsets.only(left: Get.width * 0.8, bottom: 20, right: 20),
         maxWidth: Get.width * 0.6);

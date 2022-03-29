@@ -20,21 +20,25 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: _pecasMenu(),
-        ),
-        Padding(padding: EdgeInsets.only(left: 20)),
-        Expanded(
-          flex: 4,
-          child: SingleChildScrollView(
-            child: _pecasNavigator(),
+    return Container(
+      padding: EdgeInsets.all(24),
+      color: Colors.white,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: _pecasMenu(),
           ),
-        ),
-        Padding(padding: EdgeInsets.only(left: 20)),
-      ],
+          Padding(padding: EdgeInsets.only(left: 20)),
+          Expanded(
+            flex: 4,
+            child: SingleChildScrollView(
+              child: _pecasNavigator(),
+            ),
+          ),
+          Padding(padding: EdgeInsets.only(left: 20)),
+        ],
+      ),
     );
   }
 
@@ -59,8 +63,10 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 1 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 1 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 1 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 1 ? secundaryColor : Colors.transparent,
                   data: 'Peça',
                 ),
               ),
@@ -77,8 +83,10 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 2 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 2 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 2 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 2 ? secundaryColor : Colors.transparent,
                   data: 'Cores',
                 ),
               ),
@@ -95,8 +103,10 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 3 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 3 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 3 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 3 ? secundaryColor : Colors.transparent,
                   data: 'Fabricação',
                 ),
               ),
@@ -113,8 +123,10 @@ class _MenuCadastrarViewState extends State<MenuCadastrarView> {
                   });
                 },
                 child: ItemMenu(
-                  color: selected == 4 ? Colors.grey.shade50 : Colors.transparent,
-                  borderColor: selected == 4 ? secundaryColor : Colors.transparent,
+                  color:
+                      selected == 4 ? Colors.grey.shade50 : Colors.transparent,
+                  borderColor:
+                      selected == 4 ? secundaryColor : Colors.transparent,
                   data: 'Linha e Espécie',
                 ),
               ),

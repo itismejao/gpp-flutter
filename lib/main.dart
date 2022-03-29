@@ -329,12 +329,12 @@ class FooterSidebar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextComponent(
-                      'W',
+                      '${getUsuario().nome!.split(' ').first[0].toUpperCase()}',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                     TextComponent(
-                      'L',
+                      '${getUsuario().nome!.split(' ').last[0].toUpperCase()}',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
