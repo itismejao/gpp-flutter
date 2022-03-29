@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/controllers/UserController.dart';
 import 'package:gpp/src/models/user_model.dart';
 
 import 'package:gpp/src/shared/components/InputComponent.dart';
-import 'package:gpp/src/shared/components/status_component.dart';
+
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/components/TitleComponent.dart';
 import 'package:gpp/src/shared/enumeration/user_enum.dart';
@@ -25,7 +24,7 @@ class UsuarioListView extends StatefulWidget {
 
 class _UsuarioListViewState extends State<UsuarioListView> {
   late final UsuarioController _controller;
-  final ResponsiveController _responsive = ResponsiveController();
+
   void changeUsers() async {
     try {
       setState(() {
