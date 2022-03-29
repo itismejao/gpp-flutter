@@ -79,6 +79,7 @@ class PecaEstoqueRepository {
     print('Alterar Estoque');
     print(pe.id_peca_estoque);
     print(pe.id_box);
+    print(pe.id_peca);
 
     Response response = await api.put(
         '/pecas/${pe.id_peca}/peca-estoque/${pe.id_peca_estoque}',
@@ -87,7 +88,8 @@ class PecaEstoqueRepository {
     if (response.statusCode == StatusCode.OK) {
       return true;
     } else {
-      return false;
+      var error = json.decode(response.body)['error'];
+      throw error;
     }
 
   }

@@ -648,7 +648,7 @@ class _EnderecoDetailViewState extends State<EnderecoDetailView> {
                               notify.sucess("Peça endereçada com sucesso!");
                             }
                           } catch (e) {
-                            notify.error(e.toString());
+                            notify.error2(e.toString());
                           }
                           Navigator.pop(context);
                         }
