@@ -63,13 +63,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/controllers/UserController.dart';
-import 'package:gpp/src/models/authenticate_model.dart';
+
 import 'package:gpp/src/models/subfuncionalities_model.dart';
 
 import 'package:gpp/src/shared/components/TextComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/shared/services/auth.dart';
-import 'package:gpp/src/shared/utils/Usuario.dart';
 
 import 'package:gpp/src/views/asteca/AstecaView.dart';
 import 'package:gpp/src/views/autenticacao/AutenticacaoView.dart';
@@ -80,10 +79,9 @@ import 'package:gpp/src/views/estoque/estoque_consulta_view.dart';
 import 'package:gpp/src/views/home/filial_view.dart';
 import 'package:gpp/src/views/motivos_troca_pecas/motivos_troca_peca_list_view.dart';
 
-import 'package:gpp/src/views/not_found_view.dart';
 import 'package:gpp/src/views/peca/views/PecasListView.dart';
 import 'package:gpp/src/views/pecas/menu_cadastrar_view.dart';
-import 'package:gpp/src/views/pecas/menu_consultar_view.dart';
+
 import 'package:gpp/src/views/pecas/peca_enderecamento_detail_view.dart';
 
 import 'package:gpp/src/views/pedido_entrada/PedidoEntradaDetalheView.dart';

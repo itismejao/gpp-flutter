@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:gpp/src/views/produto/controllers/produto_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';

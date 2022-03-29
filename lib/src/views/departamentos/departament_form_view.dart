@@ -454,12 +454,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gpp/src/controllers/departament_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
 import 'package:gpp/src/shared/repositories/styles.dart';
 import 'package:gpp/src/utils/notificacao.dart';
-import 'package:gpp/src/views/departamentos/departament_list_view.dart';
 
 class DepartamentFormView extends StatefulWidget {
   const DepartamentFormView({Key? key}) : super(key: key);

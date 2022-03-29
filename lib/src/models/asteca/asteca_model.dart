@@ -2,11 +2,10 @@ import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/models/asteca/asteca_end_cliente_model.dart';
 import 'package:gpp/src/models/asteca/asteca_motivo_model.dart';
 import 'package:gpp/src/models/asteca/asteca_pendencia_model.dart';
-import 'package:gpp/src/models/asteca/asteca_tipo_pendencia_model.dart';
+
 import 'package:gpp/src/models/documento_fiscal_model.dart';
 import 'package:gpp/src/models/funcionario_model.dart';
 import 'package:gpp/src/models/produto/comp_est_prod_model.dart';
-import 'package:gpp/src/models/produto/produto_model.dart';
 
 class AstecaModel {
   int? idAsteca;
@@ -49,9 +48,15 @@ class AstecaModel {
         observacao: json['observacao'],
         defeitoEstadoProd: json['defeito_estado_prod'],
         dataEmissao: DateTime.parse(json['data_emissao']),
-        astecaEndCliente: json['asteca_end_cliente'] != null ? AstecaEndClienteModel.fromJson(json['asteca_end_cliente']) : null,
-        astecaMotivo: json['asteca_motivo'] != null ? AstecaMotivoModel.fromJson(json['asteca_motivo']) : null,
-        documentoFiscal: json['documento_fiscal'] != null ? DocumentoFiscalModel.fromJson(json['documento_fiscal']) : null,
+        astecaEndCliente: json['asteca_end_cliente'] != null
+            ? AstecaEndClienteModel.fromJson(json['asteca_end_cliente'])
+            : null,
+        astecaMotivo: json['asteca_motivo'] != null
+            ? AstecaMotivoModel.fromJson(json['asteca_motivo'])
+            : null,
+        documentoFiscal: json['documento_fiscal'] != null
+            ? DocumentoFiscalModel.fromJson(json['documento_fiscal'])
+            : null,
         compEstProd: json['comp_est_prod'] != null
             ? json['comp_est_prod'].map<CompEstProdModel>((data) {
                 return CompEstProdModel.fromJson(data);
@@ -62,13 +67,17 @@ class AstecaModel {
         //         return ProdutoModel.fromJson(data);
         //       }).toList()
         //     : null,
-        funcionario: json['funcionario'] != null ? FuncionarioModel.fromJson(json['funcionario']) : null,
+        funcionario: json['funcionario'] != null
+            ? FuncionarioModel.fromJson(json['funcionario'])
+            : null,
         astecaPendencias: json['asteca_pendencias'] != null
             ? json['asteca_pendencias'].map<AstecaPendenciaModel>((data) {
                 return AstecaPendenciaModel.fromJson(data);
               }).toList()
             : null,
-        pedidoSaida: json['pedido_saida'] != null ? PedidoSaidaModel.fromJson(json['pedido_saida']) : null);
+        pedidoSaida: json['pedido_saida'] != null
+            ? PedidoSaidaModel.fromJson(json['pedido_saida'])
+            : null);
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -83,7 +92,9 @@ class AstecaModel {
     }
     data['asteca_motivo'] = this.astecaMotivo;
     data['documento_fiscal'] = this.documentoFiscal;
-    data['comp_est_prod'] = this.compEstProd != null ? this.compEstProd!.map((e) => e.toJson()).toList() : null;
+    data['comp_est_prod'] = this.compEstProd != null
+        ? this.compEstProd!.map((e) => e.toJson()).toList()
+        : null;
     if (this.funcionario != null) {
       data['funcionario'] = this.funcionario;
     }
