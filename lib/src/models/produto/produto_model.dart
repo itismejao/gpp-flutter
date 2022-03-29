@@ -49,7 +49,7 @@ class ProdutoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['produto_pecas'] = produtoPecas!.map((e) => e.toJson()).toList();
+    data['produto_pecas'] = produtoPecas != null ? produtoPecas!.map((e) => e.toJson()).toList() : null;
 
     return data;
   }

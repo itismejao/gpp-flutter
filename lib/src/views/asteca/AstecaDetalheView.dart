@@ -69,6 +69,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   late MaskFormatter maskFormatter;
   late String selecionado;
   late PecaEstoqueModel pecaEstoque;
+  bool error = false;
 
   buscar() async {
     setState(() {
@@ -222,15 +223,21 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   bool verificaEstoque() {
     bool verificaEstoque = true;
-    for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
-      if (item.peca!.estoqueUnico == null) {
-        verificaEstoque = false;
-        break;
-      } else {
-        if (item.quantidade > item.peca!.estoqueUnico!.saldoDisponivel) {
+    if (!pedidoEntracaController.pedidoEntradaCriado) {
+      for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
+        if (item.peca!.estoqueUnico == null) {
           verificaEstoque = false;
           break;
+        } else {
+          if (item.quantidade > item.peca!.estoqueUnico!.saldoDisponivel) {
+            verificaEstoque = false;
+            break;
+          }
         }
+      }
+    } else {
+      for (var item in astecaController.pedidoSaida.itemsPedidoSaida!) {
+        item.pendenciaItem = true;
       }
     }
     return verificaEstoque;
@@ -316,7 +323,6 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
         //Solicita o endpoint a criação do pedido
 
         PedidoSaidaModel pedidoComprovante = await astecaController.pedidoSaidaRepository.criar(astecaController.pedidoSaida);
-
         exibirComprovantePedidoSaida(pedidoComprovante);
       } else {
         exibirDialogPedidoEntrada();
@@ -328,6 +334,7 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
 
   exibirComprovantePedidoSaida(pedidoConfirmacao) {
     //Notificação
+
     showDialog(
         context: context,
         builder: (context) {
@@ -426,8 +433,10 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
               children: [
                 ButtonComponent(
                     color: primaryColor,
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pop(context);
+                      error ? error = false : await finalizarPedido();
+
                       navigatorKey2.currentState!.pushReplacementNamed('/pedidos-entrada');
                     },
                     text: 'Ok'),
@@ -521,28 +530,34 @@ class _AstecaDetalheViewState extends State<AstecaDetalheView> {
   }
 
   criarPedidoEntrada() async {
-    //Criar o pedido de entrada
-    PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
-        situacao: 1, //Em aberto,
-        valorTotal: astecaController.pedidoSaida.valorTotal,
-        //dataEmissao: DateTime.now(),
-        funcionario: astecaController.pedidoSaida.funcionario,
-        asteca: astecaController.asteca,
-        itensPedidoEntrada: criarItensPedidoEntrada());
+    if (!verificarSelecaoMotivoTrocaPeca()) {
+      myShowDialog('Selecione o motivo de troca da peça');
+    } else {
+      //Criar o pedido de entrada
+      PedidoEntradaModel pedidoEntrada = new PedidoEntradaModel(
+          situacao: 1, //Em aberto,
+          valorTotal: astecaController.pedidoSaida.valorTotal,
+          //dataEmissao: DateTime.now(),
+          funcionario: astecaController.pedidoSaida.funcionario,
+          asteca: astecaController.asteca,
+          itensPedidoEntrada: criarItensPedidoEntrada());
+      //Solicita a criação do pedido de entrada
+      try {
+        var pedidoConfirmacao = await pedidoEntracaController.repository.criar(pedidoEntrada);
+        pedidoEntracaController.pedidoEntradaCriado = true;
 
-    //Solicita a criação do pedido de entrada
-    try {
-      var pedidoConfirmacao = await pedidoEntracaController.repository.criar(pedidoEntrada);
+        //Atualiza a pendência da asteca
+        var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
 
-      //Atualiza a pendência da asteca
-      var pendencia = new AstecaTipoPendenciaModel(idTipoPendencia: 651);
+        await astecaController.astecaTipoPendenciaRepository.inserirAstecaPendencia(astecaController.asteca.idAsteca!, pendencia);
 
-      await astecaController.astecaTipoPendenciaRepository.inserirAstecaPendencia(astecaController.asteca.idAsteca!, pendencia);
-
-      //Exibi comprovante
-      exibirComprovantePedidoEntrada(pedidoConfirmacao);
-    } catch (e) {
-      print(e.toString());
+        //Exibi comprovante
+        await exibirComprovantePedidoEntrada(pedidoConfirmacao);
+      } catch (e) {
+        pedidoEntracaController.pedidoEntradaCriado = false;
+        error = true;
+        print(e.toString());
+      }
     }
   }
 

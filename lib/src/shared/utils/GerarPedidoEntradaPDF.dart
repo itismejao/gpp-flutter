@@ -38,56 +38,38 @@ class GerarPedidoEntradaPDF {
         build: (pw.Context context) {
           return pw.Container(
               child: pw.Column(children: [
-            pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('GPP',
-                      style: pw.TextStyle(
-                          fontSize: 24, fontWeight: pw.FontWeight.bold)),
-                  pw.Text('Novomundo.com',
-                      style: pw.TextStyle(
-                          fontSize: 24, fontWeight: pw.FontWeight.bold))
-                ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text('GPP', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+              pw.Text('Novomundo.com', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold))
+            ]),
             pw.SizedBox(height: 12),
-            pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Dados do pedido',
-                      style: pw.TextStyle(
-                          fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text('Dados do pedido', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+            ]),
             pw.Divider(),
             pw.SizedBox(height: 8),
             pw.Row(children: [
-              pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Nº do pedido: ${pedidoEntrada.idPedidoEntrada}',
-                        style: pw.TextStyle(
-                            fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                    pw.Text(
-                        'Nome do fornecedor: ${pedidoEntrada.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome}',
-                        style: pw.TextStyle(
-                            fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                  ]),
+              pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                pw.Text('Nº do pedido: ${pedidoEntrada.idPedidoEntrada}',
+                    style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+                pw.Text(
+                    'Nome do fornecedor: ${pedidoEntrada.asteca!.compEstProd!.first.produto!.fornecedores!.first.cliente!.nome}',
+                    style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+              ]),
             ]),
             pw.SizedBox(height: 12),
-            pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('Itens do pedido',
-                      style: pw.TextStyle(
-                          fontSize: 12, fontWeight: pw.FontWeight.bold)),
-                ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text('Itens do pedido', style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+            ]),
             pw.Divider(),
             pw.Padding(
               padding: pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
               child: pw.Row(children: [
-                pw.Expanded(child: pw.Text('ID')),
-                pw.Expanded(child: pw.Text('Descrição')),
-                pw.Expanded(child: pw.Text('Quantidade')),
-                pw.Expanded(child: pw.Text('Valor R\$')),
-                pw.Expanded(child: pw.Text('Subtotal R\$')),
+                pw.Expanded(child: pw.Center(child: pw.Text('ID'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Descrição'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Quantidade'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Valor R\$'))),
+                pw.Expanded(child: pw.Center(child: pw.Text('Subtotal R\$'))),
               ]),
             ),
             pw.Divider(),
@@ -96,45 +78,30 @@ class GerarPedidoEntradaPDF {
               itemCount: pedidoEntrada.itensPedidoEntrada!.length,
               itemBuilder: (context, index) {
                 return pw.Container(
-                    color: (index % 2) == 0
-                        ? PdfColor(1, 1, 1)
-                        : PdfColor(0.95, 0.95, 0.95),
+                    color: (index % 2) == 0 ? PdfColor(1, 1, 1) : PdfColor(0.95, 0.95, 0.95),
                     child: pw.Padding(
-                        padding: pw.EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16),
+                        padding: pw.EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                         child: pw.Row(children: [
                           pw.Expanded(
-                              child: pw.Text(pedidoEntrada
-                                  .itensPedidoEntrada![index].peca!.id_peca
-                                  .toString())),
+                              child:
+                                  pw.Center(child: pw.Text(pedidoEntrada.itensPedidoEntrada![index].peca!.id_peca.toString()))),
                           pw.Expanded(
-                              child: pw.Text(pedidoEntrada
-                                  .itensPedidoEntrada![index]
-                                  .peca!
-                                  .descricao!)),
+                              child: pw.Center(child: pw.Text(pedidoEntrada.itensPedidoEntrada![index].peca!.descricao!))),
                           pw.Expanded(
-                              child: pw.Text(pedidoEntrada
-                                  .itensPedidoEntrada![index].quantidade
-                                  .toString())),
+                              child: pw.Center(child: pw.Text(pedidoEntrada.itensPedidoEntrada![index].quantidade.toString()))),
                           pw.Expanded(
-                              child: pw.Text(formatter.format(pedidoEntrada
-                                  .itensPedidoEntrada![index].custo))),
+                              child: pw.Center(child: pw.Text(formatter.format(pedidoEntrada.itensPedidoEntrada![index].custo)))),
                           pw.Expanded(
-                              child: pw.Text(formatter.format((pedidoEntrada
-                                      .itensPedidoEntrada![index].quantidade! *
-                                  pedidoEntrada
-                                      .itensPedidoEntrada![index].custo!)))),
+                              child: pw.Center(
+                                  child: pw.Text(formatter.format((pedidoEntrada.itensPedidoEntrada![index].quantidade! *
+                                      pedidoEntrada.itensPedidoEntrada![index].custo!))))),
                         ])));
               },
             )),
-            pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text(
-                      'Total de itens: ${pedidoEntrada.itensPedidoEntrada!.length.toString()}'),
-                  pw.Text(
-                      'Total R\$: ${formatter.format((pedidoEntrada.valorTotal))}'),
-                ]),
+            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.spaceBetween, children: [
+              pw.Text('Total de itens: ${pedidoEntrada.itensPedidoEntrada!.length.toString()}'),
+              pw.Text('Total R\$: ${formatter.format((pedidoEntrada.valorTotal))}'),
+            ]),
           ]));
         },
       ),
