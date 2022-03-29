@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/subfuncionalities_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
@@ -17,7 +16,8 @@ class SubFuncionalitiesFormView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SubFuncionalitiesFormViewState createState() => _SubFuncionalitiesFormViewState();
+  _SubFuncionalitiesFormViewState createState() =>
+      _SubFuncionalitiesFormViewState();
 }
 
 class _SubFuncionalitiesFormViewState extends State<SubFuncionalitiesFormView> {

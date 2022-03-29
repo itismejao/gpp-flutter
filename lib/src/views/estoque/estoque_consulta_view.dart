@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gpp/src/controllers/menu_filial/filial_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/fornecedor_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_estoque_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/peca_controller.dart';

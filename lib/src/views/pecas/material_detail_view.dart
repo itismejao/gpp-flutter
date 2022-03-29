@@ -1,6 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_grupo_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_material_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_grupo_model.dart';
@@ -104,11 +103,14 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
           child: Row(
             children: [
               Padding(padding: EdgeInsets.only(left: 20)),
-              Icon(pecasGrupoModel != null || pecasMaterialModel != null ? Icons.edit : Icons.add_box),
+              Icon(pecasGrupoModel != null || pecasMaterialModel != null
+                  ? Icons.edit
+                  : Icons.add_box),
               Padding(padding: EdgeInsets.only(right: 12)),
-              TitleComponent(pecasGrupoModel != null || pecasMaterialModel != null
-                  ? 'Editar Material de Fabricação'
-                  : 'Cadastrar Material de Fabricação'),
+              TitleComponent(
+                  pecasGrupoModel != null || pecasMaterialModel != null
+                      ? 'Editar Material de Fabricação'
+                      : 'Cadastrar Material de Fabricação'),
             ],
           ),
         ),
@@ -123,7 +125,9 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
             : Column(
                 children: [
                   pecasGrupoModel == null ? Container() : grupo(context),
-                  pecasMaterialModel == null ? Padding(padding: EdgeInsets.only(bottom: 30)) : Padding(padding: EdgeInsets.zero),
+                  pecasMaterialModel == null
+                      ? Padding(padding: EdgeInsets.only(bottom: 30))
+                      : Padding(padding: EdgeInsets.zero),
                   pecasMaterialModel == null ? Container() : material(context),
                 ],
               ),
@@ -141,10 +145,13 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                   Flexible(
                     child: InputComponent(
                       enable: false,
-                      initialValue: pecasGrupoModel == null ? '' : pecasGrupoModel!.id_peca_grupo_material.toString(),
+                      initialValue: pecasGrupoModel == null
+                          ? ''
+                          : pecasGrupoModel!.id_peca_grupo_material.toString(),
                       label: 'ID',
                       onChanged: (value) {
-                        _pecasGrupoController.pecasGrupoModel.id_peca_grupo_material = value;
+                        _pecasGrupoController
+                            .pecasGrupoModel.id_peca_grupo_material = value;
                       },
                     ),
                   ),
@@ -154,11 +161,13 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                       onChanged: (Situacao? newValue) {
                         setState(() {
                           pecasGrupoModel?.situacao = newValue!.index;
-                          _pecasGrupoController.pecasGrupoModel.situacao = newValue!.index;
+                          _pecasGrupoController.pecasGrupoModel.situacao =
+                              newValue!.index;
                         });
                       },
                       items: Situacao.values.map((Situacao? situacao) {
-                        return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                        return DropdownMenuItem<Situacao>(
+                            value: situacao, child: Text(situacao!.name));
                       }).toList())
                 ],
               ),
@@ -170,7 +179,9 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
             Flexible(
               child: InputComponent(
                 label: 'Grupo/Família',
-                initialValue: pecasGrupoModel == null ? '' : pecasGrupoModel!.grupo.toString(),
+                initialValue: pecasGrupoModel == null
+                    ? ''
+                    : pecasGrupoModel!.grupo.toString(),
                 onChanged: (value) {
                   _pecasGrupoController.pecasGrupoModel.grupo = value;
                   _pecasGrupoController.pecasGrupoModel.situacao = 1;
@@ -227,11 +238,14 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                       Flexible(
                         child: InputComponent(
                           enable: false,
-                          initialValue:
-                              pecasMaterialModel == null ? '' : pecasMaterialModel!.id_peca_material_fabricacao.toString(),
+                          initialValue: pecasMaterialModel == null
+                              ? ''
+                              : pecasMaterialModel!.id_peca_material_fabricacao
+                                  .toString(),
                           label: 'ID',
                           onChanged: (value) {
-                            _pecasMaterialController.pecasMaterialModel.id_peca_material_fabricacao = value;
+                            _pecasMaterialController.pecasMaterialModel
+                                .id_peca_material_fabricacao = value;
                           },
                         ),
                       ),
@@ -241,11 +255,13 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                           onChanged: (Situacao? newValue) {
                             setState(() {
                               pecasMaterialModel?.situacao = newValue!.index;
-                              _pecasMaterialController.pecasMaterialModel.situacao = newValue!.index;
+                              _pecasMaterialController.pecasMaterialModel
+                                  .situacao = newValue!.index;
                             });
                           },
                           items: Situacao.values.map((Situacao? situacao) {
-                            return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                            return DropdownMenuItem<Situacao>(
+                                value: situacao, child: Text(situacao!.name));
                           }).toList())
                     ],
                   ),
@@ -257,7 +273,8 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                         children: [
                           Text(
                             'Cadastrar Material',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ],
                       ),
@@ -285,7 +302,8 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                               return Text("there is no connection");
                             case ConnectionState.active:
                             case ConnectionState.waiting:
-                              return Center(child: new CircularProgressIndicator());
+                              return Center(
+                                  child: new CircularProgressIndicator());
                             case ConnectionState.done:
                               return Container(
                                 padding: EdgeInsets.only(left: 12, right: 12),
@@ -297,11 +315,14 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                                   mode: Mode.DIALOG,
                                   showSearchBox: true,
                                   items: snapshot.data,
-                                  selectedItem:
-                                      pecasMaterialModel == null ? snapshot.data[0] : pecasMaterialModel!.grupo_material,
-                                  itemAsString: (PecasGrupoModel? value) => value!.grupo!,
+                                  selectedItem: pecasMaterialModel == null
+                                      ? snapshot.data[0]
+                                      : pecasMaterialModel!.grupo_material,
+                                  itemAsString: (PecasGrupoModel? value) =>
+                                      value!.grupo!,
                                   onChanged: (value) {
-                                    _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material =
+                                    _pecasMaterialController.pecasMaterialModel
+                                            .id_peca_grupo_material =
                                         value!.id_peca_grupo_material;
                                   },
                                   dropdownSearchDecoration: InputDecoration(
@@ -387,9 +408,12 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Nome do Material',
-                    initialValue: pecasMaterialModel == null ? '' : pecasMaterialModel!.material.toString(),
+                    initialValue: pecasMaterialModel == null
+                        ? ''
+                        : pecasMaterialModel!.material.toString(),
                     onChanged: (value) {
-                      _pecasMaterialController.pecasMaterialModel.material = value;
+                      _pecasMaterialController.pecasMaterialModel.material =
+                          value;
                       _pecasMaterialController.pecasMaterialModel.situacao = 1;
                       // _pecasMaterialController.pecasMaterialModel.id_peca_grupo_material = 21;
                     },
@@ -399,7 +423,9 @@ class _MaterialDetailViewState extends State<MaterialDetailView> {
                 Flexible(
                   child: InputComponent(
                     label: 'Sigla',
-                    initialValue: pecasMaterialModel == null ? '' : pecasMaterialModel!.sigla.toString(),
+                    initialValue: pecasMaterialModel == null
+                        ? ''
+                        : pecasMaterialModel!.sigla.toString(),
                     onChanged: (value) {
                       _pecasMaterialController.pecasMaterialModel.sigla = value;
                     },

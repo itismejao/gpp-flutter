@@ -4,7 +4,6 @@ import 'package:gpp/src/utils/notificacao.dart';
 import 'package:intl/intl.dart';
 
 import 'package:gpp/src/controllers/pedido_saida_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/models/pedido_saida_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';

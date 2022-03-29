@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/prateleira_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/loading_view.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -34,7 +34,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
 
   fetchAll(idEstante) async {
     //Carrega lista de motivos de defeito de peças
-    enderecamentoController.listaPrateleira = await enderecamentoController.repository.buscarPrateleira(idEstante);
+    enderecamentoController.listaPrateleira =
+        await enderecamentoController.repository.buscarPrateleira(idEstante);
 
     enderecamentoController.isLoaded = true;
 
@@ -44,9 +45,13 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     });
   }
 
-  handleCreate(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel, String idEstante) async {
+  handleCreate(
+      context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel,
+      String idEstante) async {
     try {
-      if (await enderecamentoController.criarPrateleira(prateleiraEnderecamentoModel, idEstante)) {
+      if (await enderecamentoController.criarPrateleira(
+          prateleiraEnderecamentoModel, idEstante)) {
         Navigator.pop(context);
         fetchAll(widget.idEstante.toString());
         Notificacao.snackBar('Prateleira adicionada com sucesso!');
@@ -56,10 +61,12 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     }
   }
 
-  handleDelete(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
+  handleDelete(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoModel) async {
     try {
       if (await Notificacao.confirmacao("você deseja excluir a prateleira?")) {
-        if (await enderecamentoController.excluirPrateleira(prateleiraEnderecamentoModel)) {
+        if (await enderecamentoController
+            .excluirPrateleira(prateleiraEnderecamentoModel)) {
           // Navigator.pop(context); //volta para tela anterior
 
           fetchAll(widget.idEstante.toString());
@@ -82,7 +89,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     }
   }
 
-  openForm(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openForm(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -100,22 +108,27 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                     children: [
                       InputComponent(
                         label: 'Prateleira',
-                        initialValue: prateleiraEnderecamentoReplacement.desc_prateleira,
+                        initialValue:
+                            prateleiraEnderecamentoReplacement.desc_prateleira,
                         hintText: 'Digite o nome da Prateleira',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira = value!;
+                            prateleiraEnderecamentoReplacement.desc_prateleira =
+                                value!;
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Estante',
-                        initialValue: prateleiraEnderecamentoReplacement.id_estante.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement
+                            .id_estante
+                            .toString(),
                         hintText: 'Digite a Estante',
                         enable: false,
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_estante.toString();
+                            prateleiraEnderecamentoReplacement.id_estante
+                                .toString();
                           });
                         },
                       ),
@@ -129,7 +142,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                           children: [
                             ButtonComponent(
                                 onPressed: () {
-                                  handleCreate(context, enderecamentoController.prateleiraModel, widget.idEstante.toString());
+                                  handleCreate(
+                                      context,
+                                      enderecamentoController.prateleiraModel,
+                                      widget.idEstante.toString());
                                 },
                                 text: 'Adicionar')
                           ],
@@ -146,7 +162,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
     );
   }
 
-  openFormEdit(context, PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
+  openFormEdit(context,
+      PrateleiraEnderecamentoModel prateleiraEnderecamentoReplacement) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -164,21 +181,26 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                     children: [
                       InputComponent(
                         label: 'Piso',
-                        initialValue: prateleiraEnderecamentoReplacement.desc_prateleira,
+                        initialValue:
+                            prateleiraEnderecamentoReplacement.desc_prateleira,
                         hintText: 'Digite o nome do Piso',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.desc_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.desc_prateleira
+                                .toString();
                           });
                         },
                       ),
                       InputComponent(
                         label: 'Filial',
-                        initialValue: prateleiraEnderecamentoReplacement.id_prateleira.toString(),
+                        initialValue: prateleiraEnderecamentoReplacement
+                            .id_prateleira
+                            .toString(),
                         hintText: 'Digite a estante',
                         onChanged: (value) {
                           setState(() {
-                            prateleiraEnderecamentoReplacement.id_prateleira.toString();
+                            prateleiraEnderecamentoReplacement.id_prateleira
+                                .toString();
                           });
                         },
                       ),
@@ -193,7 +215,8 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                             //  pisoEnderecamentoReplacement.id_piso == null
                             ButtonComponent(
                                 onPressed: () {
-                                  handleEdit(context, prateleiraEnderecamentoReplacement);
+                                  handleEdit(context,
+                                      prateleiraEnderecamentoReplacement);
                                   // handleEdit(context);
                                   // Navigator.pop(context);
                                   // context,
@@ -246,8 +269,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                   Flexible(child: TitleComponent('Prateleira')),
                   ButtonComponent(
                       onPressed: () {
-                        enderecamentoController.prateleiraModel.id_estante = int.parse(widget.idEstante.toString());
-                        openForm(context, enderecamentoController.prateleiraModel);
+                        enderecamentoController.prateleiraModel.id_estante =
+                            int.parse(widget.idEstante.toString());
+                        openForm(
+                            context, enderecamentoController.prateleiraModel);
                       },
                       text: 'Adicionar')
                 ],
@@ -275,11 +300,14 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                               Row(
                                 children: [
                                   Expanded(
-                                    child: TextComponent(enderecamentoController.listaPrateleira[index].id_prateleira.toString()),
+                                    child: TextComponent(enderecamentoController
+                                        .listaPrateleira[index].id_prateleira
+                                        .toString()),
                                   ),
                                   Expanded(
-                                    child:
-                                        TextComponent(enderecamentoController.listaPrateleira[index].desc_prateleira.toString()),
+                                    child: TextComponent(enderecamentoController
+                                        .listaPrateleira[index].desc_prateleira
+                                        .toString()),
                                   ),
                                   Expanded(
                                     child: Row(
@@ -289,10 +317,14 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (context) => CadastroBoxView(
-                                                          idPrateleira: enderecamentoController
-                                                              .listaPrateleira[index].id_prateleira
-                                                              .toString(),
+                                                    builder: (context) =>
+                                                        CadastroBoxView(
+                                                          idPrateleira:
+                                                              enderecamentoController
+                                                                  .listaPrateleira[
+                                                                      index]
+                                                                  .id_prateleira
+                                                                  .toString(),
                                                         )),
                                               );
                                             },
@@ -311,7 +343,10 @@ class _CadastroPrateleiraViewState extends State<CadastroPrateleiraView> {
                                         // ),
                                         Expanded(child: ButtonAcaoWidget(
                                           deletar: () {
-                                            handleDelete(context, enderecamentoController.listaPrateleira[index]);
+                                            handleDelete(
+                                                context,
+                                                enderecamentoController
+                                                    .listaPrateleira[index]);
                                           },
                                         ))
                                       ],

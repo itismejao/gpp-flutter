@@ -8,7 +8,6 @@ import 'package:gpp/src/views/widgets/button_acao_widget.dart';
 import 'package:gpp/src/views/widgets/card_widget.dart';
 import 'package:intl/intl.dart';
 
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/responsive_controller.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';

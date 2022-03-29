@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gpp/src/controllers/pedido_entrada_controller.dart';
 import 'package:gpp/src/controllers/entrada/movimento_entrada_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/pedido_entrada_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponentExpanded.dart';
 import 'package:gpp/src/shared/utils/CurrencyPtBrInputFormatter.dart';

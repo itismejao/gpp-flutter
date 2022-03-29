@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/controllers/pecas_controller/pecas_especie_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_especie_model.dart';
 import 'package:gpp/src/shared/components/TextComponent.dart';
@@ -109,18 +109,22 @@ class _EspecieListViewState extends State<EspecieListView> {
                           Expanded(
                             child: Text(
                               _pecasEspecie[index].id_peca_especie.toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 16),
                               // textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].especie.toString()),
+                            child:
+                                Text(_pecasEspecie[index].especie.toString()),
                           ),
                           Expanded(
-                            child: Text(Situacao.values[_pecasEspecie[index].situacao!].name),
+                            child: Text(Situacao
+                                .values[_pecasEspecie[index].situacao!].name),
                           ),
                           Expanded(
-                            child: Text(_pecasEspecie[index].linha!.linha.toString()),
+                            child: Text(
+                                _pecasEspecie[index].linha!.linha.toString()),
                           ),
                           Expanded(
                             child: Row(
@@ -139,7 +143,11 @@ class _EspecieListViewState extends State<EspecieListView> {
                                   ),
                                   tooltip: 'Editar',
                                   onPressed: () {
-                                    PopUpEditar.popUpPeca(context, EspecieDetailView(pecasEspecieModel: _pecasEspecie[index]))
+                                    PopUpEditar.popUpPeca(
+                                            context,
+                                            EspecieDetailView(
+                                                pecasEspecieModel:
+                                                    _pecasEspecie[index]))
                                         .then((value) => setState(() {}));
                                   },
                                 ),
@@ -151,7 +159,8 @@ class _EspecieListViewState extends State<EspecieListView> {
                                     tooltip: 'Excluir',
                                     onPressed: () {
                                       // _pecasEspecieController.excluir(_pecasEspecie[index]).then((value) => setState(() {}));
-                                      excluir(context, _pecasEspecie[index]).then((value) => setState(() {}));
+                                      excluir(context, _pecasEspecie[index])
+                                          .then((value) => setState(() {}));
                                     }),
                               ],
                             ),

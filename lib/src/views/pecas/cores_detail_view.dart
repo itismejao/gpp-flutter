@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
 import 'package:gpp/src/controllers/pecas_controller/pecas_cor_controller.dart';
 import 'package:gpp/src/models/pecas_model/pecas_cor_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
@@ -93,11 +92,13 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                         onChanged: (Situacao? newValue) {
                           setState(() {
                             pecaCor?.situacao = newValue!.index;
-                            _pecasCorController.pecasCorModel.situacao = newValue!.index;
+                            _pecasCorController.pecasCorModel.situacao =
+                                newValue!.index;
                           });
                         },
                         items: Situacao.values.map((Situacao? situacao) {
-                          return DropdownMenuItem<Situacao>(value: situacao, child: Text(situacao!.name));
+                          return DropdownMenuItem<Situacao>(
+                              value: situacao, child: Text(situacao!.name));
                         }).toList())
                   ],
                 ),
@@ -120,7 +121,8 @@ class _CoresDetailViewState extends State<CoresDetailView> {
                   label: 'Sigla',
                   onChanged: (value) {
                     _pecasCorController.pecasCorModel.sigla = value;
-                    _pecasCorController.pecasCorModel.situacao = 1; // situacao por padrão vai ativa
+                    _pecasCorController.pecasCorModel.situacao =
+                        1; // situacao por padrão vai ativa
                   },
                 ),
               ),

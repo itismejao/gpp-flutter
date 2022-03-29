@@ -198,7 +198,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/departament_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/departament_model.dart';
 import 'package:gpp/src/repositories/DepartamentoRepository.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gpp/src/controllers/enderecamento_controller.dart';
-import 'package:gpp/src/controllers/notify_controller.dart';
+
 import 'package:gpp/src/models/box_enderecamento_model.dart';
 import 'package:gpp/src/shared/components/ButtonComponent.dart';
 import 'package:gpp/src/shared/components/InputComponent.dart';
